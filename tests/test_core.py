@@ -38,8 +38,31 @@ class Tests(unittest.TestCase):
                 "context":{"terrain":"urban_lot"}
             })
             self.assertEqual(result["plan"]["grade_name"], "REFIT")
-            self.assertEqual(result["fitness"]["visual_gate"], "REVIEW_NEEDED")
+            self.assertEqual(result["fitness"]["visual_gate"], "OPTIONAL_CLIENT_REVIEW")
+            self.assertFalse(result["fitness"]["visual_review_required"])
+            self.assertEqual(result["fitness"]["visual_review_owner"], "client")
+            self.assertFalse(result["fitness"]["server_side_rendering"])
             self.assertTrue(result["snapshot"]["snapshot_id"])
+
+    def test_visual_review_capability_is_client_owned_and_non_blocking(self):
+        with tempfile.TemporaryDirectory() as td:
+            cap = StructureCapability(td)
+            capabilities = cap.capabilities()
+            self.assertFalse(capabilities["independent_visual_review_required"])
+            self.assertFalse(capabilities["visual_review"]["required"])
+            self.assertEqual(capabilities["visual_review"]["owner"], "client")
+            self.assertFalse(capabilities["visual_review"]["server_side_rendering"])
+            result = cap.generate({
+                "structure_id":"test:client_rendered",
+                "purpose":{"kind":"warehouse","required_zones":["storage"]},
+                "context":{"terrain":"urban_lot"}
+            })
+            contract = result["generation"]["provider_contract"]
+            self.assertFalse(contract["server_visual_review_required"])
+            self.assertFalse(contract["server_side_rendering"])
+            self.assertTrue(contract["client_rendering_responsibility"])
+            self.assertTrue(contract["visual_review_advisory_only"])
+            self.assertEqual(result["generation"]["status"], "READY_FOR_PROVIDER")
 
     def test_dungeon_layout_is_deterministic_and_fit(self):
         request = {
