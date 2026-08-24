@@ -42,7 +42,10 @@ class StructurePipeline:
                 "must_use_verified_registry_ids": True,
                 "vanilla_first_fallback": True,
                 "must_snapshot_each_verified_batch": True,
-                "must_not_self_approve_visual_gate": True,
+                "server_visual_review_required": False,
+                "server_side_rendering": False,
+                "client_rendering_responsibility": True,
+                "visual_review_advisory_only": True,
             },
         }
         return result
