@@ -86,6 +86,14 @@ The core has **no third-party runtime dependency**. Minecraft content defaults t
 
 Theme palette roles can feed procedural materialization: a downstream culture/institution profile may nominate foundation, structural, roof, floor, wall, technology, signage, and other role candidates while the registry resolver chooses only verified IDs.
 
+Content-tool inventory now also indexes discoverable recipe, loot-table, structure, item-tag, and item model/texture resource IDs. Deliberate content calls return confidence as `vanilla`, `exact`, `candidate`, `namespace`, or `unknown`; callers can select `id_policy: strict | namespace | permissive` and receive an explicit promotion/materialization gate instead of a guessed mod ID.
+
+## Minecraft content authoring tools
+
+Books, loot tables, recipes, registry probing, and semantic icons are first-class API capabilities rather than disconnected helper snippets. Their output adapts across known Minecraft format boundaries, including the 1.20.5 item-component transition and the 1.21 datapack directory rename. Every authoring result contains deterministic public gate codes and a `materialization_allowed` decision; the API does not expose hidden chain-of-thought.
+
+Icon assignment prefers a known/discoverable Minecraft item icon and can fall back to a deterministic lightweight SVG badge when a suitable item icon cannot be established. See `docs/MINECRAFT_CONTENT_API_TOOLS.md` for the compatibility and gate contract.
+
 ## AI tool calling
 
 The API publishes a portable JSON-Schema tool catalog:
@@ -104,8 +112,13 @@ The tool set exposes:
 - `dungeon_layout`
 - `infrastructure_layout`
 - `minecraft_version`
+- `minecraft_registry_probe`
+- `minecraft_book_generate`
+- `minecraft_loot_table_generate`
+- `minecraft_recipe_generate`
+- `minecraft_icon_assign`
 
-The infrastructure tool schema publishes the same road/highway/Lost Cities/jigsaw/world-seed/purpose variables exposed in the StructureForge web UI. The same operations remain callable through Python, CLI, and HTTP so an AI client does not require a separate implementation path.
+The infrastructure tool schema publishes the same road/highway/Lost Cities/jigsaw/world-seed/purpose variables exposed in the StructureForge web UI. The same operations remain callable through Python and HTTP so an AI client does not require a separate implementation path.
 
 ## Python
 
@@ -153,6 +166,24 @@ layout = cap.infrastructure_layout({
 })
 ```
 
+Content tools use the same object:
+
+```python
+book = cap.minecraft_book_generate({
+    "target_version": "1.20.5",
+    "title": "Containment Log",
+    "author": "VCF",
+    "pages": ["Entry one", {"text": "Entry two", "bold": True}],
+})
+
+loot = cap.minecraft_loot_table_generate({
+    "target_version": "1.21",
+    "table_id": "example:chests/evidence",
+    "items": [{"id": "minecraft:iron_ingot", "weight": 4}],
+    "guaranteed": [{"id": "minecraft:paper", "count": 1}],
+})
+```
+
 ## CLI
 
 ```bash
@@ -182,6 +213,11 @@ POST /v1/generate
 POST /v1/dungeon/layout
 POST /v1/infrastructure/layout
 POST /v1/minecraft/version
+POST /v1/minecraft/registry/probe
+POST /v1/minecraft/book
+POST /v1/minecraft/loot-table
+POST /v1/minecraft/recipe
+POST /v1/minecraft/icon
 POST /v1/resume
 ```
 
@@ -205,7 +241,7 @@ Every meaningful generation is resumable. For built-in materialization, the fina
 
 Snapshots record source hashes, discovered mods/namespaces, request and contextual contracts, rebuild grade, preserved/frozen properties, generated artifacts, validation status, unresolved visual review, and next eligible action.
 
-See `docs/SNAPSHOTS_AND_GENERATIONAL_EXECUTION.md`, `docs/DUNGEON_LAYOUT_AND_MODULARITY.md`, `docs/GENERATOR_PROVIDER_REGISTRY.md`, and `docs/INFRASTRUCTURE_GENERATION.md`.
+See `docs/SNAPSHOTS_AND_GENERATIONAL_EXECUTION.md`, `docs/DUNGEON_LAYOUT_AND_MODULARITY.md`, `docs/GENERATOR_PROVIDER_REGISTRY.md`, `docs/INFRASTRUCTURE_GENERATION.md`, and `docs/MINECRAFT_CONTENT_API_TOOLS.md`.
 
 ## Design rule
 

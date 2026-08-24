@@ -12,6 +12,7 @@ from .generators import (
     DungeonGenerator, DungeonLayoutRequest, GeneratorRegistry,
     NativeDungeonProvider, adapt_donjon_options,
 )
+from .minecraft.content_tools import MinecraftContentTools
 from .versioning import MinecraftVersionProfile, resolve_minecraft_version
 
 __all__ = [
@@ -19,6 +20,6 @@ __all__ = [
     "PhysicalClearance", "PurposeProfile", "SiteContext",
     "StructureRequest", "ThemeProfile", "DungeonGenerator",
     "DungeonLayoutRequest", "GeneratorRegistry", "NativeDungeonProvider",
-    "adapt_donjon_options", "MinecraftVersionProfile",
-    "resolve_minecraft_version",
+    "adapt_donjon_options", "MinecraftContentTools",
+    "MinecraftVersionProfile", "resolve_minecraft_version",
 ]

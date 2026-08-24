@@ -12,6 +12,7 @@ from .generators import (
     InfrastructureGenerator,
     NativeInfrastructureProvider,
 )
+from .minecraft.content_tools import MinecraftContentTools
 from .versioning import resolve_minecraft_version
 from .tooling import tool_catalog
 
@@ -23,6 +24,7 @@ class StructureCapability:
         self.inventory = ModInventory(self.project_root)
         self.inventory.scan()
         self.registry = RegistryResolver(self.inventory)
+        self.content = MinecraftContentTools(self.registry, self.inventory)
         state_root = state_root or self.project_root / ".structure-capability" / "snapshots"
         self.snapshots = SnapshotStore(state_root)
         self.pipeline = StructurePipeline(self.snapshots, self.registry)
@@ -38,10 +40,15 @@ class StructureCapability:
         return {
             "api_version": self.API_VERSION,
             "vanilla_first": True,
-            "mod_awareness": ["jar metadata", "data/assets namespaces", "explicit registry IDs"],
+            "mod_awareness": [
+                "jar metadata", "data/assets namespaces", "explicit registry IDs",
+                "recipe/loot/structure resource discovery", "item model/texture candidates",
+            ],
             "operations": [
                 "inventory", "audit", "plan", "generate", "resume", "dungeon_layout",
-                "infrastructure_layout", "minecraft_version",
+                "infrastructure_layout", "minecraft_version", "minecraft_registry_probe",
+                "minecraft_book_generate", "minecraft_loot_table_generate",
+                "minecraft_recipe_generate", "minecraft_icon_assign",
             ],
             "rebuild_grades": {
                 "0": "AUDIT_ONLY",
@@ -70,7 +77,19 @@ class StructureCapability:
                 "world_seed_determinism": True,
                 "runtime_validation_required": True,
             },
-            "minecraft_versions": {"initial_contract": "1.12.x+", "materialization": "provider_validated"},
+            "minecraft_content_tools": {
+                "book": {"version_aware": True, "item_components_1_20_5_plus": True},
+                "loot_table": {"version_aware_paths": True, "weighted_and_guaranteed_entries": True},
+                "recipe": {"version_aware_results": True, "version_aware_ingredients": True},
+                "registry_probe": {"confidence_levels": ["vanilla", "exact", "candidate", "namespace", "unknown"]},
+                "icon_assignment": {"minecraft_item_icons": True, "deterministic_svg_fallback": True},
+                "reasoning_contract": "deterministic public gates and reason codes; no hidden chain-of-thought",
+            },
+            "minecraft_versions": {
+                "initial_contract": "1.12.x+",
+                "structure_materialization": "provider_validated",
+                "content_materialization": "version-adapted",
+            },
             "ai_tool_calling": {"catalog_endpoint": "/v1/tools", "portable_json_schema": True},
             "independent_visual_review_required": True,
         }
@@ -143,6 +162,21 @@ class StructureCapability:
 
     def minecraft_version(self, version):
         return resolve_minecraft_version(version).to_dict()
+
+    def minecraft_registry_probe(self, request):
+        return self.content.registry_probe(request)
+
+    def minecraft_book_generate(self, request):
+        return self.content.book(request)
+
+    def minecraft_loot_table_generate(self, request):
+        return self.content.loot_table(request)
+
+    def minecraft_recipe_generate(self, request):
+        return self.content.recipe(request)
+
+    def minecraft_icon_assign(self, request):
+        return self.content.assign_icon(request)
 
     def resume(self, snapshot_id):
         return self.snapshots.load(snapshot_id)

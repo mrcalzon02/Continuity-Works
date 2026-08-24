@@ -65,6 +65,16 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, self.capability.infrastructure_layout(body))
             if self.path == "/v1/minecraft/version":
                 return self._send(200, self.capability.minecraft_version(body.get("version")))
+            if self.path == "/v1/minecraft/registry/probe":
+                return self._send(200, self.capability.minecraft_registry_probe(body))
+            if self.path == "/v1/minecraft/book":
+                return self._send(200, self.capability.minecraft_book_generate(body))
+            if self.path == "/v1/minecraft/loot-table":
+                return self._send(200, self.capability.minecraft_loot_table_generate(body))
+            if self.path == "/v1/minecraft/recipe":
+                return self._send(200, self.capability.minecraft_recipe_generate(body))
+            if self.path == "/v1/minecraft/icon":
+                return self._send(200, self.capability.minecraft_icon_assign(body))
             if self.path == "/v1/audit":
                 return self._send(200, self.capability.audit(body))
             if self.path == "/v1/plan":

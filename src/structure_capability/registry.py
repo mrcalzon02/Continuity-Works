@@ -21,10 +21,15 @@ class RegistryResolver:
     inventory: object | None = None
     role_defaults: dict[str, list[str]] = field(default_factory=lambda: dict(VANILLA_ROLE_DEFAULTS))
 
-    def verified(self, registry_id: str) -> bool:
+    def probe(self, registry_id: str, kind: str | None = None) -> dict:
         if registry_id.startswith("minecraft:"):
-            return True
-        return bool(self.inventory and self.inventory.knows(registry_id))
+            return {"id": registry_id, "kind": kind, "level": "vanilla", "namespace_known": True, "evidence": ["minecraft namespace"]}
+        if self.inventory and hasattr(self.inventory, "probe"):
+            return self.inventory.probe(registry_id, kind=kind)
+        return {"id": registry_id, "kind": kind, "level": "unknown", "namespace_known": False, "evidence": []}
+
+    def verified(self, registry_id: str) -> bool:
+        return self.probe(registry_id).get("level") != "unknown"
 
     def resolve(self, requested: str | None = None, role: str | None = None) -> str:
         if requested and self.verified(requested):
