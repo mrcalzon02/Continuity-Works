@@ -1,0 +1,59 @@
+name: Promote StructureSmith v0.2.0
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/promote-v020.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Reconstruct validated package
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .structuresmith-staging/payload.part00 \
+              .structuresmith-staging/payload.part01 \
+              .structuresmith-staging/payload.part02 \
+              .structuresmith-staging/payload.part03 \
+              .structuresmith-staging/payload.part04 \
+              .structuresmith-staging/payload.part05 > /tmp/structuresmith.tar.xz.b64
+          base64 --decode /tmp/structuresmith.tar.xz.b64 > /tmp/structuresmith.tar.xz
+          echo "0fe337e7f2809e64a4c93da93bf09581aedc54549439b18ca8f63587477c28b0  /tmp/structuresmith.tar.xz" | sha256sum -c -
+          mkdir -p /tmp/structuresmith
+          tar -xJf /tmp/structuresmith.tar.xz -C /tmp/structuresmith
+          shopt -s dotglob nullglob
+          cp -a /tmp/structuresmith/structure-generation-capability-api/. .
+          rm -rf .structuresmith-staging
+          rm -f .github/workflows/promote-v020.yml
+
+      - name: Validate source before promotion
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m compileall -q src
+          python -m unittest discover -s tests -v
+
+      - name: Commit promoted source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git add -f build
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "Import validated StructureSmith v0.2.0 capability API"
+          git push origin HEAD:main
