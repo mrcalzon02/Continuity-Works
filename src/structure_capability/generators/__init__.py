@@ -2,11 +2,8 @@ from .dungeon import DungeonGenerator, DungeonLayoutRequest, evaluate_dungeon_la
 from .donjon_compat import adapt_donjon_options
 from .registry import GeneratorRegistry
 from .dungeon_provider import NativeDungeonProvider
-from .infrastructure import (
-    InfrastructureGenerator,
-    InfrastructureLayoutRequest,
-    generate_infrastructure_layout,
-)
+from .infrastructure import InfrastructureLayoutRequest
+from .infrastructure_additive import InfrastructureGenerator, generate_infrastructure_layout
 from .infrastructure_provider import NativeInfrastructureProvider
 
 __all__ = [

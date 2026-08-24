@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from .infrastructure import InfrastructureGenerator
+from .infrastructure_additive import InfrastructureGenerator
 
 
 class NativeInfrastructureProvider:
@@ -25,11 +25,22 @@ class NativeInfrastructureProvider:
                 "lost_cities_tileable_grid_contract",
                 "lost_cities_randomized_coordinate_contract",
                 "lost_cities_sequential_jigsaw_contract",
+                "non_destructive_compatibility_overlay",
+                "append_only_table_and_selector_additions",
                 "purpose_depth_validation",
                 "world_seed_determinism",
                 "urban_rural_facility_variants",
             ],
-            "runtime_note": "Lost Cities and fresh-world placement are emitted as integration contracts and require runtime validation in a compatible modded instance.",
+            "compatibility_policy": {
+                "mode": "append_only",
+                "non_destructive": True,
+                "native_tables_and_generators_preserved": True,
+            },
+            "runtime_note": (
+                "Lost Cities and fresh-world placement are emitted as additive integration contracts. "
+                "Native Lost Cities roads, highways, railways, selectors, and tables are never replaced; "
+                "runtime validation is still required in a compatible modded instance."
+            ),
         }
 
     def layout(self, request: dict):

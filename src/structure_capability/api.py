@@ -5,6 +5,7 @@ from .mod_awareness import ModInventory
 from .registry import RegistryResolver
 from .snapshot import SnapshotStore
 from .pipeline import StructurePipeline
+from .compatibility import compatibility_policy
 from .generators import (
     DungeonGenerator,
     GeneratorRegistry,
@@ -40,6 +41,7 @@ class StructureCapability:
         return {
             "api_version": self.API_VERSION,
             "vanilla_first": True,
+            "compatibility_policy": compatibility_policy(),
             "mod_awareness": [
                 "jar metadata", "data/assets namespaces", "explicit registry IDs",
                 "recipe/loot/structure resource discovery", "item model/texture candidates",
@@ -75,6 +77,13 @@ class StructureCapability:
                 "highway_profiles": ["elevated_urban_water_crossing", "surface_highway"],
                 "jigsaw_assembly": True,
                 "lost_cities_contracts": ["tileable_grid", "randomized_coordinate", "sequential_jigsaw"],
+                "lost_cities_reference": {
+                    "repository": "McJtyMods/LostCities",
+                    "branch": "1.20",
+                    "use": "infer additive structural compatibility from public source",
+                    "native_systems_preserved": ["streets", "highways", "railways"],
+                    "replacement_allowed": False,
+                },
                 "purpose_depth_validation": True,
                 "world_seed_determinism": True,
                 "runtime_validation_required": True,
