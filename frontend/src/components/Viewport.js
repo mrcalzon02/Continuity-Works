@@ -37,8 +37,10 @@ function Scene({ blocks }) {
     return total.map((value) => value / blocks.length);
   }, [blocks]);
 
+  // HTM is JSX-like but does not use JSX's <>...</> fragment shorthand.
+  // Use an explicit React.Fragment so a scene render cannot invalidate the app root.
   return html`
-    <>
+    <${React.Fragment}>
       <color attach="background" args=${['#081019']} />
       <ambientLight intensity=${1.6} />
       <directionalLight position=${[8, 14, 10]} intensity=${2.2} castShadow />
@@ -56,11 +58,55 @@ function Scene({ blocks }) {
       ${blocks.map(
         (block) => html`<${Voxel} key=${block.key} block=${block} />`,
       )}
-    </>
+    <//>
   `;
 }
 
+function webglAvailable() {
+  if (typeof document === 'undefined') return false;
+  try {
+    const canvas = document.createElement('canvas');
+    return Boolean(
+      canvas.getContext('webgl2', { failIfMajorPerformanceCaveat: false })
+      || canvas.getContext('webgl', { failIfMajorPerformanceCaveat: false }),
+    );
+  } catch (_error) {
+    return false;
+  }
+}
+
+class ViewportErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { error };
+  }
+
+  componentDidCatch(error, info) {
+    console.error('StructureForge viewport failed safely:', error, info);
+  }
+
+  render() {
+    if (!this.state.error) return this.props.children;
+    return React.createElement(
+      'div',
+      { className: 'viewport-empty viewport-error', role: 'alert' },
+      React.createElement('strong', null, '3D viewport unavailable'),
+      React.createElement(
+        'span',
+        null,
+        'The StructureForge controls remain usable. Reload after enabling WebGL or inspect the browser console for the renderer error.',
+      ),
+    );
+  }
+}
+
 export function Viewport({ blocks, phase }) {
+  const canRenderWebGL = useMemo(webglAvailable, []);
+
   return html`
     <section className="panel viewport-panel" aria-label="3D procedural assembly viewport">
       <div className="panel-heading compact-heading">
@@ -74,10 +120,21 @@ export function Viewport({ blocks, phase }) {
         </div>
       </div>
       <div className="viewport-canvas">
-        <${Canvas} shadows dpr=${[1, 1.5]} gl=${{ antialias: true }}>
-          <${Scene} blocks=${blocks} />
-        </${Canvas}>
-        ${!blocks.length && html`
+        ${canRenderWebGL
+          ? html`
+            <${ViewportErrorBoundary}>
+              <${Canvas} shadows dpr=${[1, 1.5]} gl=${{ antialias: true }}>
+                <${Scene} blocks=${blocks} />
+              <//>
+            <//>
+          `
+          : html`
+            <div className="viewport-empty viewport-error" role="alert">
+              <strong>WebGL unavailable</strong>
+              <span>The rest of StructureForge remains available without the 3D preview.</span>
+            </div>
+          `}
+        ${canRenderWebGL && !blocks.length && html`
           <div className="viewport-empty">
             <strong>No geometry yet</strong>
             <span>Begin a session, lock constraints, then draft.</span>
