@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "structure-generation-capability"
-version = "0.2.0"
-description = "AI-callable, vanilla-first, mod-aware Minecraft structure generation, auditing, modular layout, snapshotting, and review API"
+version = "0.3.1"
+description = "AI-callable, token-efficient, vanilla-first, mod-aware Minecraft structure generation, auditing, modular layout, content, snapshotting, and review API"
 requires-python = ">=3.11"
 dependencies = []
 

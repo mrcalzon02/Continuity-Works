@@ -16,6 +16,18 @@ def main():
 
     p = sub.add_parser("tools")
     p.add_argument("--project", default=".")
+    p.add_argument("--compact", action="store_true", help="Return only the token-efficient tool index.")
+    p.add_argument("--name", help="Return exactly one tool contract.")
+    p.add_argument("--group", help="Filter compact index by capability group.")
+
+    p = sub.add_parser("presets")
+    p.add_argument("preset_id", nargs="?")
+    p.add_argument("--full", action="store_true")
+    p.add_argument("--project", default=".")
+
+    p = sub.add_parser("resolve")
+    p.add_argument("request", help="JSON file containing tool, optional preset_id, and request/overrides.")
+    p.add_argument("--project", default=".")
 
     p = sub.add_parser("inventory")
     p.add_argument("--project", default=".")
@@ -48,7 +60,16 @@ def main():
     elif args.cmd == "inventory":
         result = cap.inventory_project()
     elif args.cmd == "tools":
-        result = cap.tools()
+        if args.name:
+            result = cap.tool_contract(args.name)
+        elif args.compact:
+            result = cap.tool_index(group=args.group)
+        else:
+            result = cap.tools()
+    elif args.cmd == "presets":
+        result = cap.tool_preset(args.preset_id) if args.preset_id else cap.tool_presets(compact=not args.full)
+    elif args.cmd == "resolve":
+        result = cap.resolve_tool_request(load_json(args.request))
     elif args.cmd == "resume":
         result = cap.resume(args.snapshot_id)
     elif args.cmd == "minecraft-version":

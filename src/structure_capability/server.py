@@ -3,7 +3,7 @@ from __future__ import annotations
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 import os
-from urllib.parse import urlsplit
+from urllib.parse import parse_qs, unquote, urlsplit
 
 from .api import StructureCapability
 from .tooling import tool_catalog
@@ -101,6 +101,53 @@ def openapi_document(base_url: str | None = None) -> dict:
                 "responses": {"200": _json_response()},
             }
         },
+        "/v1/tools/index": {
+            "get": {
+                "operationId": "toolIndex",
+                "summary": "Retrieve a compact token-efficient index without loading full schemas.",
+                "responses": {"200": _json_response()},
+            }
+        },
+        "/v1/tools/{tool_name}": {
+            "get": {
+                "operationId": "toolContract",
+                "summary": "Retrieve exactly one StructureSmith tool contract/schema.",
+                "parameters": [{"name": "tool_name", "in": "path", "required": True, "schema": {"type": "string"}}],
+                "responses": {"200": _json_response(), "400": _error_response()},
+            }
+        },
+        "/v1/presets": {
+            "get": {
+                "operationId": "toolPresets",
+                "summary": "Retrieve compact reusable request presets.",
+                "responses": {"200": _json_response()},
+            }
+        },
+        "/v1/presets/{preset_id}": {
+            "get": {
+                "operationId": "toolPreset",
+                "summary": "Retrieve one reusable request preset.",
+                "parameters": [{"name": "preset_id", "in": "path", "required": True, "schema": {"type": "string"}}],
+                "responses": {"200": _json_response(), "400": _error_response()},
+            }
+        },
+        "/v1/resolve": {
+            "post": _post_operation(
+                "resolveToolRequest",
+                "Merge one preset with caller overrides and return only missing/accepted variables for that selected tool.",
+                schema={
+                    "type": "object",
+                    "required": ["tool"],
+                    "properties": {
+                        "tool": {"type": "string"},
+                        "preset_id": {"type": "string"},
+                        "request": {"type": "object"},
+                        "overrides": {"type": "object"},
+                    },
+                    "additionalProperties": False,
+                },
+            )
+        },
         "/v1/inventory": {
             "post": _post_operation(
                 "inventory",
@@ -152,7 +199,7 @@ def openapi_document(base_url: str | None = None) -> dict:
         "openapi": "3.1.0",
         "info": {
             "title": "StructureSmith Capability API",
-            "version": "0.3.0",
+            "version": "0.3.1",
             "description": (
                 "Public HTTP boundary for the existing StructureCapability, generator providers, "
                 "Minecraft content composition tools, schemas, and validation gates."
@@ -162,6 +209,11 @@ def openapi_document(base_url: str | None = None) -> dict:
         "x-structuresmith": {
             "api_version": "v1",
             "tool_catalog": "/v1/tools",
+            "compact_tool_index": "/v1/tools/index",
+            "tool_contract": "/v1/tools/{tool_name}",
+            "presets": "/v1/presets",
+            "resolver": "/v1/resolve",
+            "progressive_disclosure": True,
             "discovery": "/.well-known/structuresmith.json",
         },
     }
@@ -182,6 +234,9 @@ def discovery_document(base_url: str | None = None) -> dict:
         "endpoints": {
             "health": endpoint("/v1/health"),
             "tools": endpoint("/v1/tools"),
+            "compact_tools": endpoint("/v1/tools/index"),
+            "presets": endpoint("/v1/presets"),
+            "resolver": endpoint("/v1/resolve"),
             "openapi": endpoint("/openapi.json"),
         },
     }
@@ -192,6 +247,9 @@ class Handler(BaseHTTPRequestHandler):
 
     def _path(self) -> str:
         return urlsplit(self.path).path
+
+    def _query(self) -> dict:
+        return parse_qs(urlsplit(self.path).query, keep_blank_values=False)
 
     def _public_base_url(self) -> str | None:
         configured = os.environ.get("STRUCTURESMITH_PUBLIC_BASE_URL", "").strip()
@@ -250,7 +308,25 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/v1/capabilities":
             return self._send(200, self.capability.capabilities())
         if path == "/v1/tools":
+            query = self._query()
+            name = (query.get("name") or [None])[0]
+            mode = (query.get("mode") or ["full"])[0]
+            group = (query.get("group") or [None])[0]
+            if name:
+                return self._send(200, self.capability.tool_contract(name))
+            if mode in {"compact", "index"}:
+                return self._send(200, self.capability.tool_index(group=group))
             return self._send(200, self.capability.tools())
+        if path == "/v1/tools/index":
+            group = (self._query().get("group") or [None])[0]
+            return self._send(200, self.capability.tool_index(group=group))
+        if path.startswith("/v1/tools/"):
+            return self._send(200, self.capability.tool_contract(unquote(path.removeprefix("/v1/tools/"))))
+        if path == "/v1/presets":
+            full = (self._query().get("mode") or ["compact"])[0] == "full"
+            return self._send(200, self.capability.tool_presets(compact=not full))
+        if path.startswith("/v1/presets/"):
+            return self._send(200, self.capability.tool_preset(unquote(path.removeprefix("/v1/presets/"))))
         if path == "/openapi.json":
             return self._send(200, openapi_document(self._public_base_url()))
         if path == "/.well-known/structuresmith.json":
@@ -261,6 +337,8 @@ class Handler(BaseHTTPRequestHandler):
         try:
             body = self._json()
             path = self._path()
+            if path == "/v1/resolve":
+                return self._send(200, self.capability.resolve_tool_request(body))
             if path == "/v1/inventory":
                 return self._send(200, self.capability.inventory_project())
             if path == "/v1/dungeon/layout":

@@ -16,6 +16,7 @@ from .generators import (
 from .minecraft.content_tools import MinecraftContentTools
 from .versioning import resolve_minecraft_version
 from .tooling import tool_catalog
+from .request_resolution import CapabilityResolver
 
 class StructureCapability:
     API_VERSION = "v1"
@@ -26,6 +27,7 @@ class StructureCapability:
         self.inventory.scan()
         self.registry = RegistryResolver(self.inventory)
         self.content = MinecraftContentTools(self.registry, self.inventory)
+        self.request_resolution = CapabilityResolver(self.project_root)
         state_root = state_root or self.project_root / ".structure-capability" / "snapshots"
         self.snapshots = SnapshotStore(state_root)
         self.pipeline = StructurePipeline(self.snapshots, self.registry)
@@ -53,6 +55,7 @@ class StructureCapability:
                 "minecraft_recipe_generate", "minecraft_advancement_generate",
                 "minecraft_tag_generate", "minecraft_datapack_manifest_generate",
                 "minecraft_content_package_generate", "minecraft_icon_assign",
+                "tool_index", "tool_contract", "tool_presets", "tool_request_resolve",
             ],
             "rebuild_grades": {
                 "0": "AUDIT_ONLY",
@@ -105,7 +108,15 @@ class StructureCapability:
                 "structure_materialization": "provider_validated",
                 "content_materialization": "version-adapted",
             },
-            "ai_tool_calling": {"catalog_endpoint": "/v1/tools", "portable_json_schema": True},
+            "ai_tool_calling": {
+                "catalog_endpoint": "/v1/tools",
+                "compact_index_endpoint": "/v1/tools/index",
+                "contract_endpoint": "/v1/tools/{tool_name}",
+                "preset_endpoint": "/v1/presets",
+                "resolver_endpoint": "/v1/resolve",
+                "portable_json_schema": True,
+                "progressive_disclosure": True,
+            },
             "visual_review": {
                 "required": False,
                 "owner": "client",
@@ -119,6 +130,21 @@ class StructureCapability:
 
     def tools(self):
         return tool_catalog()
+
+    def tool_index(self, group=None):
+        return self.request_resolution.index(group=group)
+
+    def tool_contract(self, name):
+        return self.request_resolution.contract(name)
+
+    def tool_presets(self, compact=True):
+        return self.request_resolution.presets(compact=compact)
+
+    def tool_preset(self, preset_id):
+        return self.request_resolution.preset(preset_id)
+
+    def resolve_tool_request(self, request):
+        return self.request_resolution.resolve_request(request)
 
     def register_generator(self, provider):
         self.generators.register(provider)

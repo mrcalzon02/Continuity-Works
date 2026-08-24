@@ -1,0 +1,5 @@
+{
+  "schema_version": "1.0",
+  "description": "Project-local StructureSmith preset overrides. Built-in generic presets remain available when this map is empty.",
+  "presets": {}
+}
