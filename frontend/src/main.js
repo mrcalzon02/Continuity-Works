@@ -1,6 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Dashboard } from './components/Dashboard.js';
+import { ManualCapabilityWorkbench } from './components/ManualCapabilityWorkbench.js';
 
 class StructureForgeErrorBoundary extends React.Component {
   constructor(props) {
@@ -71,7 +72,12 @@ createRoot(rootElement).render(
     React.createElement(
       StructureForgeErrorBoundary,
       null,
-      React.createElement(Dashboard),
+      React.createElement(
+        React.Fragment,
+        null,
+        React.createElement(ManualCapabilityWorkbench),
+        React.createElement(Dashboard),
+      ),
     ),
   ),
 );
