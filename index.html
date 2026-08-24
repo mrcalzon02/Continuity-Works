@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b1118" />
+    <meta
+      name="description"
+      content="StructureForge — generate, audit, rebuild, and validate Minecraft structures with the StructureSmith reasoning system."
+    />
+    <title>StructureForge | StructureSmith</title>
+    <link rel="stylesheet" href="./frontend/styles.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "https://esm.sh/react@19.2.8",
+          "react/jsx-runtime": "https://esm.sh/react@19.2.8/jsx-runtime",
+          "react-dom": "https://esm.sh/react-dom@19.2.8?external=react",
+          "react-dom/client": "https://esm.sh/react-dom@19.2.8/client?external=react",
+          "three": "https://esm.sh/three@0.185.1",
+          "@react-three/fiber": "https://esm.sh/@react-three/fiber@9.7.0?external=react,react-dom,three",
+          "@react-three/drei": "https://esm.sh/@react-three/drei@10.7.8?external=react,react-dom,three,@react-three/fiber",
+          "xstate": "https://esm.sh/xstate@5.32.5",
+          "@xstate/react": "https://esm.sh/@xstate/react@6.1.0?external=react,xstate",
+          "htm": "https://esm.sh/htm@3.1.1"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <noscript>StructureForge requires JavaScript and WebGL.</noscript>
+    <div id="root"></div>
+    <script type="module" src="./frontend/src/main.js"></script>
+  </body>
+</html>
