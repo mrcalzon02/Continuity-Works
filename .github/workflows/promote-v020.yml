@@ -16,6 +16,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
       - name: Reconstruct validated package
         shell: bash
@@ -36,12 +39,14 @@ jobs:
           rm -rf .structuresmith-staging
           rm -f .github/workflows/promote-v020.yml
 
-      - name: Validate source before promotion
+      - name: Install and validate source before promotion
         shell: bash
         run: |
           set -euo pipefail
+          python -m pip install -e .
           python -m compileall -q src
           python -m unittest discover -s tests -v
+          python -m structure_capability.cli capabilities
 
       - name: Commit promoted source
         shell: bash
