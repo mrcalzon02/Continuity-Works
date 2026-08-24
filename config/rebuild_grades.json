@@ -1,0 +1,30 @@
+{
+  "0": {
+    "name": "AUDIT_ONLY",
+    "change_budget": "none"
+  },
+  "1": {
+    "name": "TOUCH_UP",
+    "change_budget": "tiny"
+  },
+  "2": {
+    "name": "REFIT",
+    "change_budget": "local"
+  },
+  "3": {
+    "name": "DETAIL_PASS",
+    "change_budget": "local_to_moderate"
+  },
+  "4": {
+    "name": "FUNCTIONAL_REBUILD",
+    "change_budget": "substantial_internal"
+  },
+  "5": {
+    "name": "HEAVY_REBUILD",
+    "change_budget": "substantial"
+  },
+  "6": {
+    "name": "FULL_RECONTEXTUALIZATION",
+    "change_budget": "authoritative_rebuild"
+  }
+}

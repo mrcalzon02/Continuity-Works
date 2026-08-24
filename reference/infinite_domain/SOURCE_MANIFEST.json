@@ -1,0 +1,89 @@
+{
+  "source_repository": "mrcalzon02/Infinite-Domain",
+  "source_branch": "main",
+  "source_commit_at_export": "902b95c330ed36d07be45de5fc86b22b0814958d",
+  "note": "Commit recorded from the authoritative main during extraction. Re-fetch source before future migrations because the project is actively developed.",
+  "sources": [
+    {
+      "path": "CODEX_STRUCTURE_PIPELINE.md",
+      "role": "long-running restartable audit/corpus/refinement pipeline",
+      "extraction": "generalized into docs and provider contracts"
+    },
+    {
+      "path": "docs/HEAVY_REBUILD_DOCTRINE.md",
+      "role": "peak-quality rebuild doctrine and fixed-camera visual gates",
+      "extraction": "generalized into operating/rebuild/review doctrine"
+    },
+    {
+      "path": ".codex/agents/ows-structure-worker.toml",
+      "sha": "6908ebba1a4f5948e5181bc6efa788322dfb998b",
+      "role": "target-local authoring with single-writer/shared-state discipline",
+      "extraction": "included verbatim reference"
+    },
+    {
+      "path": ".codex/agents/ows-validator.toml",
+      "sha": "ff90d158dc991165da07d0bf75a0cc960690a6e0",
+      "role": "independent mechanical/static validation",
+      "extraction": "included verbatim reference"
+    },
+    {
+      "path": ".codex/agents/ows-visual-reviewer.toml",
+      "sha": "451a8a9db4f0bbe5cae9cfa23cda5416b429c441",
+      "role": "independent visual review",
+      "extraction": "included verbatim reference"
+    },
+    {
+      "path": "tools/abyssal_rebuild/generate_abyssal_sites.py",
+      "sha": "1cbded97fe4fc13d4fb4d43143e04b87334c6d3e",
+      "role": "deterministic structure builder/NBT serialization/hash verification",
+      "extraction": "StructureBuilder generalized into minecraft module"
+    },
+    {
+      "path": "tools/abyssal_rebuild/generate_abyssal_environmental_sites.py",
+      "role": "incremental deterministic environmental geometry and hash locking",
+      "extraction": "method generalized; current cold-seep hash at export 9729cc302901704dd5a2815ec37ead56ef77be46"
+    },
+    {
+      "path": ".github/workflows/materialize_abyssal_sites.yml",
+      "sha": "5dbdc0be63de4e3370fbd80bb35b05c08873f5c1",
+      "role": "verify then materialize generated assets; reject unrelated output",
+      "extraction": "workflow pattern documented"
+    },
+    {
+      "path": "tools/abyssal_worldgen/validate_abyssal_deformation.py",
+      "role": "static graph/integration integrity gate",
+      "extraction": "general validator philosophy"
+    },
+    {
+      "path": ".github/workflows/abyssal-deformation-integrity.yml",
+      "role": "change-triggered static integration gate",
+      "extraction": "CI pattern"
+    },
+    {
+      "path": "docs/ABYSSAL_SITE_BLUEPRINTS.md",
+      "role": "stable IDs, purpose, palette, interior logic, rebuild targets",
+      "extraction": "blueprint/purpose/theme model"
+    },
+    {
+      "path": "docs/ABYSSAL_ENVIRONMENTAL_SITES.md",
+      "role": "biome-selected independent structure pools and environmental family authority",
+      "extraction": "geospatial pool/selector doctrine"
+    },
+    {
+      "path": "docs/ABYSSAL_SEAFLOOR_FEATURE_REVIEW.md",
+      "sha": "5481b8786c6e30478b674a0885de0f842009eab5",
+      "role": "one-feature-at-a-time audit/refine/materialize review ledger",
+      "extraction": "snapshot/incremental review methodology"
+    },
+    {
+      "path": "docs/POST_CALAMITY_BLUEPRINTS_PHASE_1.md",
+      "role": "purpose-driven scene/structure blueprint contracts",
+      "extraction": "purpose and event-history modeling"
+    },
+    {
+      "path": "docs/POST_CALAMITY_BLUEPRINTS_PHASE_2.md",
+      "role": "expanded structure family blueprint contracts",
+      "extraction": "family and variant modeling"
+    }
+  ]
+}

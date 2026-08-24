@@ -1,0 +1,81 @@
+{
+  "structure_id": "example:research_distribution_center",
+  "operation": "generate",
+  "grade": "HEAVY_REBUILD",
+  "source": "examples/structures/simple_structure.json",
+  "purpose": {
+    "kind": "research_distribution_center",
+    "original_function": "automated research logistics",
+    "current_function": "abandoned exploration site",
+    "required_zones": [
+      "receiving",
+      "inspection",
+      "bulk_storage",
+      "automation_floor",
+      "offices",
+      "utility",
+      "loading"
+    ],
+    "required_routes": [
+      "staff",
+      "service",
+      "freight"
+    ],
+    "required_utilities": [
+      "power",
+      "maintenance"
+    ],
+    "required_exterior": [
+      "loading_yard",
+      "service_access"
+    ]
+  },
+  "theme": {
+    "name": "example_maritime_scientific",
+    "culture": "example",
+    "institution": "research",
+    "palette_roles": {
+      "structural": [
+        "examplemod:marine_alloy_block",
+        "minecraft:prismarine_bricks"
+      ],
+      "metal": [
+        "minecraft:cut_copper"
+      ]
+    },
+    "silhouette_rules": [
+      "instrumented roofline",
+      "broad service frontage"
+    ],
+    "technology_language": [
+      "exposed survey instrumentation"
+    ],
+    "damage_language": [
+      "corrosion",
+      "localized structural failure"
+    ]
+  },
+  "context": {
+    "dimension": "minecraft:overworld",
+    "biomes": [
+      "minecraft:deep_ocean"
+    ],
+    "terrain": "continental_slope",
+    "fluid": "minecraft:water",
+    "orientation": "toward_primary_approach",
+    "approach_vectors": [
+      "water"
+    ],
+    "placement": {
+      "requires_water": true,
+      "heightmap": "OCEAN_FLOOR_WG"
+    }
+  },
+  "physical_clearance": "submersible",
+  "access_clearance": "controlled",
+  "preserve": [
+    "structure_id",
+    "worldgen_selector",
+    "evidence_contract"
+  ]
+}

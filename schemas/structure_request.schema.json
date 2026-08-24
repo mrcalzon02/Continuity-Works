@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Structure Capability Request",
+  "type": "object",
+  "required": [
+    "structure_id"
+  ],
+  "properties": {
+    "structure_id": {
+      "type": "string"
+    },
+    "operation": {
+      "enum": [
+        "audit",
+        "plan",
+        "generate"
+      ]
+    },
+    "grade": {
+      "oneOf": [
+        {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 6
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "source": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "purpose": {
+      "type": "object"
+    },
+    "theme": {
+      "type": "object"
+    },
+    "context": {
+      "type": "object"
+    },
+    "physical_clearance": {
+      "type": "string"
+    },
+    "access_clearance": {
+      "type": "string"
+    },
+    "preserve": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "mutable": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "integration_contracts": {
+      "type": "object"
+    },
+    "structure_type": {
+      "type": "string"
+    },
+    "target_version": {
+      "type": "string"
+    },
+    "scale": {
+      "type": "number",
+      "minimum": 0.25,
+      "maximum": 4.0
+    },
+    "generation": {
+      "type": "object",
+      "description": "Generator-specific configuration dispatched through the generator provider registry.",
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "materialize_nbt": {
+          "type": "boolean"
+        },
+        "materialization_mode": {
+          "enum": [
+            "auto",
+            "single",
+            "fragmented"
+          ]
+        },
+        "piece_limit": {
+          "type": "integer",
+          "minimum": 8
+        },
+        "allow_oversize_nbt": {
+          "type": "boolean"
+        },
+        "emit_binary": {
+          "type": "boolean"
+        },
+        "data_version": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "layout": {
+          "type": "object"
+        },
+        "palette": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "physical": {
+    "micro": {
+      "minimum": [
+        1,
+        1
+      ]
+    },
+    "person": {
+      "minimum": [
+        1,
+        2
+      ]
+    },
+    "public_circulation": {
+      "minimum": [
+        3,
+        3
+      ]
+    },
+    "cart": {
+      "minimum": [
+        2,
+        3
+      ]
+    },
+    "vehicle": {
+      "minimum": [
+        4,
+        4
+      ]
+    },
+    "submersible": {
+      "minimum": [
+        5,
+        5
+      ]
+    },
+    "industrial": {
+      "minimum": [
+        6,
+        6
+      ]
+    },
+    "megastructure": {
+      "minimum": [
+        10,
+        8
+      ]
+    }
+  },
+  "access": [
+    "public",
+    "staff",
+    "controlled",
+    "restricted",
+    "secure",
+    "blacksite"
+  ]
+}

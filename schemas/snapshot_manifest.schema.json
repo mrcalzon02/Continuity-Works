@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Structure Capability Snapshot",
+  "type": "object",
+  "required": [
+    "snapshot_id",
+    "created_utc",
+    "structure_id",
+    "stage",
+    "payload",
+    "artifacts"
+  ],
+  "properties": {
+    "snapshot_id": {
+      "type": "string"
+    },
+    "created_utc": {
+      "type": "string"
+    },
+    "structure_id": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    },
+    "parent": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "payload": {
+      "type": "object"
+    },
+    "artifacts": {
+      "type": "array"
+    }
+  }
+}

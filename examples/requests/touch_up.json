@@ -1,0 +1,18 @@
+{
+  "structure_id": "example:small_warehouse",
+  "operation": "plan",
+  "grade": "TOUCH_UP",
+  "source": "examples/structures/simple_structure.json",
+  "purpose": {
+    "kind": "warehouse",
+    "required_zones": [
+      "storage",
+      "entry"
+    ]
+  },
+  "context": {
+    "dimension": "minecraft:overworld",
+    "terrain": "urban_lot"
+  },
+  "physical_clearance": "person"
+}

@@ -1,0 +1,21 @@
+{
+  "classic_donjon_options": {
+    "seed": 1701,
+    "n_rows": 39,
+    "n_cols": 39,
+    "dungeon_layout": "Cross",
+    "room_min": 3,
+    "room_max": 7,
+    "room_layout": "Packed",
+    "corridor_layout": "Labyrinth",
+    "remove_deadends": 50,
+    "add_stairs": 2
+  },
+  "cell_scale_blocks": 3,
+  "purpose": "crypt",
+  "required_zones": ["entry", "burial", "ritual", "guardian", "reward"],
+  "modularity": {
+    "triple_fold": true,
+    "connector_width": 3
+  }
+}

@@ -1,0 +1,197 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Modular Dungeon Layout Request",
+  "type": "object",
+  "properties": {
+    "seed": {
+      "type": "integer"
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "scale": {
+      "type": "number",
+      "minimum": 0.25,
+      "maximum": 4.0
+    },
+    "room_count": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 3
+    },
+    "required_zones": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "corridor_style": {
+      "enum": [
+        "straight",
+        "bent",
+        "labyrinth"
+      ]
+    },
+    "dead_end_policy": {
+      "enum": [
+        "many",
+        "some",
+        "none"
+      ]
+    },
+    "verticality": {
+      "type": "string"
+    },
+    "size": {
+      "type": "object",
+      "properties": {
+        "min_width": {
+          "type": "integer",
+          "minimum": 8
+        },
+        "min_depth": {
+          "type": "integer",
+          "minimum": 8
+        },
+        "max_width": {
+          "type": "integer",
+          "minimum": 8
+        },
+        "max_depth": {
+          "type": "integer",
+          "minimum": 8
+        },
+        "preferred_width": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "preferred_depth": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "floors": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "floor_height": {
+          "type": "integer",
+          "minimum": 3
+        }
+      }
+    },
+    "modularity": {
+      "type": "object",
+      "properties": {
+        "triple_fold": {
+          "type": "boolean"
+        },
+        "macro_module": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "meso_module": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "micro_module": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "connector_width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "room_min_modules": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "room_max_modules": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "allow_repetition": {
+          "type": "boolean"
+        },
+        "allow_mirroring": {
+          "type": "boolean"
+        },
+        "allow_rotation": {
+          "type": "boolean"
+        }
+      }
+    },
+    "theme": {
+      "type": "object"
+    },
+    "purpose_constraints": {
+      "type": "object",
+      "properties": {
+        "min_footprint": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "integer",
+            "minimum": 8
+          }
+        },
+        "max_footprint": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "integer",
+            "minimum": 8
+          }
+        },
+        "zones": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "room_count": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      }
+    },
+    "layout_shape": {
+      "enum": [
+        "rectangle",
+        "cross",
+        "round",
+        "ring"
+      ]
+    },
+    "room_layout": {
+      "enum": [
+        "scattered",
+        "packed"
+      ]
+    },
+    "stair_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "classic_donjon_options": {
+      "type": "object",
+      "description": "Optional classic dungeon.pl-style option vocabulary translated into the native modular generator."
+    },
+    "cell_scale_blocks": {
+      "type": "integer",
+      "minimum": 1
+    }
+  }
+}

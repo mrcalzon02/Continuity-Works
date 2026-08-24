@@ -1,0 +1,35 @@
+{
+  "policy": "vanilla-first",
+  "unknown_registry_id": "reject_or_role_fallback",
+  "roles": {
+    "foundation": [
+      "minecraft:stone_bricks",
+      "minecraft:deepslate_tiles"
+    ],
+    "structural": [
+      "minecraft:stone_bricks",
+      "minecraft:bricks",
+      "minecraft:polished_andesite"
+    ],
+    "industrial": [
+      "minecraft:deepslate_tiles",
+      "minecraft:iron_block",
+      "minecraft:cut_copper"
+    ],
+    "waterproof": [
+      "minecraft:prismarine_bricks",
+      "minecraft:dark_prismarine"
+    ],
+    "sediment": [
+      "minecraft:sand",
+      "minecraft:gravel",
+      "minecraft:clay",
+      "minecraft:mud"
+    ],
+    "basaltic_geology": [
+      "minecraft:basalt",
+      "minecraft:smooth_basalt",
+      "minecraft:blackstone"
+    ]
+  }
+}

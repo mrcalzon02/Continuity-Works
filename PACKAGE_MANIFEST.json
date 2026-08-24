@@ -1,0 +1,508 @@
+{
+  "format_version": 1,
+  "package": "structure-generation-capability",
+  "version": "0.2.0",
+  "generated": "2026-08-24",
+  "files": [
+    {
+      "path": ".github/workflows/validate.yml",
+      "bytes": 550,
+      "sha256": "2b988492c2b5ed2334ad58e5cb28da71579867c7d84fa7bf7fb458da75476b02"
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 85,
+      "sha256": "46beb4e712db485e67420bb95d2c9290e68843f0a729789a0bc652d5a50a1392"
+    },
+    {
+      "path": "EXTRACTION_STATUS.md",
+      "bytes": 2196,
+      "sha256": "b50079a25e89c8ec6b9e3c247abe171bd633e938183bb13f923a037629281b71"
+    },
+    {
+      "path": "LICENSE_NOTICE.md",
+      "bytes": 1164,
+      "sha256": "290d4f5b617a766180497333bdc099798888b835426f99ad120ca7738b200d40"
+    },
+    {
+      "path": "README.md",
+      "bytes": 9132,
+      "sha256": "faee400ca0efdf51f03bd08770bb541c439757d445d6eab1276d0f7cfc450056"
+    },
+    {
+      "path": "VALIDATION_REPORT.txt",
+      "bytes": 2547,
+      "sha256": "be71d07db6ce8e4e8d377cc95dca8097729cc096968db23dfa2747852a7d3e3e"
+    },
+    {
+      "path": "build/lib/structure_capability/__init__.py",
+      "bytes": 788,
+      "sha256": "abfc7e4a31b4dda3b2b6b50a97178d47b6bc0f6c8653f9c3802a6b9d0dede202"
+    },
+    {
+      "path": "build/lib/structure_capability/api.py",
+      "bytes": 5244,
+      "sha256": "c315aa4c4a3c07d0366ca67b34302d6500fa26e7366ef8ea9e4e38c59432d6d1"
+    },
+    {
+      "path": "build/lib/structure_capability/audit.py",
+      "bytes": 3092,
+      "sha256": "d1ccff6ea0c8caba8054470621c84ee9e824ea727dc393edafa910a13b4f21ea"
+    },
+    {
+      "path": "build/lib/structure_capability/cli.py",
+      "bytes": 2002,
+      "sha256": "5f80a32f7a43a03804a553a432957506988bd31de89b48ff32fd51f9c22933d3"
+    },
+    {
+      "path": "build/lib/structure_capability/fitness.py",
+      "bytes": 1256,
+      "sha256": "e7337d9a2b078ce555a1d554fd08afd4ab76e884e3dcae116c2b47587723d3a5"
+    },
+    {
+      "path": "build/lib/structure_capability/generators/__init__.py",
+      "bytes": 389,
+      "sha256": "74615400d4a6c440f033ae28350e50fe9597d97b505313f77596b06055ac825e"
+    },
+    {
+      "path": "build/lib/structure_capability/generators/donjon_compat.py",
+      "bytes": 2821,
+      "sha256": "f7d8ae32951f55717d7941d4d2c09cbf7483b5340764f023b47384b9ee6a42fe"
+    },
+    {
+      "path": "build/lib/structure_capability/generators/dungeon.py",
+      "bytes": 21468,
+      "sha256": "7b32e1a1c7a14a130f98465f48aefed12a7f66014a47d90e296daa6dc4a15935"
+    },
+    {
+      "path": "build/lib/structure_capability/generators/dungeon_provider.py",
+      "bytes": 4423,
+      "sha256": "9c37ce2c6230df7ea08dedd6d749d45005556573e8802ae06e8c08ce15126b90"
+    },
+    {
+      "path": "build/lib/structure_capability/generators/registry.py",
+      "bytes": 926,
+      "sha256": "44dc994b655094f17e33c3d1921df0235a4ed2fb734524e55e8868126080bbfc"
+    },
+    {
+      "path": "build/lib/structure_capability/geospatial.py",
+      "bytes": 1852,
+      "sha256": "f01134ed59264224aa9678998d5cc1e3740ff9dccabebb747d1a45c7c4ad40f4"
+    },
+    {
+      "path": "build/lib/structure_capability/grading.py",
+      "bytes": 1761,
+      "sha256": "ac774bc86ab1c692bf4a1f09bcc7c5420fdf811225cb0c8c6ea90edc6a7ab35f"
+    },
+    {
+      "path": "build/lib/structure_capability/minecraft/__init__.py",
+      "bytes": 159,
+      "sha256": "85b5497daa320ade258bc729ccddd8fbd33561add0c1405e5a6895912c2d50d3"
+    },
+    {
+      "path": "build/lib/structure_capability/minecraft/dungeon_compiler.py",
+      "bytes": 11380,
+      "sha256": "e179f3f01ff2c8c120821d6c75200a67fce9300958b577f5a9e28cbb8df95ec3"
+    },
+    {
+      "path": "build/lib/structure_capability/minecraft/nbt.py",
+      "bytes": 2558,
+      "sha256": "15cd6158cd254e292f2833fb61ad3c11f18a69fdd2a7b93b6f0c5f42d9299eec"
+    },
+    {
+      "path": "build/lib/structure_capability/minecraft/structure_builder.py",
+      "bytes": 4161,
+      "sha256": "8151c9dee802cb9fed0f0e8cc764d1eff47d749940044a0af1cffeb418154d19"
+    },
+    {
+      "path": "build/lib/structure_capability/minecraft/worldgen.py",
+      "bytes": 1592,
+      "sha256": "8d03ed6bc0ddf6b0938b637d3be7ddb8766927b8ac2be028de43f807ca9eee1e"
+    },
+    {
+      "path": "build/lib/structure_capability/mod_awareness.py",
+      "bytes": 3519,
+      "sha256": "78c2ac6b3b913542e4de172db959b1582da9c85bd703d9c30e68d5ffc97701e2"
+    },
+    {
+      "path": "build/lib/structure_capability/models.py",
+      "bytes": 4868,
+      "sha256": "877447add92f45a650986a0176ab5de625c9d37d17df7f615e1e29d737f61c15"
+    },
+    {
+      "path": "build/lib/structure_capability/pipeline.py",
+      "bytes": 2199,
+      "sha256": "25c33ba0ddf037740f8e3358136ec2b727d5fd496f1fbbbf0f48bb0d76f2b1a1"
+    },
+    {
+      "path": "build/lib/structure_capability/planning.py",
+      "bytes": 2463,
+      "sha256": "758b423185065f48d33c40a7acd7a999dbf0f2fcb040cc112eef317e6724d25f"
+    },
+    {
+      "path": "build/lib/structure_capability/registry.py",
+      "bytes": 2047,
+      "sha256": "87f0ae12a2b9c93ece71365fca09cd95a74cf9ec60bb667e4785ea6c4bb38923"
+    },
+    {
+      "path": "build/lib/structure_capability/server.py",
+      "bytes": 2435,
+      "sha256": "d5699658388c998725c396d92ce99acf0c3c99d2064da73cd11114a7e0b862b3"
+    },
+    {
+      "path": "build/lib/structure_capability/snapshot.py",
+      "bytes": 2308,
+      "sha256": "2b4de62aa17a2401ca77dd751a7d78a726789a5f12b2291f9babdcefcdac94a8"
+    },
+    {
+      "path": "build/lib/structure_capability/tooling.py",
+      "bytes": 6011,
+      "sha256": "77e5a08db2a65592a40f96786e3005e27f6deb6d211b2d28868e8e31e5a54682"
+    },
+    {
+      "path": "build/lib/structure_capability/versioning.py",
+      "bytes": 4161,
+      "sha256": "14996208329fa8350beccab69b72060337a9503b63f6f3b48c5d26753e552849"
+    },
+    {
+      "path": "config/clearance_levels.json",
+      "bytes": 729,
+      "sha256": "914dfb94c7cf8b5706016ca512fb4662a922c8e0dcb4a66ab80074e3fcd91470"
+    },
+    {
+      "path": "config/rebuild_grades.json",
+      "bytes": 551,
+      "sha256": "6d15a4e4e3a72f7fa8a2817739302a0cec49d3b358663d08d0fd70c1907d9391"
+    },
+    {
+      "path": "config/vanilla_defaults.json",
+      "bytes": 775,
+      "sha256": "30ff1a5bdfb2c57940a728e4c7bc1e1811df7ab86e568d48da9b219e5ad90c8d"
+    },
+    {
+      "path": "docs/API.md",
+      "bytes": 3499,
+      "sha256": "ce22666f81c4a967725cea5e4a642cd30fbaad4f4a88ff7f1eff6aade768db8b"
+    },
+    {
+      "path": "docs/CLEARANCE_AND_ACCESS_LEVELS.md",
+      "bytes": 869,
+      "sha256": "034a6a695a01ef3a2d389e4ea9dc08b9361f6ba71d6f52f15f6f7805f96457d3"
+    },
+    {
+      "path": "docs/CULTURAL_THEMING_AND_PURPOSE.md",
+      "bytes": 1208,
+      "sha256": "65522bb4b41959af2b136f0dad822f737c072ac5cc0e2b7cfd50d29ae72f7139"
+    },
+    {
+      "path": "docs/DUNGEON_LAYOUT_AND_MODULARITY.md",
+      "bytes": 5123,
+      "sha256": "a695507e6088e56464b59c5d738520ecaa569fd614b223779a99c40f81999f7a"
+    },
+    {
+      "path": "docs/FITNESS_FOR_PURPOSE_AND_EVALUATION.md",
+      "bytes": 1139,
+      "sha256": "d24984ef34a8e841fc6e24783c667c9ab551ccba3292417c97e7d4d67c87b925"
+    },
+    {
+      "path": "docs/GENERATION_PROVIDER_CONTRACT.md",
+      "bytes": 1182,
+      "sha256": "ef74a20e0b864357fda62c946a15eebea8955f7bc1e51933a9a9b10f899485c5"
+    },
+    {
+      "path": "docs/GENERATOR_PROVIDER_REGISTRY.md",
+      "bytes": 2624,
+      "sha256": "a7bf3fec6b45f5d1d6f73db8f8d014065224ad57de7e419b2c02a6b0a65443ef"
+    },
+    {
+      "path": "docs/GEOSPATIAL_AND_LOCATION_CONTRACT.md",
+      "bytes": 1599,
+      "sha256": "b344130978eee59f02d2874e682d880c09876ff4c1dfd4ee74064dd9f004bdad"
+    },
+    {
+      "path": "docs/GRADATED_REBUILD_ENVIRONMENT.md",
+      "bytes": 2050,
+      "sha256": "9a352c48588a108dd94f3b80e495928aff824a635ee9ebe324b7a83d8badd689"
+    },
+    {
+      "path": "docs/INTEGRATION_GUIDE.md",
+      "bytes": 2352,
+      "sha256": "dcf6307968543a4950363db5b65e5021734139d49795d35c79b34db5cf67e96d"
+    },
+    {
+      "path": "docs/LOCAL_MOD_AWARENESS.md",
+      "bytes": 1333,
+      "sha256": "082b0caa3ed17e2db94274e07f595f126286142731c9e4701a4f13b7f61b4377"
+    },
+    {
+      "path": "docs/MIGRATION_FROM_INFINITE_DOMAIN.md",
+      "bytes": 1286,
+      "sha256": "db5153d2371e785434f99892f01221310579517ab1eadd5801d2c5b21a2fd7b7"
+    },
+    {
+      "path": "docs/OPERATING_DOCTRINE.md",
+      "bytes": 3645,
+      "sha256": "ba2f8d99cbcb1e6f3907c5f97bb0bf06904be58265f5fedb0e434f7e552c9fd1"
+    },
+    {
+      "path": "docs/SNAPSHOTS_AND_GENERATIONAL_EXECUTION.md",
+      "bytes": 1884,
+      "sha256": "68dd9e4cc1c6d3df62836a0e23e22d24b84143419cdde52b3828d7e0601bacf3"
+    },
+    {
+      "path": "examples/minecraft_worldgen/structure.json",
+      "bytes": 319,
+      "sha256": "ceedaf6b0e04c2fdc9b1062bb050236fbd2c172be97a879c656b3697fc97ae82"
+    },
+    {
+      "path": "examples/minecraft_worldgen/structure_set.json",
+      "bytes": 154,
+      "sha256": "2fde0755cb5f837f55d8391eae528af5c7235ee68d708fea7ee2d23efc3755e4"
+    },
+    {
+      "path": "examples/python_api.py",
+      "bytes": 255,
+      "sha256": "71e3168f4a31a2fdfbc78fbbd330b8966cc943a2d3ae6d63878e859c38bd5a61"
+    },
+    {
+      "path": "examples/requests/donjon_compat_layout.json",
+      "bytes": 467,
+      "sha256": "ce53dc2acb0fc9799128101ff595c1798d6149d7c19de93deb439e3b73ed1362"
+    },
+    {
+      "path": "examples/requests/dungeon_layout.json",
+      "bytes": 620,
+      "sha256": "18288d060aff50643e41ff894d831535cb3c3adecdf20c511c9c11ebf32df71c"
+    },
+    {
+      "path": "examples/requests/generate_dungeon_structure.json",
+      "bytes": 1641,
+      "sha256": "dbab0f9c2f57d2b1b6c1de717a4e102d2a17297414f6e7628f1496efc0c6efa1"
+    },
+    {
+      "path": "examples/requests/heavy_rebuild.json",
+      "bytes": 1843,
+      "sha256": "d537ead70cddb892e7dea8c23421b44340511d8073611c0350f9094546464f58"
+    },
+    {
+      "path": "examples/requests/touch_up.json",
+      "bytes": 377,
+      "sha256": "7b0bae6ec10a037efef360a109a9c6a440f9e0423e82b41d2408ced9f515037f"
+    },
+    {
+      "path": "examples/structures/simple_structure.json",
+      "bytes": 538,
+      "sha256": "8fb8e4c3d117a38992ac12bcd72dfd9263893e72c82848979768567c13655620"
+    },
+    {
+      "path": "pyproject.toml",
+      "bytes": 510,
+      "sha256": "4fb68328da542ac16d459fe6ab421db509aee015ef4b93e2b4c8d4e2b4ceac7b"
+    },
+    {
+      "path": "reference/donjon/README.md",
+      "bytes": 981,
+      "sha256": "5e24f161fe0877a61c55b6b64640b186e6439c4e8d8a4d74d46d4241556043ba"
+    },
+    {
+      "path": "reference/donjon/fetch_donjon_reference.py",
+      "bytes": 481,
+      "sha256": "265ade8cd5ae79102c026e227a6ee06f48d58653262b4783045ebec4e1422edb"
+    },
+    {
+      "path": "reference/infinite_domain/PATTERNS.md",
+      "bytes": 1284,
+      "sha256": "ed1f1b3637ab51f448016109f4409e4f9c2a058aae26228debcc41404c46c01d"
+    },
+    {
+      "path": "reference/infinite_domain/README.md",
+      "bytes": 855,
+      "sha256": "04757cfec3737db7f2aaa3ba17b0870fdefee49cac54beb457121e639feb28ba"
+    },
+    {
+      "path": "reference/infinite_domain/SOURCE_MANIFEST.json",
+      "bytes": 3727,
+      "sha256": "c31ab0eb264cae4ceffaaa42471a27a273915906e7c5343cecc2032f7c660470"
+    },
+    {
+      "path": "reference/infinite_domain/agents/ows-structure-worker.toml",
+      "bytes": 3483,
+      "sha256": "592d5117cfc388a6bbde75735aa196a9be6359477415eea540c034c8f9468478"
+    },
+    {
+      "path": "reference/infinite_domain/agents/ows-validator.toml",
+      "bytes": 1161,
+      "sha256": "ae986c612e9c53868eb9a667b51ae665107557414d41a2d570e0b1fe16544f09"
+    },
+    {
+      "path": "reference/infinite_domain/agents/ows-visual-reviewer.toml",
+      "bytes": 995,
+      "sha256": "2c8865483d007b5cea6fbc60cdfcb536726311860ed1fc787b01c4370e4e6a4a"
+    },
+    {
+      "path": "schemas/dungeon_layout_request.schema.json",
+      "bytes": 3926,
+      "sha256": "57054e98e6c96c3430965dd279dcc2068c9a46bc9d528a00f6ae033e036699c4"
+    },
+    {
+      "path": "schemas/snapshot_manifest.schema.json",
+      "bytes": 646,
+      "sha256": "4f0306263dd63344a63f5f8f8e6740de14b6786d2de01ee10f90072112c2eb96"
+    },
+    {
+      "path": "schemas/structure_request.schema.json",
+      "bytes": 2321,
+      "sha256": "c378ffeeb59ca03bfdc45aefdc5c9d572424c33c1281cbc5d1194521585897f2"
+    },
+    {
+      "path": "scripts/bootstrap_local.ps1",
+      "bytes": 233,
+      "sha256": "bdb013c03930e6a998f5a5e22ea77d50d02e023d673ab2080e4c12a0f8dcda09"
+    },
+    {
+      "path": "scripts/bootstrap_local.sh",
+      "bytes": 205,
+      "sha256": "6ecf1a251e5527333713036942a0ca97a2c80cb9a24b707dca742d02f185f680"
+    },
+    {
+      "path": "scripts/run_api.py",
+      "bytes": 99,
+      "sha256": "b6d0f8a7e3db7552e4ad89e52f578a046b6084d76c9f57090da584037943f714"
+    },
+    {
+      "path": "src/structure_capability/__init__.py",
+      "bytes": 788,
+      "sha256": "abfc7e4a31b4dda3b2b6b50a97178d47b6bc0f6c8653f9c3802a6b9d0dede202"
+    },
+    {
+      "path": "src/structure_capability/api.py",
+      "bytes": 5244,
+      "sha256": "c315aa4c4a3c07d0366ca67b34302d6500fa26e7366ef8ea9e4e38c59432d6d1"
+    },
+    {
+      "path": "src/structure_capability/audit.py",
+      "bytes": 3092,
+      "sha256": "d1ccff6ea0c8caba8054470621c84ee9e824ea727dc393edafa910a13b4f21ea"
+    },
+    {
+      "path": "src/structure_capability/cli.py",
+      "bytes": 2002,
+      "sha256": "5f80a32f7a43a03804a553a432957506988bd31de89b48ff32fd51f9c22933d3"
+    },
+    {
+      "path": "src/structure_capability/fitness.py",
+      "bytes": 1256,
+      "sha256": "e7337d9a2b078ce555a1d554fd08afd4ab76e884e3dcae116c2b47587723d3a5"
+    },
+    {
+      "path": "src/structure_capability/generators/__init__.py",
+      "bytes": 389,
+      "sha256": "74615400d4a6c440f033ae28350e50fe9597d97b505313f77596b06055ac825e"
+    },
+    {
+      "path": "src/structure_capability/generators/donjon_compat.py",
+      "bytes": 2821,
+      "sha256": "f7d8ae32951f55717d7941d4d2c09cbf7483b5340764f023b47384b9ee6a42fe"
+    },
+    {
+      "path": "src/structure_capability/generators/dungeon.py",
+      "bytes": 21468,
+      "sha256": "7b32e1a1c7a14a130f98465f48aefed12a7f66014a47d90e296daa6dc4a15935"
+    },
+    {
+      "path": "src/structure_capability/generators/dungeon_provider.py",
+      "bytes": 4423,
+      "sha256": "9c37ce2c6230df7ea08dedd6d749d45005556573e8802ae06e8c08ce15126b90"
+    },
+    {
+      "path": "src/structure_capability/generators/registry.py",
+      "bytes": 926,
+      "sha256": "44dc994b655094f17e33c3d1921df0235a4ed2fb734524e55e8868126080bbfc"
+    },
+    {
+      "path": "src/structure_capability/geospatial.py",
+      "bytes": 1852,
+      "sha256": "f01134ed59264224aa9678998d5cc1e3740ff9dccabebb747d1a45c7c4ad40f4"
+    },
+    {
+      "path": "src/structure_capability/grading.py",
+      "bytes": 1761,
+      "sha256": "ac774bc86ab1c692bf4a1f09bcc7c5420fdf811225cb0c8c6ea90edc6a7ab35f"
+    },
+    {
+      "path": "src/structure_capability/minecraft/__init__.py",
+      "bytes": 159,
+      "sha256": "85b5497daa320ade258bc729ccddd8fbd33561add0c1405e5a6895912c2d50d3"
+    },
+    {
+      "path": "src/structure_capability/minecraft/dungeon_compiler.py",
+      "bytes": 11380,
+      "sha256": "e179f3f01ff2c8c120821d6c75200a67fce9300958b577f5a9e28cbb8df95ec3"
+    },
+    {
+      "path": "src/structure_capability/minecraft/nbt.py",
+      "bytes": 2558,
+      "sha256": "15cd6158cd254e292f2833fb61ad3c11f18a69fdd2a7b93b6f0c5f42d9299eec"
+    },
+    {
+      "path": "src/structure_capability/minecraft/structure_builder.py",
+      "bytes": 4161,
+      "sha256": "8151c9dee802cb9fed0f0e8cc764d1eff47d749940044a0af1cffeb418154d19"
+    },
+    {
+      "path": "src/structure_capability/minecraft/worldgen.py",
+      "bytes": 1592,
+      "sha256": "8d03ed6bc0ddf6b0938b637d3be7ddb8766927b8ac2be028de43f807ca9eee1e"
+    },
+    {
+      "path": "src/structure_capability/mod_awareness.py",
+      "bytes": 3519,
+      "sha256": "78c2ac6b3b913542e4de172db959b1582da9c85bd703d9c30e68d5ffc97701e2"
+    },
+    {
+      "path": "src/structure_capability/models.py",
+      "bytes": 4868,
+      "sha256": "877447add92f45a650986a0176ab5de625c9d37d17df7f615e1e29d737f61c15"
+    },
+    {
+      "path": "src/structure_capability/pipeline.py",
+      "bytes": 2199,
+      "sha256": "25c33ba0ddf037740f8e3358136ec2b727d5fd496f1fbbbf0f48bb0d76f2b1a1"
+    },
+    {
+      "path": "src/structure_capability/planning.py",
+      "bytes": 2463,
+      "sha256": "758b423185065f48d33c40a7acd7a999dbf0f2fcb040cc112eef317e6724d25f"
+    },
+    {
+      "path": "src/structure_capability/registry.py",
+      "bytes": 2047,
+      "sha256": "87f0ae12a2b9c93ece71365fca09cd95a74cf9ec60bb667e4785ea6c4bb38923"
+    },
+    {
+      "path": "src/structure_capability/server.py",
+      "bytes": 2435,
+      "sha256": "d5699658388c998725c396d92ce99acf0c3c99d2064da73cd11114a7e0b862b3"
+    },
+    {
+      "path": "src/structure_capability/snapshot.py",
+      "bytes": 2308,
+      "sha256": "2b4de62aa17a2401ca77dd751a7d78a726789a5f12b2291f9babdcefcdac94a8"
+    },
+    {
+      "path": "src/structure_capability/tooling.py",
+      "bytes": 6011,
+      "sha256": "77e5a08db2a65592a40f96786e3005e27f6deb6d211b2d28868e8e31e5a54682"
+    },
+    {
+      "path": "src/structure_capability/versioning.py",
+      "bytes": 4161,
+      "sha256": "14996208329fa8350beccab69b72060337a9503b63f6f3b48c5d26753e552849"
+    },
+    {
+      "path": "tests/test_core.py",
+      "bytes": 8223,
+      "sha256": "398a5dc51f1f49f03fdf5e211b3d5a83a91238147ecbe539699896e5942b9644"
+    }
+  ]
+}

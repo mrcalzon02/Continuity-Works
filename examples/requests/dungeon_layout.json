@@ -1,0 +1,27 @@
+{
+  "seed": 18473,
+  "purpose": "laboratory",
+  "scale": 1.25,
+  "required_zones": ["entry", "reception", "laboratory", "utilities", "storage", "secure_core", "evidence"],
+  "corridor_style": "bent",
+  "verticality": "stacked",
+  "size": {
+    "min_width": 48,
+    "min_depth": 40,
+    "max_width": 120,
+    "max_depth": 96,
+    "preferred_width": 72,
+    "preferred_depth": 60,
+    "floors": 2,
+    "floor_height": 5
+  },
+  "modularity": {
+    "triple_fold": true,
+    "macro_module": 12,
+    "meso_module": 4,
+    "micro_module": 1,
+    "connector_width": 3,
+    "room_min_modules": 2,
+    "room_max_modules": 5
+  }
+}

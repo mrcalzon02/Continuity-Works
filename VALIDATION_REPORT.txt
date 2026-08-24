@@ -1,0 +1,48 @@
+Structure Generation Capability API v0.2.0
+Validation date: 2026-08-24
+==========================================
+
+RESULT: PASS
+
+Core regression suite
+---------------------
+Command: PYTHONPATH=src python -m unittest discover -s tests -v
+Result: 10/10 tests passed.
+Covered: deterministic NBT, rebuild grades, planning/snapshots, structure-set guard,
+deterministic dungeon layout, fitness rejection, donjon-option translation and shape masks,
+known target DataVersion resolution, integrated NBT materialization, and automatic oversized
+piece-set fragmentation with parsed per-piece target metadata.
+
+Static/package validation
+-------------------------
+- 16 repository JSON files parsed successfully.
+- `python -m compileall -q src tests` completed successfully.
+- `python -m pip wheel . --no-deps --no-build-isolation` built
+  structure_generation_capability-0.2.0-py3-none-any.whl successfully.
+- Live local HTTP smoke test passed for `/v1/health`, `/v1/tools`, and `/v1/generate`.
+- AI tool catalog exposed 7 tools.
+- 72x60 laboratory HTTP generation produced a 4-piece target-limited NBT set and final snapshot.
+
+Implemented in this synthesis pass
+----------------------------------
+- AI-callable JSON-Schema tool catalog over the authoritative API.
+- Explicit generator-provider registry and extension contract.
+- Original deterministic modular dungeon/spatial generator.
+- Macro/meso/micro triple-fold modularity.
+- Purpose, zone, size, scale, corridor, shape, verticality and connector fitness controls.
+- Classic donjon dungeon.pl option-vocabulary adapter.
+- Common Minecraft Java target-version profiles and verified DataVersion handling.
+- Deterministic Minecraft structure-NBT skeleton materialization for namespaced-ID targets.
+- Automatic version-aware fixed-offset fragmentation for oversized templates.
+- Final generation snapshots containing generated binaries and cryptographic hashes.
+- Documentation, examples and reference fetch tooling.
+
+Intentional boundaries
+----------------------
+- Upstream donjon `dungeon.pl` is CC BY-NC 3.0 and is not linked into the native runtime.
+  The exact source is not vendored in this archive; an explicit fetch helper and attribution
+  are included under `reference/donjon/`.
+- 1.12.x can use the version-neutral layout engine, but legacy numeric/block-state NBT
+  materialization remains a future adapter.
+- Fixed-offset piece assembly is implemented; a full jigsaw/worldgen pool compiler is not yet.
+- Generated NBT is an architectural skeleton and does not bypass independent visual review.

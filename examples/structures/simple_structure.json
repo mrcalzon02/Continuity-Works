@@ -1,0 +1,44 @@
+{
+  "size": [
+    7,
+    5,
+    7
+  ],
+  "blocks": [
+    {
+      "pos": [
+        0,
+        0,
+        0
+      ],
+      "block": "minecraft:stone_bricks"
+    },
+    {
+      "pos": [
+        1,
+        0,
+        0
+      ],
+      "block": "minecraft:stone_bricks"
+    },
+    {
+      "pos": [
+        2,
+        0,
+        0
+      ],
+      "block": "minecraft:stone_bricks"
+    },
+    {
+      "pos": [
+        0,
+        1,
+        0
+      ],
+      "block": "minecraft:bricks"
+    }
+  ],
+  "metadata": {
+    "purpose": "example only"
+  }
+}

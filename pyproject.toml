@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "structure-generation-capability"
+version = "0.2.0"
+description = "AI-callable, vanilla-first, mod-aware Minecraft structure generation, auditing, modular layout, snapshotting, and review API"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+structure-capability = "structure_capability.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
