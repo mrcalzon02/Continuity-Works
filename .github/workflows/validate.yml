@@ -5,6 +5,10 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: read
+  statuses: write
+
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -41,3 +45,30 @@ jobs:
               raise SystemExit('StructureSmith HTTP server did not become healthy')
           PY
           python scripts/http_smoke.py http://127.0.0.1:8787
+      - name: Publish validation status
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATUS_STATE: ${{ job.status }}
+          TARGET_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        shell: bash
+        run: |
+          python - <<'PY' > /tmp/status.json
+          import json
+          import os
+
+          state = os.environ['STATUS_STATE']
+          print(json.dumps({
+              'state': 'success' if state == 'success' else 'failure',
+              'context': 'structuresmith/validate',
+              'description': 'Full regression and local HTTP smoke',
+              'target_url': os.environ['TARGET_URL'],
+          }))
+          PY
+          curl --fail-with-body --silent --show-error \
+            -X POST \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            --data @/tmp/status.json \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/statuses/${GITHUB_SHA}"
