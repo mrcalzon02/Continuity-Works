@@ -48,7 +48,9 @@ class StructureCapability:
                 "inventory", "audit", "plan", "generate", "resume", "dungeon_layout",
                 "infrastructure_layout", "minecraft_version", "minecraft_registry_probe",
                 "minecraft_book_generate", "minecraft_loot_table_generate",
-                "minecraft_recipe_generate", "minecraft_icon_assign",
+                "minecraft_recipe_generate", "minecraft_advancement_generate",
+                "minecraft_tag_generate", "minecraft_datapack_manifest_generate",
+                "minecraft_content_package_generate", "minecraft_icon_assign",
             ],
             "rebuild_grades": {
                 "0": "AUDIT_ONLY",
@@ -78,9 +80,13 @@ class StructureCapability:
                 "runtime_validation_required": True,
             },
             "minecraft_content_tools": {
-                "book": {"version_aware": True, "item_components_1_20_5_plus": True},
-                "loot_table": {"version_aware_paths": True, "weighted_and_guaranteed_entries": True},
+                "book": {"version_aware": True, "item_components_1_20_5_plus": True, "loot_compatible_output": True},
+                "loot_table": {"version_aware_paths": True, "weighted_and_guaranteed_entries": True, "components_and_legacy_nbt": True},
                 "recipe": {"version_aware_results": True, "version_aware_ingredients": True},
+                "advancement": {"version_aware_icon": True, "version_aware_paths": True, "criteria_and_rewards": True},
+                "tag": {"version_aware_paths": True, "registries": ["item", "block", "fluid", "entity_type", "function", "game_event"]},
+                "datapack_manifest": {"pack_mcmeta": True, "exact_pack_format_gate": True},
+                "content_package": {"aggregate_gate": True, "optional_structure_generation": True, "book_to_guaranteed_loot_binding": True},
                 "registry_probe": {"confidence_levels": ["vanilla", "exact", "candidate", "namespace", "unknown"]},
                 "icon_assignment": {"minecraft_item_icons": True, "deterministic_svg_fallback": True},
                 "reasoning_contract": "deterministic public gates and reason codes; no hidden chain-of-thought",
@@ -174,6 +180,25 @@ class StructureCapability:
 
     def minecraft_recipe_generate(self, request):
         return self.content.recipe(request)
+
+    def minecraft_advancement_generate(self, request):
+        return self.content.advancement(request)
+
+    def minecraft_tag_generate(self, request):
+        return self.content.tag(request)
+
+    def minecraft_datapack_manifest_generate(self, request):
+        return self.content.datapack_manifest(request)
+
+    def minecraft_content_package_generate(self, request):
+        package_request = dict(request)
+        structure_result = None
+        structure_request = package_request.get("structure")
+        if structure_request:
+            structure_request = dict(structure_request)
+            structure_request.setdefault("target_version", package_request.get("target_version") or "1.20.1")
+            structure_result = self.generate(structure_request)
+        return self.content.package(package_request, structure_result=structure_result)
 
     def minecraft_icon_assign(self, request):
         return self.content.assign_icon(request)

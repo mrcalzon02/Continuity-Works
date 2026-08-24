@@ -12,6 +12,7 @@ KNOWN_RELEASES = {
     "1.19.2": {"data_version": 3120, "resource_pack_format": 9, "data_pack_format": 10},
     "1.19.4": {"data_version": 3337, "resource_pack_format": 13, "data_pack_format": 12},
     "1.20.1": {"data_version": 3465, "resource_pack_format": 15, "data_pack_format": 15},
+    "1.20.5": {"data_version": 3837, "resource_pack_format": 32, "data_pack_format": 41},
     "1.21": {"data_version": 3953, "resource_pack_format": 34, "data_pack_format": 48},
     "1.21.1": {"data_version": 3955, "resource_pack_format": 34, "data_pack_format": 48},
 }

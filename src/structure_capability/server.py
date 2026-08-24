@@ -22,6 +22,10 @@ TOOL_ROUTE_MAP = {
     "minecraft_book_generate": ("post", "/v1/minecraft/book"),
     "minecraft_loot_table_generate": ("post", "/v1/minecraft/loot-table"),
     "minecraft_recipe_generate": ("post", "/v1/minecraft/recipe"),
+    "minecraft_advancement_generate": ("post", "/v1/minecraft/advancement"),
+    "minecraft_tag_generate": ("post", "/v1/minecraft/tag"),
+    "minecraft_datapack_manifest_generate": ("post", "/v1/minecraft/datapack-manifest"),
+    "minecraft_content_package_generate": ("post", "/v1/minecraft/content-package"),
     "minecraft_icon_assign": ("post", "/v1/minecraft/icon"),
 }
 
@@ -148,10 +152,10 @@ def openapi_document(base_url: str | None = None) -> dict:
         "openapi": "3.1.0",
         "info": {
             "title": "StructureSmith Capability API",
-            "version": "0.2.0",
+            "version": "0.3.0",
             "description": (
                 "Public HTTP boundary for the existing StructureCapability, generator providers, "
-                "Minecraft content tools, schemas, and validation gates."
+                "Minecraft content composition tools, schemas, and validation gates."
             ),
         },
         "paths": paths,
@@ -273,6 +277,14 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, self.capability.minecraft_loot_table_generate(body))
             if path == "/v1/minecraft/recipe":
                 return self._send(200, self.capability.minecraft_recipe_generate(body))
+            if path == "/v1/minecraft/advancement":
+                return self._send(200, self.capability.minecraft_advancement_generate(body))
+            if path == "/v1/minecraft/tag":
+                return self._send(200, self.capability.minecraft_tag_generate(body))
+            if path == "/v1/minecraft/datapack-manifest":
+                return self._send(200, self.capability.minecraft_datapack_manifest_generate(body))
+            if path == "/v1/minecraft/content-package":
+                return self._send(200, self.capability.minecraft_content_package_generate(body))
             if path == "/v1/minecraft/icon":
                 return self._send(200, self.capability.minecraft_icon_assign(body))
             if path == "/v1/audit":
