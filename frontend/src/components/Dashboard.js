@@ -12,6 +12,7 @@ import {
   DEFAULT_CONTROLS,
   buildGenerateRequest,
 } from '../config/controlSchema.js';
+import { DEFAULT_API_BASE_URL } from '../config/runtime.js';
 import { StructureForgeApiClient } from '../services/apiClient.js';
 import {
   buildDemoPhaseEvents,
@@ -201,9 +202,9 @@ export function Dashboard() {
   const [manualGate, setManualGate] = useState(true);
   const [stageReady, setStageReady] = useState(false);
   const [streamStatus, setStreamStatus] = useState('idle');
-  const [mode, setMode] = useState('demo');
-  const [apiBase, setApiBase] = useState('');
-  const [apiStatus, setApiStatus] = useState('not configured');
+  const [mode, setMode] = useState('api');
+  const [apiBase, setApiBase] = useState(DEFAULT_API_BASE_URL);
+  const [apiStatus, setApiStatus] = useState('not checked');
   const runnerRef = useRef(null);
   const api = useMemo(() => new StructureForgeApiClient(apiBase), [apiBase]);
   const request = useMemo(() => buildGenerateRequest(controls), [controls]);
@@ -352,7 +353,7 @@ export function Dashboard() {
           <label className="api-field">
             <span>API base URL</span>
             <input
-              placeholder="https://your-structuresmith-host"
+              placeholder="https://structuresmith-mrcalzon02-api.onrender.com"
               value=${apiBase}
               onChange=${(event) => setApiBase(event.target.value)}
               disabled=${mode !== 'api' || !['idle', 'prompting'].includes(phase)}

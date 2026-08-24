@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: structuresmith-mrcalzon02-api
+    runtime: python
+    plan: starter
+    branch: main
+    buildCommand: python -m pip install .
+    startCommand: python scripts/run_api.py
+    healthCheckPath: /v1/health
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: STRUCTURESMITH_CORS_ORIGIN
+        value: https://mrcalzon02.github.io

@@ -16,8 +16,28 @@ jobs:
       - name: Install
         run: python -m pip install -e .
       - name: Compile
-        run: python -m compileall -q src
-      - name: Unit tests
+        run: python -m compileall -q src tests scripts
+      - name: Unit and HTTP contract tests
         run: python -m unittest discover -s tests -v
-      - name: Smoke API
-        run: python -m structure_capability.cli capabilities
+      - name: Local public-boundary smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          HOST=0.0.0.0 PORT=8787 python scripts/run_api.py >/tmp/structuresmith-api.log 2>&1 &
+          API_PID=$!
+          trap 'kill "$API_PID" 2>/dev/null || true' EXIT
+          python - <<'PY'
+          import time
+          from urllib.request import urlopen
+
+          for _ in range(40):
+              try:
+                  with urlopen('http://127.0.0.1:8787/v1/health', timeout=1) as response:
+                      if response.status == 200:
+                          break
+              except Exception:
+                  time.sleep(0.25)
+          else:
+              raise SystemExit('StructureSmith HTTP server did not become healthy')
+          PY
+          python scripts/http_smoke.py http://127.0.0.1:8787

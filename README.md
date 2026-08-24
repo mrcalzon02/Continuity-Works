@@ -4,6 +4,32 @@ A standalone, vanilla-first, mod-aware **AI-callable Minecraft structure generat
 
 The repository is intended to stand on its own and be referenced by other projects and developers. It treats a Minecraft structure as an engineered artifact with purpose, spatial constraints, cultural language, version requirements, world-placement contracts, and validation gates—not merely a pile of blocks.
 
+## Public deployment boundary
+
+**GitHub Pages is the static StructureForge frontend only. It does not execute the Python API.** The persistent API is configured as a separate Python web service and both external AI clients and StructureForge call that same HTTPS boundary:
+
+```text
+Gemini / ChatGPT / external client -> public HTTPS StructureSmith API -> StructureCapability -> generators/content tools
+GitHub Pages StructureForge frontend -> same public HTTPS StructureSmith API
+```
+
+Configured production API base URL after the one-time Render Blueprint activation:
+
+```text
+https://structuresmith-mrcalzon02-api.onrender.com
+```
+
+Machine-discovery endpoints:
+
+```text
+GET /.well-known/structuresmith.json
+GET /openapi.json
+GET /v1/tools
+GET /v1/health
+```
+
+The repository includes `render.yaml`; its start command runs the existing dependency-free server through `scripts/run_api.py`, binding to `0.0.0.0` and the host-assigned `PORT`. StructureForge defaults to the same public API base rather than assuming `/v1/*` exists under `mrcalzon02.github.io/StructureSmith/`. See `docs/DEPLOYMENT.md` for activation, CORS, external-agent usage, and smoke-test instructions.
+
 ## Authoritative lifecycle
 
 **discover → inventory → contextualize → audit → grade → plan → generate/refit → validate → snapshot → independently review → promote → iterate**
@@ -102,6 +128,13 @@ The API publishes a portable JSON-Schema tool catalog:
 GET /v1/tools
 ```
 
+It also publishes a standards-compatible OpenAPI 3.1 description and discovery document:
+
+```text
+GET /openapi.json
+GET /.well-known/structuresmith.json
+```
+
 The tool set exposes:
 
 - `structure_capabilities`
@@ -119,6 +152,20 @@ The tool set exposes:
 - `minecraft_icon_assign`
 
 The infrastructure tool schema publishes the same road/highway/Lost Cities/jigsaw/world-seed/purpose variables exposed in the StructureForge web UI. The same operations remain callable through Python and HTTP so an AI client does not require a separate implementation path.
+
+External clients can retrieve the live catalog with:
+
+```bash
+curl -fsS https://structuresmith-mrcalzon02-api.onrender.com/v1/tools
+```
+
+and execute a real capability through the same service:
+
+```bash
+curl -fsS -H 'Content-Type: application/json' \
+  -d '{"module_type":"inner_city_road","road":{"width":6,"terrain_padding":5},"purpose":{"depth":3}}' \
+  https://structuresmith-mrcalzon02-api.onrender.com/v1/infrastructure/layout
+```
 
 ## Python
 
@@ -203,6 +250,8 @@ python -m structure_capability.cli serve --host 127.0.0.1 --port 8787
 ## HTTP JSON API
 
 ```text
+GET  /.well-known/structuresmith.json
+GET  /openapi.json
 GET  /v1/health
 GET  /v1/capabilities
 GET  /v1/tools
@@ -220,6 +269,14 @@ POST /v1/minecraft/recipe
 POST /v1/minecraft/icon
 POST /v1/resume
 ```
+
+The reusable HTTP proof command is:
+
+```bash
+python scripts/http_smoke.py https://structuresmith-mrcalzon02-api.onrender.com
+```
+
+The smoke harness requires the machine-readable catalog and metadata plus a successful real infrastructure capability call. A static GitHub Pages response is not treated as API execution proof.
 
 ## Rebuild gradient
 
@@ -241,7 +298,7 @@ Every meaningful generation is resumable. For built-in materialization, the fina
 
 Snapshots record source hashes, discovered mods/namespaces, request and contextual contracts, rebuild grade, preserved/frozen properties, generated artifacts, validation status, unresolved visual review, and next eligible action.
 
-See `docs/SNAPSHOTS_AND_GENERATIONAL_EXECUTION.md`, `docs/DUNGEON_LAYOUT_AND_MODULARITY.md`, `docs/GENERATOR_PROVIDER_REGISTRY.md`, `docs/INFRASTRUCTURE_GENERATION.md`, and `docs/MINECRAFT_CONTENT_API_TOOLS.md`.
+See `docs/SNAPSHOTS_AND_GENERATIONAL_EXECUTION.md`, `docs/DUNGEON_LAYOUT_AND_MODULARITY.md`, `docs/GENERATOR_PROVIDER_REGISTRY.md`, `docs/INFRASTRUCTURE_GENERATION.md`, `docs/MINECRAFT_CONTENT_API_TOOLS.md`, and `docs/DEPLOYMENT.md`.
 
 ## Design rule
 
