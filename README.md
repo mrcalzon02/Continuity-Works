@@ -90,7 +90,7 @@ Detailed architecture, schemas, runtime boundaries, and archived deterministic e
 
 ## Minecraft version targeting
 
-Layout generation currently accepts Java Edition **1.12.x and newer 1.x targets**. Exact release metadata is bundled for common modding targets including 1.12.2, 1.16.5, 1.18.2, 1.19.2, 1.19.4, 1.20.1, 1.21, and 1.21.1.
+Layout generation currently accepts Java Edition **1.12.x and newer 1.x targets**. Exact release metadata is bundled for common modding targets including 1.12.2, 1.16.5, 1.18.2, 1.19.2, 1.19.4, 1.20.1, **1.20.5**, 1.21, and 1.21.1.
 
 Native namespaced structure-NBT materialization currently begins at **1.13+**. A 1.12.x request can still use the version-neutral layout system, but final block materialization requires a legacy numeric/block-state adapter. Unknown patch versions are never assigned a guessed DataVersion; callers must provide an explicit verified value.
 
@@ -116,9 +116,11 @@ Content-tool inventory now also indexes discoverable recipe, loot-table, structu
 
 ## Minecraft content authoring tools
 
-Books, loot tables, recipes, registry probing, and semantic icons are first-class API capabilities rather than disconnected helper snippets. Their output adapts across known Minecraft format boundaries, including the 1.20.5 item-component transition and the 1.21 datapack directory rename. Every authoring result contains deterministic public gate codes and a `materialization_allowed` decision; the API does not expose hidden chain-of-thought.
+Books, loot tables, recipes, **advancements, tags, datapack manifests, composed structure/content packages**, registry probing, and semantic icons are first-class API capabilities rather than disconnected helper snippets. Their output adapts across known Minecraft format boundaries, including the 1.20.5 item-component transition and the 1.21 datapack directory rename. Every authoring result contains deterministic public gate codes and a `materialization_allowed` decision; the API does not expose hidden chain-of-thought.
 
-Icon assignment prefers a known/discoverable Minecraft item icon and can fall back to a deterministic lightweight SVG badge when a suitable item icon cannot be established. See `docs/MINECRAFT_CONTENT_API_TOOLS.md` for the compatibility and gate contract.
+The content-package composer can dispatch an optional structure request through the same authoritative generation path and bind named generated books into named loot tables as genuinely guaranteed one-roll evidence pools. It then returns grouped artifacts, a file manifest, resolved links, and one aggregate package gate.
+
+Icon assignment prefers a known/discoverable Minecraft item icon and can fall back to a deterministic lightweight SVG badge when a suitable item icon cannot be established. See `docs/MINECRAFT_CONTENT_API_TOOLS.md` for the compatibility, composition, and gate contract.
 
 ## AI tool calling
 
@@ -135,7 +137,7 @@ GET /openapi.json
 GET /.well-known/structuresmith.json
 ```
 
-The tool set exposes:
+The schema-version **1.3** tool set exposes 17 deliberate calls:
 
 - `structure_capabilities`
 - `structure_inventory`
@@ -149,6 +151,10 @@ The tool set exposes:
 - `minecraft_book_generate`
 - `minecraft_loot_table_generate`
 - `minecraft_recipe_generate`
+- `minecraft_advancement_generate`
+- `minecraft_tag_generate`
+- `minecraft_datapack_manifest_generate`
+- `minecraft_content_package_generate`
 - `minecraft_icon_assign`
 
 The infrastructure tool schema publishes the same road/highway/Lost Cities/jigsaw/world-seed/purpose variables exposed in the StructureForge web UI. The same operations remain callable through Python and HTTP so an AI client does not require a separate implementation path.
@@ -229,6 +235,19 @@ loot = cap.minecraft_loot_table_generate({
     "items": [{"id": "minecraft:iron_ingot", "weight": 4}],
     "guaranteed": [{"id": "minecraft:paper", "count": 1}],
 })
+
+package = cap.minecraft_content_package_generate({
+    "package_id": "example:quest_site",
+    "target_version": "1.20.5",
+    "books": [{
+        "name": "evidence",
+        "title": "Containment Log",
+        "author": "VCF",
+        "pages": ["Entry one"]
+    }],
+    "loot_tables": [{"name": "evidence_chest", "items": [{"id": "minecraft:iron_ingot", "weight": 4}]}],
+    "bindings": [{"type": "book_as_guaranteed_loot", "book": "evidence", "loot_table": "evidence_chest"}]
+})
 ```
 
 ## CLI
@@ -266,6 +285,10 @@ POST /v1/minecraft/registry/probe
 POST /v1/minecraft/book
 POST /v1/minecraft/loot-table
 POST /v1/minecraft/recipe
+POST /v1/minecraft/advancement
+POST /v1/minecraft/tag
+POST /v1/minecraft/datapack-manifest
+POST /v1/minecraft/content-package
 POST /v1/minecraft/icon
 POST /v1/resume
 ```
