@@ -11,3 +11,9 @@ services:
     envVars:
       - key: STRUCTURESMITH_CORS_ORIGIN
         value: https://mrcalzon02.github.io
+      - key: STRUCTURESMITH_PUBLIC_BASE_URL
+        value: https://structuresmith-mrcalzon02-api.onrender.com
+      - key: STRUCTURESMITH_FRONTEND_URL
+        value: https://mrcalzon02.github.io/StructureSmith/
+      - key: STRUCTURESMITH_DEPLOYMENT
+        value: production
