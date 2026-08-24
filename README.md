@@ -30,9 +30,17 @@ GET /v1/health
 
 The repository includes `render.yaml`; its start command runs the existing dependency-free server through `scripts/run_api.py`, binding to `0.0.0.0` and the host-assigned `PORT`. StructureForge defaults to the same public API base rather than assuming `/v1/*` exists under `mrcalzon02.github.io/StructureSmith/`. See `docs/DEPLOYMENT.md` for activation, CORS, external-agent usage, and smoke-test instructions.
 
+## Rendering and visual-review boundary
+
+**StructureSmith does not provide server-side visual rendering as part of generation.** The API returns structure geometry, layouts, block operations, generated artifacts, validation results, and the metadata needed for a client to render or inspect the result.
+
+Visual rendering and visual review are optional client responsibilities. A browser, game/editor integration, Gemini/ChatGPT client, desktop tool, or other consumer that wants a 3D preview must render the returned information locally or using infrastructure it controls. StructureForge's React Three Fiber viewport is the reference client-side implementation of this model.
+
+The public StructureSmith host therefore does not allocate rendering/image-generation compute for callers and does not block generation because a visual review was not performed. A consuming project may impose its own downstream art-review requirements, but those requirements remain the consuming project's policy and cost.
+
 ## Authoritative lifecycle
 
-**discover → inventory → contextualize → audit → grade → plan → generate/refit → validate → snapshot → independently review → promote → iterate**
+**discover → inventory → contextualize → audit → grade → plan → generate/refit → validate → snapshot → optionally client-review → promote → iterate**
 
 The framework keeps these concerns separate:
 
@@ -40,7 +48,7 @@ The framework keeps these concerns separate:
 2. **Fitness for purpose** — does the building or environmental feature actually work as the thing it claims to be?
 3. **Context and cultural identity** — does it belong at this location, terrain, biome, culture, faction, institution, and technological level?
 4. **Procedural structure logic** — can a generator satisfy scale, clearances, modularity, required zones, circulation, and target-version constraints?
-5. **Visual quality** — does the result actually look professionally designed? Automated generation never grants its own visual approval.
+5. **Visual presentation** — optional client-owned inspection of returned 3D information; StructureSmith does not claim server-side visual approval and does not require it for generation.
 
 ## Built-in generation: modular dungeon / spatial skeletons
 
@@ -67,7 +75,7 @@ It supports:
 - explicit generator-provider registration so new structural systems share the same API lifecycle;
 - final generated-artifact snapshots with hashes.
 
-The generator deliberately produces an **architectural skeleton**, not falsely self-certified finished architecture. Theme/detail providers can refine the artifact through the existing graded rebuild pipeline.
+The generator deliberately produces an **architectural skeleton**, not falsely self-certified finished architecture. Theme/detail providers can refine the artifact through the existing graded rebuild pipeline, while clients may render it for their own optional inspection.
 
 ## Built-in generation: infrastructure, roads, and common facilities
 
@@ -172,6 +180,8 @@ curl -fsS -H 'Content-Type: application/json' \
   -d '{"module_type":"inner_city_road","road":{"width":6,"terrain_padding":5},"purpose":{"depth":3}}' \
   https://structuresmith-mrcalzon02-api.onrender.com/v1/infrastructure/layout
 ```
+
+The response is structural data. A caller that wants a rendered preview is responsible for rendering that response itself rather than requesting a StructureSmith-hosted visual generation.
 
 ## Python
 
@@ -319,12 +329,12 @@ The requested level is a ceiling, not permission to mutate everything. The plann
 
 Every meaningful generation is resumable. For built-in materialization, the final snapshot is chained to the planning snapshot and stores the generated `.nbt` artifact itself with a content hash.
 
-Snapshots record source hashes, discovered mods/namespaces, request and contextual contracts, rebuild grade, preserved/frozen properties, generated artifacts, validation status, unresolved visual review, and next eligible action.
+Snapshots record source hashes, discovered mods/namespaces, request and contextual contracts, rebuild grade, preserved/frozen properties, generated artifacts, validation status, optional client-review status when supplied by a client, and next eligible action. Visual review is not required for StructureSmith generation or snapshot completion.
 
 See `docs/SNAPSHOTS_AND_GENERATIONAL_EXECUTION.md`, `docs/DUNGEON_LAYOUT_AND_MODULARITY.md`, `docs/GENERATOR_PROVIDER_REGISTRY.md`, `docs/INFRASTRUCTURE_GENERATION.md`, `docs/MINECRAFT_CONTENT_API_TOOLS.md`, and `docs/DEPLOYMENT.md`.
 
 ## Design rule
 
-**Reuse → audit → repair → refine → generate/rebuild only as far as necessary → validate → snapshot → review.**
+**Reuse → audit → repair → refine → generate/rebuild only as far as necessary → validate → snapshot → optionally render/review in the client.**
 
-Never substitute a pretty render for a valid shipping structure, and never substitute a passing serializer/hash check for visual review.
+Never substitute a pretty render for a valid shipping structure. Rendering is a presentation concern owned by the consuming client; StructureSmith's server does not fund or require it.
