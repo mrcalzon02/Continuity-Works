@@ -2,47 +2,109 @@ Structure Generation Capability API v0.2.0
 Validation date: 2026-08-24
 ==========================================
 
-RESULT: PASS
+RESULT: REPOSITORY/LOCAL PASS; PUBLIC HTTPS DEPLOYMENT ACTIVATION REQUIRED
+
+Measured validation
+-------------------
+Authoritative branch: main
+Validated implementation commit lineage: 6bdebaafbe86554cfd43fa7b0c158129fdd79a87
+GitHub Actions run: https://github.com/mrcalzon02/StructureSmith/actions/runs/32775885977
+Workflow conclusion: success
 
 Core regression suite
 ---------------------
-Command: PYTHONPATH=src python -m unittest discover -s tests -v
-Result: 10/10 tests passed.
-Covered: deterministic NBT, rebuild grades, planning/snapshots, structure-set guard,
-deterministic dungeon layout, fitness rejection, donjon-option translation and shape masks,
-known target DataVersion resolution, integrated NBT materialization, and automatic oversized
-piece-set fragmentation with parsed per-piece target metadata.
+Command: python -m unittest discover -s tests -v
+Result: 31/31 tests passed.
 
-Static/package validation
--------------------------
-- 16 repository JSON files parsed successfully.
-- `python -m compileall -q src tests` completed successfully.
-- `python -m pip wheel . --no-deps --no-build-isolation` built
-  structure_generation_capability-0.2.0-py3-none-any.whl successfully.
-- Live local HTTP smoke test passed for `/v1/health`, `/v1/tools`, and `/v1/generate`.
-- AI tool catalog exposed 7 tools.
-- 72x60 laboratory HTTP generation produced a 4-piece target-limited NBT set and final snapshot.
+Coverage includes:
+- deterministic NBT and target-version metadata;
+- rebuild grades, audits, planning, snapshots, generation, and resume;
+- deterministic dungeon layout, donjon-option translation, fitness gates, and NBT fragmentation;
+- strict 6-block inner-city roads and 5-block side terrain padding;
+- highway, jigsaw, Lost Cities, purpose-depth, and deterministic world-seed infrastructure contracts;
+- Minecraft version, registry probe, book, loot-table, recipe, and icon tooling;
+- OpenAPI 3.1 generation from the authoritative tool catalog;
+- /.well-known/structuresmith.json discovery metadata;
+- exact-origin GitHub Pages CORS and OPTIONS preflight behavior;
+- successful execution of every publicly advertised GET and POST route.
 
-Implemented in this synthesis pass
+Static/package/frontend validation
 ----------------------------------
-- AI-callable JSON-Schema tool catalog over the authoritative API.
-- Explicit generator-provider registry and extension contract.
-- Original deterministic modular dungeon/spatial generator.
-- Macro/meso/micro triple-fold modularity.
-- Purpose, zone, size, scale, corridor, shape, verticality and connector fitness controls.
-- Classic donjon dungeon.pl option-vocabulary adapter.
-- Common Minecraft Java target-version profiles and verified DataVersion handling.
-- Deterministic Minecraft structure-NBT skeleton materialization for namespaced-ID targets.
-- Automatic version-aware fixed-offset fragmentation for oversized templates.
-- Final generation snapshots containing generated binaries and cryptographic hashes.
-- Documentation, examples and reference fetch tooling.
+- python -m pip install -e . completed successfully.
+- python -m compileall -q src tests scripts completed successfully.
+- StructureForge production build completed successfully with the repository's Vite build.
+- The validation workflow publishes an explicit structuresmith/validate commit status on main.
+
+Local production-boundary HTTP smoke
+------------------------------------
+Server launch contract:
+  HOST=0.0.0.0 PORT=8787 python scripts/run_api.py
+
+Smoke command:
+  python scripts/http_smoke.py http://127.0.0.1:8787
+
+Measured result:
+- ok: true
+- tool_count: 13
+- OpenAPI: 3.1.0
+- real capability route: POST /v1/infrastructure/layout
+- returned engine: native_infrastructure_v1
+- returned fitness: PASS
+
+Public HTTP surface
+-------------------
+Machine-readable discovery:
+  GET /.well-known/structuresmith.json
+  GET /openapi.json
+
+Existing authoritative API routes:
+  GET  /v1/health
+  GET  /v1/capabilities
+  GET  /v1/tools
+  POST /v1/inventory
+  POST /v1/audit
+  POST /v1/plan
+  POST /v1/generate
+  POST /v1/dungeon/layout
+  POST /v1/infrastructure/layout
+  POST /v1/minecraft/version
+  POST /v1/minecraft/registry/probe
+  POST /v1/minecraft/book
+  POST /v1/minecraft/loot-table
+  POST /v1/minecraft/recipe
+  POST /v1/minecraft/icon
+  POST /v1/resume
+
+AI tool catalog: 13 tools.
+All 18 advertised HTTP paths were exercised locally by automated tests and/or the production-boundary smoke harness.
+
+Deployment boundary implemented
+-------------------------------
+- The existing dependency-free structure_capability.server remains the runtime HTTP implementation.
+- scripts/run_api.py binds to 0.0.0.0 and reads the hosting provider's PORT.
+- render.yaml defines a persistent Render Python web service on main with /v1/health health checking.
+- Default browser CORS is limited to https://mrcalzon02.github.io unless explicitly overridden.
+- StructureForge defaults to the separately hosted API instead of assuming /v1/* exists on GitHub Pages.
+- OpenAPI request schemas for tool-backed routes are derived from the existing tool_catalog() source of truth.
+- A reusable scripts/http_smoke.py verifies health, catalog, OpenAPI, discovery, and a real capability execution.
+
+Configured deployment target
+----------------------------
+Expected service name: structuresmith-mrcalzon02-api
+Expected base URL after Render Blueprint activation:
+  https://structuresmith-mrcalzon02-api.onrender.com
+
+PUBLIC HTTPS COMPLETION GATE: NOT YET MET.
+The repository contains the complete deployment definition, but no connected Render account/service is available to this execution environment to perform the one-time Blueprint approval/creation. Therefore the expected onrender.com hostname has not been claimed as live and the required external HTTPS smoke has not been fabricated.
+
+Completion proof required after host activation:
+  python scripts/http_smoke.py https://structuresmith-mrcalzon02-api.onrender.com
+
+That public smoke must retrieve /v1/tools and successfully execute POST /v1/infrastructure/layout before the deployment is declared complete.
 
 Intentional boundaries
 ----------------------
-- Upstream donjon `dungeon.pl` is CC BY-NC 3.0 and is not linked into the native runtime.
-  The exact source is not vendored in this archive; an explicit fetch helper and attribution
-  are included under `reference/donjon/`.
-- 1.12.x can use the version-neutral layout engine, but legacy numeric/block-state NBT
-  materialization remains a future adapter.
-- Fixed-offset piece assembly is implemented; a full jigsaw/worldgen pool compiler is not yet.
-- Generated NBT is an architectural skeleton and does not bypass independent visual review.
+- GitHub Pages is only the static StructureForge frontend and is never treated as Python API execution proof.
+- Upstream donjon dungeon.pl remains isolated under its existing licensing boundary.
+- 1.12.x retains the existing legacy materialization limitation.
+- Generated structures retain the existing independent visual/runtime validation requirements.
