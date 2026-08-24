@@ -1,0 +1,160 @@
+name: Verify and Deploy Public StructureSmith Service
+
+on:
+  workflow_run:
+    workflows: ["Validate Structure Capability"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  statuses: write
+
+concurrency:
+  group: structuresmith-public-service
+  cancel-in-progress: true
+
+env:
+  STRUCTURESMITH_API: https://structuresmith-mrcalzon02-api.onrender.com
+  STRUCTURESMITH_FRONTEND: https://mrcalzon02.github.io/StructureSmith/
+  STRUCTURESMITH_ORIGIN: https://mrcalzon02.github.io
+  TARGET_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+jobs:
+  remote-api:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ env.TARGET_SHA }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Wait for Render to serve this exact main commit, then verify remote API
+        shell: bash
+        run: |
+          set -u
+          for attempt in $(seq 1 90); do
+            if python scripts/public_serviceability.py \
+              --api "$STRUCTURESMITH_API" \
+              --expected-commit "$TARGET_SHA" \
+              --origin "$STRUCTURESMITH_ORIGIN"; then
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "Remote API never passed PUBLIC_SERVICEABILITY for commit $TARGET_SHA" >&2
+          exit 1
+
+  build-pages:
+    needs: remote-api
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ env.TARGET_SHA }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build intended StructureForge Pages artifact
+        working-directory: frontend
+        run: |
+          npm install --no-audit --no-fund
+          npm run build
+      - name: Stamp verified API discovery and validate artifact
+        run: |
+          python scripts/build_pages_discovery.py \
+            --output dist/api.json \
+            --commit "$TARGET_SHA" \
+            --deployment verified-api
+          test -f dist/index.html
+          test -f dist/api.json
+          test -d dist/assets
+          test -f frontend/src/components/ManualCapabilityWorkbench.js
+          grep -q 'structuresmith-api' dist/index.html
+          grep -R -q 'Manual Capability Workbench' dist/assets
+          python scripts/public_serviceability.py --static-dir dist --expected-api "$STRUCTURESMITH_API"
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Upload intended Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy-pages:
+    needs: build-pages
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy exact validated artifact
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  pages-to-api:
+    needs: deploy-pages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ env.TARGET_SHA }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify discovery exactly as a zero-JavaScript external agent encounters it
+        shell: bash
+        run: |
+          set -u
+          for attempt in $(seq 1 60); do
+            if python scripts/public_serviceability.py \
+              --pages "$STRUCTURESMITH_FRONTEND" \
+              --expected-commit "$TARGET_SHA" \
+              --origin "$STRUCTURESMITH_ORIGIN"; then
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "Pages-to-API discovery never reached VERIFIED for commit $TARGET_SHA" >&2
+          exit 1
+
+  report:
+    if: always()
+    needs: [remote-api, build-pages, deploy-pages, pages-to-api]
+    runs-on: ubuntu-latest
+    permissions:
+      statuses: write
+      contents: read
+    steps:
+      - name: Publish external serviceability status
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERIFIED: ${{ needs.pages-to-api.result }}
+          TARGET_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        shell: bash
+        run: |
+          python - <<'PY' > /tmp/status.json
+          import json, os
+          verified = os.environ.get('VERIFIED') == 'success'
+          print(json.dumps({
+              'state': 'success' if verified else 'failure',
+              'context': 'structuresmith/public-serviceability',
+              'description': 'External-service VERIFIED' if verified else 'External-service NOT VERIFIED',
+              'target_url': os.environ['TARGET_URL'],
+          }))
+          PY
+          curl --fail-with-body --silent --show-error \
+            -X POST \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            --data @/tmp/status.json \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/statuses/${TARGET_SHA}"
