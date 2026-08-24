@@ -29,6 +29,17 @@ def evaluate_plan(request, audit):
     if request.context.terrain == "unknown":
         scores["geospatial_fit"] = 0.5
         notes.append("Terrain class is unknown.")
-    # Visual quality is never self-approved.
+
+    # StructureSmith validates structural/mechanical/fitness contracts but does not
+    # render or visually approve generated geometry. Visual inspection is optional
+    # and belongs to the consuming client, which can render the returned geometry or
+    # artifacts locally (as StructureForge does) or in infrastructure it controls.
     scores["visual_quality"] = None
-    return {"scores": scores, "notes": notes, "visual_gate": "REVIEW_NEEDED"}
+    return {
+        "scores": scores,
+        "notes": notes,
+        "visual_gate": "OPTIONAL_CLIENT_REVIEW",
+        "visual_review_required": False,
+        "visual_review_owner": "client",
+        "server_side_rendering": False,
+    }
