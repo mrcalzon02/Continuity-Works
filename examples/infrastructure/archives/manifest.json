@@ -1,0 +1,11 @@
+{
+  "schema": "structuresmith.infrastructure.example-archive.v1",
+  "world_seed": 20260824,
+  "runtime_scope": "deterministic static contract validation; fresh-world Lost Cities placement remains a runtime gate",
+  "examples": [
+    {"file": "civic_urban.json", "module_type": "civic_facility", "variant": "urban", "seed": 1101, "fingerprint": "95132cb7b34394e8f2b1b6b9dc1d695720be789e0b157ff71dc410e43f649de7", "spawn_anchor": {"x": -2304, "z": -512}, "fitness": "PASS", "deterministic_replay": true},
+    {"file": "civic_rural.json", "module_type": "civic_facility", "variant": "rural", "seed": 1102, "fingerprint": "f7ce9f6cfcbf14d3454bd81b4bd871704ca8995f2aba580cccabfdf243d03fed", "spawn_anchor": {"x": 5376, "z": -2304}, "fitness": "PASS", "deterministic_replay": true},
+    {"file": "industrial_urban.json", "module_type": "industrial_facility", "variant": "urban", "seed": 2201, "fingerprint": "cdb6f8e1a67ba43129f1bf0358e556e80c799aabefff7ec7023281f8f3d006c4", "spawn_anchor": {"x": -3840, "z": 2048}, "fitness": "PASS", "deterministic_replay": true},
+    {"file": "industrial_rural.json", "module_type": "industrial_facility", "variant": "rural", "seed": 2202, "fingerprint": "ddf65e0fc3efd0183a8dd10a94db4c7a6918beea1f03e8e1244e962f6fc585f2", "spawn_anchor": {"x": -1024, "z": 6656}, "fitness": "PASS", "deterministic_replay": true}
+  ]
+}

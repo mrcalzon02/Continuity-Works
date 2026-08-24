@@ -1,0 +1,22 @@
+{
+  "request": {
+    "module_type": "industrial_facility",
+    "facility_kind": "industrial_service_works",
+    "variant": "rural",
+    "seed": 2202,
+    "world_seed": 20260824,
+    "orientation": "east_west",
+    "jigsaw": {"enabled": true, "pool": "structuresmith:infrastructure", "connector_width": 4, "max_depth": 6},
+    "lost_cities": {"enabled": true, "spawn_modes": ["randomized_coordinate", "sequential_jigsaw"], "tile_span_chunks": 4},
+    "random_spawn": {"radius_blocks": 8192, "spacing_blocks": 512, "salt": 834288},
+    "purpose": {"depth": 4}
+  },
+  "result": {
+    "determinism": {"fingerprint": "ddf65e0fc3efd0183a8dd10a94db4c7a6918beea1f03e8e1244e962f6fc585f2"},
+    "fitness": {"status": "PASS"},
+    "spawn": {"candidate_anchor": {"x": -1024, "z": 6656}, "world_seed_authorized": true},
+    "lost_cities": {"adapter_status": "CONTRACT_READY_RUNTIME_TEST_REQUIRED"},
+    "runtime_validation": {"fresh_world_placement": "REQUIRED"}
+  },
+  "archive_validation": {"deterministic_replay": true, "static_fitness": "PASS", "world_seed_authorized": true, "fresh_world_runtime": "REQUIRED"}
+}

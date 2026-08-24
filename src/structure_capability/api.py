@@ -5,7 +5,13 @@ from .mod_awareness import ModInventory
 from .registry import RegistryResolver
 from .snapshot import SnapshotStore
 from .pipeline import StructurePipeline
-from .generators import DungeonGenerator, GeneratorRegistry, NativeDungeonProvider
+from .generators import (
+    DungeonGenerator,
+    GeneratorRegistry,
+    NativeDungeonProvider,
+    InfrastructureGenerator,
+    NativeInfrastructureProvider,
+)
 from .versioning import resolve_minecraft_version
 from .tooling import tool_catalog
 
@@ -21,16 +27,22 @@ class StructureCapability:
         self.snapshots = SnapshotStore(state_root)
         self.pipeline = StructurePipeline(self.snapshots, self.registry)
         self.dungeons = DungeonGenerator()
+        self.infrastructure = InfrastructureGenerator()
         self.generators = GeneratorRegistry()
         self.dungeon_provider = NativeDungeonProvider(self.dungeons)
+        self.infrastructure_provider = NativeInfrastructureProvider(self.infrastructure)
         self.generators.register(self.dungeon_provider)
+        self.generators.register(self.infrastructure_provider)
 
     def capabilities(self):
         return {
             "api_version": self.API_VERSION,
             "vanilla_first": True,
             "mod_awareness": ["jar metadata", "data/assets namespaces", "explicit registry IDs"],
-            "operations": ["inventory", "audit", "plan", "generate", "resume", "dungeon_layout", "minecraft_version"],
+            "operations": [
+                "inventory", "audit", "plan", "generate", "resume", "dungeon_layout",
+                "infrastructure_layout", "minecraft_version",
+            ],
             "rebuild_grades": {
                 "0": "AUDIT_ONLY",
                 "1": "TOUCH_UP",
@@ -47,6 +59,16 @@ class StructureCapability:
                 "purpose_sizing": True,
                 "deterministic_seeded_generation": True,
                 "donjon_reference": "isolated_cc_by_nc_optional_reference",
+            },
+            "infrastructure_layout": {
+                "engine": "native_infrastructure_v1",
+                "inner_city_cross_section": {"road_width": 6, "terrain_padding_each_side": 5},
+                "highway_profiles": ["elevated_urban_water_crossing", "surface_highway"],
+                "jigsaw_assembly": True,
+                "lost_cities_contracts": ["tileable_grid", "randomized_coordinate", "sequential_jigsaw"],
+                "purpose_depth_validation": True,
+                "world_seed_determinism": True,
+                "runtime_validation_required": True,
             },
             "minecraft_versions": {"initial_contract": "1.12.x+", "materialization": "provider_validated"},
             "ai_tool_calling": {"catalog_endpoint": "/v1/tools", "portable_json_schema": True},
@@ -115,6 +137,9 @@ class StructureCapability:
 
     def dungeon_layout(self, request):
         return self.dungeon_provider.layout(request)
+
+    def infrastructure_layout(self, request):
+        return self.infrastructure_provider.layout(request)
 
     def minecraft_version(self, version):
         return resolve_minecraft_version(version).to_dict()

@@ -43,6 +43,25 @@ It supports:
 
 The generator deliberately produces an **architectural skeleton**, not falsely self-certified finished architecture. Theme/detail providers can refine the artifact through the existing graded rebuild pipeline.
 
+## Built-in generation: infrastructure, roads, and common facilities
+
+`native_infrastructure_v1` adds a deterministic infrastructure provider for roads, highways, civic facilities, and industrial facilities.
+
+Key contracts include:
+
+- **inner-city roads are always exactly 6 blocks wide**;
+- **5 blocks of terrain/integration padding are reserved on each side**, producing a 16-block total cross-section;
+- highway derivatives expose lane count, lane width, shoulders, median, deck thickness, support spacing, elevation, and clearance;
+- the `elevated_urban_water_crossing` highway profile captures the useful structural language of the current visual reference: wide elevated deck, continuous barriers, repeating piers, and clean lower-level/water clearance;
+- jigsaw-compatible start/end or frontage/service connectors are emitted for sequential assembly;
+- an explicit Lost Cities compatibility contract exposes tileable-grid, randomized-coordinate, and sequential-jigsaw spawn modes;
+- world-seed-derived candidate anchors are deterministic and reproducible;
+- every generated module has a **depth-of-purpose** level and fails static fitness below functional-zoning depth;
+- civic and industrial facilities have urban and rural program variants;
+- static contract validation is kept separate from fresh-world Lost Cities/runtime placement validation.
+
+Detailed architecture, schemas, runtime boundaries, and archived deterministic examples are documented in `docs/INFRASTRUCTURE_GENERATION.md`.
+
 ## Minecraft version targeting
 
 Layout generation currently accepts Java Edition **1.12.x and newer 1.x targets**. Exact release metadata is bundled for common modding targets including 1.12.2, 1.16.5, 1.18.2, 1.19.2, 1.19.4, 1.20.1, 1.21, and 1.21.1.
@@ -75,7 +94,7 @@ The API publishes a portable JSON-Schema tool catalog:
 GET /v1/tools
 ```
 
-The initial tool set exposes:
+The tool set exposes:
 
 - `structure_capabilities`
 - `structure_inventory`
@@ -83,9 +102,10 @@ The initial tool set exposes:
 - `structure_plan`
 - `structure_generate`
 - `dungeon_layout`
+- `infrastructure_layout`
 - `minecraft_version`
 
-The same operations remain callable through Python, CLI, and HTTP so an AI client does not require a separate implementation path.
+The infrastructure tool schema publishes the same road/highway/Lost Cities/jigsaw/world-seed/purpose variables exposed in the StructureForge web UI. The same operations remain callable through Python, CLI, and HTTP so an AI client does not require a separate implementation path.
 
 ## Python
 
@@ -116,6 +136,23 @@ print(result["generated_layout"]["fitness"])
 print(result["structure_artifact"])
 ```
 
+Infrastructure can be called directly:
+
+```python
+layout = cap.infrastructure_layout({
+    "module_type": "inner_city_road",
+    "seed": 9001,
+    "world_seed": 20260824,
+    "road": {"width": 6, "terrain_padding": 5},
+    "jigsaw": {"enabled": True, "pool": "structuresmith:infrastructure"},
+    "lost_cities": {
+        "enabled": True,
+        "spawn_modes": ["tileable_grid", "randomized_coordinate", "sequential_jigsaw"]
+    },
+    "purpose": {"depth": 3}
+})
+```
+
 ## CLI
 
 ```bash
@@ -124,10 +161,13 @@ python -m structure_capability.cli tools
 python -m structure_capability.cli inventory --project /path/to/modpack
 python -m structure_capability.cli plan examples/requests/heavy_rebuild.json
 python -m structure_capability.cli dungeon-layout examples/requests/dungeon_layout.json
+python -m structure_capability.cli infrastructure-layout examples/requests/infrastructure_layout.json
 python -m structure_capability.cli generate examples/requests/generate_dungeon_structure.json
 python -m structure_capability.cli minecraft-version 1.20.1
 python -m structure_capability.cli serve --host 127.0.0.1 --port 8787
 ```
+
+`scripts/archive_infrastructure_examples.py` regenerates and validates the canonical four civic/industrial example archives.
 
 ## HTTP JSON API
 
@@ -140,6 +180,7 @@ POST /v1/audit
 POST /v1/plan
 POST /v1/generate
 POST /v1/dungeon/layout
+POST /v1/infrastructure/layout
 POST /v1/minecraft/version
 POST /v1/resume
 ```
@@ -164,7 +205,7 @@ Every meaningful generation is resumable. For built-in materialization, the fina
 
 Snapshots record source hashes, discovered mods/namespaces, request and contextual contracts, rebuild grade, preserved/frozen properties, generated artifacts, validation status, unresolved visual review, and next eligible action.
 
-See `docs/SNAPSHOTS_AND_GENERATIONAL_EXECUTION.md`, `docs/DUNGEON_LAYOUT_AND_MODULARITY.md`, and `docs/GENERATOR_PROVIDER_REGISTRY.md`.
+See `docs/SNAPSHOTS_AND_GENERATIONAL_EXECUTION.md`, `docs/DUNGEON_LAYOUT_AND_MODULARITY.md`, `docs/GENERATOR_PROVIDER_REGISTRY.md`, and `docs/INFRASTRUCTURE_GENERATION.md`.
 
 ## Design rule
 

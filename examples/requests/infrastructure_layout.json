@@ -1,0 +1,42 @@
+{
+  "module_type": "highway",
+  "variant": "urban",
+  "seed": 9001,
+  "world_seed": 20260824,
+  "orientation": "east_west",
+  "segment_length": 96,
+  "highway": {
+    "profile": "elevated_urban_water_crossing",
+    "lane_count": 4,
+    "lane_width": 3,
+    "shoulder_width": 1,
+    "median_width": 2,
+    "elevated": true,
+    "support_spacing": 12,
+    "deck_thickness": 2,
+    "min_clearance": 7
+  },
+  "jigsaw": {
+    "enabled": true,
+    "pool": "structuresmith:infrastructure",
+    "connector_width": 3,
+    "max_depth": 8
+  },
+  "lost_cities": {
+    "enabled": true,
+    "spawn_modes": [
+      "tileable_grid",
+      "randomized_coordinate",
+      "sequential_jigsaw"
+    ],
+    "tile_span_chunks": 2
+  },
+  "random_spawn": {
+    "radius_blocks": 4096,
+    "spacing_blocks": 256,
+    "salt": 734287
+  },
+  "purpose": {
+    "depth": 3
+  }
+}

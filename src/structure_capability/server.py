@@ -61,6 +61,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, self.capability.inventory_project())
             if self.path == "/v1/dungeon/layout":
                 return self._send(200, self.capability.dungeon_layout(body))
+            if self.path == "/v1/infrastructure/layout":
+                return self._send(200, self.capability.infrastructure_layout(body))
             if self.path == "/v1/minecraft/version":
                 return self._send(200, self.capability.minecraft_version(body.get("version")))
             if self.path == "/v1/audit":

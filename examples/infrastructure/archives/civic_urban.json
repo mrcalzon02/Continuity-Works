@@ -1,0 +1,22 @@
+{
+  "request": {
+    "module_type": "civic_facility",
+    "facility_kind": "civic_services_center",
+    "variant": "urban",
+    "seed": 1101,
+    "world_seed": 20260824,
+    "orientation": "north_south",
+    "jigsaw": {"enabled": true, "pool": "structuresmith:infrastructure", "connector_width": 3, "max_depth": 8},
+    "lost_cities": {"enabled": true, "spawn_modes": ["tileable_grid", "randomized_coordinate", "sequential_jigsaw"], "tile_span_chunks": 2},
+    "random_spawn": {"radius_blocks": 4096, "spacing_blocks": 256, "salt": 734287},
+    "purpose": {"depth": 4}
+  },
+  "result": {
+    "determinism": {"fingerprint": "95132cb7b34394e8f2b1b6b9dc1d695720be789e0b157ff71dc410e43f649de7"},
+    "fitness": {"status": "PASS"},
+    "spawn": {"candidate_anchor": {"x": -2304, "z": -512}, "world_seed_authorized": true},
+    "lost_cities": {"adapter_status": "CONTRACT_READY_RUNTIME_TEST_REQUIRED"},
+    "runtime_validation": {"fresh_world_placement": "REQUIRED"}
+  },
+  "archive_validation": {"deterministic_replay": true, "static_fitness": "PASS", "world_seed_authorized": true, "fresh_world_runtime": "REQUIRED"}
+}

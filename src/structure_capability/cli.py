@@ -20,7 +20,7 @@ def main():
     p = sub.add_parser("inventory")
     p.add_argument("--project", default=".")
 
-    for name in ("audit", "plan", "generate", "dungeon-layout"):
+    for name in ("audit", "plan", "generate", "dungeon-layout", "infrastructure-layout"):
         p = sub.add_parser(name)
         p.add_argument("request")
         p.add_argument("--project", default=".")
@@ -55,6 +55,8 @@ def main():
         result = cap.minecraft_version(args.version)
     elif args.cmd == "dungeon-layout":
         result = cap.dungeon_layout(load_json(args.request))
+    elif args.cmd == "infrastructure-layout":
+        result = cap.infrastructure_layout(load_json(args.request))
     else:
         result = getattr(cap, args.cmd)(load_json(args.request))
     print(json.dumps(result, indent=2, default=str))
