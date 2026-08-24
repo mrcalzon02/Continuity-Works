@@ -6,13 +6,13 @@ Before mutation, identify the authoritative source artifact, builder/generator, 
 
 Generated/shipping artifacts are outputs unless the project explicitly declares otherwise.
 
-## 2. Two independent completion tracks
+## 2. Functional completion and optional presentation review
 
 **Functional track:** indexed → parses → registered → integrated → mechanically validated → worldgen/runtime ready.
 
-**Quality track:** baseline → purpose program → massing → circulation → architectural pass → interior/operations → historical/damage pass → detailing → visual review → approved.
+**Presentation track (optional, client-owned):** baseline → purpose program → massing → circulation → architectural pass → interior/operations → historical/damage pass → detailing → optional rendered inspection.
 
-One track cannot substitute for the other.
+Functional completion must never depend on StructureSmith's server producing a render. A consuming project may impose stricter presentation or art-review requirements for itself, but those requirements remain local to that client.
 
 ## 3. Existing geometry is evidence, not sacred geometry
 
@@ -55,9 +55,13 @@ Location-aware generation is not optional metadata.
 
 Condition variants should express causes: fire, flood, impact, structural failure, burial, corrosion, biological overgrowth, occupation, scavenging, containment breach, etc. Damage must preserve enough causal/structural information to remain readable.
 
-## 9. Visual review is independent
+## 9. Rendering belongs to the client
 
-A render, image metric, hash or serializer success is not visual approval. Persist fixed-camera artifacts and require an independent reviewer (human or explicitly independent review agent) to inspect the exact candidate revision.
+StructureSmith returns geometry, structure artifacts, validation results, and the metadata needed to inspect them. It does **not** require the public API host to create visual renders and does not reserve server compute for visual review.
+
+Clients that want a three-dimensional preview or visual inspection should render the returned information locally or in infrastructure they control. StructureForge's browser-side 3D viewport is the reference implementation of this model.
+
+Visual review is advisory at the StructureSmith API boundary. A consuming project can require its own human or automated visual review before accepting an asset, but that policy does not block StructureSmith generation and does not transfer rendering cost to the StructureSmith service operator.
 
 ## 10. Vanilla first; verified mods second
 
@@ -70,13 +74,14 @@ Never hallucinate registry IDs.
 
 ## 11. Promotion gate
 
-A production asset should normally satisfy:
+A StructureSmith-generated artifact should normally satisfy:
 - provenance/source known;
-- source preserved;
+- source preserved where applicable;
 - normalization complete;
 - identifiers/integration complete;
 - mechanical checks pass;
 - purpose/clearance/context checks pass;
-- visual review completed where required;
 - generated artifact hash/provenance recorded;
 - regression/rotation/terrain placement checked at the appropriate project gate.
+
+Visual inspection may be added by the consuming project as its own optional or mandatory downstream policy, but it is not a StructureSmith server gate.
