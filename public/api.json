@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.1",
+  "name": "StructureSmith",
+  "description": "Zero-JavaScript discovery for the executable StructureSmith API. GitHub Pages is the static frontend only.",
+  "frontend": "https://mrcalzon02.github.io/StructureSmith/",
+  "api": "https://structuresmith-mrcalzon02-api.onrender.com",
+  "health": "https://structuresmith-mrcalzon02-api.onrender.com/v1/health",
+  "tools": "https://structuresmith-mrcalzon02-api.onrender.com/v1/tools",
+  "openapi": "https://structuresmith-mrcalzon02-api.onrender.com/openapi.json",
+  "discovery": "https://structuresmith-mrcalzon02-api.onrender.com/.well-known/structuresmith.json",
+  "serviceability": "https://structuresmith-mrcalzon02-api.onrender.com/v1/serviceability",
+  "frontend_commit": "source",
+  "api_verification_at_build": "candidate"
+}
