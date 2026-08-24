@@ -7,26 +7,41 @@ RESULT: REPOSITORY/LOCAL PASS; PUBLIC HTTPS DEPLOYMENT ACTIVATION REQUIRED
 Measured validation
 -------------------
 Authoritative branch: main
-Validated implementation commit lineage: 6bdebaafbe86554cfd43fa7b0c158129fdd79a87
-GitHub Actions run: https://github.com/mrcalzon02/StructureSmith/actions/runs/32775885977
+Validated implementation commit: fc1d1fb789400ecd0921615b0b7378ab5138624a
+GitHub Actions run: https://github.com/mrcalzon02/StructureSmith/actions/runs/32778403584
 Workflow conclusion: success
 
 Core regression suite
 ---------------------
 Command: python -m unittest discover -s tests -v
-Result: 31/31 tests passed.
+Result: 46/46 tests passed.
 
 Coverage includes:
 - deterministic NBT and target-version metadata;
 - rebuild grades, audits, planning, snapshots, generation, and resume;
 - deterministic dungeon layout, donjon-option translation, fitness gates, and NBT fragmentation;
 - strict 6-block inner-city roads and 5-block side terrain padding;
-- highway, jigsaw, Lost Cities, purpose-depth, and deterministic world-seed infrastructure contracts;
-- Minecraft version, registry probe, book, loot-table, recipe, and icon tooling;
+- highway, jigsaw, Lost Cities, purpose-depth, deterministic world-seed, and additive compatibility contracts;
+- Minecraft version, registry probe, book, loot-table, recipe, advancement, tag, datapack-manifest, content-package, and icon tooling;
 - OpenAPI 3.1 generation from the authoritative tool catalog;
 - /.well-known/structuresmith.json discovery metadata;
 - exact-origin GitHub Pages CORS and OPTIONS preflight behavior;
-- successful execution of every publicly advertised GET and POST route.
+- successful execution of every publicly advertised GET and POST route;
+- optional client-owned visual review contract, including no server-side rendering requirement.
+
+Visual rendering/review boundary
+--------------------------------
+- StructureSmith does not perform server-side visual rendering as part of structure generation.
+- fitness.visual_gate is OPTIONAL_CLIENT_REVIEW.
+- fitness.visual_review_required is false.
+- fitness.visual_review_owner is client.
+- fitness.server_side_rendering is false.
+- StructureCapability advertises visual_review.required=false and independent_visual_review_required=false.
+- Generation provider contracts advertise server_visual_review_required=false, server_side_rendering=false,
+  client_rendering_responsibility=true, and visual_review_advisory_only=true.
+- StructureForge remains the reference browser-side renderer; other clients render returned geometry/artifacts
+  using compute they own if they want visual inspection.
+- Absence of a render or visual review does not block StructureSmith generation, validation, snapshotting, or return.
 
 Static/package/frontend validation
 ----------------------------------
@@ -45,7 +60,7 @@ Smoke command:
 
 Measured result:
 - ok: true
-- tool_count: 13
+- tool_count: 17
 - OpenAPI: 3.1.0
 - real capability route: POST /v1/infrastructure/layout
 - returned engine: native_infrastructure_v1
@@ -57,7 +72,7 @@ Machine-readable discovery:
   GET /.well-known/structuresmith.json
   GET /openapi.json
 
-Existing authoritative API routes:
+Existing authoritative API routes include:
   GET  /v1/health
   GET  /v1/capabilities
   GET  /v1/tools
@@ -72,39 +87,34 @@ Existing authoritative API routes:
   POST /v1/minecraft/book
   POST /v1/minecraft/loot-table
   POST /v1/minecraft/recipe
+  POST /v1/minecraft/advancement
+  POST /v1/minecraft/tag
+  POST /v1/minecraft/datapack-manifest
+  POST /v1/minecraft/content-package
   POST /v1/minecraft/icon
   POST /v1/resume
 
-AI tool catalog: 13 tools.
-All 18 advertised HTTP paths were exercised locally by automated tests and/or the production-boundary smoke harness.
+AI tool catalog: 17 tools.
 
 Deployment boundary implemented
 -------------------------------
 - The existing dependency-free structure_capability.server remains the runtime HTTP implementation.
 - scripts/run_api.py binds to 0.0.0.0 and reads the hosting provider's PORT.
-- render.yaml defines a persistent Render Python web service on main with /v1/health health checking.
+- render.yaml remains a deployment example/configuration for a separately hosted Python service.
 - Default browser CORS is limited to https://mrcalzon02.github.io unless explicitly overridden.
-- StructureForge defaults to the separately hosted API instead of assuming /v1/* exists on GitHub Pages.
+- StructureForge uses a separately hosted API rather than assuming /v1/* exists on GitHub Pages.
 - OpenAPI request schemas for tool-backed routes are derived from the existing tool_catalog() source of truth.
 - A reusable scripts/http_smoke.py verifies health, catalog, OpenAPI, discovery, and a real capability execution.
 
-Configured deployment target
-----------------------------
-Expected service name: structuresmith-mrcalzon02-api
-Expected base URL after Render Blueprint activation:
-  https://structuresmith-mrcalzon02-api.onrender.com
-
+Public-host status
+------------------
 PUBLIC HTTPS COMPLETION GATE: NOT YET MET.
-The repository contains the complete deployment definition, but no connected Render account/service is available to this execution environment to perform the one-time Blueprint approval/creation. Therefore the expected onrender.com hostname has not been claimed as live and the required external HTTPS smoke has not been fabricated.
-
-Completion proof required after host activation:
-  python scripts/http_smoke.py https://structuresmith-mrcalzon02-api.onrender.com
-
-That public smoke must retrieve /v1/tools and successfully execute POST /v1/infrastructure/layout before the deployment is declared complete.
+No public host has been falsely claimed live. Repository/local validation does not prove an externally provisioned service exists.
 
 Intentional boundaries
 ----------------------
 - GitHub Pages is only the static StructureForge frontend and is never treated as Python API execution proof.
 - Upstream donjon dungeon.pl remains isolated under its existing licensing boundary.
 - 1.12.x retains the existing legacy materialization limitation.
-- Generated structures retain the existing independent visual/runtime validation requirements.
+- Runtime/mechanical validation requirements remain intact.
+- Visual rendering and visual review are optional downstream client concerns and are not StructureSmith server obligations.
