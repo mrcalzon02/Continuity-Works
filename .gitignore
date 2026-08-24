@@ -5,4 +5,5 @@ dist/
 build/
 *.egg-info/
 .structure-capability/
+.structuresmith-staging/
 generated/
