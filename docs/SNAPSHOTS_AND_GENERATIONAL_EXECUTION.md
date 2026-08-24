@@ -7,7 +7,7 @@ Long-running structure work must be resumable and auditable.
 For each target:
 
 1. **Discover** — authoritative source, integration, local mods, validators.
-2. **Baseline** — immutable source hash and optional fixed-camera baseline.
+2. **Baseline** — immutable source hash and optional client-side visual baseline.
 3. **Contextualize** — location, purpose, theme, clearances, constraints.
 4. **Audit** — mechanical + functional + context findings.
 5. **Choose grade** — minimum sufficient intervention.
@@ -15,9 +15,11 @@ For each target:
 7. **Mutate one coherent pass** — avoid many unrelated changes.
 8. **Validate** — only claims tested by that validator.
 9. **Snapshot** — manifest + artifact hashes + changed scope.
-10. **Visual review** — independent, exact persisted artifact.
-11. **Promote or revise**.
+10. **Optional client review** — a consuming client may render and inspect the exact persisted artifact using its own compute.
+11. **Promote or revise** according to the consuming project's policy.
 12. **Record next action**.
+
+StructureSmith itself does not require step 10 in order to generate, validate, snapshot, or return an artifact.
 
 ## Generational scripting
 
@@ -33,8 +35,8 @@ G050 culture/site context
 G060 history/damage
 G070 detail cleanup
 G080 mechanical validation
-G090 visual candidate
-G100 approved/promoted
+G090 optional client-rendered candidate
+G100 promoted by consuming project
 ```
 
 The exact numbers are not sacred; the principle is. Each generation records:
@@ -47,10 +49,12 @@ The exact numbers are not sacred; the principle is. Each generation records:
 - unresolved defects;
 - next eligible generation.
 
-## Fixed-camera review
+## Client-side rendering
 
-Use consistent camera positions across revisions and damage states. Store contact sheets and individual views with revision provenance. Rendering success only proves that rendering succeeded.
+A snapshot may contain enough geometry, NBT artifacts, layout metadata, or block operations for a client to construct a 3D view. Rendering those results is the client's responsibility. StructureForge demonstrates this pattern in the browser.
 
-## Independent authorship/review
+A client that needs fixed-camera comparisons can generate and store them itself. Rendering success proves only that the client's renderer succeeded; it is not part of the StructureSmith server's mechanical validation claim.
 
-The agent or process that authored a candidate does not grant its own visual approval. Automated validation and independent visual review are distinct roles.
+## Review ownership
+
+Automated StructureSmith validation and optional client visual review are separate concerns. The client decides whether visual review is unnecessary, advisory, or mandatory for its own downstream workflow. No such client policy causes the StructureSmith API host to perform or fund rendering.
