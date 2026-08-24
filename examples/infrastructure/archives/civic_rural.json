@@ -1,22 +1,5 @@
 {
-  "request": {
-    "module_type": "civic_facility",
-    "facility_kind": "civic_services_center",
-    "variant": "rural",
-    "seed": 1102,
-    "world_seed": 20260824,
-    "orientation": "east_west",
-    "jigsaw": {"enabled": true, "pool": "structuresmith:infrastructure", "connector_width": 3, "max_depth": 6},
-    "lost_cities": {"enabled": true, "spawn_modes": ["randomized_coordinate", "sequential_jigsaw"], "tile_span_chunks": 2},
-    "random_spawn": {"radius_blocks": 6144, "spacing_blocks": 384, "salt": 734288},
-    "purpose": {"depth": 4}
-  },
-  "result": {
-    "determinism": {"fingerprint": "f7ce9f6cfcbf14d3454bd81b4bd871704ca8995f2aba580cccabfdf243d03fed"},
-    "fitness": {"status": "PASS"},
-    "spawn": {"candidate_anchor": {"x": 5376, "z": -2304}, "world_seed_authorized": true},
-    "lost_cities": {"adapter_status": "CONTRACT_READY_RUNTIME_TEST_REQUIRED"},
-    "runtime_validation": {"fresh_world_placement": "REQUIRED"}
-  },
-  "archive_validation": {"deterministic_replay": true, "static_fitness": "PASS", "world_seed_authorized": true, "fresh_world_runtime": "REQUIRED"}
+  "request": {"module_type":"civic_facility","facility_kind":"civic_services_center","variant":"rural","seed":1102,"world_seed":20260824,"orientation":"east_west","jigsaw":{"enabled":true,"pool":"structuresmith:infrastructure","connector_width":3,"max_depth":6},"lost_cities":{"enabled":true,"spawn_modes":["randomized_coordinate","sequential_jigsaw"],"tile_span_chunks":2},"random_spawn":{"radius_blocks":6144,"spacing_blocks":384,"salt":734288},"purpose":{"depth":4}},
+  "result": {"determinism":{"fingerprint":"f8f660d86bf44b5776773081d7a843c8a8e67d1e4a5c2b2a4cc81f36644ce7eb"},"fitness":{"status":"PASS"},"spawn":{"candidate_anchor":{"x":5376,"z":-2304},"world_seed_authorized":true},"lost_cities":{"adapter_status":"CONTRACT_READY_RUNTIME_TEST_REQUIRED"},"runtime_validation":{"fresh_world_placement":"REQUIRED"}},
+  "archive_validation": {"deterministic_replay":true,"static_fitness":"PASS","world_seed_authorized":true,"fresh_world_runtime":"REQUIRED"}
 }

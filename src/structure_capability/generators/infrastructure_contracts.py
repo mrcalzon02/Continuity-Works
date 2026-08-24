@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import random
 from typing import Any
 
@@ -11,11 +12,8 @@ VALID_SPAWN_MODES = ("tileable_grid", "randomized_coordinate", "sequential_jigsa
 VALID_MODULE_TYPES = ("inner_city_road", "highway", "civic_facility", "industrial_facility")
 VALID_VARIANTS = ("urban", "rural")
 PURPOSE_DEPTH_LABELS = {
-    0: "geometry_only",
-    1: "access_and_clearance",
-    2: "functional_zoning",
-    3: "ecosystem_integration",
-    4: "narrative_and_operational_depth",
+    0: "geometry_only", 1: "access_and_clearance", 2: "functional_zoning",
+    3: "ecosystem_integration", 4: "narrative_and_operational_depth",
 }
 
 
@@ -44,18 +42,14 @@ def jigsaw_contract(req, layout):
             {"name": "frontage", "facing": "south", "joint": "aligned", "pool": req.jigsaw_pool, "width": width, "target": "road"},
             {"name": "service", "facing": "east", "joint": "rollable", "pool": req.jigsaw_pool, "width": width, "target": "service_access"},
         ]
-    return {
-        "enabled": True,
-        "pool": req.jigsaw_pool,
-        "max_depth": req.jigsaw_max_depth,
-        "assembly": "sequential_jigsaw",
-        "connectors": connectors,
-    }
+    return {"enabled": True, "pool": req.jigsaw_pool, "max_depth": req.jigsaw_max_depth, "assembly": "sequential_jigsaw", "connectors": connectors}
 
 
 def lost_cities_contract(req, layout):
     if not req.lost_cities_enabled:
         return {"enabled": False, "spawn_modes": [], "adapter_status": "DISABLED"}
+    footprint = layout["footprint_blocks"]
+    footprint_chunks = [math.ceil(footprint[0] / 16), math.ceil(footprint[1] / 16)]
     return {
         "enabled": True,
         "spawn_modes": list(req.spawn_modes),
@@ -63,8 +57,10 @@ def lost_cities_contract(req, layout):
         "tileable_grid": {
             "enabled": "tileable_grid" in req.spawn_modes,
             "alignment": "chunk_grid",
-            "tile_span_chunks": req.tile_span_chunks,
-            "footprint_blocks": layout["footprint_blocks"],
+            "requested_tile_span_chunks": req.tile_span_chunks,
+            "required_footprint_chunks": footprint_chunks,
+            "reservation_strategy": "single_span" if max(footprint_chunks) <= req.tile_span_chunks else "multi_tile_reservation",
+            "footprint_blocks": footprint,
         },
         "randomized_coordinate": {
             "enabled": "randomized_coordinate" in req.spawn_modes,

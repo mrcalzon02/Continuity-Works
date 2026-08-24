@@ -1,11 +1,10 @@
 {
-  "schema": "structuresmith.infrastructure.example-archive.v1",
-  "world_seed": 20260824,
-  "runtime_scope": "deterministic static contract validation; fresh-world Lost Cities placement remains a runtime gate",
-  "examples": [
-    {"file": "civic_urban.json", "module_type": "civic_facility", "variant": "urban", "seed": 1101, "fingerprint": "95132cb7b34394e8f2b1b6b9dc1d695720be789e0b157ff71dc410e43f649de7", "spawn_anchor": {"x": -2304, "z": -512}, "fitness": "PASS", "deterministic_replay": true},
-    {"file": "civic_rural.json", "module_type": "civic_facility", "variant": "rural", "seed": 1102, "fingerprint": "f7ce9f6cfcbf14d3454bd81b4bd871704ca8995f2aba580cccabfdf243d03fed", "spawn_anchor": {"x": 5376, "z": -2304}, "fitness": "PASS", "deterministic_replay": true},
-    {"file": "industrial_urban.json", "module_type": "industrial_facility", "variant": "urban", "seed": 2201, "fingerprint": "cdb6f8e1a67ba43129f1bf0358e556e80c799aabefff7ec7023281f8f3d006c4", "spawn_anchor": {"x": -3840, "z": 2048}, "fitness": "PASS", "deterministic_replay": true},
-    {"file": "industrial_rural.json", "module_type": "industrial_facility", "variant": "rural", "seed": 2202, "fingerprint": "ddf65e0fc3efd0183a8dd10a94db4c7a6918beea1f03e8e1244e962f6fc585f2", "spawn_anchor": {"x": -1024, "z": 6656}, "fitness": "PASS", "deterministic_replay": true}
+  "schema":"structuresmith.infrastructure.example-archive.v1","world_seed":20260824,
+  "runtime_scope":"deterministic static contract validation; fresh-world Lost Cities placement remains a runtime gate",
+  "examples":[
+    {"file":"civic_urban.json","module_type":"civic_facility","variant":"urban","seed":1101,"fingerprint":"53d952c57fe58d11578dfc51a6705818f9f666343c719caccbbdcda12da70362","spawn_anchor":{"x":-2304,"z":-512},"fitness":"PASS","deterministic_replay":true},
+    {"file":"civic_rural.json","module_type":"civic_facility","variant":"rural","seed":1102,"fingerprint":"f8f660d86bf44b5776773081d7a843c8a8e67d1e4a5c2b2a4cc81f36644ce7eb","spawn_anchor":{"x":5376,"z":-2304},"fitness":"PASS","deterministic_replay":true},
+    {"file":"industrial_urban.json","module_type":"industrial_facility","variant":"urban","seed":2201,"fingerprint":"4d9c168bce9c0ceeb518cf8172fd58ac96f161935ea2c4df1210361a1fe897bd","spawn_anchor":{"x":-3840,"z":2048},"fitness":"PASS","deterministic_replay":true},
+    {"file":"industrial_rural.json","module_type":"industrial_facility","variant":"rural","seed":2202,"fingerprint":"7303c31bb7578fb76e49bacd38f1da88e6f1512f708c47ece146129270213658","spawn_anchor":{"x":-1024,"z":6656},"fitness":"PASS","deterministic_replay":true}
   ]
 }

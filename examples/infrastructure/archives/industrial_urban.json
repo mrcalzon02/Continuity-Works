@@ -1,22 +1,5 @@
 {
-  "request": {
-    "module_type": "industrial_facility",
-    "facility_kind": "industrial_service_works",
-    "variant": "urban",
-    "seed": 2201,
-    "world_seed": 20260824,
-    "orientation": "north_south",
-    "jigsaw": {"enabled": true, "pool": "structuresmith:infrastructure", "connector_width": 4, "max_depth": 8},
-    "lost_cities": {"enabled": true, "spawn_modes": ["tileable_grid", "randomized_coordinate", "sequential_jigsaw"], "tile_span_chunks": 3},
-    "random_spawn": {"radius_blocks": 4096, "spacing_blocks": 256, "salt": 834287},
-    "purpose": {"depth": 4}
-  },
-  "result": {
-    "determinism": {"fingerprint": "cdb6f8e1a67ba43129f1bf0358e556e80c799aabefff7ec7023281f8f3d006c4"},
-    "fitness": {"status": "PASS"},
-    "spawn": {"candidate_anchor": {"x": -3840, "z": 2048}, "world_seed_authorized": true},
-    "lost_cities": {"adapter_status": "CONTRACT_READY_RUNTIME_TEST_REQUIRED"},
-    "runtime_validation": {"fresh_world_placement": "REQUIRED"}
-  },
-  "archive_validation": {"deterministic_replay": true, "static_fitness": "PASS", "world_seed_authorized": true, "fresh_world_runtime": "REQUIRED"}
+  "request": {"module_type":"industrial_facility","facility_kind":"industrial_service_works","variant":"urban","seed":2201,"world_seed":20260824,"orientation":"north_south","jigsaw":{"enabled":true,"pool":"structuresmith:infrastructure","connector_width":4,"max_depth":8},"lost_cities":{"enabled":true,"spawn_modes":["tileable_grid","randomized_coordinate","sequential_jigsaw"],"tile_span_chunks":3},"random_spawn":{"radius_blocks":4096,"spacing_blocks":256,"salt":834287},"purpose":{"depth":4}},
+  "result": {"determinism":{"fingerprint":"4d9c168bce9c0ceeb518cf8172fd58ac96f161935ea2c4df1210361a1fe897bd"},"fitness":{"status":"PASS"},"spawn":{"candidate_anchor":{"x":-3840,"z":2048},"world_seed_authorized":true},"lost_cities":{"adapter_status":"CONTRACT_READY_RUNTIME_TEST_REQUIRED"},"runtime_validation":{"fresh_world_placement":"REQUIRED"}},
+  "archive_validation": {"deterministic_replay":true,"static_fitness":"PASS","world_seed_authorized":true,"fresh_world_runtime":"REQUIRED"}
 }
