@@ -13,33 +13,50 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
       - name: Install Python package
         run: python -m pip install -e .
       - name: Compile Python
         run: python -m compileall -q src tests scripts
-      - name: Unit and HTTP contract tests
+      - name: Unit, API contract, and PUBLIC_SERVICEABILITY tests
         run: python -m unittest discover -s tests -v
+
       - name: Build StructureForge frontend
         working-directory: frontend
         run: |
           npm install --no-audit --no-fund
           npm run build
-      - name: Local public-boundary smoke
+
+      - name: Stamp zero-JavaScript Pages discovery candidate
+        run: |
+          python scripts/build_pages_discovery.py \
+            --output dist/api.json \
+            --commit "$GITHUB_SHA" \
+            --deployment candidate
+          python scripts/public_serviceability.py --static-dir dist
+
+      - name: Local executable API and public-boundary smoke
         shell: bash
         run: |
           set -euo pipefail
+          STRUCTURESMITH_PUBLIC_BASE_URL=http://127.0.0.1:8787 \
+          STRUCTURESMITH_FRONTEND_URL=https://mrcalzon02.github.io/StructureSmith/ \
+          STRUCTURESMITH_DEPLOYMENT=ci \
+          STRUCTURESMITH_COMMIT="$GITHUB_SHA" \
           HOST=0.0.0.0 PORT=8787 python scripts/run_api.py >/tmp/structuresmith-api.log 2>&1 &
           API_PID=$!
           trap 'kill "$API_PID" 2>/dev/null || true' EXIT
           python - <<'PY'
           import time
           from urllib.request import urlopen
-
-          for _ in range(40):
+          for _ in range(60):
               try:
                   with urlopen('http://127.0.0.1:8787/v1/health', timeout=1) as response:
                       if response.status == 200:
@@ -50,6 +67,11 @@ jobs:
               raise SystemExit('StructureSmith HTTP server did not become healthy')
           PY
           python scripts/http_smoke.py http://127.0.0.1:8787
+          python scripts/public_serviceability.py \
+            --api http://127.0.0.1:8787 \
+            --expected-commit "$GITHUB_SHA" \
+            --origin https://mrcalzon02.github.io
+
       - name: Publish validation status
         if: always()
         env:
@@ -59,14 +81,12 @@ jobs:
         shell: bash
         run: |
           python - <<'PY' > /tmp/status.json
-          import json
-          import os
-
+          import json, os
           state = os.environ['STATUS_STATE']
           print(json.dumps({
               'state': 'success' if state == 'success' else 'failure',
               'context': 'structuresmith/validate',
-              'description': 'Regression, frontend build, and local HTTP smoke',
+              'description': 'Regression, frontend build, API contract, local PUBLIC_SERVICEABILITY',
               'target_url': os.environ['TARGET_URL'],
           }))
           PY
