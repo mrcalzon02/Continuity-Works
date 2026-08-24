@@ -149,7 +149,7 @@ class CapabilityResolver:
         request=_apply_defaults(schema,_deep_merge(request,supplied or {})); missing=_missing_required(schema,request); any_missing=[]
         for alternatives in requires_any:
             if not any(request.get(name) not in (None,"",[],{}) for name in alternatives):
-                missing.append("|".join(alternatives)); any_missing.append({"one_of":list(alternatives),"message":f"Supply at least one of: {', '.join(alternativer)}."})
+                missing.append("|".join(alternatives)); any_missing.append({"one_of":list(alternatives),"message":f"Supply at least one of: {', '.join(alternatives)}."})
         unknown=[]
         if schema.get("additionalProperties") is False: unknown=sorted(set(request)-set(schema.get("properties",{})))
         required_inputs={path:_schema_at_path(schema,path) for path in missing if "|" not in path}
