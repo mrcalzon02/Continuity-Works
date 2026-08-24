@@ -23,11 +23,15 @@ export const pipelineMachine = createMachine({
   initial: 'idle',
   states: {
     idle: {
-      on: { BEGIN: 'prompting' },
+      on: {
+        BEGIN: 'prompting',
+        QUICK_BUILD: 'drafting',
+      },
     },
     prompting: {
       on: {
         START_DRAFT: 'drafting',
+        QUICK_BUILD: 'drafting',
         RESET: 'idle',
       },
     },
