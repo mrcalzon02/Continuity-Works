@@ -15,9 +15,13 @@ A conforming provider must:
 9. save a snapshot after each verified coherent batch;
 10. run target-relevant static/mechanical validation;
 11. export the shipping artifact deterministically where format permits;
-12. persist fixed-camera visual evidence for required gates;
-13. never self-approve visual quality;
+12. return sufficient geometry/artifact metadata for a consuming client to inspect or render the result;
+13. never require StructureSmith's server to create visual renders or perform visual approval;
 14. return exact changed files/artifacts, checks, uncertainties and next action.
+
+Visual rendering and visual review are **optional client concerns**, not provider promotion gates. A browser, desktop tool, game/editor integration, Gemini/ChatGPT client, or other consumer may render the returned three-dimensional information using compute it owns. StructureForge is the reference browser-side implementation of this boundary.
+
+A client may impose its own visual-review policy for its own project. That client-side policy does not become a mandatory StructureSmith API gate and must not cause the public StructureSmith service to allocate visual-generation compute on the caller's behalf.
 
 The provider may be:
 - deterministic procedural Python;
