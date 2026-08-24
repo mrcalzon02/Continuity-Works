@@ -106,7 +106,15 @@ class StructureCapability:
                 "content_materialization": "version-adapted",
             },
             "ai_tool_calling": {"catalog_endpoint": "/v1/tools", "portable_json_schema": True},
-            "independent_visual_review_required": True,
+            "visual_review": {
+                "required": False,
+                "owner": "client",
+                "server_side_rendering": False,
+                "policy": "optional_client_review",
+                "reference_client": "StructureForge",
+                "description": "StructureSmith returns geometry, artifacts, and validation metadata; clients render and visually inspect results using their own compute when desired.",
+            },
+            "independent_visual_review_required": False,
         }
 
     def tools(self):
