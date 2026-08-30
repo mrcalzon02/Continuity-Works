@@ -2,7 +2,7 @@
 
 ## Product boundary
 
-**StructureForge** is the interactive product/workbench name. **StructureSmith** remains the underlying reusable structural-reasoning system and repository identity.
+**StructureForge** is the interactive workbench/client name. **Continuity Works** is the underlying reusable structural-reasoning API/system and repository identity.
 
 The frontend is designed as an explainable, collaborative structure-development console rather than a single-button generator. It makes the authoritative lifecycle visible and interruptible: a human can configure constraints, watch geometry appear, inspect concise decision rationales, review optional client-rendered audit views, and explicitly advance between major stages.
 
@@ -35,13 +35,13 @@ This is an XAI summary surface, not a raw chain-of-thought viewer. The interface
 
 React Three Fiber owns the central WebGL viewport. The current voxel renderer uses one mesh per demonstration block because the visible sample is intentionally small. A production structure renderer should graduate to chunked instancing / merged geometry once actual NBT-sized artifacts are streamed.
 
-**This browser renderer is deliberately client-side.** StructureSmith's API is responsible for returning geometry/artifacts/metadata, not for paying to render images or 3D previews for API callers. External clients should follow the same model: render returned three-dimensional information locally or in infrastructure they control.
+**This browser renderer is deliberately client-side.** Continuity Works is responsible for returning geometry/artifacts/metadata, not for paying to render images or 3D previews for API callers. External clients should follow the same model: render returned three-dimensional information locally or in infrastructure they control.
 
 The normalized block event supports `add`, `replace`, and `remove` semantics. That means drafting, repair, and rebuild can all use the same rendering path.
 
 ## Optional audit image viewports
 
-Audit-stage image events can populate three evidence slots in the interface: oblique, plan, and damage-state review. These are a **client presentation feature**, not a StructureSmith server requirement. The demo can create lightweight SVG stand-ins, and a client renderer can create views from returned geometry without changing the API contract.
+Audit-stage image events can populate three evidence slots in the interface: oblique, plan, and damage-state review. These are a **client presentation feature**, not a Continuity Works server requirement. The demo can create lightweight SVG stand-ins, and a client renderer can create views from returned geometry without changing the API contract.
 
 No API call is required to create these images, and generation must not be blocked because they are absent.
 
@@ -57,16 +57,9 @@ A native stream should eventually emit events during the real server-side pipeli
 
 ## Control modules
 
-The first interface exposes optional dropdown groups for:
+The interface exposes optional dropdown groups for StructureForge Generator, Purpose Model, Auditor, Repair, Renderer, and Validator.
 
-- StructureForge Generator;
-- StructureForge Purpose Model;
-- StructureForge Auditor;
-- StructureForge Repair;
-- StructureForge Renderer;
-- StructureForge Validator.
-
-The **StructureForge Renderer** module is local/client functionality. Selecting it controls how the browser presents returned data; it does not request paid visual-generation work from the StructureSmith API host.
+The **StructureForge Renderer** module is local/client functionality. Selecting it controls how the browser presents returned data; it does not request paid visual-generation work from the Continuity Works API host.
 
 The generator request preview shows the JSON contract produced by current selections. This lets a human operator see exactly what an AI/API client would submit.
 
@@ -92,12 +85,10 @@ frontend/
 └─ README.md
 ```
 
-If/when the project adopts a compiled frontend, this structure can be migrated to TypeScript/TSX behind Vite without changing the state machine, stream event contract, API client responsibilities, or component boundaries.
-
 ## Next backend integration increment
 
 A future execution-session/event model may assign a session ID and publish stage/block/rationale events while work is actually occurring, preserving the final snapshot/hash through the existing API. Any richer visual presentation should remain client-side unless a separate, explicitly funded rendering service is introduced by a consuming project.
 
 ## Browser API access
 
-The HTTP server handles CORS preflight requests and emits CORS response headers so the Pages workbench can call a StructureSmith server from a browser. Production deployments should use the configured trusted origin allowlist rather than treating browser access as permission to expose unrelated server-side rendering resources.
+The HTTP server handles CORS preflight requests and emits CORS response headers so the Pages workbench can call a Continuity Works server from a browser. Production deployments should use the configured trusted origin allowlist rather than treating browser access as permission to expose unrelated server-side rendering resources.
