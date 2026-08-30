@@ -82,17 +82,38 @@ jobs:
           wait "$SERVER_PID" 2>/dev/null || true
 
           if [ "$READY" -ne 1 ]; then
-            cat runtime-server.log
+            echo 'Packaged mod did not reach server-ready state.'
+            tail -n 300 runtime-server.log || true
+            if [ -f logs/latest.log ]; then
+              echo '=== latest.log diagnostic tail ==='
+              tail -n 300 logs/latest.log || true
+            fi
+            if [ -d crash-reports ]; then
+              echo '=== crash reports ==='
+              find crash-reports -maxdepth 1 -type f -print -exec tail -n 300 {} \; || true
+            fi
             exit 1
           fi
 
           if ! grep -q 'continuityworks_biomes' logs/latest.log; then
             echo 'Continuity Works biome mod did not appear in server log.'
-            cat logs/latest.log
+            tail -n 300 logs/latest.log || true
             exit 1
           fi
 
+      - name: Upload server diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ContinuityWorks-BiomeTemplates-Server-Diagnostics
+          path: |
+            ${{ runner.temp }}/cw-biome-forge-server/runtime-server.log
+            ${{ runner.temp }}/cw-biome-forge-server/logs/**
+            ${{ runner.temp }}/cw-biome-forge-server/crash-reports/**
+          if-no-files-found: warn
+
       - name: Upload runtime mod
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: ContinuityWorks-BiomeTemplates-Forge-1.20.1-0.2.0
