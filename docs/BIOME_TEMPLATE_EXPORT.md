@@ -1,70 +1,55 @@
-# Biome Expander Template Export — 1.20.1 Baseline
+# Biome Expander Template Runtime Export — Minecraft 1.20.1
 
-## Status
+## Export contract
 
-This is the first concrete Biome Expander export fixture for Continuity Works.
+The authoritative Forge template export is a normal JavaFML runtime mod. Drop the single distributable JAR into a Minecraft Forge 1.20.1 `mods/` directory and start the game/server. No Continuity Works validator, preflight command, registry probe, or configuration verification step is required at runtime.
 
-- Target: Minecraft Java 1.20.1
-- Forge packaging: LowCodeFML data-only mod
-- Vanilla packaging: standard datapack ZIP
-- Namespace: `continuityworks_biomes`
-- Export version: `0.1.0`
-- Compatibility mode: `append_only`
-- Base authority: preserved
-- Static gate: `BIOME_FIRST_EXPORT = PASS`
-- Runtime gate: not yet run
+The mod registers eight custom biome definitions, inserts enabled templates directly into natural Overworld world generation through an additive TerraBlender region, embeds TerraBlender using Forge Jar-in-Jar so the user installs one JAR, and automatically creates a Forge COMMON config. All template biomes are enabled by default.
 
-## Produced exports
+## Config
 
-The Forge export is installable as a data-only Forge mod and contains the same core biome registry definitions as the vanilla datapack export. The vanilla export contains no Forge namespace resources. Both use only vanilla Minecraft worldgen resources inside the biome definitions.
+Forge creates `config/continuityworks-biomes-common.toml` automatically.
 
-The default export intentionally does **not** replace `minecraft:overworld`, any vanilla biome JSON, the vanilla noise settings, or the Overworld biome source. Defining a datapack biome makes the registry entry available, but does not by itself add that biome to natural vanilla Overworld climate selection. Natural placement therefore remains a separate provider operation and must pass fresh-world runtime verification before Continuity Works reports it as supported.
+```toml
+[biomes]
+    temperateGrove = true
+    floweringMeadow = true
+    mistyHighlands = true
+    marshland = true
+    frostedTaiga = true
+    dryScrubland = true
+    rockyBadlands = true
+    ashWastes = true
 
-## Template biomes
+[worldgen]
+    regionWeight = 3
+```
 
-| Biome ID | Template role | Vanilla analog |
-|---|---|---|
-| `continuityworks_biomes:temperate_grove` | Temperate forest | `minecraft:forest` |
-| `continuityworks_biomes:flowering_meadow` | Open flowering grassland | `minecraft:meadow` |
-| `continuityworks_biomes:misty_highlands` | Cool rough highland | `minecraft:windswept_hills` |
-| `continuityworks_biomes:marshland` | High-humidity wetland | `minecraft:swamp` |
-| `continuityworks_biomes:frosted_taiga` | Cold coniferous forest | `minecraft:snowy_taiga` |
-| `continuityworks_biomes:dry_scrubland` | Hot low-density scrub | `minecraft:savanna` |
-| `continuityworks_biomes:rocky_badlands` | Hot arid roughland | `minecraft:badlands` |
-| `continuityworks_biomes:ash_wastes` | Barren extreme dryland | `minecraft:eroded_badlands` |
+Changing a biome toggle requires a restart. A disabled biome stops being selected for newly generated natural terrain; already-generated chunks and existing biome registry references remain intact. `regionWeight` accepts values from `1` to `20`.
 
-Each template includes a Continuity Works metric profile for temperature, humidity, vegetation density, terrain roughness, and water density. These are export metadata and are intentionally separate from Minecraft's native biome codec fields.
+## Template biome IDs
 
-## Vanilla compatibility behavior
+- `continuityworks_biomes:temperate_grove`
+- `continuityworks_biomes:flowering_meadow`
+- `continuityworks_biomes:misty_highlands`
+- `continuityworks_biomes:marshland`
+- `continuityworks_biomes:frosted_taiga`
+- `continuityworks_biomes:dry_scrubland`
+- `continuityworks_biomes:rocky_badlands`
+- `continuityworks_biomes:ash_wastes`
 
-The vanilla datapack appends the templates to relevant existing Minecraft biome tags using `replace: false`. All eight are added to `minecraft:is_overworld`; forest, mountain, taiga, badlands, and savanna analogs are additionally classified through the corresponding vanilla tags. No file under `data/minecraft/worldgen/biome/` is emitted.
+## World-generation behavior
 
-## Forge compatibility behavior
+The runtime mod uses TerraBlender's `Region` and `VanillaParameterOverlayBuilder` APIs. Each enabled biome contributes climate parameter points for temperature, humidity, continentalness, erosion, depth, and weirdness. TerraBlender blends those entries into Overworld biome selection without replacing the vanilla Overworld biome source.
 
-The Forge LowCodeFML JAR includes the same additive Minecraft tags and also appends appropriate Forge biome classification tags such as plains, swamp, mountain, coniferous, snowy, hot, dry, dead, and sandy. It does not use remove/replace biome modifiers.
+Biome-specific surface rules provide vanilla-material ground palettes, including podzol for Frosted Taiga, mud for Marshland, red sand/terracotta for Rocky Badlands, and tuff/basalt for Ash Wastes.
 
-## Verification results
+## Compatibility behavior
 
-The static export validator checks:
+The runtime JAR carries vanilla-compatible dynamic biome definitions plus additive Minecraft and Forge biome tags. It does not replace `minecraft:overworld`, vanilla biome JSON, vanilla noise settings, or the vanilla biome source.
 
-- exact template count;
-- required biome codec keys;
-- eleven feature-generation stages per template;
-- required visual effect fields;
-- JSON readability;
-- Forge `mods.toml` TOML parsing and `lowcodefml` loader declaration;
-- Minecraft 1.20.1 pack format 15;
-- no vanilla biome definition overrides;
-- no tag with `replace: true`;
-- Forge/vanilla core biome-definition parity;
-- ZIP/JAR archive integrity;
-- non-destructive manifest invariants;
-- explicit `PLACEMENT_PROVIDER_REQUIRED` status for natural Overworld placement.
+A separate pure-data vanilla compatibility ZIP may be exported for tooling/datapack reuse, but normal Forge runtime insertion is handled by the JavaFML mod itself.
 
-The current generated bundle passes all 73 static checks. This does not substitute for launching Minecraft. The next runtime stage is to load both exports in controlled 1.20.1 test environments, verify registry load, inspect logs for missing worldgen references, and only then promote the provider tuple to runtime-validated status.
+## Source
 
-## Artifact hashes
-
-- Forge JAR SHA-256: `78b382133130b11606f7a08dcaf4e26adb3a37b7a9c38ca72b1b7afa7690d957`
-- Vanilla datapack SHA-256: `ffda5e2d614964532e3929feb745ed4e50ebc972d48e2b796f8765b8b58506c7`
-- Source bundle SHA-256: `664baebdf021064c52a772050a4787092168c4a46fad2f402c710821b42bdd5a`
+The reusable runtime template project is stored at `examples/biome_expander/runtime_mod/1.20.1/` and is intended to be copied or generated as the baseline Forge 1.20.1 Biome Expander target.
