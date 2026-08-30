@@ -4,23 +4,24 @@ import argparse
 import json
 from pathlib import Path
 
-DEFAULT_API = "https://structuresmith-mrcalzon02-api.onrender.com"
-DEFAULT_FRONTEND = "https://mrcalzon02.github.io/StructureSmith/"
+DEFAULT_API = "https://continuity-works-mrcalzon02-api.onrender.com"
+DEFAULT_FRONTEND = "https://mrcalzon02.github.io/Continuity-Works/"
 
 
 def document(api: str, frontend: str, commit: str, deployment: str) -> dict:
     base = api.rstrip("/")
     front = frontend.rstrip("/") + "/"
     return {
-        "schema_version": "1.1",
-        "name": "StructureSmith",
-        "description": "Zero-JavaScript discovery for the executable StructureSmith API. GitHub Pages is the static frontend only.",
+        "schema_version": "1.2",
+        "name": "Continuity Works",
+        "slug": "continuity-works",
+        "description": "Zero-JavaScript discovery for the executable Continuity Works API. GitHub Pages is the static frontend only.",
         "frontend": front,
         "api": base,
         "health": f"{base}/v1/health",
         "tools": f"{base}/v1/tools",
         "openapi": f"{base}/openapi.json",
-        "discovery": f"{base}/.well-known/structuresmith.json",
+        "discovery": f"{base}/.well-known/continuity-works.json",
         "serviceability": f"{base}/v1/serviceability",
         "frontend_commit": commit,
         "api_verification_at_build": deployment,
