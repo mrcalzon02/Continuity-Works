@@ -1,8 +1,8 @@
-name: Verify and Deploy Public StructureSmith Service
+name: Verify and Deploy Public Continuity Works Service
 
 on:
   workflow_run:
-    workflows: ["Validate Structure Capability"]
+    workflows: ["Validate Continuity Works"]
     types: [completed]
   workflow_dispatch:
 
@@ -13,13 +13,13 @@ permissions:
   statuses: write
 
 concurrency:
-  group: structuresmith-public-service
+  group: continuity-works-public-service
   cancel-in-progress: true
 
 env:
-  STRUCTURESMITH_API: https://structuresmith-mrcalzon02-api.onrender.com
-  STRUCTURESMITH_FRONTEND: https://mrcalzon02.github.io/StructureSmith/
-  STRUCTURESMITH_ORIGIN: https://mrcalzon02.github.io
+  CONTINUITY_WORKS_API: https://continuity-works-mrcalzon02-api.onrender.com
+  CONTINUITY_WORKS_FRONTEND: https://mrcalzon02.github.io/Continuity-Works/
+  CONTINUITY_WORKS_ORIGIN: https://mrcalzon02.github.io
   TARGET_SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
 
 jobs:
@@ -35,20 +35,20 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Wait for Render to serve this exact main commit, then verify remote API
+      - name: Wait for configured host to serve this exact main commit, then verify remote API
         shell: bash
         run: |
           set -u
           for attempt in $(seq 1 90); do
             if python scripts/public_serviceability.py \
-              --api "$STRUCTURESMITH_API" \
+              --api "$CONTINUITY_WORKS_API" \
               --expected-commit "$TARGET_SHA" \
-              --origin "$STRUCTURESMITH_ORIGIN"; then
+              --origin "$CONTINUITY_WORKS_ORIGIN"; then
               exit 0
             fi
             sleep 10
           done
-          echo "Remote API never passed PUBLIC_SERVICEABILITY for commit $TARGET_SHA" >&2
+          echo "Remote Continuity Works API never passed PUBLIC_SERVICEABILITY for commit $TARGET_SHA" >&2
           exit 1
 
   build-pages:
@@ -79,9 +79,9 @@ jobs:
           test -f dist/api.json
           test -d dist/assets
           test -f frontend/src/components/ManualCapabilityWorkbench.js
-          grep -q 'structuresmith-api' dist/index.html
+          grep -q 'continuity-works-api' dist/index.html
           grep -R -q 'Manual Capability Workbench' dist/assets
-          python scripts/public_serviceability.py --static-dir dist --expected-api "$STRUCTURESMITH_API"
+          python scripts/public_serviceability.py --static-dir dist --expected-api "$CONTINUITY_WORKS_API"
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
       - name: Upload intended Pages artifact
@@ -116,14 +116,14 @@ jobs:
           set -u
           for attempt in $(seq 1 60); do
             if python scripts/public_serviceability.py \
-              --pages "$STRUCTURESMITH_FRONTEND" \
+              --pages "$CONTINUITY_WORKS_FRONTEND" \
               --expected-commit "$TARGET_SHA" \
-              --origin "$STRUCTURESMITH_ORIGIN"; then
+              --origin "$CONTINUITY_WORKS_ORIGIN"; then
               exit 0
             fi
             sleep 10
           done
-          echo "Pages-to-API discovery never reached VERIFIED for commit $TARGET_SHA" >&2
+          echo "Pages-to-API discovery never reached VERIFIED for Continuity Works commit $TARGET_SHA" >&2
           exit 1
 
   report:
@@ -146,7 +146,7 @@ jobs:
           verified = os.environ.get('VERIFIED') == 'success'
           print(json.dumps({
               'state': 'success' if verified else 'failure',
-              'context': 'structuresmith/public-serviceability',
+              'context': 'continuity-works/public-serviceability',
               'description': 'External-service VERIFIED' if verified else 'External-service NOT VERIFIED',
               'target_url': os.environ['TARGET_URL'],
           }))
