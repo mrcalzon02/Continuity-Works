@@ -1,0 +1,35 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="MIT"
+issueTrackerURL="https://github.com/mrcalzon02/Continuity-Works/issues"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="Continuity Works Biome Templates"
+displayURL="https://github.com/mrcalzon02/Continuity-Works"
+authors="Continuity Works"
+description='''
+Plug-and-play biome template mod for Minecraft Forge 1.20.1. Registers eight vanilla-compatible biome templates and inserts enabled templates into natural Overworld generation using an additive TerraBlender region. Individual biomes can be toggled in the automatically generated common config.
+'''
+
+[[dependencies.${mod_id}]]
+modId="forge"
+mandatory=true
+versionRange="[${forge_version},)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1,1.20.2)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId="terrablender"
+mandatory=true
+versionRange="[${terrablender_version},3.1)"
+ordering="AFTER"
+side="BOTH"
