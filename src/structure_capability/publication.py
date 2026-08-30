@@ -6,9 +6,20 @@ from importlib.metadata import PackageNotFoundError, version as package_version
 import os
 from typing import Any
 
-CANONICAL_FRONTEND_URL = "https://mrcalzon02.github.io/StructureSmith/"
-CANONICAL_API_URL = "https://structuresmith-mrcalzon02-api.onrender.com"
+CANONICAL_FRONTEND_URL = "https://mrcalzon02.github.io/Continuity-Works/"
+CANONICAL_API_URL = "https://continuity-works-mrcalzon02-api.onrender.com"
 PUBLIC_GATE = "PUBLIC_SERVICEABILITY"
+
+
+def _env(primary: str, legacy: str | None = None, default: str = "") -> str:
+    value = os.environ.get(primary)
+    if value is not None:
+        return value
+    if legacy:
+        legacy_value = os.environ.get(legacy)
+        if legacy_value is not None:
+            return legacy_value
+    return default
 
 
 @dataclass(frozen=True)
@@ -101,18 +112,20 @@ PUBLIC_CAPABILITIES: dict[str, PublicCapabilitySpec] = {
 
 
 def canonical_api_url() -> str:
-    return (os.environ.get("STRUCTURESMITH_PUBLIC_BASE_URL") or CANONICAL_API_URL).rstrip("/")
+    return _env("CONTINUITY_WORKS_PUBLIC_BASE_URL", "STRUCTURESMITH_PUBLIC_BASE_URL", CANONICAL_API_URL).rstrip("/")
 
 
 def canonical_frontend_url() -> str:
-    return (os.environ.get("STRUCTURESMITH_FRONTEND_URL") or CANONICAL_FRONTEND_URL).rstrip("/") + "/"
+    return _env("CONTINUITY_WORKS_FRONTEND_URL", "STRUCTURESMITH_FRONTEND_URL", CANONICAL_FRONTEND_URL).rstrip("/") + "/"
 
 
 def installed_version() -> str:
-    try:
-        return package_version("structure-generation-capability")
-    except PackageNotFoundError:
-        return os.environ.get("STRUCTURESMITH_VERSION", "source")
+    for distribution in ("continuity-works-capability", "structure-generation-capability"):
+        try:
+            return package_version(distribution)
+        except PackageNotFoundError:
+            pass
+    return _env("CONTINUITY_WORKS_VERSION", "STRUCTURESMITH_VERSION", "source")
 
 
 def deployment_identity(base_url: str | None = None, tool_schema_version: str | None = None) -> dict[str, Any]:
@@ -120,13 +133,14 @@ def deployment_identity(base_url: str | None = None, tool_schema_version: str | 
     resolved_base = (base_url or render_url or canonical_api_url()).rstrip("/")
     commit = (
         os.environ.get("RENDER_GIT_COMMIT")
-        or os.environ.get("STRUCTURESMITH_COMMIT")
+        or _env("CONTINUITY_WORKS_COMMIT", "STRUCTURESMITH_COMMIT")
         or os.environ.get("GITHUB_SHA")
         or "unknown"
     )
-    deployment = os.environ.get("STRUCTURESMITH_DEPLOYMENT") or ("production" if os.environ.get("RENDER") == "true" else "local")
+    deployment = _env("CONTINUITY_WORKS_DEPLOYMENT", "STRUCTURESMITH_DEPLOYMENT") or ("production" if os.environ.get("RENDER") == "true" else "local")
     return {
-        "service": "StructureSmith",
+        "service": "Continuity Works",
+        "service_slug": "continuity-works",
         "api_version": "v1",
         "package_version": installed_version(),
         "tool_schema_version": tool_schema_version or "unknown",
@@ -160,6 +174,15 @@ def publication_record(spec: PublicCapabilitySpec, capability: Any, base_url: st
     }
 
 
+def _continuity_extension(tool: dict[str, Any]) -> dict[str, Any]:
+    legacy = tool.pop("x-structuresmith", None)
+    current = tool.setdefault("x-continuity-works", {})
+    if legacy:
+        for key, value in legacy.items():
+            current.setdefault(key, value)
+    return current
+
+
 def published_tool_catalog(catalog: dict[str, Any], capability: Any, base_url: str | None = None) -> dict[str, Any]:
     base = (base_url or canonical_api_url()).rstrip("/")
     output = deepcopy(catalog)
@@ -167,7 +190,7 @@ def published_tool_catalog(catalog: dict[str, Any], capability: Any, base_url: s
     for tool in output.get("tools", []):
         name = tool.get("name")
         spec = PUBLIC_CAPABILITIES.get(name)
-        xs = tool.setdefault("x-structuresmith", {})
+        xs = _continuity_extension(tool)
         if spec is None:
             xs["publication"] = {
                 "implementation": "unknown",
@@ -208,7 +231,7 @@ def static_serviceability(capability: Any, catalog: dict[str, Any], openapi: dic
         if not callable(getattr(capability, spec.capability_method, None)):
             findings.append({"severity": "error", "code": "IMPLEMENTATION_MISSING", "capability": name, "message": f"Python method {spec.capability_method} is missing or not callable."})
         operation = openapi.get("paths", {}).get(spec.path, {}).get(spec.http_method.lower())
-        if not operation or operation.get("x-structuresmith-tool") != name:
+        if not operation or operation.get("x-continuity-works-tool") != name:
             findings.append({"severity": "error", "code": "OPENAPI_MISMATCH", "capability": name, "message": "Canonical route is absent or mismatched in OpenAPI."})
         if spec.manual_ui not in {"available", "not_applicable"}:
             findings.append({"severity": "error", "code": "MANUAL_UI_UNCLASSIFIED", "capability": name, "message": "Manual UI availability was not classified."})
