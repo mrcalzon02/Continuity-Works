@@ -1,0 +1,9 @@
+{
+  "layout_id":"continuityworks:layout/compact_room_7x7","layout_version":1,"category":"base_layout",
+  "description":"Small four-way room cell for houses, utility rooms, checkpoints, kiosks, and compact interior modules.",
+  "footprint":{"width":7,"depth":7,"height":5},"origin":[0,0,0],"module":{"macro":7,"meso":1,"micro":1},
+  "zones":[{"id":"shell","role":"structure","bounds":{"min":[0,0,0],"max":[6,4,6]}},{"id":"interior","role":"usable","bounds":{"min":[1,1,1],"max":[5,3,5]}}],
+  "connectors":[{"id":"north","kind":"horizontal","side":"north","center":[3,1,0],"width":3,"height":3},{"id":"south","kind":"horizontal","side":"south","center":[3,1,6],"width":3,"height":3},{"id":"west","kind":"horizontal","side":"west","center":[0,1,3],"width":3,"height":3},{"id":"east","kind":"horizontal","side":"east","center":[6,1,3],"width":3,"height":3}],
+  "constraints":{"rotations":[0,90,180,270],"mirror":true,"minimum_walk_width":1,"minimum_headroom":2},
+  "material_roles":{"foundation":"foundation","wall":"primary_wall","roof":"roof","accent":"accent","light":"light"}
+}

@@ -1,0 +1,9 @@
+{
+  "layout_id":"continuityworks:layout/courtyard_17x17","layout_version":1,"category":"base_layout",
+  "description":"Enclosed perimeter shell around a nine-by-nine open court with four centered access gates.",
+  "footprint":{"width":17,"depth":17,"height":6},"origin":[0,0,0],"module":{"macro":17,"meso":4,"micro":1},
+  "zones":[{"id":"perimeter","role":"built_ring","bounds":{"min":[0,0,0],"max":[16,5,16]}},{"id":"courtyard","role":"open_space","bounds":{"min":[4,1,4],"max":[12,4,12]}},{"id":"north_entry","role":"circulation","bounds":{"min":[7,1,0],"max":[9,3,3]}},{"id":"south_entry","role":"circulation","bounds":{"min":[7,1,13],"max":[9,3,16]}}],
+  "connectors":[{"id":"north","kind":"horizontal","side":"north","center":[8,1,0],"width":3,"height":3},{"id":"south","kind":"horizontal","side":"south","center":[8,1,16],"width":3,"height":3},{"id":"west","kind":"horizontal","side":"west","center":[0,1,8],"width":3,"height":3},{"id":"east","kind":"horizontal","side":"east","center":[16,1,8],"width":3,"height":3}],
+  "constraints":{"rotations":[0,90,180,270],"mirror":true,"minimum_open_sky_area":81,"minimum_walk_width":3},
+  "material_roles":{"foundation":"foundation","wall":"primary_wall","path":"circulation_floor","landscape":"landscape","water":"water"}
+}

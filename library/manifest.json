@@ -1,0 +1,27 @@
+{
+  "library": "Continuity Works Structural Library",
+  "schema_version": 1,
+  "library_version": "0.1.0",
+  "namespace": "continuityworks",
+  "policy": {
+    "default_material_policy": "vanilla_first",
+    "compatibility_mode": "non_destructive_additive",
+    "stable_ids": true,
+    "layout_and_geometry_separated": true
+  },
+  "counts": {"layouts": 6, "test_structures": 6, "entries": 12},
+  "entries": [
+    {"id":"continuityworks:layout/compact_room_7x7","kind":"layout","category":"base","path":"layouts/base/compact_room_7x7.json","tags":["compact","reusable","vanilla_first"],"status":"baseline"},
+    {"id":"continuityworks:layout/linear_corridor_5x13","kind":"layout","category":"base","path":"layouts/base/linear_corridor_5x13.json","tags":["linear","reusable","vanilla_first"],"status":"baseline"},
+    {"id":"continuityworks:layout/cross_hub_13x13","kind":"layout","category":"base","path":"layouts/base/cross_hub_13x13.json","tags":["cross","reusable","vanilla_first"],"status":"baseline"},
+    {"id":"continuityworks:layout/courtyard_17x17","kind":"layout","category":"base","path":"layouts/base/courtyard_17x17.json","tags":["courtyard","reusable","vanilla_first"],"status":"baseline"},
+    {"id":"continuityworks:layout/tower_core_9x9","kind":"layout","category":"base","path":"layouts/base/tower_core_9x9.json","tags":["tower","reusable","vanilla_first"],"status":"baseline"},
+    {"id":"continuityworks:layout/modular_grid_3x3","kind":"layout","category":"base","path":"layouts/base/modular_grid_3x3.json","tags":["modular","reusable","vanilla_first"],"status":"baseline"},
+    {"id":"continuityworks:test/orientation_marker_5x4x5","kind":"test_structure","category":"default_test","path":"test_structures/orientation_marker_5x4x5.json","tags":["bounds","origin","orientation","palette","determinism"],"status":"baseline"},
+    {"id":"continuityworks:test/room_shell_7x5x7","kind":"test_structure","category":"default_test","path":"test_structures/room_shell_7x5x7.json","tags":["shell","door_clearance","roof","interior_volume","palette"],"status":"baseline"},
+    {"id":"continuityworks:test/corridor_5x4x13","kind":"test_structure","category":"default_test","path":"test_structures/corridor_5x4x13.json","tags":["circulation","headroom","connector_alignment","length","lighting"],"status":"baseline"},
+    {"id":"continuityworks:test/cross_hub_13x4x13","kind":"test_structure","category":"default_test","path":"test_structures/cross_hub_13x4x13.json","tags":["four_way_connectivity","hub_center","rotation_symmetry","clearance"],"status":"baseline"},
+    {"id":"continuityworks:test/courtyard_17x3x17","kind":"test_structure","category":"default_test","path":"test_structures/courtyard_17x3x17.json","tags":["large_footprint","open_space","four_way_access","liquid","landscape"],"status":"baseline"},
+    {"id":"continuityworks:test/tower_core_9x12x9","kind":"test_structure","category":"default_test","path":"test_structures/tower_core_9x12x9.json","tags":["verticality","floor_levels","height","vertical_circulation","bounds"],"status":"baseline"}
+  ]
+}

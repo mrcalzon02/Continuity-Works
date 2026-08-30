@@ -15,6 +15,7 @@ from .generators import (
 from .minecraft.content_tools import MinecraftContentTools
 from .versioning import MinecraftVersionProfile, resolve_minecraft_version
 from .request_resolution import CapabilityResolver
+from .structure_library import StructureLibrary, StructureLibraryError
 
 __all__ = [
     "StructureCapability", "RebuildGrade", "AccessClearance",
@@ -23,4 +24,5 @@ __all__ = [
     "DungeonLayoutRequest", "GeneratorRegistry", "NativeDungeonProvider",
     "adapt_donjon_options", "MinecraftContentTools",
     "MinecraftVersionProfile", "resolve_minecraft_version", "CapabilityResolver",
+    "StructureLibrary", "StructureLibraryError",
 ]

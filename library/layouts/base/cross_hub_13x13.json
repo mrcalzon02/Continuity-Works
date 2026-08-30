@@ -1,0 +1,9 @@
+{
+  "layout_id":"continuityworks:layout/cross_hub_13x13","layout_version":1,"category":"base_layout",
+  "description":"Four-way hub with a central decision space and equal-length connection arms.",
+  "footprint":{"width":13,"depth":13,"height":5},"origin":[0,0,0],"module":{"macro":13,"meso":3,"micro":1},
+  "zones":[{"id":"core","role":"hub","bounds":{"min":[4,1,4],"max":[8,3,8]}},{"id":"north_arm","role":"circulation","bounds":{"min":[5,1,0],"max":[7,3,3]}},{"id":"south_arm","role":"circulation","bounds":{"min":[5,1,9],"max":[7,3,12]}},{"id":"west_arm","role":"circulation","bounds":{"min":[0,1,5],"max":[3,3,7]}},{"id":"east_arm","role":"circulation","bounds":{"min":[9,1,5],"max":[12,3,7]}}],
+  "connectors":[{"id":"north","kind":"horizontal","side":"north","center":[6,1,0],"width":3,"height":3},{"id":"south","kind":"horizontal","side":"south","center":[6,1,12],"width":3,"height":3},{"id":"west","kind":"horizontal","side":"west","center":[0,1,6],"width":3,"height":3},{"id":"east","kind":"horizontal","side":"east","center":[12,1,6],"width":3,"height":3}],
+  "constraints":{"rotations":[0,90,180,270],"mirror":true,"minimum_walk_width":3,"minimum_headroom":3},
+  "material_roles":{"floor":"circulation_floor","wall":"primary_wall","hub_accent":"accent","light":"light"}
+}

@@ -1,0 +1,15 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"Continuity Works Structural Library Manifest",
+  "type":"object",
+  "required":["library","schema_version","library_version","namespace","policy","counts","entries"],
+  "properties":{
+    "library":{"type":"string"},
+    "schema_version":{"type":"integer","minimum":1},
+    "library_version":{"type":"string"},
+    "namespace":{"type":"string","pattern":"^[a-z0-9_.-]+$"},
+    "policy":{"type":"object"},
+    "counts":{"type":"object","required":["layouts","test_structures","entries"],"properties":{"layouts":{"type":"integer","minimum":0},"test_structures":{"type":"integer","minimum":0},"entries":{"type":"integer","minimum":0}}},
+    "entries":{"type":"array","items":{"type":"object","required":["id","kind","category","path","tags","status"],"properties":{"id":{"type":"string","pattern":"^[a-z0-9_.-]+:[A-Za-z0-9_./-]+$"},"kind":{"enum":["layout","test_structure"]},"category":{"type":"string"},"path":{"type":"string"},"tags":{"type":"array","items":{"type":"string"},"uniqueItems":true},"status":{"enum":["baseline","experimental","deprecated"]}}}}
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "layout_id":"continuityworks:layout/linear_corridor_5x13","layout_version":1,"category":"base_layout",
+  "description":"Straight circulation segment with side attachment points and a three-block primary passage.",
+  "footprint":{"width":5,"depth":13,"height":4},"origin":[0,0,0],"module":{"macro":13,"meso":1,"micro":1},
+  "zones":[{"id":"passage","role":"circulation","bounds":{"min":[1,1,0],"max":[3,2,12]}},{"id":"service_west","role":"attachment_band","bounds":{"min":[0,1,3],"max":[0,2,9]}},{"id":"service_east","role":"attachment_band","bounds":{"min":[4,1,3],"max":[4,2,9]}}],
+  "connectors":[{"id":"north","kind":"horizontal","side":"north","center":[2,1,0],"width":3,"height":3},{"id":"south","kind":"horizontal","side":"south","center":[2,1,12],"width":3,"height":3},{"id":"west_mid","kind":"horizontal","side":"west","center":[0,1,6],"width":3,"height":3},{"id":"east_mid","kind":"horizontal","side":"east","center":[4,1,6],"width":3,"height":3}],
+  "constraints":{"rotations":[0,90,180,270],"mirror":true,"minimum_walk_width":3,"minimum_headroom":2},
+  "material_roles":{"floor":"circulation_floor","wall":"primary_wall","ceiling":"ceiling","trim":"accent"}
+}

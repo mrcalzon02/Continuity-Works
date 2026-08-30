@@ -1,0 +1,9 @@
+{
+  "layout_id":"continuityworks:layout/tower_core_9x9","layout_version":1,"category":"base_layout",
+  "description":"Vertical core supporting stacked floors, central circulation, and horizontal attachments on each level.",
+  "footprint":{"width":9,"depth":9,"height":12},"origin":[0,0,0],"module":{"macro":9,"meso":3,"micro":1},
+  "zones":[{"id":"ground","role":"floor","bounds":{"min":[0,0,0],"max":[8,3,8]}},{"id":"middle","role":"floor","bounds":{"min":[0,4,0],"max":[8,7,8]}},{"id":"upper","role":"floor","bounds":{"min":[0,8,0],"max":[8,11,8]}},{"id":"vertical_core","role":"vertical_circulation","bounds":{"min":[3,1,3],"max":[5,10,5]}}],
+  "connectors":[{"id":"north_ground","kind":"horizontal","side":"north","center":[4,1,0],"width":3,"height":3},{"id":"south_ground","kind":"horizontal","side":"south","center":[4,1,8],"width":3,"height":3},{"id":"up","kind":"vertical","side":"up","center":[4,11,4],"width":3,"height":1},{"id":"down","kind":"vertical","side":"down","center":[4,0,4],"width":3,"height":1}],
+  "constraints":{"rotations":[0,90,180,270],"mirror":true,"minimum_stair_width":1,"minimum_headroom":2},
+  "material_roles":{"foundation":"foundation","wall":"primary_wall","floor":"floor","vertical_circulation":"circulation_floor","light":"light"}
+}

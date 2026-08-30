@@ -1,0 +1,14 @@
+{
+  "layout_id":"continuityworks:layout/modular_grid_3x3","layout_version":1,"category":"base_layout",
+  "description":"Nine-cell macro layout for deterministic settlement, facility, dungeon, or campus composition.",
+  "footprint":{"width":36,"depth":36,"height":8},"origin":[0,0,0],"module":{"macro":12,"meso":4,"micro":1},
+  "cells":[
+    {"id":"cell_0_0","row":0,"column":0,"origin":[0,0,0],"size":[12,8,12]},{"id":"cell_0_1","row":0,"column":1,"origin":[12,0,0],"size":[12,8,12]},{"id":"cell_0_2","row":0,"column":2,"origin":[24,0,0],"size":[12,8,12]},
+    {"id":"cell_1_0","row":1,"column":0,"origin":[0,0,12],"size":[12,8,12]},{"id":"cell_1_1","row":1,"column":1,"origin":[12,0,12],"size":[12,8,12]},{"id":"cell_1_2","row":1,"column":2,"origin":[24,0,12],"size":[12,8,12]},
+    {"id":"cell_2_0","row":2,"column":0,"origin":[0,0,24],"size":[12,8,12]},{"id":"cell_2_1","row":2,"column":1,"origin":[12,0,24],"size":[12,8,12]},{"id":"cell_2_2","row":2,"column":2,"origin":[24,0,24],"size":[12,8,12]}
+  ],
+  "zones":[{"id":"center","role":"primary","bounds":{"min":[12,0,12],"max":[23,7,23]}},{"id":"north_band","role":"secondary","bounds":{"min":[0,0,0],"max":[35,7,11]}},{"id":"south_band","role":"secondary","bounds":{"min":[0,0,24],"max":[35,7,35]}}],
+  "connectors":[{"id":"north","kind":"horizontal","side":"north","center":[17,1,0],"width":3,"height":3},{"id":"south","kind":"horizontal","side":"south","center":[17,1,35],"width":3,"height":3},{"id":"west","kind":"horizontal","side":"west","center":[0,1,17],"width":3,"height":3},{"id":"east","kind":"horizontal","side":"east","center":[35,1,17],"width":3,"height":3}],
+  "constraints":{"rotations":[0,90,180,270],"mirror":true,"cell_assignment":"provider_defined","connector_alignment":"centered"},
+  "material_roles":{"primary":"primary_wall","secondary":"secondary_wall","circulation":"circulation_floor","landscape":"landscape"}
+}
