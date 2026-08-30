@@ -14,8 +14,8 @@ class PublicHttpApiTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.tempdir = tempfile.TemporaryDirectory()
-        cls.previous_cors = os.environ.get("STRUCTURESMITH_CORS_ORIGIN")
-        os.environ["STRUCTURESMITH_CORS_ORIGIN"] = "https://mrcalzon02.github.io"
+        cls.previous_cors = os.environ.get("CONTINUITY_WORKS_CORS_ORIGIN")
+        os.environ["CONTINUITY_WORKS_CORS_ORIGIN"] = "https://mrcalzon02.github.io"
         Handler.capability = StructureCapability(cls.tempdir.name)
         cls.server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
         cls.thread = threading.Thread(target=cls.server.serve_forever, daemon=True)
@@ -29,9 +29,9 @@ class PublicHttpApiTests(unittest.TestCase):
         cls.thread.join(timeout=2)
         cls.tempdir.cleanup()
         if cls.previous_cors is None:
-            os.environ.pop("STRUCTURESMITH_CORS_ORIGIN", None)
+            os.environ.pop("CONTINUITY_WORKS_CORS_ORIGIN", None)
         else:
-            os.environ["STRUCTURESMITH_CORS_ORIGIN"] = cls.previous_cors
+            os.environ["CONTINUITY_WORKS_CORS_ORIGIN"] = cls.previous_cors
 
     def request(self, method, path, body=None, headers=None):
         data = None if body is None else json.dumps(body).encode("utf-8")
@@ -58,6 +58,9 @@ class PublicHttpApiTests(unittest.TestCase):
         status, _, spec = self.request("GET", "/openapi.json")
         self.assertEqual(status, 200)
         self.assertEqual(spec["openapi"], "3.1.0")
+        self.assertEqual(spec["info"]["title"], "Continuity Works Capability API")
+        self.assertIn("x-continuity-works", spec)
+        self.assertNotIn("x-structuresmith", spec)
         expected = {
             "/v1/health": "get",
             "/v1/capabilities": "get",
@@ -76,17 +79,35 @@ class PublicHttpApiTests(unittest.TestCase):
             "/v1/minecraft/icon": "post",
             "/v1/resume": "post",
             "/openapi.json": "get",
-            "/.well-known/structuresmith.json": "get",
+            "/.well-known/continuity-works.json": "get",
         }
         for path, method in expected.items():
             self.assertIn(path, spec["paths"])
             self.assertIn(method, spec["paths"][path])
+        self.assertNotIn("/.well-known/structuresmith.json", spec["paths"])
 
-        status, _, discovery = self.request("GET", "/.well-known/structuresmith.json")
+        status, _, discovery = self.request("GET", "/.well-known/continuity-works.json")
         self.assertEqual(status, 200)
+        self.assertEqual(discovery["name"], "Continuity Works")
+        self.assertEqual(discovery["slug"], "continuity-works")
         self.assertTrue(discovery["endpoints"]["tools"].endswith("/v1/tools"))
         self.assertTrue(discovery["endpoints"]["openapi"].endswith("/openapi.json"))
         self.assertTrue(discovery["endpoints"]["health"].endswith("/v1/health"))
+        self.assertTrue(discovery["endpoints"]["discovery"].endswith("/.well-known/continuity-works.json"))
+
+    def test_legacy_discovery_alias_is_unadvertised_but_compatible(self):
+        status, _, legacy = self.request("GET", "/.well-known/structuresmith.json")
+        self.assertEqual(status, 200)
+        self.assertEqual(legacy["name"], "Continuity Works")
+        self.assertTrue(legacy["endpoints"]["discovery"].endswith("/.well-known/continuity-works.json"))
+
+    def test_public_tool_catalog_uses_continuity_works_vendor_extension(self):
+        status, _, catalog = self.request("GET", "/v1/tools")
+        self.assertEqual(status, 200)
+        self.assertGreater(len(catalog.get("tools", [])), 0)
+        for tool in catalog["tools"]:
+            self.assertIn("x-continuity-works", tool)
+            self.assertNotIn("x-structuresmith", tool)
 
     def test_cors_allows_github_pages_and_rejects_other_origins(self):
         status, headers, _ = self.request(
@@ -128,7 +149,7 @@ class PublicHttpApiTests(unittest.TestCase):
             "/v1/capabilities",
             "/v1/tools",
             "/openapi.json",
-            "/.well-known/structuresmith.json",
+            "/.well-known/continuity-works.json",
         ):
             with self.subTest(path=path):
                 status, _, payload = self.request("GET", path)
@@ -171,7 +192,7 @@ class PublicHttpApiTests(unittest.TestCase):
                     "result": "minecraft:cobblestone",
                 },
             ),
-            ("/v1/minecraft/icon", {"subject": "structure", "mode": "badge", "label": "SS"}),
+            ("/v1/minecraft/icon", {"subject": "structure", "mode": "badge", "label": "CW"}),
         ]
         for path, body in requests:
             with self.subTest(path=path):
