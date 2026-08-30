@@ -1,12 +1,14 @@
-# API Reference
+# Continuity Works API Reference
+
+The public product/service name is **Continuity Works**. The internal Python package `structure_capability` and class `StructureCapability` remain stable implementation names for compatibility.
 
 ## `StructureCapability(project_root, state_root=None)`
 
 ### `.capabilities()`
-Returns the stable API version, supported lifecycle operations, rebuild grades, procedural-generation features, Minecraft version/content policy, and review requirements.
+Returns the Continuity Works service identity, stable API version, supported lifecycle operations, rebuild grades, procedural-generation features, Minecraft version/content policy, progressive-disclosure endpoints, and review policy.
 
 ### `.tools()`
-Returns the portable JSON-Schema AI function/tool catalog used by `GET /v1/tools`. Tool entries include StructureSmith semantic-icon metadata and declare the deterministic public validation-gate reasoning contract. Catalog schema version 1.3 exposes 17 deliberate tools.
+Returns the portable JSON-Schema AI function/tool catalog used by `GET /v1/tools`. Public tool entries use `x-continuity-works` semantic-icon/publication metadata and declare the deterministic public validation-gate reasoning contract. Catalog schema version 1.3 exposes 17 deliberate tools.
 
 ### `.inventory_project()`
 Returns discovered local mods, namespaces, explicit registry inventory, discoverable Minecraft resource IDs/candidates, and the inventory hash.
@@ -55,30 +57,45 @@ Builds datapack tags for `item`, `block`, `fluid`, `entity_type`, `function`, or
 Builds `pack.mcmeta`. Exact bundled releases use their verified data-pack format. Unknown releases require an explicit `pack_format`; the capability fails rather than guessing one.
 
 ### `.minecraft_content_package_generate(request)`
-Composes an optional authoritative structure-generation request with books, loot tables, recipes, advancements, tags, and `pack.mcmeta`. The first typed cross-artifact binding, `book_as_guaranteed_loot`, injects a named generated book into its own one-roll pool in a named loot table. Child gates and optional structure generation are aggregated into one package-level `materialization_allowed` decision. The optional structure request is dispatched through `.generate()` rather than a parallel structure implementation.
+Composes an optional authoritative structure-generation request with books, loot tables, recipes, advancements, tags, and `pack.mcmeta`. The typed `book_as_guaranteed_loot` binding injects a named generated book into its own one-roll pool in a named loot table. Child gates and optional structure generation are aggregated into one package-level `materialization_allowed` decision. The optional structure request is dispatched through `.generate()` rather than a parallel structure implementation.
 
 ### `.minecraft_icon_assign(request)`
 Returns a semantic Minecraft item icon when available or a deterministic lightweight SVG badge fallback. This is intentionally a simple no-network icon path, not a substitute for authored texture art.
+
+### Progressive-disclosure helpers
+
+- `.tool_index(group=None)` returns a compact tool list without loading every schema.
+- `.tool_contract(name)` returns the selected capability contract.
+- `.tool_presets(compact=True)` and `.tool_preset(preset_id)` expose reusable request presets.
+- `.resolve_tool_request(request)` merges a selected preset with caller overrides and reports only remaining required variables.
 
 ### `.resume(snapshot_id)`
 Loads the persisted snapshot manifest.
 
 ## HTTP
 
-Run:
+Run locally:
 
 ```bash
-python -m structure_capability.cli serve --project /path/to/project
+continuity-works serve --project /path/to/project
 ```
 
-Endpoints:
+The legacy `structure-capability` CLI remains an alias during migration.
+
+Canonical endpoints:
 
 ```text
-GET  /.well-known/structuresmith.json
+GET  /.well-known/continuity-works.json
 GET  /openapi.json
 GET  /v1/health
+GET  /v1/serviceability
 GET  /v1/capabilities
 GET  /v1/tools
+GET  /v1/tools/index
+GET  /v1/tools/{tool_name}
+GET  /v1/presets
+GET  /v1/presets/{preset_id}
+POST /v1/resolve
 POST /v1/inventory
 POST /v1/audit
 POST /v1/plan
@@ -98,30 +115,36 @@ POST /v1/minecraft/icon
 POST /v1/resume
 ```
 
+The retired `/.well-known/structuresmith.json` path is a non-canonical compatibility alias only.
+
+## Machine naming
+
+Continuity Works uses:
+
+```text
+service: Continuity Works
+slug: continuity-works
+OpenAPI extension: x-continuity-works
+OpenAPI per-tool extension: x-continuity-works-tool
+environment prefix: CONTINUITY_WORKS_*
+```
+
+Legacy `STRUCTURESMITH_*` environment variables are accepted as migration fallbacks but are not emitted or documented as canonical names.
+
 ## AI tool catalog
 
-`GET /v1/tools` returns function definitions with inline JSON Schema parameters. This is intentionally transport-neutral: an OpenAI-style function caller, a local orchestration agent, a GitHub automation, or another API client can adapt the same catalog without creating a second structure-generation contract.
+`GET /v1/tools` returns function definitions with inline JSON Schema parameters plus Continuity Works publication metadata. This is transport-neutral: an OpenAI-style function caller, a local orchestration agent, a GitHub automation, or another API client can adapt the same catalog without creating a second structure-generation contract.
 
 Content-authoring tools return stable validation findings and `materialization_allowed` rather than hidden chain-of-thought. See `MINECRAFT_CONTENT_API_TOOLS.md` for the version, composition, and registry-confidence contract.
+
+## Rendering boundary
+
+The API returns structural/3D information and artifacts. Server-side visual rendering is not required. A consuming browser, game/editor integration, desktop tool, or AI client renders the response using compute it controls if it wants a preview or visual review.
 
 ## Provider extension points
 
 Call `cap.register_generator(provider)` to add a provider whose aliases can be selected by `generation.kind`. `structure_type` remains a semantic artifact classification and does not have to equal the provider alias. See `GENERATOR_PROVIDER_REGISTRY.md`.
 
-A downstream repository can add:
-
-- structure-type generators and procedural authors;
-- legacy 1.12 palette/block-state materialization;
-- schematic/WorldEdit/Litematica adapters;
-- jigsaw pool compilers;
-- culture/faction theme packs;
-- purpose and real-world precedent libraries;
-- site/biome/terrain samplers;
-- preview renderers and fixed-camera reviews;
-- runtime placement validators;
-- advanced loot/progression/evidence validators and functions;
-- loader/mod-specific recipe serializer providers;
-- command/function version-matrix providers;
-- authored icon/texture providers.
+A downstream repository can add structure-type generators, legacy materialization adapters, schematic/WorldEdit/Litematica adapters, jigsaw pool compilers, culture/faction theme packs, site/terrain samplers, client-side preview renderers, runtime placement validators, advanced progression validators, loader-specific serializers, or authored icon/texture providers.
 
 Keep project-specific identities and content outside the generic core whenever possible.
