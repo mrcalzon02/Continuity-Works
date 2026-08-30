@@ -1,20 +1,22 @@
-Structure Generation Capability API v0.2.0
-Validation date: 2026-08-24
-==========================================
+Continuity Works Capability API v0.3.2
+Validation date: 2026-08-30
+=====================================
 
-RESULT: REPOSITORY/LOCAL PASS; PUBLIC HTTPS DEPLOYMENT ACTIVATION REQUIRED
+RESULT: REPOSITORY/LOCAL PASS; EXTERNAL HOST NOT CLAIMED
 
 Measured validation
 -------------------
+Authoritative repository: mrcalzon02/Continuity-Works
 Authoritative branch: main
-Validated implementation commit: fc1d1fb789400ecd0921615b0b7378ab5138624a
-GitHub Actions run: https://github.com/mrcalzon02/StructureSmith/actions/runs/32778403584
+Validated implementation commit: 4a43a037da587f8adece73dc1436d03925d87186
+GitHub Actions run: https://github.com/mrcalzon02/Continuity-Works/actions/runs/33340764499
+Workflow: Validate Continuity Works
 Workflow conclusion: success
 
 Core regression suite
 ---------------------
 Command: python -m unittest discover -s tests -v
-Result: 46/46 tests passed.
+Result: 62/62 tests passed.
 
 Coverage includes:
 - deterministic NBT and target-version metadata;
@@ -23,98 +25,136 @@ Coverage includes:
 - strict 6-block inner-city roads and 5-block side terrain padding;
 - highway, jigsaw, Lost Cities, purpose-depth, deterministic world-seed, and additive compatibility contracts;
 - Minecraft version, registry probe, book, loot-table, recipe, advancement, tag, datapack-manifest, content-package, and icon tooling;
-- OpenAPI 3.1 generation from the authoritative tool catalog;
-- /.well-known/structuresmith.json discovery metadata;
+- progressive-disclosure tool index, exact tool contracts, presets, and request resolution;
+- OpenAPI 3.1 generation from the authoritative publication matrix;
+- canonical Continuity Works machine discovery;
 - exact-origin GitHub Pages CORS and OPTIONS preflight behavior;
-- successful execution of every publicly advertised GET and POST route;
-- optional client-owned visual review contract, including no server-side rendering requirement.
+- successful execution of every advertised core GET and POST capability route;
+- optional client-owned visual review with no server-side rendering requirement;
+- legacy naming migration aliases remaining non-canonical and unadvertised.
+
+Continuity Works public naming contract
+---------------------------------------
+Human/public service name: Continuity Works
+Machine slug: continuity-works
+Repository: mrcalzon02/Continuity-Works
+Python distribution: continuity-works-capability
+Primary CLI: continuity-works
+OpenAPI vendor extension: x-continuity-works
+Per-operation tool extension: x-continuity-works-tool
+Canonical discovery endpoint: /.well-known/continuity-works.json
+Environment-variable prefix: CONTINUITY_WORKS_*
+GitHub status prefix: continuity-works/*
+Frontend URL: https://mrcalzon02.github.io/Continuity-Works/
+Configured optional API candidate: https://continuity-works-mrcalzon02-api.onrender.com
+
+The old StructureSmith name is retired from the canonical API contract. The old
+/.well-known/structuresmith.json route exists only as an unadvertised migration alias and
+returns Continuity Works identity. STRUCTURESMITH_* environment names are read only as
+compatibility fallbacks. Public OpenAPI, discovery, tool publication metadata, browser
+metadata, documentation, CI contexts, and CLI/package naming use Continuity Works.
+
+Internal compatibility boundary
+-------------------------------
+The internal Python package `structure_capability` and class `StructureCapability` remain
+stable implementation names to avoid gratuitously breaking existing Python consumers.
+They are implementation identifiers, not the public product/service name.
 
 Visual rendering/review boundary
 --------------------------------
-- StructureSmith does not perform server-side visual rendering as part of structure generation.
+- Continuity Works does not require server-side visual rendering as part of generation.
 - fitness.visual_gate is OPTIONAL_CLIENT_REVIEW.
 - fitness.visual_review_required is false.
 - fitness.visual_review_owner is client.
 - fitness.server_side_rendering is false.
 - StructureCapability advertises visual_review.required=false and independent_visual_review_required=false.
-- Generation provider contracts advertise server_visual_review_required=false, server_side_rendering=false,
-  client_rendering_responsibility=true, and visual_review_advisory_only=true.
-- StructureForge remains the reference browser-side renderer; other clients render returned geometry/artifacts
-  using compute they own if they want visual inspection.
-- Absence of a render or visual review does not block StructureSmith generation, validation, snapshotting, or return.
+- Generation provider contracts advertise server_visual_review_required=false,
+  server_side_rendering=false, client_rendering_responsibility=true, and
+  visual_review_advisory_only=true.
+- StructureForge is the reference browser-side renderer; other clients render returned
+  geometry/artifacts using compute they control when visual inspection is desired.
+- Absence of a render or visual review does not block generation, validation, snapshotting,
+  or response delivery.
 
 Static/package/frontend validation
 ----------------------------------
-- python -m pip install -e . completed successfully.
+- python -m pip install -e . completed successfully as continuity-works-capability 0.3.2.
 - python -m compileall -q src tests scripts completed successfully.
-- StructureForge production build completed successfully with the repository's Vite build.
-- The validation workflow publishes an explicit structuresmith/validate commit status on main.
+- StructureForge production build completed successfully using base /Continuity-Works/.
+- Static api.json and zero-JavaScript browser discovery validation passed.
+- The validation workflow publishes continuity-works/validate on main.
 
-Local production-boundary HTTP smoke
-------------------------------------
+Local executable HTTP smoke
+---------------------------
 Server launch contract:
+  CONTINUITY_WORKS_PUBLIC_BASE_URL=http://127.0.0.1:8787
   HOST=0.0.0.0 PORT=8787 python scripts/run_api.py
 
-Smoke command:
+Smoke commands:
   python scripts/http_smoke.py http://127.0.0.1:8787
+  python scripts/public_serviceability.py --api http://127.0.0.1:8787
 
-Measured result:
-- ok: true
-- tool_count: 17
+Measured checks include:
+- service identity: Continuity Works
+- tool catalog: 17 tools
 - OpenAPI: 3.1.0
-- real capability route: POST /v1/infrastructure/layout
+- public naming extension: x-continuity-works
+- canonical discovery: /.well-known/continuity-works.json
+- PUBLIC_SERVICEABILITY local gate: ready/verified for the running local boundary
+- real capability execution: POST /v1/infrastructure/layout
 - returned engine: native_infrastructure_v1
 - returned fitness: PASS
 
-Public HTTP surface
--------------------
-Machine-readable discovery:
-  GET /.well-known/structuresmith.json
-  GET /openapi.json
+Canonical machine discovery and HTTP surface
+--------------------------------------------
+GET  /.well-known/continuity-works.json
+GET  /openapi.json
+GET  /v1/health
+GET  /v1/serviceability
+GET  /v1/capabilities
+GET  /v1/tools
+GET  /v1/tools/index
+GET  /v1/tools/{tool_name}
+GET  /v1/presets
+GET  /v1/presets/{preset_id}
+POST /v1/resolve
+POST /v1/inventory
+POST /v1/audit
+POST /v1/plan
+POST /v1/generate
+POST /v1/dungeon/layout
+POST /v1/infrastructure/layout
+POST /v1/minecraft/version
+POST /v1/minecraft/registry/probe
+POST /v1/minecraft/book
+POST /v1/minecraft/loot-table
+POST /v1/minecraft/recipe
+POST /v1/minecraft/advancement
+POST /v1/minecraft/tag
+POST /v1/minecraft/datapack-manifest
+POST /v1/minecraft/content-package
+POST /v1/minecraft/icon
+POST /v1/resume
 
-Existing authoritative API routes include:
-  GET  /v1/health
-  GET  /v1/capabilities
-  GET  /v1/tools
-  POST /v1/inventory
-  POST /v1/audit
-  POST /v1/plan
-  POST /v1/generate
-  POST /v1/dungeon/layout
-  POST /v1/infrastructure/layout
-  POST /v1/minecraft/version
-  POST /v1/minecraft/registry/probe
-  POST /v1/minecraft/book
-  POST /v1/minecraft/loot-table
-  POST /v1/minecraft/recipe
-  POST /v1/minecraft/advancement
-  POST /v1/minecraft/tag
-  POST /v1/minecraft/datapack-manifest
-  POST /v1/minecraft/content-package
-  POST /v1/minecraft/icon
-  POST /v1/resume
+Deployment/hosting boundary
+---------------------------
+PUBLIC HTTPS SERVICE: NOT CLAIMED LIVE.
 
-AI tool catalog: 17 tools.
+The repository contains an optional reference render.yaml using the Continuity Works name
+and free plan. It does not create an account, authorize billing, or require the project owner
+to provide open public compute. Consumers may run Continuity Works locally or on infrastructure
+they control. A configured candidate URL is not treated as a live service until remote acceptance
+actually succeeds against it.
 
-Deployment boundary implemented
--------------------------------
-- The existing dependency-free structure_capability.server remains the runtime HTTP implementation.
-- scripts/run_api.py binds to 0.0.0.0 and reads the hosting provider's PORT.
-- render.yaml remains a deployment example/configuration for a separately hosted Python service.
-- Default browser CORS is limited to https://mrcalzon02.github.io unless explicitly overridden.
-- StructureForge uses a separately hosted API rather than assuming /v1/* exists on GitHub Pages.
-- OpenAPI request schemas for tool-backed routes are derived from the existing tool_catalog() source of truth.
-- A reusable scripts/http_smoke.py verifies health, catalog, OpenAPI, discovery, and a real capability execution.
-
-Public-host status
-------------------
-PUBLIC HTTPS COMPLETION GATE: NOT YET MET.
-No public host has been falsely claimed live. Repository/local validation does not prove an externally provisioned service exists.
+The external workflow publishes continuity-works/public-serviceability only when a configured
+remote API genuinely serves the expected commit and the Pages-to-API discovery chain passes.
+Local validation deliberately cannot grant that external VERIFIED state.
 
 Intentional boundaries
 ----------------------
-- GitHub Pages is only the static StructureForge frontend and is never treated as Python API execution proof.
+- GitHub Pages is the static StructureForge client and is never treated as Python execution proof.
+- No server-side rendering obligation is created by the public API contract.
 - Upstream donjon dungeon.pl remains isolated under its existing licensing boundary.
-- 1.12.x retains the existing legacy materialization limitation.
+- Minecraft 1.12.x retains the existing legacy materialization limitation.
 - Runtime/mechanical validation requirements remain intact.
-- Visual rendering and visual review are optional downstream client concerns and are not StructureSmith server obligations.
+- Compatibility with other mods/systems remains additive and non-destructive.
