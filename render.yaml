@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: structuresmith-mrcalzon02-api
+    name: continuity-works-mrcalzon02-api
     runtime: python
     plan: starter
     branch: main
@@ -9,11 +9,11 @@ services:
     healthCheckPath: /v1/health
     autoDeployTrigger: checksPass
     envVars:
-      - key: STRUCTURESMITH_CORS_ORIGIN
+      - key: CONTINUITY_WORKS_CORS_ORIGIN
         value: https://mrcalzon02.github.io
-      - key: STRUCTURESMITH_PUBLIC_BASE_URL
-        value: https://structuresmith-mrcalzon02-api.onrender.com
-      - key: STRUCTURESMITH_FRONTEND_URL
-        value: https://mrcalzon02.github.io/StructureSmith/
-      - key: STRUCTURESMITH_DEPLOYMENT
+      - key: CONTINUITY_WORKS_PUBLIC_BASE_URL
+        value: https://continuity-works-mrcalzon02-api.onrender.com
+      - key: CONTINUITY_WORKS_FRONTEND_URL
+        value: https://mrcalzon02.github.io/Continuity-Works/
+      - key: CONTINUITY_WORKS_DEPLOYMENT
         value: production
