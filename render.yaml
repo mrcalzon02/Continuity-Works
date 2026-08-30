@@ -1,8 +1,10 @@
+# Optional reference deployment only. Continuity Works does not require the
+# project owner to provide public compute for third-party callers.
 services:
   - type: web
     name: continuity-works-mrcalzon02-api
     runtime: python
-    plan: starter
+    plan: free
     branch: main
     buildCommand: python -m pip install .
     startCommand: python scripts/run_api.py
