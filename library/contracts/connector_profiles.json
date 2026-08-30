@@ -1,0 +1,62 @@
+{
+  "contract": "continuityworks:connector_profiles/v1",
+  "version": 1,
+  "faces": [
+    "north",
+    "east",
+    "south",
+    "west",
+    "up",
+    "down"
+  ],
+  "profiles": {
+    "passage_3x3": {
+      "kind": "horizontal_passage",
+      "aperture": [3, 3],
+      "mates": ["passage_3x3", "gate_3x3"],
+      "notes": "Standard person-scale circulation opening."
+    },
+    "gate_3x3": {
+      "kind": "controlled_passage",
+      "aperture": [3, 3],
+      "mates": ["passage_3x3", "gate_3x3"],
+      "notes": "Door, gate, checkpoint, or lockable threshold."
+    },
+    "service_2x2": {
+      "kind": "service_passage",
+      "aperture": [2, 2],
+      "mates": ["service_2x2"],
+      "notes": "Maintenance/service connection; not a primary public route."
+    },
+    "vertical_3x3": {
+      "kind": "vertical_circulation",
+      "aperture": [3, 3],
+      "mates": ["vertical_3x3"],
+      "notes": "Stair, ladder, lift, or vertical shaft interface."
+    },
+    "bridge_5x3": {
+      "kind": "bridge_deck",
+      "aperture": [5, 3],
+      "mates": ["bridge_5x3"],
+      "notes": "Five-block deck connection for bridge and causeway modules."
+    },
+    "wall_join_3x5": {
+      "kind": "fortification_join",
+      "aperture": [3, 5],
+      "mates": ["wall_join_3x5"],
+      "notes": "Structural join between wall, tower, or gatehouse modules."
+    },
+    "foundation_anchor_3x1": {
+      "kind": "foundation_anchor",
+      "aperture": [3, 1],
+      "mates": ["foundation_anchor_3x1"],
+      "notes": "Load-transfer/placement anchor between foundation and supported module."
+    },
+    "roof_support_3x1": {
+      "kind": "roof_support",
+      "aperture": [3, 1],
+      "mates": ["roof_support_3x1"],
+      "notes": "Roof-to-wall support/contact contract."
+    }
+  }
+}
