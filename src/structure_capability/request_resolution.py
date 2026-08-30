@@ -128,7 +128,7 @@ class CapabilityResolver:
         return {"contract_version":self.CONTRACT_VERSION,"mode":"compact_index","count":len(tools),"groups":sorted({x["group"] for x in tools}),"tools":tools,
             "usage":{"next":"Fetch one exact contract with tool_contract(name), then resolve only supplied overrides.","http":{"index":"/v1/tools/index","contract":"/v1/tools/{tool_name}","resolve":"/v1/resolve"}}}
     def contract(self, name):
-        if name not in self._tools: raise KeyError(f"Unknown StructureSmith tool: {name}")
+        if name not in self._tools: raise KeyError(f"Unknown Continuity Works tool: {name}")
         tool=deepcopy(self._tools[name]); params=tool.get("parameters") or {}
         return {"contract_version":self.CONTRACT_VERSION,"name":name,"group":_group_for(name),"description":tool.get("description",""),"required":list(params.get("required",[])),"parameters":params,
             "preset_ids":sorted(pid for pid,p in self._presets.items() if p.get("tool")==name)}
@@ -138,7 +138,7 @@ class CapabilityResolver:
         else: items=[{"id":pid,**deepcopy(p)} for pid,p in sorted(self._presets.items())]
         return {"contract_version":self.CONTRACT_VERSION,"mode":"compact" if compact else "full","count":len(items),"presets":items}
     def preset(self, preset_id):
-        if preset_id not in self._presets: raise KeyError(f"Unknown StructureSmith preset: {preset_id}")
+        if preset_id not in self._presets: raise KeyError(f"Unknown Continuity Works preset: {preset_id}")
         return {"id":preset_id,**deepcopy(self._presets[preset_id])}
     def resolve(self, tool_name, supplied=None, *, preset_id=None):
         contract=self.contract(tool_name); schema=contract["parameters"]; request={}; requires_any=[]
@@ -156,7 +156,7 @@ class CapabilityResolver:
         ready=not missing and not unknown
         return {"contract_version":self.CONTRACT_VERSION,"tool":tool_name,"preset_id":preset_id,"ready":ready,"next_action":"invoke" if ready else "supply_variables","request":request,
             "missing":missing,"required_inputs":required_inputs,"requires_any":any_missing,"unknown_fields":unknown,
-            "token_efficiency":{"strategy":"progressive_disclosure","loaded_contracts":[tool_name],"instruction":"Do not reload unrelated StructureSmith schemas for this operation."}}
+            "token_efficiency":{"strategy":"progressive_disclosure","loaded_contracts":[tool_name],"instruction":"Do not reload unrelated Continuity Works schemas for this operation."}}
     def resolve_request(self, request):
         if not isinstance(request, dict): raise TypeError("Resolver request must be an object.")
         tool_name=request.get("tool") or request.get("tool_name")
