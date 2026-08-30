@@ -35,4 +35,4 @@ The mod adds a TerraBlender Overworld region and additive biome tags. It does no
 
 Requires Java 17 and Gradle. Run `gradle clean jarJar reobfJarJar`. The Jar-in-Jar output is the distributable mod.
 
-The reusable dynamic-registry JSON and additive biome tags are stored in `base_resources_1.20.1.zip`. Gradle expands that archive automatically during `processResources`; there is no manual preparation step.
+Biome registry definitions and additive classification tags live directly under `src/main/resources/data/`, so a normal Gradle build needs no generator, resource-unpacking step, validator, or preflight command.
