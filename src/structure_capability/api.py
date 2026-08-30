@@ -1,4 +1,5 @@
 from __future__ import annotations
+from copy import deepcopy
 from pathlib import Path
 from .models import StructureRequest
 from .mod_awareness import ModInventory
@@ -41,6 +42,8 @@ class StructureCapability:
 
     def capabilities(self):
         return {
+            "service": "Continuity Works",
+            "service_slug": "continuity-works",
             "api_version": self.API_VERSION,
             "vanilla_first": True,
             "compatibility_policy": compatibility_policy(),
@@ -114,6 +117,8 @@ class StructureCapability:
                 "contract_endpoint": "/v1/tools/{tool_name}",
                 "preset_endpoint": "/v1/presets",
                 "resolver_endpoint": "/v1/resolve",
+                "discovery_endpoint": "/.well-known/continuity-works.json",
+                "vendor_extension": "x-continuity-works",
                 "portable_json_schema": True,
                 "progressive_disclosure": True,
             },
@@ -123,13 +128,18 @@ class StructureCapability:
                 "server_side_rendering": False,
                 "policy": "optional_client_review",
                 "reference_client": "StructureForge",
-                "description": "StructureSmith returns geometry, artifacts, and validation metadata; clients render and visually inspect results using their own compute when desired.",
+                "description": "Continuity Works returns geometry, artifacts, and validation metadata; clients render and visually inspect results using their own compute when desired.",
             },
             "independent_visual_review_required": False,
         }
 
     def tools(self):
-        return tool_catalog()
+        catalog = deepcopy(tool_catalog())
+        for tool in catalog.get("tools", []):
+            legacy = tool.pop("x-structuresmith", None)
+            if legacy:
+                tool["x-continuity-works"] = legacy
+        return catalog
 
     def tool_index(self, group=None):
         return self.request_resolution.index(group=group)
