@@ -6,7 +6,7 @@ const outDir = fileURLToPath(new URL('../dist', import.meta.url));
 
 export default defineConfig({
   root: repoRoot,
-  base: '/StructureSmith/',
+  base: '/Continuity-Works/',
   build: {
     outDir,
     emptyOutDir: true,
