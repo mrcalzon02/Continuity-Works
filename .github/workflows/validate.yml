@@ -1,4 +1,4 @@
-name: Validate Structure Capability
+name: Validate Continuity Works
 
 on:
   push:
@@ -46,11 +46,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          STRUCTURESMITH_PUBLIC_BASE_URL=http://127.0.0.1:8787 \
-          STRUCTURESMITH_FRONTEND_URL=https://mrcalzon02.github.io/StructureSmith/ \
-          STRUCTURESMITH_DEPLOYMENT=ci \
-          STRUCTURESMITH_COMMIT="$GITHUB_SHA" \
-          HOST=0.0.0.0 PORT=8787 python scripts/run_api.py >/tmp/structuresmith-api.log 2>&1 &
+          CONTINUITY_WORKS_PUBLIC_BASE_URL=http://127.0.0.1:8787 \
+          CONTINUITY_WORKS_FRONTEND_URL=https://mrcalzon02.github.io/Continuity-Works/ \
+          CONTINUITY_WORKS_DEPLOYMENT=ci \
+          CONTINUITY_WORKS_COMMIT="$GITHUB_SHA" \
+          HOST=0.0.0.0 PORT=8787 python scripts/run_api.py >/tmp/continuity-works-api.log 2>&1 &
           API_PID=$!
           trap 'kill "$API_PID" 2>/dev/null || true' EXIT
           python - <<'PY'
@@ -64,7 +64,7 @@ jobs:
               except Exception:
                   time.sleep(0.25)
           else:
-              raise SystemExit('StructureSmith HTTP server did not become healthy')
+              raise SystemExit('Continuity Works HTTP server did not become healthy')
           PY
           python scripts/http_smoke.py http://127.0.0.1:8787
           python scripts/public_serviceability.py \
@@ -85,7 +85,7 @@ jobs:
           state = os.environ['STATUS_STATE']
           print(json.dumps({
               'state': 'success' if state == 'success' else 'failure',
-              'context': 'structuresmith/validate',
+              'context': 'continuity-works/validate',
               'description': 'Regression, frontend build, API contract, local PUBLIC_SERVICEABILITY',
               'target_url': os.environ['TARGET_URL'],
           }))
