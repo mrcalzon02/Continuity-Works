@@ -1,0 +1,100 @@
+name: Build Biome Runtime Mod
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'examples/biome_expander/runtime_mod/1.20.1/**'
+      - '.github/workflows/biome-template-runtime-mod.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-runtime-mod:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: examples/biome_expander/runtime_mod/1.20.1
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.8'
+
+      - name: Build embedded runtime JAR
+        run: gradle --no-daemon clean jarJar reobfJarJar
+
+      - name: Prepare distributable
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          SOURCE_JAR="$(find build/libs -maxdepth 1 -type f -name '*-all.jar' | head -n 1)"
+          test -n "$SOURCE_JAR"
+          cp "$SOURCE_JAR" dist/ContinuityWorks-BiomeTemplates-Forge-1.20.1-0.2.0.jar
+          jar tf dist/ContinuityWorks-BiomeTemplates-Forge-1.20.1-0.2.0.jar | grep -q '^META-INF/jarjar/metadata.json$'
+          jar tf dist/ContinuityWorks-BiomeTemplates-Forge-1.20.1-0.2.0.jar | grep -q '^META-INF/jarjar/.*TerraBlender.*\.jar$'
+
+      - name: Launch packaged JAR on Forge server
+        shell: bash
+        run: |
+          set -euo pipefail
+          MOD_JAR="$PWD/dist/ContinuityWorks-BiomeTemplates-Forge-1.20.1-0.2.0.jar"
+          SERVER="$RUNNER_TEMP/cw-biome-forge-server"
+          mkdir -p "$SERVER/mods"
+          cd "$SERVER"
+          curl --fail --location --retry 3 \
+            -o forge-installer.jar \
+            https://maven.minecraftforge.net/net/minecraftforge/forge/1.20.1-47.4.10/forge-1.20.1-47.4.10-installer.jar
+          java -jar forge-installer.jar --installServer
+          cp "$MOD_JAR" mods/
+          printf 'eula=true\n' > eula.txt
+          chmod +x run.sh
+
+          ./run.sh nogui > runtime-server.log 2>&1 &
+          SERVER_PID=$!
+          READY=0
+          for _ in $(seq 1 120); do
+            if grep -q 'Done (' runtime-server.log; then
+              READY=1
+              break
+            fi
+            if ! kill -0 "$SERVER_PID" 2>/dev/null; then
+              break
+            fi
+            sleep 2
+          done
+
+          kill "$SERVER_PID" 2>/dev/null || true
+          wait "$SERVER_PID" 2>/dev/null || true
+
+          if [ "$READY" -ne 1 ]; then
+            cat runtime-server.log
+            exit 1
+          fi
+
+          if ! grep -q 'continuityworks_biomes' logs/latest.log; then
+            echo 'Continuity Works biome mod did not appear in server log.'
+            cat logs/latest.log
+            exit 1
+          fi
+
+      - name: Upload runtime mod
+        uses: actions/upload-artifact@v4
+        with:
+          name: ContinuityWorks-BiomeTemplates-Forge-1.20.1-0.2.0
+          path: examples/biome_expander/runtime_mod/1.20.1/dist/ContinuityWorks-BiomeTemplates-Forge-1.20.1-0.2.0.jar
+          if-no-files-found: error
