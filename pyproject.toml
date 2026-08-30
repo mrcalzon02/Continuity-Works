@@ -3,13 +3,14 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "structure-generation-capability"
+name = "continuity-works-capability"
 version = "0.3.2"
-description = "AI-callable, token-efficient, public-serviceable, vanilla-first, mod-aware Minecraft structure generation and content API"
+description = "Continuity Works: AI-callable, token-efficient, public-serviceable, vanilla-first, mod-aware Minecraft structure generation and content API"
 requires-python = ">=3.11"
 dependencies = []
 
 [project.scripts]
+continuity-works = "structure_capability.cli:main"
 structure-capability = "structure_capability.cli:main"
 
 [tool.setuptools]
