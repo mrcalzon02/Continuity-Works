@@ -41,23 +41,6 @@ repositories {
 
 jarJar.enable()
 
-// The template's vanilla-compatible biome JSON and additive tags are kept in a
-// compact base archive. A normal Gradle build expands them automatically.
-def generatedBiomeResources = layout.buildDirectory.dir('generated/biome-template-resources')
-
-tasks.register('prepareBiomeResources', Copy) {
-    from(zipTree(file('base_resources_1.20.1.zip'))) {
-        include 'data/**'
-    }
-    into generatedBiomeResources
-}
-
-sourceSets.main.resources.srcDir generatedBiomeResources
-
-tasks.named('processResources').configure {
-    dependsOn 'prepareBiomeResources'
-}
-
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
