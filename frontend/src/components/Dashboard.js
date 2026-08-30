@@ -144,7 +144,7 @@ function AuditImageStrip({ images }) {
     <section className="panel audit-strip">
       <div className="panel-heading compact-heading">
         <div>
-          <span className="eyebrow">Visual review evidence</span>
+          <span className="eyebrow">Optional client visual evidence</span>
           <h2>Audit Image Viewports</h2>
         </div>
       </div>
@@ -158,9 +158,9 @@ function AuditImageStrip({ images }) {
                 : html`
                   <div className="image-placeholder">
                     <span>${slot}</span>
-                    <small>waiting for audit frame</small>
+                    <small>optional client-rendered frame</small>
                   </div>
-                `}
+                `
               <figcaption>${image?.label || slot}</figcaption>
             </figure>
           `;
@@ -330,14 +330,14 @@ export function Dashboard() {
           <div>
             <div className="brand-line">
               <h1>StructureForge</h1>
-              <span className="system-badge">StructureSmith system</span>
+              <span className="system-badge">Continuity Works API</span>
             </div>
             <p>Generate, audit, rebuild, and validate Minecraft structures with AI.</p>
           </div>
         </div>
         <div className="topbar-actions">
-          <a href="https://github.com/mrcalzon02/StructureSmith" target="_blank" rel="noreferrer">Repository</a>
-          <a href="https://github.com/mrcalzon02/StructureSmith/blob/main/README.md" target="_blank" rel="noreferrer">API Docs</a>
+          <a href="https://github.com/mrcalzon02/Continuity-Works" target="_blank" rel="noreferrer">Repository</a>
+          <a href="https://github.com/mrcalzon02/Continuity-Works/blob/main/README.md" target="_blank" rel="noreferrer">API Docs</a>
         </div>
       </header>
 
@@ -353,7 +353,7 @@ export function Dashboard() {
           <label className="api-field">
             <span>API base URL</span>
             <input
-              placeholder="https://structuresmith-mrcalzon02-api.onrender.com"
+              placeholder="https://continuity-works-mrcalzon02-api.onrender.com"
               value=${apiBase}
               onChange=${(event) => setApiBase(event.target.value)}
               disabled=${mode !== 'api' || !['idle', 'prompting'].includes(phase)}
@@ -403,9 +403,9 @@ export function Dashboard() {
             ${phase === 'idle' && 'Ready to begin a new structural reasoning session.'}
             ${phase === 'prompting' && 'Configure optional constraints, then lock them and draft.'}
             ${phase === 'drafting' && 'Building a legible first-pass structural skeleton.'}
-            ${phase === 'auditing' && 'Testing purpose, mechanics, context, and visual evidence.'}
+            ${phase === 'auditing' && 'Testing purpose, mechanics, context, and optional client visual evidence.'}
             ${phase === 'rebuilding' && 'Applying the lowest sufficient intervention for failed gates.'}
-            ${phase === 'finalizing' && 'Separating static success from unresolved visual/runtime gates.'}
+            ${phase === 'finalizing' && 'Separating static success from optional client visual and runtime checks.'}
           </small>
         </div>
         <div className="dock-actions">
