@@ -1,6 +1,11 @@
 name: Build Biome Runtime Mod
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'examples/biome_expander/runtime_mod/1.20.1/**'
+      - '.github/workflows/biome-template-runtime-mod.yml'
   workflow_dispatch:
 
 permissions:
