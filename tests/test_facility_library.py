@@ -1,4 +1,5 @@
 import unittest
+from collections import Counter
 from pathlib import Path
 
 from structure_capability.facility_library import FacilityLibrary
@@ -15,9 +16,9 @@ class FacilityLibraryTests(unittest.TestCase):
         self.assertEqual(report["status"], "PASS", report["findings"])
         self.assertEqual(report["counts"], {
             "corporate_languages": 10,
-            "archetypes": 23,
-            "facility_references": 22,
-            "entries": 55,
+            "archetypes": 31,
+            "facility_references": 30,
+            "entries": 71,
         })
         self.assertEqual(report["connector_profiles"], 41)
 
@@ -52,22 +53,40 @@ class FacilityLibraryTests(unittest.TestCase):
         self.assertEqual(len(self.library.entries(kind="archetype", category="aerospace_orbital")), 12)
         self.assertEqual(len(self.library.entries(kind="facility_reference", category="aerospace_orbital")), 12)
 
-    def test_phase_one_aerospace_support_inventory(self):
+    def test_phase_one_and_two_aerospace_support_inventory(self):
         archetypes = self.library.entries(kind="archetype", category="aerospace_support")
         references = self.library.entries(kind="facility_reference", category="aerospace_support")
-        self.assertEqual(len(archetypes), 5)
-        self.assertEqual(len(references), 5)
+        self.assertEqual(len(archetypes), 13)
+        self.assertEqual(len(references), 13)
+        scale_counts = Counter()
         for entry in archetypes:
             data = self.library.load(entry["id"])
             self.assertIn("support_network", data)
             self.assertTrue(data["support_network"]["required_socket_groups"])
             self.assertIn("vessel_state_support", data)
+            for scale in data["scale_tiers"]:
+                scale_counts[scale] += 1
+        self.assertGreaterEqual(scale_counts["micro"], 2)
+        self.assertGreaterEqual(scale_counts["light"], 4)
+        self.assertGreaterEqual(scale_counts["standard"], 5)
+        self.assertGreaterEqual(scale_counts["heavy"], 2)
         for entry in references:
             data = self.library.load(entry["id"])
             support = data["aerospace_support_reference"]
             self.assertTrue(support["actual_structure_commitment"])
             self.assertTrue(support["network_sockets"])
             self.assertIn("vessel_state", support)
+            for socket in support["network_sockets"]:
+                self.assertIn(socket["profile"], self.library.structures.connector_profiles())
+
+    def test_heavy_support_references_expose_heavy_transport(self):
+        for archetype_id in [
+            "continuityworks:archetype/hull_section_fabrication_plant",
+            "continuityworks:archetype/booster_refurbishment_hangar",
+        ]:
+            data = self.library.load(archetype_id)
+            profiles = {socket["profile"] for socket in data["support_network"]["sockets"]}
+            self.assertTrue(profiles.intersection({"heavy_logistics_10w", "crawler_lane_9x5"}))
 
     def test_refinery_requires_process_specific_visual_signatures(self):
         archetype = self.library.load("continuityworks:archetype/compact_diesel_refinery")
