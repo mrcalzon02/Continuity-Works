@@ -13,6 +13,8 @@ base {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
+apply from: 'gradle/anthology.gradle'
+
 minecraft {
     mappings channel: 'official', version: minecraft_version
     copyIdeResources = true

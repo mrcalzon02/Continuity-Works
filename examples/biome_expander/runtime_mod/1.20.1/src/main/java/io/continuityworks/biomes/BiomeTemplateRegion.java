@@ -115,6 +115,21 @@ public final class BiomeTemplateRegion extends Region {
                     .weirdness(Weirdness.PEAK_VARIANT, Weirdness.MID_SLICE_VARIANT_DESCENDING));
         }
 
+        for (AnthologyBiomeCatalog.Entry entry : AnthologyBiomeCatalog.ENTRIES) {
+            if (!BiomeTemplateConfig.isAnthologyEnabled(entry)) {
+                continue;
+            }
+
+            add(overlay, entry.key(),
+                new ParameterPointListBuilder()
+                    .temperature(entry.temperature())
+                    .humidity(entry.humidity())
+                    .continentalness(entry.continentalness())
+                    .erosion(entry.erosion())
+                    .depth(Depth.SURFACE)
+                    .weirdness(entry.weirdness()));
+        }
+
         overlay.build().forEach(mapper::accept);
     }
 

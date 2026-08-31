@@ -2,6 +2,10 @@ package io.continuityworks.biomes;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
+import java.util.EnumMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public final class BiomeTemplateConfig {
     public static final ForgeConfigSpec SPEC;
 
@@ -23,6 +27,11 @@ public final class BiomeTemplateConfig {
     public static final ForgeConfigSpec.BooleanValue ENABLE_EASTERN_ABYSSAL_PLAIN;
     public static final ForgeConfigSpec.BooleanValue ENABLE_EASTERN_FRACTURE_FIELD;
     public static final ForgeConfigSpec.BooleanValue ENABLE_EASTERN_HADAL_TRENCH;
+
+    public static final Map<AnthologyBiomeCatalog.Family, ForgeConfigSpec.BooleanValue> ANTHOLOGY_FAMILY_ENABLED =
+        new EnumMap<>(AnthologyBiomeCatalog.Family.class);
+    public static final Map<String, ForgeConfigSpec.BooleanValue> ANTHOLOGY_BIOME_ENABLED =
+        new LinkedHashMap<>();
 
     public static final ForgeConfigSpec.IntValue REGION_WEIGHT;
 
@@ -65,9 +74,27 @@ public final class BiomeTemplateConfig {
         ENABLE_EASTERN_HADAL_TRENCH = builder.define("easternHadalTrench", true);
         builder.pop();
 
+        builder.comment(
+            "128-biome anthology.",
+            "Each family has a master switch and every anthology biome has an individual natural-generation switch.",
+            "Definitions remain registered even when natural placement is disabled."
+        );
+        builder.push("anthology");
+        for (AnthologyBiomeCatalog.Family family : AnthologyBiomeCatalog.Family.values()) {
+            builder.push(family.configKey());
+            ANTHOLOGY_FAMILY_ENABLED.put(family, builder.define("enabled", true));
+            for (AnthologyBiomeCatalog.Entry entry : AnthologyBiomeCatalog.ENTRIES) {
+                if (entry.family() == family) {
+                    ANTHOLOGY_BIOME_ENABLED.put(entry.id(), builder.define(entry.id(), true));
+                }
+            }
+            builder.pop();
+        }
+        builder.pop();
+
         builder.push("worldgen");
         REGION_WEIGHT = builder
-            .comment("Relative TerraBlender region weight. Higher values make the template region more common.")
+            .comment("Relative TerraBlender region weight. Higher values make Continuity Works biomes more common.")
             .defineInRange("regionWeight", 3, 1, 20);
         builder.pop();
 
@@ -75,6 +102,12 @@ public final class BiomeTemplateConfig {
     }
 
     private BiomeTemplateConfig() { }
+
+    public static boolean isAnthologyEnabled(AnthologyBiomeCatalog.Entry entry) {
+        ForgeConfigSpec.BooleanValue family = ANTHOLOGY_FAMILY_ENABLED.get(entry.family());
+        ForgeConfigSpec.BooleanValue biome = ANTHOLOGY_BIOME_ENABLED.get(entry.id());
+        return family != null && biome != null && family.get() && biome.get();
+    }
 
     public static boolean anyEnabled() {
         return ENABLE_TEMPERATE_GROVE.get()
@@ -85,6 +118,7 @@ public final class BiomeTemplateConfig {
             || ENABLE_DRY_SCRUBLAND.get()
             || ENABLE_ROCKY_BADLANDS.get()
             || ENABLE_ASH_WASTES.get()
+            || AnthologyBiomeCatalog.ENTRIES.stream().anyMatch(BiomeTemplateConfig::isAnthologyEnabled)
             || (ENABLE_ABYSSAL_FAMILY.get() && (
                 ENABLE_WESTERN_CONTINENTAL_SLOPE.get()
                 || ENABLE_WESTERN_ABYSSAL_PLAIN.get()
