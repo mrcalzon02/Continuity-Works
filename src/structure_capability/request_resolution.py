@@ -43,6 +43,11 @@ BUILTIN_PRESETS = {
                 "median_width": 2, "elevated": False, "support_spacing": 16, "deck_thickness": 2, "min_clearance": 5},
             "jigsaw": {"enabled": True, "connector_width": 8, "max_depth": 8}, "purpose": {"depth": 1}},
     },
+    "layout.aerospace_support_campus": {
+        "tool": "aerospace_support_campus_generate",
+        "description": "Deterministic validated aerospace support-campus graph; caller supplies a seed and may override the default standard scale/operator.",
+        "request": {"scale": "standard"},
+    },
     "content.written_book": {
         "tool": "minecraft_book_generate",
         "description": "Version-compatible written book assembly; caller supplies only the book-specific content.",
@@ -56,12 +61,14 @@ BUILTIN_PRESETS = {
     },
 }
 
+
 def _deep_merge(base: dict, override: dict) -> dict:
     out = deepcopy(base)
     for key, value in (override or {}).items():
         if isinstance(value, dict) and isinstance(out.get(key), dict): out[key] = _deep_merge(out[key], value)
         else: out[key] = deepcopy(value)
     return out
+
 
 def _apply_defaults(schema: dict, value):
     if not isinstance(schema, dict): return value
@@ -76,6 +83,7 @@ def _apply_defaults(schema: dict, value):
         return [_apply_defaults(schema.get("items", {}), item) for item in value]
     return value
 
+
 def _missing_required(schema: dict, value, prefix=""):
     if not isinstance(schema, dict) or not isinstance(value, dict): return []
     missing=[]; properties=schema.get("properties", {})
@@ -87,6 +95,7 @@ def _missing_required(schema: dict, value, prefix=""):
             missing.extend(_missing_required(child, value[key], f"{prefix}.{key}" if prefix else key))
     return missing
 
+
 def _schema_at_path(schema: dict, path: str):
     current=schema
     for part in path.split("."):
@@ -94,18 +103,21 @@ def _schema_at_path(schema: dict, path: str):
         if not isinstance(current, dict): return {}
     return deepcopy(current)
 
+
 def _compact_description(text):
     text=" ".join(str(text or "").split())
     if not text: return ""
     first=text.split(". ",1)[0]
     return first if first.endswith(".") else first+"."
 
+
 def _group_for(name):
     if name in {"structure_capabilities","structure_inventory","minecraft_registry_probe","minecraft_version"}: return "discovery"
     if name in {"structure_audit","structure_plan","structure_generate"}: return "structure"
-    if name in {"dungeon_layout","infrastructure_layout"}: return "layout"
+    if name in {"dungeon_layout","infrastructure_layout","aerospace_support_campus_generate"}: return "layout"
     if name.startswith("minecraft_"): return "minecraft_content"
     return "other"
+
 
 class CapabilityResolver:
     CONTRACT_VERSION="1.0"
