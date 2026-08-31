@@ -68,6 +68,14 @@ PUBLIC_CAPABILITIES: dict[str, PublicCapabilitySpec] = {
         "infrastructure_layout", "POST", "/v1/infrastructure/layout", "infrastructure_layout",
         manual_surface="structureforge_dashboard",
     ),
+    "aerospace_support_campus_generate": PublicCapabilitySpec(
+        "aerospace_support_campus_generate",
+        "POST",
+        "/v1/aerospace/support-campus",
+        "aerospace_support_campus_generate",
+        manual_ui="not_applicable",
+        manual_surface=None,
+    ),
     "minecraft_version": PublicCapabilitySpec(
         "minecraft_version", "POST", "/v1/minecraft/version", "minecraft_version",
         argument_mode="version", manual_surface="manual_workbench",
