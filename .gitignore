@@ -7,3 +7,4 @@ build/
 .structure-capability/
 .structuresmith-staging/
 generated/
+benchmark_runs/
