@@ -27,6 +27,7 @@ public final class ContinuityWorksBiomeTemplates {
         AbyssalSedimentFeatures.register(modBus);
         AbyssalEcologyFeatures.register(modBus);
         LandTerrainFeatures.register(modBus);
+        BiomeCaveFeatures.register(modBus);
         modBus.addListener(this::commonSetup);
     }
 
