@@ -25,6 +25,10 @@ from .aerospace_support_network import (
     AerospaceSupportNetworkError,
     AerospaceSupportNetworkValidator,
 )
+from .seeded_aerospace_support_campus import (
+    SeededAerospaceSupportCampusError,
+    SeededAerospaceSupportCampusGenerator,
+)
 
 __all__ = [
     "StructureCapability", "RebuildGrade", "AccessClearance",
@@ -37,4 +41,5 @@ __all__ = [
     "FacilityLibrary", "FacilityLibraryError",
     "SeededFacilityGenerationError", "SeededFacilityGenerator",
     "AerospaceSupportNetworkError", "AerospaceSupportNetworkValidator",
+    "SeededAerospaceSupportCampusError", "SeededAerospaceSupportCampusGenerator",
 ]
