@@ -14,12 +14,12 @@ class FacilityLibraryTests(unittest.TestCase):
         report = self.library.validate()
         self.assertEqual(report["status"], "PASS", report["findings"])
         self.assertEqual(report["counts"], {
-            "corporate_languages": 4,
-            "archetypes": 6,
-            "facility_references": 5,
-            "entries": 15,
+            "corporate_languages": 10,
+            "archetypes": 18,
+            "facility_references": 17,
+            "entries": 45,
         })
-        self.assertEqual(report["connector_profiles"], 11)
+        self.assertEqual(report["connector_profiles"], 18)
 
     def test_corporate_palettes_are_vanilla_only(self):
         for corporate_id in self.library.ids("corporate_language"):
@@ -46,6 +46,11 @@ class FacilityLibraryTests(unittest.TestCase):
             self.assertGreater(recognition["compiled_block_count"], 500)
             compiled = self.library.compile_reference(reference_id)
             self.assertTrue(all(block["block"].startswith("minecraft:") for block in compiled["blocks"]))
+
+    def test_aerospace_inventory(self):
+        self.assertEqual(len(self.library.entries(kind="corporate_language", category="aerospace_orbital")), 6)
+        self.assertEqual(len(self.library.entries(kind="archetype", category="aerospace_orbital")), 12)
+        self.assertEqual(len(self.library.entries(kind="facility_reference", category="aerospace_orbital")), 12)
 
     def test_refinery_requires_process_specific_visual_signatures(self):
         archetype = self.library.load("continuityworks:archetype/compact_diesel_refinery")

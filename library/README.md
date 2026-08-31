@@ -13,12 +13,14 @@ The library separates **layout templates**, **functional modules**, and **physic
 - Module connectors must use profiles from `contracts/connector_profiles.json`.
 - Physical baseline fixtures use only `minecraft:` block IDs.
 
-## Structural Library 0.3
+## Structural Library 0.4
 
-The base set retains six layouts, thirteen general structural modules, and six diagnostic test structures. Version 0.3 adds nine facility-oriented but still reusable structural modules under `modules/fuel_petroleum/`: fuel canopy, pump island, roadside pylon, pumpjack, storage tank, pipe rack, process column, flare stack, and loading gantry.
+The library now contains six layouts, forty-three reusable modules, and six diagnostic test structures. The original general-purpose and fuel/petroleum vocabularies remain intact.
 
-Connector contract v2 adds three interfaces needed for site-scale industrial composition: `vehicle_lane_5x4`, `vehicle_gate_5x4`, and `process_pipe_1x1`. Existing connector profiles remain unchanged.
+Version 0.4 adds twenty-one aerospace/orbital modules under `modules/aerospace_orbital/` covering landing surfaces, launch mounts, gantries and towers, integration/recovery buildings, crawlerways and causeways, mission operations, launch-exhaust visual language, and deep-silo systems.
 
-These additions do not make the structural library itself brand-aware. Facility function, corporate language, recognizability, and complete architectural references live in the additive sibling `facility_library/` and are exposed through `FacilityLibrary`.
+Connector contract v3 retains all previous interfaces and adds dedicated heavy crawler, launch-mount, heavy/superheavy hangar, superheavy crawler, and deep-silo vertical interfaces. This prevents person-scale circulation, ordinary vehicle routing, heavy launch transport, and underground launch shafts from being treated as interchangeable connectors.
+
+The structural library itself remains style-neutral. Facility function, corporate language, recognizability, scale semantics, and complete architectural references live in the additive sibling `facility_library/` and are exposed through `FacilityLibrary`.
 
 `manifest.json` remains the authoritative structural index. `StructureLibrary` provides discovery, filtering, connector compatibility, loading, and static validation.
