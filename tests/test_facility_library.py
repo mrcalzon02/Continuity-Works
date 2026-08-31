@@ -16,9 +16,9 @@ class FacilityLibraryTests(unittest.TestCase):
         self.assertEqual(report["status"], "PASS", report["findings"])
         self.assertEqual(report["counts"], {
             "corporate_languages": 10,
-            "archetypes": 38,
-            "facility_references": 37,
-            "entries": 85,
+            "archetypes": 48,
+            "facility_references": 47,
+            "entries": 105,
         })
         self.assertEqual(report["connector_profiles"], 41)
 
@@ -51,11 +51,11 @@ class FacilityLibraryTests(unittest.TestCase):
         self.assertEqual(len(self.library.entries(kind="archetype", category="aerospace_orbital")), 12)
         self.assertEqual(len(self.library.entries(kind="facility_reference", category="aerospace_orbital")), 12)
 
-    def test_phase_one_through_three_support_inventory(self):
+    def test_phase_one_through_five_support_inventory(self):
         archetypes = self.library.entries(kind="archetype", category="aerospace_support")
         references = self.library.entries(kind="facility_reference", category="aerospace_support")
-        self.assertEqual(len(archetypes), 20)
-        self.assertEqual(len(references), 20)
+        self.assertEqual(len(archetypes), 30)
+        self.assertEqual(len(references), 30)
         scale_counts = Counter()
         for entry in archetypes:
             data = self.library.load(entry["id"])
@@ -68,6 +68,8 @@ class FacilityLibraryTests(unittest.TestCase):
         self.assertGreaterEqual(scale_counts["light"], 4)
         self.assertGreaterEqual(scale_counts["standard"], 7)
         self.assertGreaterEqual(scale_counts["heavy"], 7)
+        self.assertEqual(scale_counts["superheavy"], 6)
+        self.assertEqual(scale_counts["megastructure"], 4)
         for entry in references:
             support = self.library.load(entry["id"])["aerospace_support_reference"]
             self.assertTrue(support["actual_structure_commitment"])
@@ -90,6 +92,26 @@ class FacilityLibraryTests(unittest.TestCase):
             data = self.library.load(archetype_id)
             profiles = {socket["profile"] for socket in data["support_network"]["sockets"]}
             self.assertTrue(profiles.intersection({"heavy_logistics_10w", "crawler_lane_9x5", "launch_mount_service_axis"}), archetype_id)
+
+    def test_superheavy_and_mega_support_do_not_fall_back_to_small_roads(self):
+        for entry in self.library.entries(kind="archetype", category="aerospace_support"):
+            data = self.library.load(entry["id"])
+            scales = set(data["scale_tiers"])
+            if not scales.intersection({"superheavy", "megastructure"}):
+                continue
+            profiles = {socket["profile"] for socket in data["support_network"]["sockets"]}
+            if "heavy_transport" in set(data["support_network"]["required_socket_groups"]):
+                self.assertTrue(profiles.intersection({"superheavy_crawler_lane_15x8", "transport_spine_interface"}), entry["id"])
+            self.assertNotEqual(profiles, {"local_road_6w"}, entry["id"])
+
+    def test_subterranean_support_archetypes_are_functionally_distinct(self):
+        factory = self.library.load("continuityworks:archetype/subterranean_support_factory")
+        staging = self.library.load("continuityworks:archetype/underground_vehicle_staging_integration_complex")
+        self.assertEqual(factory["support_design_mode"], "subterranean_support")
+        self.assertEqual(staging["support_design_mode"], "subterranean_support")
+        self.assertIn("subterranean_factory_volume", factory["recognition"]["required_signatures"])
+        self.assertIn("near_complete_superheavy_vehicle", staging["recognition"]["required_signatures"])
+        self.assertNotEqual(set(factory["recognition"]["required_signatures"]), set(staging["recognition"]["required_signatures"]))
 
     def test_refinery_requires_process_specific_visual_signatures(self):
         archetype = self.library.load("continuityworks:archetype/compact_diesel_refinery")
