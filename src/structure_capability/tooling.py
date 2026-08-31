@@ -92,6 +92,28 @@ def _infrastructure_layout_schema() -> dict:
     }
 
 
+def _aerospace_support_campus_schema() -> dict:
+    return {
+        "type": "object",
+        "required": ["scale", "seed"],
+        "properties": {
+            "scale": {
+                "enum": ["micro", "light", "standard", "heavy", "superheavy", "megastructure"],
+                "description": "Support-campus scale. Scale changes facility composition and transport hierarchy rather than uniformly resizing one layout.",
+            },
+            "seed": {
+                "oneOf": [{"type": "integer"}, {"type": "string", "minLength": 1}],
+                "description": "Deterministic integer or string campus seed.",
+            },
+            "corporate_language_id": {
+                "type": ["string", "null"],
+                "description": "Optional synthetic aerospace operator. When omitted, one common compatible operator is selected deterministically from the facility intersection.",
+            },
+        },
+        "additionalProperties": False,
+    }
+
+
 def _context_properties() -> dict:
     return {"target_version": {"type": "string", "default": "1.20.1"}, "id_policy": {"enum": ["strict", "namespace", "permissive"], "default": "namespace", "description": "How aggressively unverified mod IDs are gated."}, "namespace": {"type": "string"}}
 
@@ -105,6 +127,7 @@ def tool_catalog() -> dict:
     structure_request = _structure_request_schema()
     dungeon_request = _dungeon_layout_schema()
     infrastructure_request = _infrastructure_layout_schema()
+    aerospace_support_campus = _aerospace_support_campus_schema()
     ctx = _context_properties()
 
     book_schema = {"type": "object", "required": ["title", "author", "pages"], "properties": {**ctx, "title": {"type": "string"}, "author": {"type": "string"}, "pages": {"type": "array", "items": {"oneOf": [{"type": "string"}, {"type": "object"}]}, "description": "Legacy targets before 1.20.5 are gated to 100 pages; 1.20.5+ uses the removed page-count ceiling."}, "generation": {"type": "integer", "minimum": 0, "maximum": 3}, "resolved": {"type": "boolean"}, "item_id": {"type": "string", "default": "minecraft:written_book"}}, "additionalProperties": False}
@@ -133,6 +156,7 @@ def tool_catalog() -> dict:
         _tool("structure_generate", "Run the authoritative generation path. Built-in modular dungeon generation can produce deterministic Minecraft NBT; infrastructure generation emits deterministic road/facility, jigsaw, Lost Cities and placement contracts.", structure_request, "structure", "minecraft:bricks"),
         _tool("dungeon_layout", "Generate a deterministic purpose-sized modular spatial layout with macro/meso/micro modularity and a fitness gate.", dungeon_request, "structure", "minecraft:stone_bricks"),
         _tool("infrastructure_layout", "Generate deterministic urban/highway/civic/industrial infrastructure contracts including strict 6-block inner-city roads with 5-block terrain padding per side, jigsaw connectors, Lost Cities placement modes, purpose depth, and world-seed-derived spawn anchors.", infrastructure_request, "infrastructure", "minecraft:rail"),
+        _tool("aerospace_support_campus_generate", "Generate a deterministic multi-facility aerospace support campus site graph with scale-specific production, logistics, crawler/superheavy transport, utilities, vessel build states, launch-anchor reachability validation, and a canonical SHA-256 campus fingerprint.", aerospace_support_campus, "infrastructure", "minecraft:lodestone"),
         _tool("minecraft_version", "Resolve compatibility metadata for a Minecraft Java target version without guessing unknown DataVersion values.", {"type": "object", "required": ["version"], "properties": {"version": {"type": "string"}}, "additionalProperties": False}, "version", "minecraft:clock"),
         _tool("minecraft_registry_probe", "Probe a vanilla or modded resource ID against the connected inventory and return explicit confidence/gate results.", probe_schema, "registry", "minecraft:knowledge_book"),
         _tool("minecraft_book_generate", "Assemble a version-aware written book item payload and a loot-compatible item representation; legacy book NBT is used before 1.20.5 and written_book_content components on 1.20.5+.", book_schema, "book", "minecraft:written_book"),
@@ -144,4 +168,4 @@ def tool_catalog() -> dict:
         _tool("minecraft_content_package_generate", "Compose one deliberate structure/content package containing an optional generated structure, books, guaranteed evidence loot, recipes, advancements, tags, pack.mcmeta, cross-artifact bindings, and an aggregate materialization gate.", package_schema, "package", "minecraft:chest_minecart"),
         _tool("minecraft_icon_assign", "Assign a semantic Minecraft item icon when available or return a deterministic lightweight SVG badge fallback.", icon_schema, "registry", "minecraft:painting"),
     ]
-    return {"schema_version": "1.3", "api_version": "v1", "reasoning_contract": "deterministic_public_gates", "tools": tools}
+    return {"schema_version": "1.4", "api_version": "v1", "reasoning_contract": "deterministic_public_gates", "tools": tools}
