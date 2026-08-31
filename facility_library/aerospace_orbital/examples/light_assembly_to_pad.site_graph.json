@@ -1,0 +1,60 @@
+{
+  "contract": "continuityworks:aerospace_support_site_graph/v1",
+  "graph_id": "continuityworks:example/aerospace_support/light_assembly_to_pad",
+  "description": "Phase 0 reference graph proving a support facility can connect inbound/outbound logistics, utilities, campus road infrastructure, and a launch-pad feeder without profile substitution.",
+  "nodes": [
+    {
+      "id": "assembly",
+      "kind": "facility",
+      "scale": "light",
+      "network_role": "assembly",
+      "requirements": {"utility": true, "inbound_logistics": true, "outbound_logistics": true, "launch_route": true},
+      "sockets": [
+        {"id": "road", "profile": "industrial_road_8w", "group": "frontage", "flow": "bidirectional", "required": true},
+        {"id": "parts_in", "profile": "component_transfer_interface", "group": "logistics", "flow": "inbound", "required": true},
+        {"id": "vehicle_out", "profile": "vehicle_transfer_interface", "group": "logistics", "flow": "outbound", "required": true},
+        {"id": "utility", "profile": "utility_spine_3x3", "group": "utility", "flow": "bidirectional", "required": true}
+      ]
+    },
+    {"id": "supplier", "kind": "external_anchor", "sockets": [{"id": "out", "profile": "vehicle_transfer_interface", "group": "logistics", "flow": "outbound", "required": true}]},
+    {"id": "staging", "kind": "external_anchor", "sockets": [{"id": "in", "profile": "component_transfer_interface", "group": "logistics", "flow": "inbound", "required": true}]},
+    {"id": "utility_grid", "kind": "external_anchor", "sockets": [{"id": "service", "profile": "power_service_corridor_3x3", "group": "utility", "flow": "bidirectional", "required": true}]},
+    {
+      "id": "checkpoint",
+      "kind": "infrastructure",
+      "source_module": "road_checkpoint_gate",
+      "sockets": [
+        {"id": "campus", "profile": "checkpoint_road_interface", "group": "frontage", "flow": "bidirectional", "required": true},
+        {"id": "launch", "profile": "launch_support_road_8w", "group": "launch_support", "flow": "bidirectional", "required": true}
+      ]
+    },
+    {
+      "id": "apron",
+      "kind": "infrastructure",
+      "source_module": "pad_access_apron",
+      "sockets": [
+        {"id": "road", "profile": "launch_support_road_8w", "group": "launch_support", "flow": "bidirectional", "required": true},
+        {"id": "queue", "profile": "pad_queue_interface", "group": "launch_support", "flow": "bidirectional", "required": true}
+      ]
+    },
+    {
+      "id": "queue",
+      "kind": "infrastructure",
+      "source_module": "queue_alignment_segment",
+      "sockets": [
+        {"id": "in", "profile": "queue_alignment_interface", "group": "staging", "flow": "bidirectional", "required": true},
+        {"id": "out", "profile": "queue_alignment_interface", "group": "staging", "flow": "bidirectional", "required": true}
+      ]
+    },
+    {"id": "pad", "kind": "launch_anchor", "sockets": [{"id": "queue", "profile": "pad_queue_interface", "group": "launch_support", "flow": "bidirectional", "required": true}]}
+  ],
+  "edges": [
+    {"a": {"node": "assembly", "socket": "parts_in"}, "b": {"node": "supplier", "socket": "out"}},
+    {"a": {"node": "assembly", "socket": "vehicle_out"}, "b": {"node": "staging", "socket": "in"}},
+    {"a": {"node": "assembly", "socket": "utility"}, "b": {"node": "utility_grid", "socket": "service"}},
+    {"a": {"node": "assembly", "socket": "road"}, "b": {"node": "checkpoint", "socket": "campus"}},
+    {"a": {"node": "checkpoint", "socket": "launch"}, "b": {"node": "apron", "socket": "road"}},
+    {"a": {"node": "apron", "socket": "queue"}, "b": {"node": "queue", "socket": "in"}},
+    {"a": {"node": "queue", "socket": "out"}, "b": {"node": "pad", "socket": "queue"}}
+  ]
+}
