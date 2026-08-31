@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#continuityworks_biomes:volcanic_abyssal_biomes",
+  "features": "continuityworks_biomes:abyssal/pillow_lava_field",
+  "step": "local_modifications"
+}
