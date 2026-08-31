@@ -19,6 +19,11 @@ public final class AbyssalSedimentFeatures {
         ShelfSandWaveFeature::new
     );
 
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> NODULE_FIELD = FEATURES.register(
+        "nodule_field",
+        NoduleFieldFeature::new
+    );
+
     private AbyssalSedimentFeatures() { }
 
     public static void register(IEventBus modBus) {
