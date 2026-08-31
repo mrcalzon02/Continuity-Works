@@ -1,0 +1,15 @@
+{
+  "structures": [
+    {
+      "structure": "continuityworks_biomes:abyssal/hadal_vent_complex",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 78064602,
+    "spacing": 224,
+    "separation": 112,
+    "spread_type": "linear"
+  }
+}
