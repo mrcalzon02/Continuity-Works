@@ -33,6 +33,11 @@ public final class AbyssalSeafloorFeatures {
         PillowLavaFieldFeature::new
     );
 
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> COOLED_LAVA_TUBE_SYSTEM = FEATURES.register(
+        "cooled_lava_tube_system",
+        CooledLavaTubeFeature::new
+    );
+
     private AbyssalSeafloorFeatures() { }
 
     public static void register(IEventBus modBus) {
