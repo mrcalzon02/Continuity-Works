@@ -16,9 +16,9 @@ class FacilityLibraryTests(unittest.TestCase):
         self.assertEqual(report["status"], "PASS", report["findings"])
         self.assertEqual(report["counts"], {
             "corporate_languages": 10,
-            "archetypes": 31,
-            "facility_references": 30,
-            "entries": 71,
+            "archetypes": 38,
+            "facility_references": 37,
+            "entries": 85,
         })
         self.assertEqual(report["connector_profiles"], 41)
 
@@ -35,9 +35,7 @@ class FacilityLibraryTests(unittest.TestCase):
         frontier = self.library.load(frontier_id)
         self.assertEqual(northstar["archetype_id"], frontier["archetype_id"])
         self.assertNotEqual(northstar["corporate_language_id"], frontier["corporate_language_id"])
-        northstar_blocks = self.library.compile_reference(northstar_id)["blocks"]
-        frontier_blocks = self.library.compile_reference(frontier_id)["blocks"]
-        self.assertNotEqual(northstar_blocks, frontier_blocks)
+        self.assertNotEqual(self.library.compile_reference(northstar_id)["blocks"], self.library.compile_reference(frontier_id)["blocks"])
 
     def test_every_reference_is_recognizable_and_materializes(self):
         for reference_id in self.library.ids("facility_reference"):
@@ -53,11 +51,11 @@ class FacilityLibraryTests(unittest.TestCase):
         self.assertEqual(len(self.library.entries(kind="archetype", category="aerospace_orbital")), 12)
         self.assertEqual(len(self.library.entries(kind="facility_reference", category="aerospace_orbital")), 12)
 
-    def test_phase_one_and_two_aerospace_support_inventory(self):
+    def test_phase_one_through_three_support_inventory(self):
         archetypes = self.library.entries(kind="archetype", category="aerospace_support")
         references = self.library.entries(kind="facility_reference", category="aerospace_support")
-        self.assertEqual(len(archetypes), 13)
-        self.assertEqual(len(references), 13)
+        self.assertEqual(len(archetypes), 20)
+        self.assertEqual(len(references), 20)
         scale_counts = Counter()
         for entry in archetypes:
             data = self.library.load(entry["id"])
@@ -68,11 +66,10 @@ class FacilityLibraryTests(unittest.TestCase):
                 scale_counts[scale] += 1
         self.assertGreaterEqual(scale_counts["micro"], 2)
         self.assertGreaterEqual(scale_counts["light"], 4)
-        self.assertGreaterEqual(scale_counts["standard"], 5)
-        self.assertGreaterEqual(scale_counts["heavy"], 2)
+        self.assertGreaterEqual(scale_counts["standard"], 7)
+        self.assertGreaterEqual(scale_counts["heavy"], 7)
         for entry in references:
-            data = self.library.load(entry["id"])
-            support = data["aerospace_support_reference"]
+            support = self.library.load(entry["id"])["aerospace_support_reference"]
             self.assertTrue(support["actual_structure_commitment"])
             self.assertTrue(support["network_sockets"])
             self.assertIn("vessel_state", support)
@@ -80,13 +77,19 @@ class FacilityLibraryTests(unittest.TestCase):
                 self.assertIn(socket["profile"], self.library.structures.connector_profiles())
 
     def test_heavy_support_references_expose_heavy_transport(self):
-        for archetype_id in [
+        heavy_ids = [
             "continuityworks:archetype/hull_section_fabrication_plant",
             "continuityworks:archetype/booster_refurbishment_hangar",
-        ]:
+            "continuityworks:archetype/vertical_integration_support_tower",
+            "continuityworks:archetype/launch_queue_preparation_yard",
+            "continuityworks:archetype/heavy_component_marshalling_yard",
+            "continuityworks:archetype/engine_module_works",
+            "continuityworks:archetype/heavy_vehicle_retrofit_works",
+        ]
+        for archetype_id in heavy_ids:
             data = self.library.load(archetype_id)
             profiles = {socket["profile"] for socket in data["support_network"]["sockets"]}
-            self.assertTrue(profiles.intersection({"heavy_logistics_10w", "crawler_lane_9x5"}))
+            self.assertTrue(profiles.intersection({"heavy_logistics_10w", "crawler_lane_9x5", "launch_mount_service_axis"}), archetype_id)
 
     def test_refinery_requires_process_specific_visual_signatures(self):
         archetype = self.library.load("continuityworks:archetype/compact_diesel_refinery")
@@ -95,8 +98,7 @@ class FacilityLibraryTests(unittest.TestCase):
         self.assertIn("continuityworks:archetype/bulk_tank_farm", archetype["distinction"]["not_confusable_with"])
 
     def test_allowed_corporate_override_reuses_archetype_geometry_contract(self):
-        reference_id = "continuityworks:reference/northstar_rural_gas_station"
-        frontier = self.library.compile_reference(reference_id, "continuityworks:corporate/frontier_cooperative")
+        frontier = self.library.compile_reference("continuityworks:reference/northstar_rural_gas_station", "continuityworks:corporate/frontier_cooperative")
         self.assertEqual(frontier["metadata"]["corporate_language_id"], "continuityworks:corporate/frontier_cooperative")
         self.assertTrue(all(block["block"].startswith("minecraft:") for block in frontier["blocks"]))
 
