@@ -18,6 +18,8 @@ from .minecraft.content_tools import MinecraftContentTools
 from .versioning import resolve_minecraft_version
 from .tooling import tool_catalog
 from .request_resolution import CapabilityResolver
+from .seeded_aerospace_support_campus import SeededAerospaceSupportCampusGenerator
+
 
 class StructureCapability:
     API_VERSION = "v1"
@@ -39,6 +41,7 @@ class StructureCapability:
         self.infrastructure_provider = NativeInfrastructureProvider(self.infrastructure)
         self.generators.register(self.dungeon_provider)
         self.generators.register(self.infrastructure_provider)
+        self._aerospace_support_campus_generator = None
 
     def capabilities(self):
         return {
@@ -53,7 +56,8 @@ class StructureCapability:
             ],
             "operations": [
                 "inventory", "audit", "plan", "generate", "resume", "dungeon_layout",
-                "infrastructure_layout", "minecraft_version", "minecraft_registry_probe",
+                "infrastructure_layout", "aerospace_support_campus_generate",
+                "minecraft_version", "minecraft_registry_probe",
                 "minecraft_book_generate", "minecraft_loot_table_generate",
                 "minecraft_recipe_generate", "minecraft_advancement_generate",
                 "minecraft_tag_generate", "minecraft_datapack_manifest_generate",
@@ -93,6 +97,17 @@ class StructureCapability:
                 "purpose_depth_validation": True,
                 "world_seed_determinism": True,
                 "runtime_validation_required": True,
+            },
+            "aerospace_support_campus": {
+                "engine": "seeded_aerospace_support_campus_v1",
+                "scales": ["micro", "light", "standard", "heavy", "superheavy", "megastructure"],
+                "deterministic_seeded_generation": True,
+                "typed_site_graph": True,
+                "launch_anchor_reachability_gate": True,
+                "operator_language_intersection": True,
+                "vessel_state_variation": True,
+                "canonical_fingerprint": "sha256",
+                "road_baseline": {"local_road_width": 6, "terrain_padding_each_side": 5},
             },
             "minecraft_content_tools": {
                 "book": {"version_aware": True, "item_components_1_20_5_plus": True, "loot_compatible_output": True},
@@ -218,6 +233,17 @@ class StructureCapability:
 
     def infrastructure_layout(self, request):
         return self.infrastructure_provider.layout(request)
+
+    def aerospace_support_campus_generate(self, request):
+        if not isinstance(request, dict):
+            raise TypeError("Aerospace support campus request must be an object.")
+        if self._aerospace_support_campus_generator is None:
+            self._aerospace_support_campus_generator = SeededAerospaceSupportCampusGenerator()
+        return self._aerospace_support_campus_generator.generate(
+            request.get("scale"),
+            request.get("seed"),
+            request.get("corporate_language_id"),
+        )
 
     def minecraft_version(self, version):
         return resolve_minecraft_version(version).to_dict()
