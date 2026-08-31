@@ -17,6 +17,10 @@ from .versioning import MinecraftVersionProfile, resolve_minecraft_version
 from .request_resolution import CapabilityResolver
 from .structure_library import StructureLibrary, StructureLibraryError
 from .facility_library import FacilityLibrary, FacilityLibraryError
+from .seeded_facility_generator import (
+    SeededFacilityGenerationError,
+    SeededFacilityGenerator,
+)
 
 __all__ = [
     "StructureCapability", "RebuildGrade", "AccessClearance",
@@ -27,4 +31,5 @@ __all__ = [
     "MinecraftVersionProfile", "resolve_minecraft_version", "CapabilityResolver",
     "StructureLibrary", "StructureLibraryError",
     "FacilityLibrary", "FacilityLibraryError",
+    "SeededFacilityGenerationError", "SeededFacilityGenerator",
 ]
