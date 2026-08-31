@@ -15,7 +15,7 @@ class StructureLibraryTests(unittest.TestCase):
         self.assertEqual(report["status"], "PASS", report["findings"])
         self.assertEqual(report["entry_count"], 55)
         self.assertEqual(report["counts"]["modules"], 43)
-        self.assertEqual(report["connector_profiles"], 18)
+        self.assertEqual(report["connector_profiles"], 41)
 
     def test_baseline_inventory(self):
         self.assertEqual(len(self.library.ids("layout")), 6)
@@ -49,7 +49,15 @@ class StructureLibraryTests(unittest.TestCase):
         self.assertTrue(self.library.profiles_compatible("superheavy_crawler_lane_15x8", "superheavy_crawler_lane_15x8"))
         self.assertTrue(self.library.profiles_compatible("silo_vertical_7x7", "silo_vertical_7x7"))
         self.assertTrue(self.library.profiles_compatible("mega_silo_vertical_15x15", "mega_silo_vertical_15x15"))
+        self.assertTrue(self.library.profiles_compatible("industrial_road_8w", "checkpoint_road_interface"))
+        self.assertTrue(self.library.profiles_compatible("launch_support_road_8w", "industrial_road_8w"))
+        self.assertTrue(self.library.profiles_compatible("crew_access_3x3", "passage_3x3"))
+        self.assertTrue(self.library.profiles_compatible("pedestrian_causeway_5x3", "bridge_5x3"))
+        self.assertTrue(self.library.profiles_compatible("utility_spine_3x3", "power_service_corridor_3x3"))
+        self.assertTrue(self.library.profiles_compatible("pad_queue_interface", "crawler_lane_9x5"))
+        self.assertTrue(self.library.profiles_compatible("subterranean_support_interface", "silo_vertical_7x7"))
         self.assertFalse(self.library.profiles_compatible("service_2x2", "passage_3x3"))
+        self.assertFalse(self.library.profiles_compatible("local_road_6w", "heavy_logistics_10w"))
 
     def test_module_category_filter(self):
         matches = self.library.entries(kind="module", category="roof")
