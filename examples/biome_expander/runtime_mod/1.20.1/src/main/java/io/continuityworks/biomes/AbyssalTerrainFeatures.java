@@ -22,6 +22,11 @@ public final class AbyssalTerrainFeatures {
         PockmarkFieldFeature::new
     );
 
+    public static final RegistryObject<Feature<NoneFeatureConfiguration>> TURBIDITY_CHANNEL = FEATURES.register(
+        "turbidity_channel",
+        TurbidityChannelFeature::new
+    );
+
     private AbyssalTerrainFeatures() { }
 
     public static void register(IEventBus modBus) {
