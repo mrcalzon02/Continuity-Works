@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://continuityworks.local/schemas/aerospace_support_site_graph.schema.json",
+  "title": "Continuity Works Aerospace Support Site Graph",
+  "type": "object",
+  "required": ["contract", "nodes", "edges"],
+  "properties": {
+    "contract": {"const": "continuityworks:aerospace_support_site_graph/v1"},
+    "graph_id": {"type": "string"},
+    "description": {"type": "string"},
+    "nodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "sockets"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "kind": {"enum": ["facility", "infrastructure", "launch_anchor", "external_anchor"]},
+          "scale": {"enum": ["micro", "light", "standard", "heavy", "superheavy", "megastructure"]},
+          "network_role": {"type": "string"},
+          "isolated": {"type": "boolean"},
+          "requirements": {"type": "object"},
+          "sockets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "profile", "group"],
+              "properties": {
+                "id": {"type": "string"},
+                "profile": {"type": "string"},
+                "group": {"type": "string"},
+                "flow": {"enum": ["inbound", "outbound", "bidirectional"]},
+                "required": {"type": "boolean"}
+              },
+              "additionalProperties": true
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["a", "b"],
+        "properties": {
+          "a": {"$ref": "#/$defs/endpoint"},
+          "b": {"$ref": "#/$defs/endpoint"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "$defs": {
+    "endpoint": {
+      "type": "object",
+      "required": ["node", "socket"],
+      "properties": {
+        "node": {"type": "string"},
+        "socket": {"type": "string"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": true
+}
