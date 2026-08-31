@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mrcalzon02/Continuity-Works/schemas/structure_spawn_protection_profile.schema.json",
+  "title": "Continuity Works Structure Spawn Protection Profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["selectors"],
+  "properties": {
+    "selectors": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "structures": {"type": "array", "items": {"type": "string", "minLength": 3}, "uniqueItems": true},
+        "tags": {"type": "array", "items": {"type": "string", "minLength": 3}, "uniqueItems": true},
+        "namespaces": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true}
+      },
+      "anyOf": [
+        {"required": ["structures"], "properties": {"structures": {"minItems": 1}}},
+        {"required": ["tags"], "properties": {"tags": {"minItems": 1}}},
+        {"required": ["namespaces"], "properties": {"namespaces": {"minItems": 1}}}
+      ]
+    },
+    "family": {"type": "string", "minLength": 3},
+    "exclusion_radius": {"type": "integer", "minimum": 500, "default": 500},
+    "jigsaw_piece_exclusion_radius": {"type": "integer", "minimum": 500, "default": 500},
+    "protect_jigsaw_pieces": {"const": true, "default": true},
+    "priority": {"type": "integer", "default": 0}
+  }
+}
