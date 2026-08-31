@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#continuityworks_biomes:abyssal_plain_biomes",
+  "features": "continuityworks_biomes:abyssal/nodule_field",
+  "step": "local_modifications"
+}
