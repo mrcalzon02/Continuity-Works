@@ -15,11 +15,11 @@ class FacilityLibraryTests(unittest.TestCase):
         self.assertEqual(report["status"], "PASS", report["findings"])
         self.assertEqual(report["counts"], {
             "corporate_languages": 10,
-            "archetypes": 18,
-            "facility_references": 17,
-            "entries": 45,
+            "archetypes": 23,
+            "facility_references": 22,
+            "entries": 55,
         })
-        self.assertEqual(report["connector_profiles"], 18)
+        self.assertEqual(report["connector_profiles"], 41)
 
     def test_corporate_palettes_are_vanilla_only(self):
         for corporate_id in self.library.ids("corporate_language"):
@@ -51,6 +51,23 @@ class FacilityLibraryTests(unittest.TestCase):
         self.assertEqual(len(self.library.entries(kind="corporate_language", category="aerospace_orbital")), 6)
         self.assertEqual(len(self.library.entries(kind="archetype", category="aerospace_orbital")), 12)
         self.assertEqual(len(self.library.entries(kind="facility_reference", category="aerospace_orbital")), 12)
+
+    def test_phase_one_aerospace_support_inventory(self):
+        archetypes = self.library.entries(kind="archetype", category="aerospace_support")
+        references = self.library.entries(kind="facility_reference", category="aerospace_support")
+        self.assertEqual(len(archetypes), 5)
+        self.assertEqual(len(references), 5)
+        for entry in archetypes:
+            data = self.library.load(entry["id"])
+            self.assertIn("support_network", data)
+            self.assertTrue(data["support_network"]["required_socket_groups"])
+            self.assertIn("vessel_state_support", data)
+        for entry in references:
+            data = self.library.load(entry["id"])
+            support = data["aerospace_support_reference"]
+            self.assertTrue(support["actual_structure_commitment"])
+            self.assertTrue(support["network_sockets"])
+            self.assertIn("vessel_state", support)
 
     def test_refinery_requires_process_specific_visual_signatures(self):
         archetype = self.library.load("continuityworks:archetype/compact_diesel_refinery")
