@@ -24,6 +24,7 @@ public final class ContinuityWorksBiomeTemplates {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         AbyssalSeafloorFeatures.register(modBus);
         AbyssalTerrainFeatures.register(modBus);
+        AbyssalSedimentFeatures.register(modBus);
         modBus.addListener(this::commonSetup);
     }
 
