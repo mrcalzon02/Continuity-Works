@@ -13,6 +13,17 @@ public final class BiomeTemplateConfig {
     public static final ForgeConfigSpec.BooleanValue ENABLE_DRY_SCRUBLAND;
     public static final ForgeConfigSpec.BooleanValue ENABLE_ROCKY_BADLANDS;
     public static final ForgeConfigSpec.BooleanValue ENABLE_ASH_WASTES;
+
+    public static final ForgeConfigSpec.BooleanValue ENABLE_ABYSSAL_FAMILY;
+    public static final ForgeConfigSpec.BooleanValue ENABLE_WESTERN_CONTINENTAL_SLOPE;
+    public static final ForgeConfigSpec.BooleanValue ENABLE_WESTERN_ABYSSAL_PLAIN;
+    public static final ForgeConfigSpec.BooleanValue ENABLE_WESTERN_FRACTURE_FIELD;
+    public static final ForgeConfigSpec.BooleanValue ENABLE_WESTERN_HADAL_TRENCH;
+    public static final ForgeConfigSpec.BooleanValue ENABLE_EASTERN_CONTINENTAL_SLOPE;
+    public static final ForgeConfigSpec.BooleanValue ENABLE_EASTERN_ABYSSAL_PLAIN;
+    public static final ForgeConfigSpec.BooleanValue ENABLE_EASTERN_FRACTURE_FIELD;
+    public static final ForgeConfigSpec.BooleanValue ENABLE_EASTERN_HADAL_TRENCH;
+
     public static final ForgeConfigSpec.IntValue REGION_WEIGHT;
 
     static {
@@ -37,6 +48,23 @@ public final class BiomeTemplateConfig {
         ENABLE_ASH_WASTES = builder.define("ashWastes", true);
         builder.pop();
 
+        builder.comment(
+            "Infinite Domain Abyssal biome family.",
+            "The family switch and each member switch affect natural generation only.",
+            "Registry definitions stay loaded so saved chunks remain readable."
+        );
+        builder.push("abyssal");
+        ENABLE_ABYSSAL_FAMILY = builder.define("enabled", true);
+        ENABLE_WESTERN_CONTINENTAL_SLOPE = builder.define("westernContinentalSlope", true);
+        ENABLE_WESTERN_ABYSSAL_PLAIN = builder.define("westernAbyssalPlain", true);
+        ENABLE_WESTERN_FRACTURE_FIELD = builder.define("westernFractureField", true);
+        ENABLE_WESTERN_HADAL_TRENCH = builder.define("westernHadalTrench", true);
+        ENABLE_EASTERN_CONTINENTAL_SLOPE = builder.define("easternContinentalSlope", true);
+        ENABLE_EASTERN_ABYSSAL_PLAIN = builder.define("easternAbyssalPlain", true);
+        ENABLE_EASTERN_FRACTURE_FIELD = builder.define("easternFractureField", true);
+        ENABLE_EASTERN_HADAL_TRENCH = builder.define("easternHadalTrench", true);
+        builder.pop();
+
         builder.push("worldgen");
         REGION_WEIGHT = builder
             .comment("Relative TerraBlender region weight. Higher values make the template region more common.")
@@ -56,6 +84,16 @@ public final class BiomeTemplateConfig {
             || ENABLE_FROSTED_TAIGA.get()
             || ENABLE_DRY_SCRUBLAND.get()
             || ENABLE_ROCKY_BADLANDS.get()
-            || ENABLE_ASH_WASTES.get();
+            || ENABLE_ASH_WASTES.get()
+            || (ENABLE_ABYSSAL_FAMILY.get() && (
+                ENABLE_WESTERN_CONTINENTAL_SLOPE.get()
+                || ENABLE_WESTERN_ABYSSAL_PLAIN.get()
+                || ENABLE_WESTERN_FRACTURE_FIELD.get()
+                || ENABLE_WESTERN_HADAL_TRENCH.get()
+                || ENABLE_EASTERN_CONTINENTAL_SLOPE.get()
+                || ENABLE_EASTERN_ABYSSAL_PLAIN.get()
+                || ENABLE_EASTERN_FRACTURE_FIELD.get()
+                || ENABLE_EASTERN_HADAL_TRENCH.get()
+            ));
     }
 }
