@@ -2,30 +2,23 @@
 
 This directory is the reusable structural corpus for Continuity Works.
 
-The library deliberately separates **layout templates**, **functional modules**, and **physical test structures**. Layouts describe large-scale spatial patterns. Modules describe reusable construction functions with standardized connection interfaces. Test structures are small vanilla-only block fixtures used to verify import, bounds, orientation, circulation, verticality, palette handling, and deterministic processing.
+The library separates **layout templates**, **functional modules**, and **physical test structures**. Layouts describe large-scale spatial patterns. Modules describe reusable construction functions with standardized connection interfaces. Test structures are small vanilla-only block fixtures used to verify import, bounds, orientation, circulation, verticality, palette handling, and deterministic processing.
 
 ## Stability rules
 
-- Library IDs are stable API-facing identifiers. Move files only by preserving their IDs in the manifest.
-- Existing library entries are never silently repurposed. Create a new version or a new ID when semantics change.
+- Library IDs are stable API-facing identifiers.
+- Existing entries are never silently repurposed; create a new ID/version for semantic breaks.
 - Compatibility additions are additive and non-destructive.
-- Default fixtures use only `minecraft:` block IDs so a clean vanilla registry can exercise the library.
-- Abstract layouts and modules do not prescribe decorative style. Theme, culture, era, faction, biome, and mod palettes are provider concerns.
-- Test structures are not shipping showcase builds. They exist to make failures small, obvious, deterministic, and reproducible.
+- Abstract layouts/modules do not prescribe corporate, cultural, biome, era, or mod style.
 - Module connectors must use profiles from `contracts/connector_profiles.json`.
+- Physical baseline fixtures use only `minecraft:` block IDs.
 
-## Baseline layout set
+## Structural Library 0.3
 
-The baseline contains compact room, linear corridor, cross hub, courtyard, tower core, and 3×3 modular-grid layouts.
+The base set retains six layouts, thirteen general structural modules, and six diagnostic test structures. Version 0.3 adds nine facility-oriented but still reusable structural modules under `modules/fuel_petroleum/`: fuel canopy, pump island, roadside pylon, pumpjack, storage tank, pipe rack, process column, flare stack, and loading gantry.
 
-## Baseline module set
+Connector contract v2 adds three interfaces needed for site-scale industrial composition: `vehicle_lane_5x4`, `vehicle_gate_5x4`, and `process_pipe_1x1`. Existing connector profiles remain unchanged.
 
-The first module layer contains entrance, stairs, lift shaft, T-intersection, standard room, foundation, flat roof, gable roof, tower transition, bridge span, wall segment, gatehouse, and utility/service modules.
+These additions do not make the structural library itself brand-aware. Facility function, corporate language, recognizability, and complete architectural references live in the additive sibling `facility_library/` and are exposed through `FacilityLibrary`.
 
-These modules use eight standardized connector profiles covering person-scale passages, gates, service access, vertical shafts, bridge decks, fortification joins, foundation anchors, and roof supports.
-
-## Baseline test set
-
-The physical fixtures cover orientation, enclosed rooms, corridors, four-way hubs, courtyards/open space, and vertical towers. Each JSON file uses the existing Continuity Works `size` + `blocks` representation and carries metadata identifying the library entry and targeted checks.
-
-`manifest.json` is the authoritative index. `StructureLibrary` in `structure_capability.structure_library` provides discovery, filtering, connector-profile compatibility checks, loading, and static validation.
+`manifest.json` remains the authoritative structural index. `StructureLibrary` provides discovery, filtering, connector compatibility, loading, and static validation.
