@@ -115,6 +115,49 @@ public final class BiomeTemplateRegion extends Region {
                     .weirdness(Weirdness.PEAK_VARIANT, Weirdness.MID_SLICE_VARIANT_DESCENDING));
         }
 
+        if (BiomeTemplateConfig.ENABLE_ABYSSAL_FAMILY.get()) {
+            if (BiomeTemplateConfig.ENABLE_WESTERN_CONTINENTAL_SLOPE.get()) {
+                add(overlay, BiomeTemplateKeys.WESTERN_CONTINENTAL_SLOPE,
+                    abyssalPoints(Temperature.COOL, Humidity.WET, Continentalness.OCEAN,
+                        Erosion.EROSION_2, Weirdness.HIGH_SLICE_NORMAL_DESCENDING));
+            }
+            if (BiomeTemplateConfig.ENABLE_EASTERN_CONTINENTAL_SLOPE.get()) {
+                add(overlay, BiomeTemplateKeys.EASTERN_CONTINENTAL_SLOPE,
+                    abyssalPoints(Temperature.WARM, Humidity.WET, Continentalness.OCEAN,
+                        Erosion.EROSION_3, Weirdness.HIGH_SLICE_VARIANT_ASCENDING));
+            }
+            if (BiomeTemplateConfig.ENABLE_WESTERN_ABYSSAL_PLAIN.get()) {
+                add(overlay, BiomeTemplateKeys.WESTERN_ABYSSAL_PLAIN,
+                    abyssalPoints(Temperature.COOL, Humidity.NEUTRAL, Continentalness.DEEP_OCEAN,
+                        Erosion.EROSION_5, Weirdness.MID_SLICE_NORMAL_DESCENDING));
+            }
+            if (BiomeTemplateConfig.ENABLE_EASTERN_ABYSSAL_PLAIN.get()) {
+                add(overlay, BiomeTemplateKeys.EASTERN_ABYSSAL_PLAIN,
+                    abyssalPoints(Temperature.WARM, Humidity.NEUTRAL, Continentalness.DEEP_OCEAN,
+                        Erosion.EROSION_6, Weirdness.MID_SLICE_VARIANT_ASCENDING));
+            }
+            if (BiomeTemplateConfig.ENABLE_WESTERN_FRACTURE_FIELD.get()) {
+                add(overlay, BiomeTemplateKeys.WESTERN_FRACTURE_FIELD,
+                    abyssalPoints(Temperature.COOL, Humidity.DRY, Continentalness.DEEP_OCEAN,
+                        Erosion.EROSION_1, Weirdness.PEAK_NORMAL));
+            }
+            if (BiomeTemplateConfig.ENABLE_EASTERN_FRACTURE_FIELD.get()) {
+                add(overlay, BiomeTemplateKeys.EASTERN_FRACTURE_FIELD,
+                    abyssalPoints(Temperature.WARM, Humidity.DRY, Continentalness.DEEP_OCEAN,
+                        Erosion.EROSION_1, Weirdness.PEAK_VARIANT));
+            }
+            if (BiomeTemplateConfig.ENABLE_WESTERN_HADAL_TRENCH.get()) {
+                add(overlay, BiomeTemplateKeys.WESTERN_HADAL_TRENCH,
+                    abyssalPoints(Temperature.ICY, Humidity.NEUTRAL, Continentalness.DEEP_OCEAN,
+                        Erosion.EROSION_0, Weirdness.LOW_SLICE_NORMAL_DESCENDING));
+            }
+            if (BiomeTemplateConfig.ENABLE_EASTERN_HADAL_TRENCH.get()) {
+                add(overlay, BiomeTemplateKeys.EASTERN_HADAL_TRENCH,
+                    abyssalPoints(Temperature.NEUTRAL, Humidity.NEUTRAL, Continentalness.DEEP_OCEAN,
+                        Erosion.EROSION_0, Weirdness.LOW_SLICE_VARIANT_ASCENDING));
+            }
+        }
+
         for (AnthologyBiomeCatalog.Entry entry : AnthologyBiomeCatalog.ENTRIES) {
             if (!BiomeTemplateConfig.isAnthologyEnabled(entry)) {
                 continue;
@@ -131,6 +174,22 @@ public final class BiomeTemplateRegion extends Region {
         }
 
         overlay.build().forEach(mapper::accept);
+    }
+
+    private static ParameterPointListBuilder abyssalPoints(
+        Temperature temperature,
+        Humidity humidity,
+        Continentalness continentalness,
+        Erosion erosion,
+        Weirdness weirdness
+    ) {
+        return new ParameterPointListBuilder()
+            .temperature(temperature)
+            .humidity(humidity)
+            .continentalness(continentalness)
+            .erosion(erosion)
+            .depth(Depth.SURFACE)
+            .weirdness(weirdness);
     }
 
     private static void add(
