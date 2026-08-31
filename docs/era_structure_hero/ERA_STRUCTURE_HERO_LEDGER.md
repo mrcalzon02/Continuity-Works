@@ -15,33 +15,41 @@ Development mode: one archetype per run to hero specification, followed by imple
 | Catalog | Era | Archetype | Hero status | Production status |
 |---|---|---|---|---|
 | E01-001 | Lower Paleolithic / Early Human | Rock Overhang Camp | HERO_SPEC_COMPLETE | IMPLEMENTATION_PENDING |
-| E01-002 | Lower Paleolithic / Early Human | Cave Mouth Occupation | NEXT | NOT_STARTED |
+| E01-002 | Lower Paleolithic / Early Human | Cave Mouth Occupation | HERO_SPEC_COMPLETE | IMPLEMENTATION_PENDING |
+| E01-003 | Lower Paleolithic / Early Human | Deep Cave Refuge | NEXT | NOT_STARTED |
 
 ## Last completed run
 
-**E01-001 — Rock Overhang Camp**
+**E01-002 — Cave Mouth Occupation**
 
 Hero coverage completed:
-- purpose and historical/technological context;
-- S/M/L footprint and carrying-capacity classes;
-- architectural/behavioral program;
+- purpose and distinction from Rock Overhang Camp and Deep Cave Refuge;
+- Lower Paleolithic technological limits;
+- S/M/L footprint, entrance, penetration, and occupancy classes;
+- threshold-centered architectural/behavioral program;
 - required and probabilistic components;
-- terrain-first procedural generation doctrine;
+- cave-mouth candidate scoring and topology classification;
+- daylight/twilight distance-field zoning;
+- ventilation-aware hearth placement proxies;
 - deterministic named random substreams;
 - biome/environment adaptations;
 - culture-variant hooks;
-- local geology and organic material palette logic;
-- active, vacant, repeated, abandoned, collapsed, buried, and repurposed states;
-- jigsaw/family relationships;
+- local geology, carried toolstone, and organic palette logic;
+- active, vacant, repeated, abandoned, collapsed, silted, animal-reoccupied, and later-repurposed states;
+- jigsaw/family relationships and explicit distinctions from adjacent catalog archetypes;
 - infrastructure dependencies;
-- distributed loot/occupancy hooks;
-- additive/non-destructive compatibility rules;
+- distributed loot and occupancy hooks;
+- additive/non-destructive cave and third-party compatibility rules;
 - default 500-block unrelated-structure exclusion rule;
-- geometry, historical fitness, procedural, compatibility, and visual validation criteria;
-- production-admission gates.
+- geometry, archetype distinction, historical fitness, procedural, compatibility, and visual validation criteria;
+- explicit runtime production-admission gates.
 
-Implementation claim: **not made**. The committed artifact is a hero-level production specification; runtime generator implementation and production validation remain pending evidence.
+Implementation claim: **not made**. The committed artifact is a hero-level production specification; runtime generator/template implementation and production validation remain pending observed evidence.
+
+## Previously completed
+
+**E01-001 — Rock Overhang Camp** — HERO_SPEC_COMPLETE / IMPLEMENTATION_PENDING.
 
 ## Next run
 
-Develop **E01-002 — Cave Mouth Occupation** to the same hero specification bar, preserving distinction from Rock Overhang Camp and from later Deep Cave Refuge.
+Develop **E01-003 — Deep Cave Refuge** to the same hero specification bar. It must be a genuinely deep-subterranean refuge whose survival logic depends on darkness, constrained access, internal navigation, scarce ventilation/light, and temporary refuge behavior rather than simply extending the Cave Mouth Occupation farther inward.
