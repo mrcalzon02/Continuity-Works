@@ -1,0 +1,24 @@
+{
+  "contract": "continuityworks:seeded_aerospace_support_campus_requests/v1",
+  "generation_contract": "continuityworks:seeded_aerospace_support_campus/v1",
+  "policy": {
+    "two_examples_per_scale": true,
+    "deterministic_replay": true,
+    "operator_may_be_explicit_or_seed_selected": true,
+    "full_site_graphs_generated_by_script": true
+  },
+  "requests": [
+    {"run_id":"micro_auto_service_104729","scale":"micro","seed":104729,"corporate_language_id":null},
+    {"run_id":"micro_vcf_refit_delta","scale":"micro","seed":"refit-delta","corporate_language_id":"continuityworks:corporate/vcf_colonial_launch_authority"},
+    {"run_id":"light_auto_transfer_77123","scale":"light","seed":77123,"corporate_language_id":null},
+    {"run_id":"light_helium_launchfeed","scale":"light","seed":"launch-feed-east","corporate_language_id":"continuityworks:corporate/helium_orbital_works"},
+    {"run_id":"standard_auto_parallel_882451","scale":"standard","seed":882451,"corporate_language_id":null},
+    {"run_id":"standard_asterion_campus","scale":"standard","seed":"asterion-standard-01","corporate_language_id":"continuityworks:corporate/asterion_aerospace"},
+    {"run_id":"heavy_auto_crawler_990177","scale":"heavy","seed":990177,"corporate_language_id":null},
+    {"run_id":"heavy_atlas_padchain","scale":"heavy","seed":"atlas-pad-chain","corporate_language_id":"continuityworks:corporate/atlas_heavy_industries"},
+    {"run_id":"superheavy_auto_spine_20260830","scale":"superheavy","seed":20260830,"corporate_language_id":null},
+    {"run_id":"superheavy_helium_integration","scale":"superheavy","seed":"helium-superheavy-a","corporate_language_id":"continuityworks:corporate/helium_orbital_works"},
+    {"run_id":"mega_auto_deep_550701","scale":"megastructure","seed":550701,"corporate_language_id":null},
+    {"run_id":"mega_vcf_launchvault","scale":"megastructure","seed":"launch-vault-west","corporate_language_id":"continuityworks:corporate/vcf_colonial_launch_authority"}
+  ]
+}
