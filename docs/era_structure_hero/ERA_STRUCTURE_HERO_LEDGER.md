@@ -17,34 +17,35 @@ Development mode: one archetype per run to hero specification, followed by imple
 | E01-001 | Lower Paleolithic / Early Human | Rock Overhang Camp | HERO_SPEC_COMPLETE | IMPLEMENTATION_PENDING |
 | E01-002 | Lower Paleolithic / Early Human | Cave Mouth Occupation | HERO_SPEC_COMPLETE | IMPLEMENTATION_PENDING |
 | E01-003 | Lower Paleolithic / Early Human | Deep Cave Refuge | HERO_SPEC_COMPLETE | IMPLEMENTATION_PENDING |
-| E01-004 | Lower Paleolithic / Early Human | Temporary Brush Shelter | NEXT | NOT_STARTED |
+| E01-004 | Lower Paleolithic / Early Human | Temporary Brush Shelter | HERO_SPEC_COMPLETE | IMPLEMENTATION_PENDING |
+| E01-005 | Lower Paleolithic / Early Human | Lean-To Windbreak | NEXT | NOT_STARTED |
 
 ## Last completed run
 
-**E01-003 — Deep Cave Refuge**
+**E01-004 — Temporary Brush Shelter**
 
 Hero coverage completed:
-- purpose and strict distinction from Cave Mouth Occupation and later subterranean archetypes;
-- Lower Paleolithic technological limits and explicit prohibited assumptions;
-- S/M/L deep-refuge scale, route-distance, occupancy, and complexity classes;
-- route-and-refuge architectural/behavioral program;
-- deep-zone identity contract and required components;
-- entrance-linked cave graph extraction;
-- deep-zone qualification using topology rather than Euclidean distance alone;
-- refuge fitness scoring and route difficulty banding;
-- primitive deterministic wayfinding-marker logic;
-- ventilation-aware `NO_FIRE_SAFE`, `SMALL_FIRE_LIMITED`, and `HEARTH_CAPABLE` classification;
-- deterministic behavioral zoning and named random substreams;
-- biome/environment adaptations driven by surface climate and cave hazards;
+- first primarily human-constructed shelter identity and strict distinction from natural shelters and later durable dwellings;
+- Lower Paleolithic technological limits and prohibited later-era construction assumptions;
+- S/M/L footprint, covered-area, height, and occupancy classes;
+- weather-performance architectural/behavioral program;
+- required and probabilistic components;
+- candidate micro-site scoring and deterministic exposure-vector derivation;
+- natural-anchor classification and terrain-responsive form selection;
+- primitive structural skeleton and support-chain rules;
+- climate-responsive cover-density logic;
+- protected-floor, bedding, work, repair, and fire-safety zoning;
+- deterministic named random substreams;
+- biome/environment adaptations including forest, cold, tundra/alpine, savanna, arid, tropical, coastal, and snow conditions;
 - culture-variant hooks bounded by era technology;
-- local geology, carried-resource, and sparse intervention material logic;
-- active, vacant, repeated, abandoned, blocked, collapsed, flood-damaged, animal-reoccupied, and later-repurposed condition states;
-- jigsaw/family relationships with one-parent reservation ownership;
+- local structural-organic, cover, stone, and ground palette logic;
+- active, maintained, vacant, weather-damaged, partially collapsed, abandoned, archaeological, and later-repurposed condition states;
+- jigsaw/family relationships with explicit distinction from E01-005 Lean-To Windbreak;
 - environmental infrastructure dependencies;
-- distributed loot and occupancy hooks constrained by route width and ventilation;
-- additive/non-destructive cave and third-party compatibility rules;
-- default minimum 500-block unrelated-structure exclusion rule;
-- topology, archetype distinction, historical fitness, wayfinding, procedural, compatibility, and visual validation criteria;
+- distributed loot and occupancy hooks;
+- additive/non-destructive compatibility rules;
+- default minimum 500-block unrelated-structure exclusion rule and explicit shared-parent exception;
+- geometry, archetype distinction, historical, environmental, procedural, compatibility, and visual validation criteria;
 - explicit runtime production-admission gates and hero acceptance checklist.
 
 Implementation claim: **not made**. The committed artifact is a hero-level production specification; runtime generator/template implementation and production validation remain pending observed evidence.
@@ -55,6 +56,8 @@ Implementation claim: **not made**. The committed artifact is a hero-level produ
 
 **E01-002 — Cave Mouth Occupation** — HERO_SPEC_COMPLETE / IMPLEMENTATION_PENDING.
 
+**E01-003 — Deep Cave Refuge** — HERO_SPEC_COMPLETE / IMPLEMENTATION_PENDING.
+
 ## Next run
 
-Develop **E01-004 — Temporary Brush Shelter** to the same hero specification bar. It must establish the first primarily human-constructed shelter archetype in the catalog while remaining extremely low-technology, temporary, terrain-responsive, asymmetric, locally sourced, and clearly distinct from natural-shelter occupation and later durable huts/dwellings.
+Develop **E01-005 — Lean-To Windbreak** to the same hero specification bar. It must specialize in directional wind protection and minimal leaned construction rather than becoming a duplicate of Temporary Brush Shelter; overhead cover should be secondary or partial, with exposure-vector response, terrain anchoring, and open-sided camp behavior defining the archetype.
