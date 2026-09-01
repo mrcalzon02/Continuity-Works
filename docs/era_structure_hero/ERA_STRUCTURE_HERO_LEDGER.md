@@ -30,8 +30,8 @@ The catalog currently has a Stage 2/3 backlog from E01-001 through E01-009. **Do
 | Catalog | Era | Archetype | Stage 1 | Stage 2 | Stage 3 | Production |
 |---|---|---|---|---|---|---|
 | E01-001 | Lower Paleolithic / Early Human | Rock Overhang Camp | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
-| E01-002 | Lower Paleolithic / Early Human | Cave Mouth Occupation | HERO_SPEC_COMPLETE | NEXT | WORLDGEN_PENDING | IMPLEMENTATION_PENDING |
-| E01-003 | Lower Paleolithic / Early Human | Deep Cave Refuge | HERO_SPEC_COMPLETE | IMPLEMENTATION_PENDING | WORLDGEN_PENDING | IMPLEMENTATION_PENDING |
+| E01-002 | Lower Paleolithic / Early Human | Cave Mouth Occupation | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
+| E01-003 | Lower Paleolithic / Early Human | Deep Cave Refuge | HERO_SPEC_COMPLETE | NEXT | WORLDGEN_PENDING | IMPLEMENTATION_PENDING |
 | E01-004 | Lower Paleolithic / Early Human | Temporary Brush Shelter | HERO_SPEC_COMPLETE | IMPLEMENTATION_PENDING | WORLDGEN_PENDING | IMPLEMENTATION_PENDING |
 | E01-005 | Lower Paleolithic / Early Human | Lean-To Windbreak | HERO_SPEC_COMPLETE | IMPLEMENTATION_PENDING | WORLDGEN_PENDING | IMPLEMENTATION_PENDING |
 | E01-006 | Lower Paleolithic / Early Human | Hide Windbreak Camp | HERO_SPEC_COMPLETE | IMPLEMENTATION_PENDING | WORLDGEN_PENDING | IMPLEMENTATION_PENDING |
@@ -42,61 +42,56 @@ The catalog currently has a Stage 2/3 backlog from E01-001 through E01-009. **Do
 
 ## Last completed implementation run
 
-**E01-001 — Rock Overhang Camp**
+**E01-002 — Cave Mouth Occupation**
 
 ### Stage 1
-Already complete under `docs/era_structure_hero/E01-001_ROCK_OVERHANG_CAMP.md`.
+Already complete under `docs/era_structure_hero/E01-002_CAVE_MOUTH_OCCUPATION.md`.
 
 ### Stage 2 source implementation
-Committed implementation now includes:
-- public `EarlyHumanStructureGenerator` implementation in `src/structure_capability/early_human.py`;
-- deterministic named random streams derived from seed + stream name;
-- small, medium, and large physical output classes;
-- terrain-first connected overhang/rear support mass rather than a freestanding roof;
-- protected occupation floor and sparse approach apron;
-- offset hearth placement;
-- daylight-side work scatter using valid placeable-block proxies;
-- climate-bounded bedding treatment;
-- sheltered sleeping zone and lateral refuse edge;
-- active/recent/abandoned/collapsed/buried condition handling;
-- biome-family geological palettes;
-- physical structure output in `{size, blocks, metadata}` form;
-- deterministic structure fingerprint metadata;
-- additive/non-destructive replacement metadata;
-- focused unit tests in `tests/test_early_human.py` for determinism, seed variation, bounds, geology/hearth presence, arid palette restrictions, scale rejection, worldgen protection, and placement spacing.
+Committed implementation in `src/structure_capability/early_human.py` now includes:
+- archetype registration for `E01-002` with structure ID `continuityworks:e01_002_cave_mouth_occupation`;
+- S/M/L cave-mouth dimensions;
+- deterministic cave-candidate, mouth-topology, occupation, hearth, and condition streams;
+- natural cave chamber geometry with a real mouth aperture and terrain-first rock mass;
+- sparse exterior approach/threshold compaction;
+- explicit daylight band, twilight band, and interior stop-line metadata;
+- daylight-biased work scatter;
+- ventilation-proxy hearth placement kept near the entrance zone;
+- sheltered rest and cache anchors constrained before the interior stop-line;
+- lateral/exterior refuse placement rather than deep-cave dumping;
+- active/recent/repeated/abandoned/collapsed/silted/animal-reoccupied condition handling;
+- biome-family palette logic and arid bedding restriction;
+- deterministic physical structure fingerprint;
+- bounded additive/non-destructive replacement policy metadata.
 
-The generator is exported from `structure_capability.__init__`.
+Focused tests in `tests/test_early_human.py` cover deterministic replay, seed variation, S/M/L bounds, threshold identity, interior stop-line enforcement, arid material restrictions, worldgen protection, and spacing validity.
 
 ### Stage 3 source integration
-`EarlyHumanStructureGenerator.worldgen_bundle("E01-001")` now binds the structure to the existing Continuity Works Minecraft worldgen contract using:
-- `jigsaw_structure(...)` placement metadata;
-- `random_spread_structure_set(...)`;
-- family identity `continuityworks:early_human_camp`;
-- structure ID `continuityworks:e01_001_rock_overhang_camp`;
-- start pool `continuityworks:early_human/e01_001_rock_overhang_camp`;
-- minimum 500-block structure exclusion radius;
+`EarlyHumanStructureGenerator.worldgen_bundle("E01-002")` now uses:
+- family `continuityworks:early_human_cave_complex`;
+- structure ID `continuityworks:e01_002_cave_mouth_occupation`;
+- start pool `continuityworks:early_human/e01_002_cave_mouth_occupation`;
+- surface-anchored jigsaw placement with `bury` terrain adaptation so the mouth remains the world-placement anchor;
+- random-spread placement with separation lower than spacing;
+- minimum 500-block unrelated-structure exclusion radius;
 - minimum 500-block per-jigsaw-piece exclusion radius;
 - mandatory jigsaw piece protection;
-- existing `validate_geospatial_worldgen(...)` checks.
+- existing geospatial worldgen validation.
+
+### Archetype distinction
+E01-002 remains distinct from E01-001 because occupation occurs inside a bounded cave threshold rather than beneath an exterior overhang. It remains distinct from E01-003 because the work, hearth, rest, and cache anchors are constrained to the daylight/twilight envelope at or before an explicit interior stop-line.
 
 ### DEEFM claim boundary
-Observed repository evidence proves the Stage 2 implementation source, test source, package export, and Stage 3 worldgen contract are committed on `main`. **No claim is made that the tests have executed successfully in the authoritative runtime, that a final binary NBT/template pool has been materialized and loaded by Minecraft, or that E01-001 is production-admitted.** Those require additional observed evidence.
+Observed GitHub evidence proves the Stage 2 generator source, focused tests, and Stage 3 worldgen contract are committed on authoritative `main`. **No claim is made that tests have executed successfully in the authoritative runtime, that final NBT/template-pool artifacts have been materialized and loaded in Minecraft, or that E01-002 is production-admitted.**
 
-## Previously completed Stage 1 specs
+## Previously completed backlog items
 
-- E01-002 — Cave Mouth Occupation
-- E01-003 — Deep Cave Refuge
-- E01-004 — Temporary Brush Shelter
-- E01-005 — Lean-To Windbreak
-- E01-006 — Hide Windbreak Camp
-- E01-007 — Hearth Circle
-- E01-008 — Multi-Hearth Gathering Site
-- E01-009 — Stone Tool Knapping Ground
+- E01-001 — Rock Overhang Camp — BUILD_COMPLETE_SOURCE / WORLDGEN_CONTRACT_INTEGRATED / VALIDATION_PENDING
 
-## Authoritative catalog recovery
+## Queued Stage 1 continuation
 
-The previously unresolved E01-010 title is recoverable from the era structure master catalog in the originating planning conversation: **E01-010 — Flint Procurement Pit**. The following Lower Paleolithic sequence continues with E01-011 Quartzite Quarry, E01-012 Butchery Site, E01-013 Large-Carcass Processing Site, E01-014 Bone-Breaking Station, and onward. E01-010 is intentionally queued rather than started because the Stage 2/3 backlog gate now takes precedence.
+E01-010 — Flint Procurement Pit remains queued until E01-001 through E01-009 clear the Stage 2/3 backlog.
 
 ## Next run
 
-Build and worldgen-integrate **E01-002 — Cave Mouth Occupation**. Preserve its threshold/daylight/twilight identity and do not let its generator collapse into either E01-001 Rock Overhang Camp or E01-003 Deep Cave Refuge.
+Build and worldgen-integrate **E01-003 — Deep Cave Refuge**. Its implementation must be topology-driven and genuinely deep-subterranean: daylight-loss qualification, route complexity, primitive wayfinding, ventilation classification, and refuge-zone behavior must distinguish it from merely extending E01-002 farther inward.
