@@ -32,8 +32,8 @@ The catalog currently has a Stage 2/3 backlog from E01-001 through E01-009. **Do
 | E01-001 | Lower Paleolithic / Early Human | Rock Overhang Camp | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
 | E01-002 | Lower Paleolithic / Early Human | Cave Mouth Occupation | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
 | E01-003 | Lower Paleolithic / Early Human | Deep Cave Refuge | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
-| E01-004 | Lower Paleolithic / Early Human | Temporary Brush Shelter | HERO_SPEC_COMPLETE | NEXT | WORLDGEN_PENDING | IMPLEMENTATION_PENDING |
-| E01-005 | Lower Paleolithic / Early Human | Lean-To Windbreak | HERO_SPEC_COMPLETE | IMPLEMENTATION_PENDING | WORLDGEN_PENDING | IMPLEMENTATION_PENDING |
+| E01-004 | Lower Paleolithic / Early Human | Temporary Brush Shelter | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
+| E01-005 | Lower Paleolithic / Early Human | Lean-To Windbreak | HERO_SPEC_COMPLETE | NEXT | WORLDGEN_PENDING | IMPLEMENTATION_PENDING |
 | E01-006 | Lower Paleolithic / Early Human | Hide Windbreak Camp | HERO_SPEC_COMPLETE | IMPLEMENTATION_PENDING | WORLDGEN_PENDING | IMPLEMENTATION_PENDING |
 | E01-007 | Lower Paleolithic / Early Human | Hearth Circle | HERO_SPEC_COMPLETE | IMPLEMENTATION_PENDING | WORLDGEN_PENDING | IMPLEMENTATION_PENDING |
 | E01-008 | Lower Paleolithic / Early Human | Multi-Hearth Gathering Site | HERO_SPEC_COMPLETE | IMPLEMENTATION_PENDING | WORLDGEN_PENDING | IMPLEMENTATION_PENDING |
@@ -42,55 +42,54 @@ The catalog currently has a Stage 2/3 backlog from E01-001 through E01-009. **Do
 
 ## Last completed implementation run
 
-**E01-003 — Deep Cave Refuge**
+**E01-004 — Temporary Brush Shelter**
 
 ### Stage 1
-Already complete under `docs/era_structure_hero/E01-003_DEEP_CAVE_REFUGE.md`.
+Already complete under `docs/era_structure_hero/E01-004_TEMPORARY_BRUSH_SHELTER.md`.
 
 ### Stage 2 source implementation
-Committed implementation in `src/structure_capability/early_human_deep_cave.py` includes:
-- deterministic S/M/L deep-cave refuge generation;
-- named topology, route, refuge, occupation, ventilation, and condition random streams;
-- explicit daylight-loss boundary;
-- long winding access route with deterministic turn count and route-complexity scoring;
-- primitive repeated wayfinding markers distributed along the access route;
-- enlarged refuge chamber beyond the daylight-loss and route-complexity thresholds;
-- ventilation classification (`restricted`, `moderate`, `drafted`);
-- hearth suppression under restricted ventilation rather than unconditional deep-cave fire;
-- refuge, rest, and cache anchors;
-- biome-family geological/floor palette adaptation;
-- active/recent/repeated/abandoned/collapsed/flooded/animal-reoccupied condition behavior;
-- explicit qualification gates for daylight loss, minimum route length, route complexity, and refuge depth;
-- deterministic physical structure fingerprint;
-- bounded additive/non-destructive replacement metadata.
+Committed implementation in `src/structure_capability/early_human_brush_shelter.py` includes:
+- deterministic S/M/L ephemeral shelter generation;
+- named frame, brush-skin, occupancy, and condition random streams;
+- climate-adapted rib/brush/floor material palettes using placeable vanilla blocks;
+- irregular rear anchor row and short bent/leaned support ribs;
+- intentionally incomplete roof reach rather than a closed shell;
+- patchy brush infill with a hard below-75% coverage qualification gate;
+- explicit open side, entry, sheltered lee pocket, and rest-zone anchor;
+- optional exterior-biased hearth rather than hearth-centered identity;
+- sparse short-term occupational traces;
+- active/recent/abandoned/weathered/collapsed/overgrown/repurposed condition behavior;
+- explicit qualification fields requiring partial enclosure, incomplete roof, non-planar-wall identity, sub-full brush coverage, and ephemeral material logic;
+- deterministic fingerprinting and bounded additive/non-destructive replacement metadata.
 
-The generator is exported through `structure_capability.__init__`. Focused tests in `tests/test_early_human_deep_cave.py` cover deterministic replay, seed variation, S/M/L bounds, deep-refuge qualification, distinction from threshold occupation, ventilation/hearth suppression, invalid-scale rejection, underground placement behavior, 500-block protection, and spacing validity.
+The generator is exported through `structure_capability.__init__`. Focused tests in `tests/test_early_human_brush_shelter.py` cover deterministic replay, seed variation, S/M/L bounds, archetype qualification, arid material restrictions, progressive weathering/collapse, invalid scale rejection, surface worldgen anchoring, 500-block protection, and spacing validity.
 
 ### Stage 3 source integration
-`DeepCaveRefugeGenerator.worldgen_bundle()` uses the existing Continuity Works Minecraft worldgen contract with:
-- family `continuityworks:early_human_cave_complex`;
-- structure ID `continuityworks:e01_003_deep_cave_refuge`;
-- start pool `continuityworks:early_human/e01_003_deep_cave_refuge`;
-- generation step `underground_structures`;
-- `bury` terrain adaptation;
-- no surface heightmap projection;
-- default absolute subterranean anchor Y = -24;
+`TemporaryBrushShelterGenerator.worldgen_bundle()` uses the existing Continuity Works Minecraft worldgen contract with:
+- family `continuityworks:early_human_ephemeral_shelter`;
+- structure ID `continuityworks:e01_004_temporary_brush_shelter`;
+- start pool `continuityworks:early_human/e01_004_temporary_brush_shelter`;
+- generation step `surface_structures`;
+- `beard_thin` terrain adaptation;
+- `WORLD_SURFACE_WG` heightmap projection;
 - random-spread placement with separation lower than spacing;
 - minimum 500-block unrelated-structure exclusion radius;
 - minimum 500-block per-jigsaw-piece exclusion radius;
 - mandatory jigsaw piece protection;
-- existing geospatial worldgen validation.
+- existing geospatial worldgen validation;
+- explicit terrain-responsive/non-destructive placement contract.
 
 ### Archetype distinction
-E01-003 is not a deeper copy of E01-002. E01-002 terminates its primary occupation at an explicit daylight/twilight interior stop-line. E01-003 instead requires daylight loss, a substantial access route, nontrivial route complexity, primitive wayfinding evidence, ventilation classification, and a refuge chamber beyond those thresholds before it qualifies as this archetype.
+E01-004 is structurally prevented from becoming E01-005: it cannot close its perimeter, complete a roof, or resolve into a dominant planar wall. It remains a lightweight, irregular, partly skinned shelter with a lee pocket rather than a directional windbreak surface.
 
 ### DEEFM claim boundary
-Observed GitHub evidence proves the Stage 2 generator source, package export, focused test source, and Stage 3 worldgen contract are committed on authoritative `main`. **No claim is made that the tests have executed successfully in the authoritative runtime, that final NBT/template-pool artifacts have been materialized and loaded in Minecraft, or that E01-003 is production-admitted.**
+Observed GitHub evidence proves the Stage 2 generator source, package export, focused test source, Stage 3 worldgen contract, and ledger update are committed on authoritative `main`. **No claim is made that the tests have executed successfully in the authoritative runtime, that final NBT/template-pool artifacts have been materialized and loaded in Minecraft, or that E01-004 is production-admitted.**
 
 ## Previously completed backlog items
 
 - E01-001 — Rock Overhang Camp — BUILD_COMPLETE_SOURCE / WORLDGEN_CONTRACT_INTEGRATED / VALIDATION_PENDING
 - E01-002 — Cave Mouth Occupation — BUILD_COMPLETE_SOURCE / WORLDGEN_CONTRACT_INTEGRATED / VALIDATION_PENDING
+- E01-003 — Deep Cave Refuge — BUILD_COMPLETE_SOURCE / WORLDGEN_CONTRACT_INTEGRATED / VALIDATION_PENDING
 
 ## Queued Stage 1 continuation
 
@@ -98,4 +97,4 @@ E01-010 — Flint Procurement Pit remains queued until E01-001 through E01-009 c
 
 ## Next run
 
-Build and worldgen-integrate **E01-004 — Temporary Brush Shelter**. Preserve its lightweight ephemeral plant-material construction, temporary occupancy, incomplete enclosure, terrain-responsive anchoring, and strict distinction from E01-005 Lean-To Windbreak and later enclosed hut/tent archetypes.
+Build and worldgen-integrate **E01-005 — Lean-To Windbreak**. Preserve its directional wind-blocking plane, clear windward/leeward logic, minimal overhead cover, and strict distinction from E01-004 Temporary Brush Shelter and E01-006 Hide Windbreak Camp.
