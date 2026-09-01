@@ -42,6 +42,10 @@ from .early_human_brush_shelter import (
     TemporaryBrushShelterGenerationError,
     TemporaryBrushShelterGenerator,
 )
+from .early_human_lean_to import (
+    LeanToWindbreakGenerationError,
+    LeanToWindbreakGenerator,
+)
 
 __all__ = [
     "StructureCapability", "RebuildGrade", "AccessClearance",
@@ -58,4 +62,5 @@ __all__ = [
     "EarlyHumanArchetype", "EarlyHumanGenerationError", "EarlyHumanStructureGenerator",
     "DeepCaveRefugeGenerationError", "DeepCaveRefugeGenerator",
     "TemporaryBrushShelterGenerationError", "TemporaryBrushShelterGenerator",
+    "LeanToWindbreakGenerationError", "LeanToWindbreakGenerator",
 ]
