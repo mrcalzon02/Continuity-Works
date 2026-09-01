@@ -9,6 +9,7 @@ Development mode: one archetype per run to hero specification, followed by imple
 - `HERO_SPEC_COMPLETE` — hero design specification completed and committed.
 - `IMPLEMENTATION_PENDING` — runtime/template implementation has not yet been proven.
 - `PRODUCTION_ADMITTED` — implementation, deterministic validation, compatibility validation, and target load/export evidence have all passed.
+- `SOURCE_NAME_REQUIRED` — catalog slot is known but its exact authoritative archetype title has not yet been recovered from available repository/File Library evidence; do not invent a title.
 
 ## Current position
 
@@ -22,37 +23,38 @@ Development mode: one archetype per run to hero specification, followed by imple
 | E01-006 | Lower Paleolithic / Early Human | Hide Windbreak Camp | HERO_SPEC_COMPLETE | IMPLEMENTATION_PENDING |
 | E01-007 | Lower Paleolithic / Early Human | Hearth Circle | HERO_SPEC_COMPLETE | IMPLEMENTATION_PENDING |
 | E01-008 | Lower Paleolithic / Early Human | Multi-Hearth Gathering Site | HERO_SPEC_COMPLETE | IMPLEMENTATION_PENDING |
-| E01-009 | Lower Paleolithic / Early Human | Stone Tool Knapping Ground | NEXT | NOT_STARTED |
+| E01-009 | Lower Paleolithic / Early Human | Stone Tool Knapping Ground | HERO_SPEC_COMPLETE | IMPLEMENTATION_PENDING |
+| E01-010 | Lower Paleolithic / Early Human | Exact catalog title not recovered | NEXT | SOURCE_NAME_REQUIRED |
 
 ## Last completed run
 
-**E01-008 — Multi-Hearth Gathering Site**
+**E01-009 — Stone Tool Knapping Ground**
 
 Hero coverage completed:
-- multi-hearth identity as a coordinated temporary gathering landscape rather than duplicated Hearth Circle instances;
-- Lower Paleolithic technological ceiling and prohibited permanent/plaza/fire technologies;
-- S/M/L hearth-count, footprint, spacing, occupancy, and organizational classes;
-- primary/secondary/task hearth clusters, shared circulation, subgroup rest sectors, shared work apron, fuel staging, refuse margins, smoke corridors, and legacy hearth fields;
-- explicit archetype boundary requiring multiple meaningful hearths, group-scale occupation, subgroup differentiation, and shared circulation;
-- parent-context classification across open, forest-edge, river/lake, shelter, cave-mouth, coastal, and cold-climate settings;
-- macro-site scoring and irregular gathering-centroid derivation;
-- deterministic hearth chronology states and cluster-role assignment;
-- macro wind field, hearth-level smoke-corridor interaction, and conflict resolution;
-- inter-hearth spacing solver driven by fire size, wind, vegetation, shelter material, occupancy, and task role;
-- shared-circulation graph with alternate M/L connections;
-- weighted territory generation for hearth subgroups and shared-zone overlap;
-- fuel-demand modeling, ash/refuse management, and temporal layering;
+- task-specific lithic production identity and strict distinction from generic camp scatter, quarrying, and later workshop architecture;
+- Lower Paleolithic technological ceiling and prohibited later manufacturing infrastructure;
+- S/M/L worksite, work-position, debris-intensity, material, and occupancy classes;
+- approach path, raw-material staging, work positions, hammerstone cache, core reduction zones, directional flake fans, shatter/discard margins, reusable-core cache, safe circulation, swept zones, and legacy reduction lenses;
+- archetype boundary requiring legible raw-material → work-position → debris/discard relationships;
+- parent-context classification across source-adjacent, camp-attached, kill/butchery-attached, travel-stop, independent, and mixed-provenance contexts;
+- stable-surface fitness scoring and terrain-responsive work-position solver;
+- explicit local/imported toolstone provenance model with palette coherence;
+- deterministic reduction-stage states for testing, primary reduction, secondary shaping, maintenance, and mixed sequences;
+- anisotropic debris projection tied to knapper orientation and local terrain;
+- sharp-debris hazard mapping and clean circulation logic;
+- core and hammerstone lifecycle modeling, including removal of useful finished products;
+- repeated-use chronology with overlapping reduction lenses, cleared lanes, reused seats, exhausted cores, and provenance changes;
 - deterministic named random substreams;
 - biome/environment adaptations;
 - culture-variant hooks bounded by era technology;
-- local hearth/fuel/activity/shelter material palette and prohibited-material rules;
-- active, contracting, recently vacated, repeated seasonal, abandoned, weather-damaged, archaeological, and later-repurposed condition states;
-- jigsaw/family relationships with explicit parent-reservation ownership and clear distinction from standalone E01-007 Hearth Circle placements;
+- local terrain, toolstone, hammerstone, and sparse organic material logic;
+- active, recently vacated, repeated-use, abandoned, buried, disturbed, source-depleted, and later-repurposed condition states;
+- jigsaw/family relationships with explicit parent-reservation ownership;
 - environmental/resource infrastructure dependencies;
-- distributed role-aware loot and subgroup occupancy hooks;
+- distributed production-residue loot and work-position-aware occupancy hooks;
 - additive/non-destructive compatibility rules;
 - default minimum 500-block unrelated-structure exclusion rule;
-- hearth-system, spatial, archetype, historical, procedural, compatibility, and visual validation criteria;
+- archetype, spatial, material, historical, procedural, compatibility, and visual validation criteria;
 - explicit runtime production-admission gates and hero acceptance checklist.
 
 Implementation claim: **not made**. The committed artifact is a hero-level production specification; runtime generator/template implementation and production validation remain pending observed evidence.
@@ -73,6 +75,10 @@ Implementation claim: **not made**. The committed artifact is a hero-level produ
 
 **E01-007 — Hearth Circle** — HERO_SPEC_COMPLETE / IMPLEMENTATION_PENDING.
 
+**E01-008 — Multi-Hearth Gathering Site** — HERO_SPEC_COMPLETE / IMPLEMENTATION_PENDING.
+
 ## Next run
 
-Develop **E01-009 — Stone Tool Knapping Ground** to the same hero specification bar. It must treat lithic reduction itself as the site-forming process: raw-material staging, core reduction, flake/debitage gradients, hammerstone use, seating/work position, discard pattern, reusable toolstone caches, circulation around sharp debris, source-stone relationships, repeated knapping episodes, and explicit distinction from a generic camp scatter or later workshop architecture.
+Next catalog slot: **E01-010**.
+
+The exact authoritative E01-010 archetype title was not recoverable from the current `main` repository, repository commit search, or available File Library search evidence reviewed during this run. The ledger therefore records the slot without inventing a title. Before hero development begins for E01-010, recover the exact catalog title from authoritative source material and then proceed normally.
