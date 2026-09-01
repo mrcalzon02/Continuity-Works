@@ -34,6 +34,10 @@ from .early_human import (
     EarlyHumanGenerationError,
     EarlyHumanStructureGenerator,
 )
+from .early_human_deep_cave import (
+    DeepCaveRefugeGenerationError,
+    DeepCaveRefugeGenerator,
+)
 
 __all__ = [
     "StructureCapability", "RebuildGrade", "AccessClearance",
@@ -48,4 +52,5 @@ __all__ = [
     "AerospaceSupportNetworkError", "AerospaceSupportNetworkValidator",
     "SeededAerospaceSupportCampusError", "SeededAerospaceSupportCampusGenerator",
     "EarlyHumanArchetype", "EarlyHumanGenerationError", "EarlyHumanStructureGenerator",
+    "DeepCaveRefugeGenerationError", "DeepCaveRefugeGenerator",
 ]
