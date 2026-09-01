@@ -38,6 +38,10 @@ from .early_human_deep_cave import (
     DeepCaveRefugeGenerationError,
     DeepCaveRefugeGenerator,
 )
+from .early_human_brush_shelter import (
+    TemporaryBrushShelterGenerationError,
+    TemporaryBrushShelterGenerator,
+)
 
 __all__ = [
     "StructureCapability", "RebuildGrade", "AccessClearance",
@@ -53,4 +57,5 @@ __all__ = [
     "SeededAerospaceSupportCampusError", "SeededAerospaceSupportCampusGenerator",
     "EarlyHumanArchetype", "EarlyHumanGenerationError", "EarlyHumanStructureGenerator",
     "DeepCaveRefugeGenerationError", "DeepCaveRefugeGenerator",
+    "TemporaryBrushShelterGenerationError", "TemporaryBrushShelterGenerator",
 ]
