@@ -29,6 +29,11 @@ from .seeded_aerospace_support_campus import (
     SeededAerospaceSupportCampusError,
     SeededAerospaceSupportCampusGenerator,
 )
+from .early_human import (
+    EarlyHumanArchetype,
+    EarlyHumanGenerationError,
+    EarlyHumanStructureGenerator,
+)
 
 __all__ = [
     "StructureCapability", "RebuildGrade", "AccessClearance",
@@ -42,4 +47,5 @@ __all__ = [
     "SeededFacilityGenerationError", "SeededFacilityGenerator",
     "AerospaceSupportNetworkError", "AerospaceSupportNetworkValidator",
     "SeededAerospaceSupportCampusError", "SeededAerospaceSupportCampusGenerator",
+    "EarlyHumanArchetype", "EarlyHumanGenerationError", "EarlyHumanStructureGenerator",
 ]
