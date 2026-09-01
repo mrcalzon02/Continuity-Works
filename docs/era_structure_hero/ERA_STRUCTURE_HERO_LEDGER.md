@@ -33,8 +33,8 @@ The catalog currently has a Stage 2/3 backlog from E01-001 through E01-009. **Do
 | E01-002 | Lower Paleolithic / Early Human | Cave Mouth Occupation | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
 | E01-003 | Lower Paleolithic / Early Human | Deep Cave Refuge | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
 | E01-004 | Lower Paleolithic / Early Human | Temporary Brush Shelter | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
-| E01-005 | Lower Paleolithic / Early Human | Lean-To Windbreak | HERO_SPEC_COMPLETE | NEXT | WORLDGEN_PENDING | IMPLEMENTATION_PENDING |
-| E01-006 | Lower Paleolithic / Early Human | Hide Windbreak Camp | HERO_SPEC_COMPLETE | IMPLEMENTATION_PENDING | WORLDGEN_PENDING | IMPLEMENTATION_PENDING |
+| E01-005 | Lower Paleolithic / Early Human | Lean-To Windbreak | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
+| E01-006 | Lower Paleolithic / Early Human | Hide Windbreak Camp | HERO_SPEC_COMPLETE | NEXT | WORLDGEN_PENDING | IMPLEMENTATION_PENDING |
 | E01-007 | Lower Paleolithic / Early Human | Hearth Circle | HERO_SPEC_COMPLETE | IMPLEMENTATION_PENDING | WORLDGEN_PENDING | IMPLEMENTATION_PENDING |
 | E01-008 | Lower Paleolithic / Early Human | Multi-Hearth Gathering Site | HERO_SPEC_COMPLETE | IMPLEMENTATION_PENDING | WORLDGEN_PENDING | IMPLEMENTATION_PENDING |
 | E01-009 | Lower Paleolithic / Early Human | Stone Tool Knapping Ground | HERO_SPEC_COMPLETE | IMPLEMENTATION_PENDING | WORLDGEN_PENDING | IMPLEMENTATION_PENDING |
@@ -42,33 +42,33 @@ The catalog currently has a Stage 2/3 backlog from E01-001 through E01-009. **Do
 
 ## Last completed implementation run
 
-**E01-004 — Temporary Brush Shelter**
+**E01-005 — Lean-To Windbreak**
 
 ### Stage 1
-Already complete under `docs/era_structure_hero/E01-004_TEMPORARY_BRUSH_SHELTER.md`.
+Already complete under `docs/era_structure_hero/E01-005_LEAN_TO_WINDBREAK.md`.
 
 ### Stage 2 source implementation
-Committed implementation in `src/structure_capability/early_human_brush_shelter.py` includes:
-- deterministic S/M/L ephemeral shelter generation;
-- named frame, brush-skin, occupancy, and condition random streams;
-- climate-adapted rib/brush/floor material palettes using placeable vanilla blocks;
-- irregular rear anchor row and short bent/leaned support ribs;
-- intentionally incomplete roof reach rather than a closed shell;
-- patchy brush infill with a hard below-75% coverage qualification gate;
-- explicit open side, entry, sheltered lee pocket, and rest-zone anchor;
-- optional exterior-biased hearth rather than hearth-centered identity;
-- sparse short-term occupational traces;
-- active/recent/abandoned/weathered/collapsed/overgrown/repurposed condition behavior;
-- explicit qualification fields requiring partial enclosure, incomplete roof, non-planar-wall identity, sub-full brush coverage, and ephemeral material logic;
+Committed implementation in `src/structure_capability/early_human_lean_to.py` includes:
+- deterministic S/M/L directional windbreak generation;
+- named frame, screen, occupancy, and condition random streams;
+- climate-adapted post, screen, floor, and bedding palettes using placeable vanilla blocks;
+- explicit north/south/east/west windward orientation and derived leeward vector;
+- repeated upright support line forming a readable wind-blocking plane;
+- shallow leeward lean providing minimal overhead protection without resolving into a roof;
+- partial screen infill capped below full coverage;
+- open perimeter and leeward occupation strip;
+- climate-bounded bedding treatment and optional leeward hearth;
+- active/recent/abandoned/weathered/collapsed/repurposed condition behavior;
+- qualification fields requiring directional windward/leeward logic, dominant planar windbreak identity, open perimeter, minimal overhead cover, absence of hide dominance, and sub-full screen coverage;
 - deterministic fingerprinting and bounded additive/non-destructive replacement metadata.
 
-The generator is exported through `structure_capability.__init__`. Focused tests in `tests/test_early_human_brush_shelter.py` cover deterministic replay, seed variation, S/M/L bounds, archetype qualification, arid material restrictions, progressive weathering/collapse, invalid scale rejection, surface worldgen anchoring, 500-block protection, and spacing validity.
+The generator is exported through `structure_capability.__init__`. Focused tests in `tests/test_early_human_lean_to.py` cover deterministic replay, seed variation, S/M/L bounds, directional archetype qualification, arid material restrictions, weathering, invalid scale rejection, surface worldgen anchoring, 500-block protection, family identity, and spacing validity.
 
 ### Stage 3 source integration
-`TemporaryBrushShelterGenerator.worldgen_bundle()` uses the existing Continuity Works Minecraft worldgen contract with:
+`LeanToWindbreakGenerator.worldgen_bundle()` uses the existing Continuity Works Minecraft worldgen contract with:
 - family `continuityworks:early_human_ephemeral_shelter`;
-- structure ID `continuityworks:e01_004_temporary_brush_shelter`;
-- start pool `continuityworks:early_human/e01_004_temporary_brush_shelter`;
+- structure ID `continuityworks:e01_005_lean_to_windbreak`;
+- start pool `continuityworks:early_human/e01_005_lean_to_windbreak`;
 - generation step `surface_structures`;
 - `beard_thin` terrain adaptation;
 - `WORLD_SURFACE_WG` heightmap projection;
@@ -77,19 +77,20 @@ The generator is exported through `structure_capability.__init__`. Focused tests
 - minimum 500-block per-jigsaw-piece exclusion radius;
 - mandatory jigsaw piece protection;
 - existing geospatial worldgen validation;
-- explicit terrain-responsive/non-destructive placement contract.
+- explicit exposed-wind-context and non-destructive placement contract.
 
 ### Archetype distinction
-E01-004 is structurally prevented from becoming E01-005: it cannot close its perimeter, complete a roof, or resolve into a dominant planar wall. It remains a lightweight, irregular, partly skinned shelter with a lee pocket rather than a directional windbreak surface.
+E01-005 is structurally distinct from E01-004 because it deliberately resolves into a dominant directional planar windbreak rather than an irregular partial brush enclosure. It is distinct from E01-006 because hide-dominant enclosure is explicitly prohibited and the structure remains a minimally covered leeward strip rather than a hide-skinned camp.
 
 ### DEEFM claim boundary
-Observed GitHub evidence proves the Stage 2 generator source, package export, focused test source, Stage 3 worldgen contract, and ledger update are committed on authoritative `main`. **No claim is made that the tests have executed successfully in the authoritative runtime, that final NBT/template-pool artifacts have been materialized and loaded in Minecraft, or that E01-004 is production-admitted.**
+Observed GitHub evidence proves the Stage 2 generator source, package export, focused test source, Stage 3 worldgen contract, and ledger update are committed on authoritative `main`. **No claim is made that the tests have executed successfully in the authoritative runtime, that final NBT/template-pool artifacts have been materialized and loaded in Minecraft, or that E01-005 is production-admitted.**
 
 ## Previously completed backlog items
 
 - E01-001 — Rock Overhang Camp — BUILD_COMPLETE_SOURCE / WORLDGEN_CONTRACT_INTEGRATED / VALIDATION_PENDING
 - E01-002 — Cave Mouth Occupation — BUILD_COMPLETE_SOURCE / WORLDGEN_CONTRACT_INTEGRATED / VALIDATION_PENDING
 - E01-003 — Deep Cave Refuge — BUILD_COMPLETE_SOURCE / WORLDGEN_CONTRACT_INTEGRATED / VALIDATION_PENDING
+- E01-004 — Temporary Brush Shelter — BUILD_COMPLETE_SOURCE / WORLDGEN_CONTRACT_INTEGRATED / VALIDATION_PENDING
 
 ## Queued Stage 1 continuation
 
@@ -97,4 +98,4 @@ E01-010 — Flint Procurement Pit remains queued until E01-001 through E01-009 c
 
 ## Next run
 
-Build and worldgen-integrate **E01-005 — Lean-To Windbreak**. Preserve its directional wind-blocking plane, clear windward/leeward logic, minimal overhead cover, and strict distinction from E01-004 Temporary Brush Shelter and E01-006 Hide Windbreak Camp.
+Build and worldgen-integrate **E01-006 — Hide Windbreak Camp**. Preserve its hide-skinned wind protection, camp-scale occupation, tension/support logic, and strict distinction from E01-005's vegetation-screen planar lean-to and E01-007's hearth-centered occupation.
