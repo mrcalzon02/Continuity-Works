@@ -48,7 +48,7 @@ class EarlyHumanStructureGenerator:
     """Seeded physical generators for the Continuity Works early-human backlog.
 
     The output shape matches the project's physical structure contract:
-    ``{size, blocks, metadata}``.  Terrain-sensitive generators deliberately
+    ``{size, blocks, metadata}``. Terrain-sensitive generators deliberately
     include replace-mode metadata because the final world-placement layer must
     reconcile generated geology with the target terrain instead of treating
     these outputs as freestanding prefab buildings.
@@ -118,8 +118,6 @@ class EarlyHumanStructureGenerator:
 
         blocks: dict[tuple[int, int, int], str] = {}
 
-        # Terrain-first cliff/overhang mass.  The roof thickens toward the rear,
-        # varies by column, and remains connected to a full rear rock mass.
         rear_start = max(2, depth - (6 if scale == "small" else 8 if scale == "medium" else 10))
         for x in range(width):
             edge_noise = geology.randint(-2, 2)
@@ -132,7 +130,6 @@ class EarlyHumanStructureGenerator:
                     material = primary if geology.random() < 0.82 else secondary
                     blocks[(x, y, z)] = material
 
-        # Rear support mass prevents a floating canopy and creates natural wall recesses.
         for x in range(width):
             wall_front = rear_start + geology.randint(-2, 1)
             for z in range(max(0, wall_front), depth):
@@ -141,7 +138,6 @@ class EarlyHumanStructureGenerator:
                     if geology.random() < 0.90 or z >= depth - 2:
                         blocks[(x, y, z)] = primary if geology.random() < 0.86 else secondary
 
-        # Protected occupation floor: irregular, mostly natural, minimally prepared.
         floor_front = max(2, depth // 4)
         floor_back = max(floor_front + 3, rear_start + 1)
         for x in range(1, width - 1):
@@ -149,13 +145,11 @@ class EarlyHumanStructureGenerator:
                 if occupation.random() < 0.91:
                     blocks[(x, 0, z)] = ground
 
-        # Approach apron uses sparse compaction rather than a road/path.
         for x in range(2, width - 2):
             for z in range(1, floor_front + 1):
                 if occupation.random() < 0.28:
                     blocks[(x, 0, z)] = "minecraft:coarse_dirt"
 
-        # Hearth is offset from center and kept under the protected roof edge.
         hearth_x = occupation.randint(max(2, width // 4), min(width - 3, (width * 3) // 4))
         hearth_z = min(floor_back - 1, floor_front + hearth_rng.randint(2, max(2, depth // 5)))
         hearth_points = [(-1, 0), (1, 0), (0, -1), (0, 1)]
@@ -165,33 +159,29 @@ class EarlyHumanStructureGenerator:
         if condition in {"active", "recent"}:
             blocks[(hearth_x, 1, hearth_z)] = "minecraft:campfire"
 
-        # Work zone: carried toolstone/hammerstone analogue clustered near daylight.
         work_x = max(2, hearth_x - width // 5)
         work_z = max(floor_front, hearth_z - 2)
         for _ in range({"small": 5, "medium": 9, "large": 14}[scale]):
             x = max(1, min(width - 2, work_x + occupation.randint(-3, 3)))
             z = max(1, min(depth - 2, work_z + occupation.randint(-2, 2)))
             if (x, 1, z) not in blocks:
-                blocks[(x, 1, z)] = "minecraft:flint" if occupation.random() < 0.55 else secondary
+                blocks[(x, 1, z)] = "minecraft:gravel" if occupation.random() < 0.55 else secondary
 
-        # Sleeping/rest zone stays toward the quieter protected rear edge.
         sleep_x = min(width - 4, max(3, hearth_x + width // 6))
         sleep_z = min(depth - 3, max(hearth_z + 2, floor_back - 2))
-        bedding = "minecraft:moss_block" if biome_family not in {"arid", "tundra"} else "minecraft:hay_block"
-        for dx in range(-1, 2):
-            for dz in range(-1, 2):
-                if occupation.random() < 0.72:
-                    blocks[(sleep_x + dx, 1, sleep_z + dz)] = bedding
+        bedding = None if biome_family in {"arid", "tundra"} else "minecraft:moss_carpet"
+        if bedding:
+            for dx in range(-1, 2):
+                for dz in range(-1, 2):
+                    if occupation.random() < 0.72:
+                        blocks[(sleep_x + dx, 1, sleep_z + dz)] = bedding
 
-        # Refuse edge deliberately biased toward the exposed lateral/down-gradient side.
         refuse_x = 1 if occupation.random() < 0.5 else width - 2
         for _ in range({"small": 3, "medium": 6, "large": 10}[scale]):
             z = occupation.randint(max(1, floor_front - 1), min(depth - 2, floor_back + 1))
             material = "minecraft:bone_block" if occupation.random() < 0.35 else "minecraft:gravel"
             blocks[(refuse_x, 1, z)] = material
 
-        # Abandoned/collapsed conditions add sediment or fallen roof blocks without
-        # replacing the underlying archetype.
         if condition in {"abandoned", "collapsed", "buried"}:
             additions = {"abandoned": 5, "collapsed": 14, "buried": 22}[condition]
             for _ in range(additions):
