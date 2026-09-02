@@ -74,6 +74,10 @@ from .early_human_butchery_site import (
     ButcherySiteGenerationError,
     ButcherySiteGenerator,
 )
+from .early_human_large_carcass_processing import (
+    LargeCarcassProcessingSiteGenerationError,
+    LargeCarcassProcessingSiteGenerator,
+)
 
 __all__ = [
     "StructureCapability", "RebuildGrade", "AccessClearance",
@@ -98,4 +102,5 @@ __all__ = [
     "FlintProcurementPitGenerationError", "FlintProcurementPitGenerator",
     "QuartziteQuarryGenerationError", "QuartziteQuarryGenerator",
     "ButcherySiteGenerationError", "ButcherySiteGenerator",
+    "LargeCarcassProcessingSiteGenerationError", "LargeCarcassProcessingSiteGenerator",
 ]
