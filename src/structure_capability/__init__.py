@@ -50,6 +50,10 @@ from .early_human_hide_windbreak import (
     HideWindbreakCampGenerationError,
     HideWindbreakCampGenerator,
 )
+from .early_human_hearth_circle import (
+    HearthCircleGenerationError,
+    HearthCircleGenerator,
+)
 
 __all__ = [
     "StructureCapability", "RebuildGrade", "AccessClearance",
@@ -68,4 +72,5 @@ __all__ = [
     "TemporaryBrushShelterGenerationError", "TemporaryBrushShelterGenerator",
     "LeanToWindbreakGenerationError", "LeanToWindbreakGenerator",
     "HideWindbreakCampGenerationError", "HideWindbreakCampGenerator",
+    "HearthCircleGenerationError", "HearthCircleGenerator",
 ]
