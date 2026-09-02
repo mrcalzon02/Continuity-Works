@@ -1,0 +1,161 @@
+buildscript {
+    repositories {
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+    }
+    dependencies {
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+    }
+}
+
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+}
+
+apply plugin: 'org.spongepowered.mixin'
+
+def repositoryRoot = file('../../..')
+def biomeProjectDir = new File(repositoryRoot, 'examples/biome_expander/runtime_mod/1.20.1')
+def spawnProtectionProjectDir = new File(repositoryRoot, 'modules/structure_spawn_protection/forge-1.20.1')
+
+group = mod_group
+version = mod_version
+
+base {
+    archivesName = 'ContinuityWorks-Forge-1.20.1'
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+sourceSets {
+    main {
+        java {
+            srcDir new File(biomeProjectDir, 'src/main/java')
+            srcDir new File(spawnProtectionProjectDir, 'src/main/java')
+        }
+    }
+}
+
+// Reuse the authoritative 128-biome generator. The combined module carries its
+// own copy of the anthology catalog so the existing generator remains unchanged.
+apply from: new File(biomeProjectDir, 'gradle/anthology.gradle')
+
+minecraft {
+    mappings channel: 'official', version: minecraft_version
+    copyIdeResources = true
+
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'info'
+            arg '-mixin.config=continuityworks_spawn_protection.mixins.json'
+            mods {
+                continuityworks_biomes {
+                    source sourceSets.main
+                }
+                continuityworks_spawn_protection {
+                    source sourceSets.main
+                }
+            }
+        }
+        client { }
+        server { args '--nogui' }
+    }
+}
+
+repositories {
+    maven { url = 'https://maven.minecraftforge.net/' }
+    maven { url = 'https://maven.blamejared.com' }
+    maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+    mavenCentral()
+}
+
+jarJar.enable()
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    implementation fg.deobf("com.github.glitchfiend:TerraBlender-forge:${minecraft_version}-${terrablender_version}")
+    jarJar(group: 'com.github.glitchfiend', name: 'TerraBlender-forge', version: "[${minecraft_version}-${terrablender_version},${minecraft_version}-3.1.0.0)") {
+        jarJar.pin(it, "${minecraft_version}-${terrablender_version}")
+    }
+
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+}
+
+mixin {
+    add sourceSets.main, 'continuityworks_spawn_protection.refmap.json'
+    config 'continuityworks_spawn_protection.mixins.json'
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    def replaceProperties = [
+        minecraft_version: minecraft_version,
+        forge_version: forge_version,
+        terrablender_version: terrablender_version,
+        mod_version: mod_version
+    ]
+    inputs.properties replaceProperties
+
+    from(new File(biomeProjectDir, 'src/main/resources')) {
+        exclude 'META-INF/mods.toml'
+        exclude 'pack.mcmeta'
+    }
+    from(new File(spawnProtectionProjectDir, 'src/main/resources')) {
+        exclude 'META-INF/mods.toml'
+        exclude 'pack.mcmeta'
+    }
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+jar {
+    manifest {
+        attributes([
+            'Specification-Title'     : 'Continuity Works Forge Runtime',
+            'Specification-Vendor'    : 'Continuity Works',
+            'Specification-Version'   : '1',
+            'Implementation-Title'    : project.name,
+            'Implementation-Version'  : project.jar.archiveVersion,
+            'Implementation-Vendor'   : 'Continuity Works',
+            'MixinConfigs'            : 'continuityworks_spawn_protection.mixins.json'
+        ])
+    }
+}
+
+reobf {
+    jarJar { }
+}
+
+tasks.named('jarJar').configure {
+    finalizedBy 'reobfJarJar'
+}
+
+tasks.named('assemble').configure {
+    dependsOn 'jarJar'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = System.getenv('GROUP') ?: mod_group
+            artifactId = System.getenv('ARTIFACT') ?: 'ContinuityWorks-Forge-1.20.1'
+            version = System.getenv('VERSION') ?: mod_version
+            artifact tasks.named('jarJar')
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}
+
+tasks.matching { it.name == 'publishMavenJavaPublicationToMavenLocal' }.configureEach {
+    dependsOn 'reobfJarJar'
+}
