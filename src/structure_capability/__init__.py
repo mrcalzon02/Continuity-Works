@@ -62,6 +62,10 @@ from .early_human_knapping_ground import (
     StoneToolKnappingGroundGenerationError,
     StoneToolKnappingGroundGenerator,
 )
+from .early_human_flint_procurement import (
+    FlintProcurementPitGenerationError,
+    FlintProcurementPitGenerator,
+)
 
 __all__ = [
     "StructureCapability", "RebuildGrade", "AccessClearance",
@@ -83,4 +87,5 @@ __all__ = [
     "HearthCircleGenerationError", "HearthCircleGenerator",
     "MultiHearthGatheringSiteGenerationError", "MultiHearthGatheringSiteGenerator",
     "StoneToolKnappingGroundGenerationError", "StoneToolKnappingGroundGenerator",
+    "FlintProcurementPitGenerationError", "FlintProcurementPitGenerator",
 ]
