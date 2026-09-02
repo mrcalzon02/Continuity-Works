@@ -1,0 +1,59 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="MIT"
+issueTrackerURL="https://github.com/mrcalzon02/Continuity-Works/issues"
+
+[[mods]]
+modId="continuityworks_biomes"
+version="${mod_version}"
+displayName="Continuity Works Biomes"
+displayURL="https://github.com/mrcalzon02/Continuity-Works"
+authors="Continuity Works"
+description='''
+Continuity Works Forge 1.20.1 biome runtime. Materializes the authoritative 128-biome anthology, terrain and cave systems, natural TerraBlender placement, and currently materialized structure resources.
+'''
+
+[[mods]]
+modId="continuityworks_spawn_protection"
+version="${mod_version}"
+displayName="Continuity Works Structure Spawn Protection"
+displayURL="https://github.com/mrcalzon02/Continuity-Works"
+authors="Continuity Works"
+description='''
+Continuity Works structure placement protection. Enforces the hard minimum 500-block footprint-based exclusion contract, persistent reservations, registry enrollment, and per-piece jigsaw collision protection.
+'''
+
+[[dependencies.continuityworks_biomes]]
+modId="forge"
+mandatory=true
+versionRange="[${forge_version},)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.continuityworks_biomes]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1,1.20.2)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.continuityworks_biomes]]
+modId="terrablender"
+mandatory=true
+versionRange="[${terrablender_version},3.1)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.continuityworks_spawn_protection]]
+modId="forge"
+mandatory=true
+versionRange="[${forge_version},)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.continuityworks_spawn_protection]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1,1.20.2)"
+ordering="NONE"
+side="BOTH"
