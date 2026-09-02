@@ -37,7 +37,7 @@ Source completion does not equal `PRODUCTION_ADMITTED`. Production admission add
 **E01-014 — Bone-Breaking Station**
 
 ### Catalog recovery
-The prior ledger had lost the E01-014 label. Reconciliation against the authoritative era structure master catalog recovered E01-014 as **Bone-Breaking Station** and E01-015 as **Marrow Processing Ground**. The recovered catalog labels are now materialized here so later sessions do not repeat the false blocker.
+The prior ledger had lost the E01-014 label. Reconciliation against the authoritative era structure master catalog recovered E01-014 as **Bone-Breaking Station**, E01-015 as **Marrow Processing Ground**, and E01-016 as **Watering-Hole Camp**. The recovered catalog labels are now materialized here so later sessions do not repeat the false blocker.
 
 ### Stage 1 — HERO SPEC
 Committed specification: `docs/era_structure_hero/E01-014_BONE_BREAKING_STATION.md`.
@@ -89,4 +89,4 @@ Observed GitHub evidence proves the Stage 1 hero specification, Stage 2 generato
 
 ## Next run
 
-Proceed with **E01-015 — Marrow Processing Ground** through Stage 1 hero specification, Stage 2 build, and Stage 3 worldgen integration before advancing to E01-016 Food Cache Pit.
+Proceed with **E01-015 — Marrow Processing Ground** through Stage 1 hero specification, Stage 2 build, and Stage 3 worldgen integration before advancing to E01-016 Watering-Hole Camp.
