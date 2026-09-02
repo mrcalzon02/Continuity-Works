@@ -29,43 +29,50 @@ Source completion does not equal `PRODUCTION_ADMITTED`. Production admission add
 | E01-011 | Lower Paleolithic / Early Human | Quartzite Quarry | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
 | E01-012 | Lower Paleolithic / Early Human | Butchery Site | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
 | E01-013 | Lower Paleolithic / Early Human | Large-Carcass Processing Site | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
-| E01-014 | Lower Paleolithic / Early Human | **Catalog label not yet materialized in authoritative repository** | NEXT | — | — | — |
+| E01-014 | Lower Paleolithic / Early Human | Bone-Breaking Station | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
+| E01-015 | Lower Paleolithic / Early Human | Marrow Processing Ground | NEXT | — | — | — |
 
 ## Last completed run
 
-**E01-013 — Large-Carcass Processing Site**
+**E01-014 — Bone-Breaking Station**
+
+### Catalog recovery
+The prior ledger had lost the E01-014 label. Reconciliation against the authoritative era structure master catalog recovered E01-014 as **Bone-Breaking Station** and E01-015 as **Marrow Processing Ground**. The recovered catalog labels are now materialized here so later sessions do not repeat the false blocker.
 
 ### Stage 1 — HERO SPEC
-Committed specification: `docs/era_structure_hero/E01-013_LARGE_CARCASS_PROCESSING_SITE.md`.
+Committed specification: `docs/era_structure_hero/E01-014_BONE_BREAKING_STATION.md`.
 
-The specification defines one dominant megafaunal carcass axis, coordinated multi-person task bays, heavy-bone/marrow work, directional dirty-side discard, clean-side transport staging, an outward haul corridor, hide/offcut handling, biome and culture variants, condition states, semantic vanilla material proxies, additive family rules, the mandatory 500-block unrelated-structure exclusion rule, sparse occupancy/loot hooks, validation criteria, and production-readiness gates. It explicitly separates E01-013 from E01-012 by requiring a larger operational landscape and coordinated multi-bay topology rather than merely scaling ordinary butchery.
+The specification defines a concentrated heavy-bone percussion and marrow-access station with clean-side heavy-bone staging, mandatory anvil/impact points, hammerstone evidence, cleared operator stances, anisotropic fracture fans, marrow handling, spent-bone discard, carry lanes, biome and culture hooks, condition states, semantic vanilla proxies, additive family rules, sparse loot/occupancy hooks, validation criteria, and production-readiness gates.
+
+Archetype distinction is explicit: E01-014 processes already-separated heavy bones. It does not generate a dominant carcass axis, broad hide-processing program, hearth-centered camp topology, or primary lithic-production landscape.
 
 ### Stage 2 — BUILD
-Committed implementation: `src/structure_capability/early_human_large_carcass_processing.py`.
+Committed implementation: `src/structure_capability/early_human_bone_breaking.py`.
 
 The deterministic generator provides:
-- S/M/L envelopes of 43×8×35, 57×9×47, and 73×10×61;
-- seed-derived carcass orientation with elongated spine and widened torso cells;
-- 3–9 scale-dependent task bays distributed on both flanks;
-- mandatory heavy-bone/marrow processing zone;
-- anisotropic dirty-side bone/refuse projection;
-- opposite-side clean transport staging;
-- an edge-reaching haul corridor that clears conflicting discard;
-- peripheral hide/offcut and scavenger traces;
-- culture profiles for cooperative disarticulation, marrow intensity, transport priority, and hide retention;
+- S/M/L envelopes of 17×6×15, 25×7×21, and 35×8×29;
+- 1–5 scale/culture-dependent impact stations;
+- explicit clean and dirty directional vectors;
+- heavy-bone staging on the clean/incoming side;
+- stable anvil/impact and hammerstone proxies;
+- cleared operator stances;
+- anisotropic fracture fans projected to the dirty side;
+- marrow-handling pocket and spent-bone discard margin;
+- staging-to-impact carry lane;
+- culture profiles for marrow intensity, single-station reuse, distributed percussion, and clean staging priority;
 - active/recent/repeated/abandoned/weathered/scavenger-reworked/sediment-reworked/repurposed conditions;
 - optional subordinate hearth logic;
-- deterministic fingerprints, explicit material semantics, and archetype qualification gates.
+- explicit material semantics, qualification gates, and deterministic fingerprints.
 
-Focused test source: `tests/test_early_human_large_carcass_processing.py` covers replay determinism, seed variation, S/M/L bounds, topology, culture hooks, condition variants, arid weathering, bounds, invalid inputs, additive compatibility, placement validity, and minimum 500-block structure/jigsaw protection.
+Focused test source: `tests/test_early_human_bone_breaking.py` covers deterministic replay, seed variation, S/M/L bounds, qualification topology, scale progression, culture variants, arid weathering, invalid inputs, additive compatibility, spacing validity, and minimum 500-block structure/jigsaw protection.
 
-Public export: `LargeCarcassProcessingSiteGenerator` and `LargeCarcassProcessingSiteGenerationError` are exported through `structure_capability.__init__`.
+Public export: `BoneBreakingStationGenerator` and `BoneBreakingStationGenerationError` are exported through `structure_capability.__init__`.
 
 ### Stage 3 — WORLDGEN
-`LargeCarcassProcessingSiteGenerator.worldgen_bundle()` uses the existing Continuity Works Minecraft worldgen contract with:
+`BoneBreakingStationGenerator.worldgen_bundle()` uses the existing Continuity Works Minecraft worldgen contract with:
 - family `continuityworks:early_human_carcass_processing`;
-- structure ID `continuityworks:e01_013_large_carcass_processing_site`;
-- start pool `continuityworks:early_human/e01_013_large_carcass_processing_site`;
+- structure ID `continuityworks:e01_014_bone_breaking_station`;
+- start pool `continuityworks:early_human/e01_014_bone_breaking_station`;
 - `surface_structures` generation step;
 - `beard_thin` terrain adaptation;
 - `WORLD_SURFACE_WG` projection;
@@ -74,15 +81,12 @@ Public export: `LargeCarcassProcessingSiteGenerator` and `LargeCarcassProcessing
 - minimum 500-block per-jigsaw-piece exclusion radius;
 - mandatory jigsaw-piece protection;
 - additive/non-destructive compatibility;
-- same-parent-reservation requirement for compatible-family composition;
+- same-parent-reservation requirement for compatible-family tight composition;
 - existing geospatial worldgen validation.
 
-### Archetype distinction
-E01-013 qualifies only when it reads as one coordinated large-carcass processing landscape: a dominant elongated carcass axis, multiple task bays, mandatory heavy-bone processing, substantial directional refuse, clean staging, and preserved haul circulation. It fails toward E01-012 if it drops back into the ordinary-carcass footprint/organization, toward a camp if hearth/residential logic dominates, or toward a knapping ground if lithic production becomes primary.
-
 ### DEEFM claim boundary
-Observed GitHub evidence proves the Stage 1 hero specification, Stage 2 generator source, focused test source, public export, Stage 3 worldgen contract, and this ledger update are committed on authoritative `main`. **No claim is made that tests have executed successfully in the authoritative runtime, that final NBT/template-pool artifacts have been materialized and loaded in Minecraft, or that E01-013 is production-admitted.**
+Observed GitHub evidence proves the Stage 1 hero specification, Stage 2 generator source, focused test source, public export, Stage 3 worldgen contract, and this ledger update are committed on authoritative `main`. **No claim is made that tests have executed successfully in the authoritative runtime, that final NBT/template-pool artifacts have been materialized and loaded in Minecraft, or that E01-014 is production-admitted.**
 
 ## Next run
 
-Proceed with **E01-014**, the next catalog ID after E01-013. The archetype label for E01-014 is not presently materialized in the authoritative repository or retrieved persistent catalog material, so it must be resolved from the authoritative master catalog before hero development rather than invented.
+Proceed with **E01-015 — Marrow Processing Ground** through Stage 1 hero specification, Stage 2 build, and Stage 3 worldgen integration before advancing to E01-016 Food Cache Pit.
