@@ -78,6 +78,10 @@ from .early_human_large_carcass_processing import (
     LargeCarcassProcessingSiteGenerationError,
     LargeCarcassProcessingSiteGenerator,
 )
+from .early_human_bone_breaking import (
+    BoneBreakingStationGenerationError,
+    BoneBreakingStationGenerator,
+)
 
 __all__ = [
     "StructureCapability", "RebuildGrade", "AccessClearance",
@@ -103,4 +107,5 @@ __all__ = [
     "QuartziteQuarryGenerationError", "QuartziteQuarryGenerator",
     "ButcherySiteGenerationError", "ButcherySiteGenerator",
     "LargeCarcassProcessingSiteGenerationError", "LargeCarcassProcessingSiteGenerator",
+    "BoneBreakingStationGenerationError", "BoneBreakingStationGenerator",
 ]
