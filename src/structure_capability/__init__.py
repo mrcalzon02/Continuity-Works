@@ -54,6 +54,10 @@ from .early_human_hearth_circle import (
     HearthCircleGenerationError,
     HearthCircleGenerator,
 )
+from .early_human_multi_hearth import (
+    MultiHearthGatheringSiteGenerationError,
+    MultiHearthGatheringSiteGenerator,
+)
 
 __all__ = [
     "StructureCapability", "RebuildGrade", "AccessClearance",
@@ -73,4 +77,5 @@ __all__ = [
     "LeanToWindbreakGenerationError", "LeanToWindbreakGenerator",
     "HideWindbreakCampGenerationError", "HideWindbreakCampGenerator",
     "HearthCircleGenerationError", "HearthCircleGenerator",
+    "MultiHearthGatheringSiteGenerationError", "MultiHearthGatheringSiteGenerator",
 ]
