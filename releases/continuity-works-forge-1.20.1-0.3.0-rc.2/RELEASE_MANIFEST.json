@@ -1,0 +1,67 @@
+{
+  "project": "Continuity Works",
+  "release": "0.3.0-rc.2",
+  "minecraft": "1.20.1",
+  "loader": "Forge",
+  "distribution_artifact": {
+    "format": "jar",
+    "filename": "ContinuityWorks-Forge-1.20.1-0.3.0-rc.2.jar",
+    "single_installable_mod_archive": true
+  },
+  "authoritative_project": "modules/continuityworks_runtime/forge-1.20.1",
+  "contained_mod_ids": [
+    "continuityworks_biomes",
+    "continuityworks_spawn_protection"
+  ],
+  "runtime_content": {
+    "biome_anthology": {
+      "declared_count": 128,
+      "families": 8,
+      "natural_overworld_provider": "TerraBlender",
+      "embedded_dependency": true
+    },
+    "structure_spawn_protection": {
+      "hard_minimum_exclusion_blocks": 500,
+      "footprint_aware": true,
+      "persistent_reservations": true,
+      "jigsaw_piece_protection": true,
+      "family_exceptions": "explicit compatible family relationships only"
+    },
+    "materialized_structure_templates": {
+      "count": 2,
+      "paths": [
+        "data/continuityworks_biomes/structures/abyssal/fracture_vent_field.nbt",
+        "data/continuityworks_biomes/structures/abyssal/hadal_vent_complex.nbt"
+      ]
+    },
+    "era_structure_line": {
+      "developed_through": "E01-015",
+      "runtime_nbt_materialization": "not_complete",
+      "distribution_claim": "specifications are not misrepresented as playable NBT"
+    }
+  },
+  "compatibility": {
+    "mode": "append_only",
+    "non_destructive": true,
+    "base_authority": "preserved"
+  },
+  "build": {
+    "builder": "build_release_jar.py",
+    "external_builder": "JitPack supported",
+    "github_actions": false,
+    "verification": [
+      "readable JAR archive",
+      "both Forge mod IDs declared",
+      "both compiled entry-point classes present",
+      "at least 128 generated biome JSON definitions present",
+      "Structure Spawn Protection mixin classes present",
+      "two currently materialized NBT structures present",
+      "Jar-in-Jar metadata present for embedded TerraBlender"
+    ]
+  },
+  "runtime_validation": {
+    "minecraft_launch": "not_yet_observed_for_rc.2",
+    "fresh_world_worldgen": "not_yet_observed_for_rc.2",
+    "status": "BUILD_AND_RUNTIME_GATED"
+  }
+}
