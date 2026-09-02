@@ -26,54 +26,58 @@ Source completion does not equal `PRODUCTION_ADMITTED`. Production admission add
 | E01-008 | Lower Paleolithic / Early Human | Multi-Hearth Gathering Site | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
 | E01-009 | Lower Paleolithic / Early Human | Stone Tool Knapping Ground | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
 | E01-010 | Lower Paleolithic / Early Human | Flint Procurement Pit | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
-| E01-011 | Lower Paleolithic / Early Human | Quartzite Quarry | NEXT | — | — | — |
+| E01-011 | Lower Paleolithic / Early Human | Quartzite Quarry | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
+| E01-012 | Lower Paleolithic / Early Human | Butchery Site | NEXT | — | — | — |
 
 ## Last completed run
 
-**E01-010 — Flint Procurement Pit**
+**E01-011 — Quartzite Quarry**
 
 ### Stage 1 — HERO SPEC
-Committed specification: `docs/era_structure_hero/E01-010_FLINT_PROCUREMENT_PIT.md`.
+Committed specification: `docs/era_structure_hero/E01-011_QUARTZITE_QUARRY.md`.
 
 The specification defines:
-- extraction-first purpose and strict distinction from E01-009 Stone Tool Knapping Ground and E01-011 Quartzite Quarry;
-- Lower Paleolithic shallow-procurement technology ceiling;
-- S/M/L footprint, pit-count, and depth classes;
-- source exposure, overburden removal, procurement pits, working faces, spoil aprons, rejected/tested nodules, selected-material staging, carry-out, safe circulation, and legacy pit program;
-- deterministic source-lens, pit, spoil, testing, staging, circulation, chronology, condition, biome, culture, and material logic;
-- active, recently vacated, repeated-use, abandoned, partially infilled, disturbed, source-depleted, and later-repurposed conditions;
-- compatible lithic-source/camp/travel/knapping family hooks under one shared parent reservation only;
+- extraction-first quarry identity and strict boundaries against E01-010 Flint Procurement Pit and E01-009 Stone Tool Knapping Ground;
+- Lower Paleolithic direct-percussion, hard-hammer, natural-joint, levering, and gravity technology ceiling;
+- S/M/L footprint classes with increasing working-face, bench, spoil, staging, and chronology complexity;
+- natural source exposure, working face, natural bench/work footing, extraction scars, coarse fragment apron, hammerstone zone, subordinate primary reduction, selected blank staging, haul route, and legacy exhausted face;
+- deterministic named procedural streams;
+- biome and culture variants bounded by era technology;
+- active, recently vacated, repeated-use, abandoned, partially collapsed, sediment-reworked, source-depleted, and repurposed conditions;
+- additive family composition under one explicit parent reservation only;
 - sparse task-specific loot/occupancy hooks;
 - validation and production-readiness gates;
-- minimum 500-block unrelated-structure exclusion and additive/non-destructive compatibility.
+- minimum 500-block unrelated-structure exclusion.
 
 ### Stage 2 — BUILD
-Committed implementation: `src/structure_capability/early_human_flint_procurement.py`.
+Committed implementation: `src/structure_capability/early_human_quartzite_quarry.py`.
 
 The deterministic generator provides:
-- S/M/L physical output;
-- near-surface source-lens generation;
-- 1–9 irregular shallow procurement pits by scale;
-- explicit depth caps of 2/3/4 blocks for S/M/L;
-- source exposure within pit footprints;
-- lateral/down-gradient spoil projection;
-- sparse tested/rejected material deliberately below knapping-ground dominance;
-- selected-material staging and a carry-out route;
-- repeated-use/partial-infill/source-depletion chronology;
-- biome-adapted local substrate/source/spoil palettes using valid vanilla blocks;
-- deterministic fingerprint metadata;
-- bounded additive/non-destructive replacement metadata;
-- qualification gates for extraction primacy, explicit source, shallow open pits, spoil, carry-out, staging, subordinate testing, open-sky geometry, and absence of later mining infrastructure.
+- S/M/L physical output envelopes of 23×8×19, 37×10×31, and 57×12×45;
+- elongated source ridge/outcrop generation with deterministic strike and accessible working side;
+- 1–7 irregular face segments by scale;
+- bounded extraction scars carved into selected source-face cells;
+- natural bench/work footing immediately outside active faces;
+- anisotropic coarse fragment/spoil apron projected outward from the quarry face;
+- sparse hammerstone/battering proxies;
+- subordinate primary-reduction clusters only at medium/large scale;
+- selected quartzite-role blank staging and an outward haul route;
+- legacy/exhausted face chronology for repeated/source-depleted/repurposed conditions;
+- partial collapse, sediment reworking, and climate-bounded weathering transforms;
+- `minecraft:diorite` as an explicit semantic `quartzite_role_proxy`, avoiding manufactured quartz blocks and avoiding a false vanilla-geology claim;
+- deterministic structure fingerprint metadata;
+- bounded additive/non-destructive replacement policy;
+- qualification gates for extraction primacy, source face, scars, bench, coarse apron, hammerstone zone, staging, haul route, subordinate reduction, larger-than-procurement scale, open sky, and absence of later quarry infrastructure.
 
-Focused test source: `tests/test_early_human_flint_procurement.py` covers deterministic replay, seed variation, S/M/L bounds, procurement identity, shallow depth caps, subordinate testing, repeated-use chronology, arid material restrictions, invalid inputs, worldgen protection, additive compatibility, and placement spacing.
+Focused test source: `tests/test_early_human_quartzite_quarry.py` covers deterministic replay, seed variation, S/M/L bounds, extraction-first qualification, semantic quartzite proxy policy, source-depleted chronology, arid weathering restrictions, invalid inputs, worldgen protection/additive compatibility, and placement contract validity.
 
-Public export: `FlintProcurementPitGenerator` and `FlintProcurementPitGenerationError` are exported through `structure_capability.__init__`.
+Public export: `QuartziteQuarryGenerator` and `QuartziteQuarryGenerationError` are exported through `structure_capability.__init__`.
 
 ### Stage 3 — WORLDGEN
-`FlintProcurementPitGenerator.worldgen_bundle()` uses the existing Continuity Works Minecraft worldgen contract with:
+`QuartziteQuarryGenerator.worldgen_bundle()` uses the existing Continuity Works Minecraft worldgen contract with:
 - family `continuityworks:early_human_lithic_source`;
-- structure ID `continuityworks:e01_010_flint_procurement_pit`;
-- start pool `continuityworks:early_human/e01_010_flint_procurement_pit`;
+- structure ID `continuityworks:e01_011_quartzite_quarry`;
+- start pool `continuityworks:early_human/e01_011_quartzite_quarry`;
 - `surface_structures` generation step;
 - `beard_thin` terrain adaptation;
 - `WORLD_SURFACE_WG` projection;
@@ -86,11 +90,11 @@ Public export: `FlintProcurementPitGenerator` and `FlintProcurementPitGeneration
 - existing geospatial worldgen validation.
 
 ### Archetype distinction
-E01-010 qualifies only when source procurement dominates. Its shallow open pits, spoil, source exposure, staging, and carry-out must read before any testing debris. It fails toward E01-009 if lithic reduction/debris becomes primary, and fails toward E01-011 if organized large-scale quarry faces/terraces or later quarry infrastructure become dominant.
+E01-011 qualifies only when a recognizable source face, extraction scars, natural bench, heavy coarse apron, selected blank staging, and haul route dominate the site. It fails toward E01-010 if shallow isolated procurement pits dominate without a quarry face, and fails toward E01-009 if reduction debris/work positions become the primary read. Engineered or industrial quarry systems are anachronistic and invalid.
 
 ### DEEFM claim boundary
-Observed GitHub evidence proves the Stage 1 hero specification, Stage 2 generator source, focused test source, public export, Stage 3 worldgen contract, and this ledger update are committed on authoritative `main`. **No claim is made that tests have executed successfully in the authoritative runtime, that final NBT/template-pool artifacts have been materialized and loaded in Minecraft, or that E01-010 is production-admitted.**
+Observed GitHub evidence proves the Stage 1 hero specification, Stage 2 generator source, focused test source, public export, Stage 3 worldgen contract, and this ledger update are committed on authoritative `main`. **No claim is made that tests have executed successfully in the authoritative runtime, that final NBT/template-pool artifacts have been materialized and loaded in Minecraft, or that E01-011 is production-admitted.**
 
 ## Next run
 
-Proceed with **E01-011 — Quartzite Quarry** through Stage 1 hero specification, Stage 2 deterministic build, and Stage 3 worldgen integration before advancing to E01-012.
+Proceed with **E01-012 — Butchery Site** through Stage 1 hero specification, Stage 2 deterministic build, and Stage 3 worldgen integration before advancing to E01-013.
