@@ -82,6 +82,10 @@ from .early_human_bone_breaking import (
     BoneBreakingStationGenerationError,
     BoneBreakingStationGenerator,
 )
+from .early_human_marrow_processing import (
+    MarrowProcessingGroundGenerationError,
+    MarrowProcessingGroundGenerator,
+)
 
 __all__ = [
     "StructureCapability", "RebuildGrade", "AccessClearance",
@@ -108,4 +112,5 @@ __all__ = [
     "ButcherySiteGenerationError", "ButcherySiteGenerator",
     "LargeCarcassProcessingSiteGenerationError", "LargeCarcassProcessingSiteGenerator",
     "BoneBreakingStationGenerationError", "BoneBreakingStationGenerator",
+    "MarrowProcessingGroundGenerationError", "MarrowProcessingGroundGenerator",
 ]
