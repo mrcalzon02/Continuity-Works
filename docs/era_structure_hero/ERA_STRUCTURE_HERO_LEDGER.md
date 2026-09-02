@@ -28,53 +28,44 @@ Source completion does not equal `PRODUCTION_ADMITTED`. Production admission add
 | E01-010 | Lower Paleolithic / Early Human | Flint Procurement Pit | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
 | E01-011 | Lower Paleolithic / Early Human | Quartzite Quarry | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
 | E01-012 | Lower Paleolithic / Early Human | Butchery Site | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
-| E01-013 | Lower Paleolithic / Early Human | Large-Carcass Processing Site | NEXT | — | — | — |
+| E01-013 | Lower Paleolithic / Early Human | Large-Carcass Processing Site | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
+| E01-014 | Lower Paleolithic / Early Human | **Catalog label not yet materialized in authoritative repository** | NEXT | — | — | — |
 
 ## Last completed run
 
-**E01-012 — Butchery Site**
+**E01-013 — Large-Carcass Processing Site**
 
 ### Stage 1 — HERO SPEC
-Committed specification: `docs/era_structure_hero/E01-012_BUTCHERY_SITE.md`.
+Committed specification: `docs/era_structure_hero/E01-013_LARGE_CARCASS_PROCESSING_SITE.md`.
 
-The specification defines:
-- task-specific ordinary-carcass processing identity and strict separation from camps, generic refuse scatters, and E01-013 Large-Carcass Processing Site;
-- Lower Paleolithic direct-percussion, stone-tool, hammerstone/anvil, marrow-access, hide-removal, and opportunistic-fire technology ceiling;
-- S/M/L envelopes of 17×5×15, 27×6×23, and 39×7×33;
-- primary carcass-processing center, anatomically biased work positions, directional bone/offcut discard, marrow/anvil zone, hide/offcut edge, selected transport staging, circulation, and carry-out route;
-- biome adaptations and culture hooks for expedient field dressing, transport focus, marrow intensity, and consumption bias;
-- active, recent, repeated, abandoned, weathered, scavenger-reworked, sediment-reworked, and repurposed conditions;
-- vanilla block proxy semantics explicitly recorded rather than misrepresented as literal archaeological materials;
-- additive same-parent family composition and the minimum 500-block unrelated-structure exclusion rule;
-- sparse task-specific loot/occupancy hooks;
-- validation and production-readiness gates.
+The specification defines one dominant megafaunal carcass axis, coordinated multi-person task bays, heavy-bone/marrow work, directional dirty-side discard, clean-side transport staging, an outward haul corridor, hide/offcut handling, biome and culture variants, condition states, semantic vanilla material proxies, additive family rules, the mandatory 500-block unrelated-structure exclusion rule, sparse occupancy/loot hooks, validation criteria, and production-readiness gates. It explicitly separates E01-013 from E01-012 by requiring a larger operational landscape and coordinated multi-bay topology rather than merely scaling ordinary butchery.
 
 ### Stage 2 — BUILD
-Committed implementation: `src/structure_capability/early_human_butchery_site.py`.
+Committed implementation: `src/structure_capability/early_human_large_carcass_processing.py`.
 
 The deterministic generator provides:
-- seed-derived carcass orientation and non-rectilinear central processing footprint;
-- 1–7 work positions depending on scale;
-- directional discard fans projected away from worker positions rather than isotropic random debris;
-- medium/large marrow/anvil evidence with culture-driven intensification;
-- selected transport staging placed away from the dirty core;
-- an outward carry route that clears conflicting discard cells to preserve circulation;
-- peripheral hide/offcut traces;
-- optional subordinate hearth association;
-- culture-profile variants for expedient field dressing, transport focus, marrow intensity, and consumption bias;
-- condition transforms for repeated use, abandonment/weathering, scavenger reworking, and sediment reworking;
-- deterministic fingerprints and explicit material-role semantics;
-- qualification gates requiring processing center, work positions, directional discard, staging, carry route, circulation, scale-appropriate marrow evidence, subordinate hearth, no permanent architecture, and sub-E01-013 scale.
+- S/M/L envelopes of 43×8×35, 57×9×47, and 73×10×61;
+- seed-derived carcass orientation with elongated spine and widened torso cells;
+- 3–9 scale-dependent task bays distributed on both flanks;
+- mandatory heavy-bone/marrow processing zone;
+- anisotropic dirty-side bone/refuse projection;
+- opposite-side clean transport staging;
+- an edge-reaching haul corridor that clears conflicting discard;
+- peripheral hide/offcut and scavenger traces;
+- culture profiles for cooperative disarticulation, marrow intensity, transport priority, and hide retention;
+- active/recent/repeated/abandoned/weathered/scavenger-reworked/sediment-reworked/repurposed conditions;
+- optional subordinate hearth logic;
+- deterministic fingerprints, explicit material semantics, and archetype qualification gates.
 
-Focused test source: `tests/test_early_human_butchery_site.py` covers deterministic replay, seed variation, S/M/L bounds, processing qualification, marrow requirements, culture hooks, arid weathering restrictions, scavenger-reworked survival, invalid inputs, additive worldgen protection, and placement validity.
+Focused test source: `tests/test_early_human_large_carcass_processing.py` covers replay determinism, seed variation, S/M/L bounds, topology, culture hooks, condition variants, arid weathering, bounds, invalid inputs, additive compatibility, placement validity, and minimum 500-block structure/jigsaw protection.
 
-Public export: `ButcherySiteGenerator` and `ButcherySiteGenerationError` are exported through `structure_capability.__init__`.
+Public export: `LargeCarcassProcessingSiteGenerator` and `LargeCarcassProcessingSiteGenerationError` are exported through `structure_capability.__init__`.
 
 ### Stage 3 — WORLDGEN
-`ButcherySiteGenerator.worldgen_bundle()` uses the existing Continuity Works Minecraft worldgen contract with:
+`LargeCarcassProcessingSiteGenerator.worldgen_bundle()` uses the existing Continuity Works Minecraft worldgen contract with:
 - family `continuityworks:early_human_carcass_processing`;
-- structure ID `continuityworks:e01_012_butchery_site`;
-- start pool `continuityworks:early_human/e01_012_butchery_site`;
+- structure ID `continuityworks:e01_013_large_carcass_processing_site`;
+- start pool `continuityworks:early_human/e01_013_large_carcass_processing_site`;
 - `surface_structures` generation step;
 - `beard_thin` terrain adaptation;
 - `WORLD_SURFACE_WG` projection;
@@ -87,11 +78,11 @@ Public export: `ButcherySiteGenerator` and `ButcherySiteGenerationError` are exp
 - existing geospatial worldgen validation.
 
 ### Archetype distinction
-E01-012 qualifies only when the site reads first as carcass processing: a dominant processing center, nearby worker/tool positions, directional discard, selected transport staging, and a carry route. It fails toward a generic camp if hearth/shelter logic dominates, toward a knapping ground if lithic production dominates, and toward E01-013 if the footprint and biomass organization exceed the ordinary-carcass scale ceiling.
+E01-013 qualifies only when it reads as one coordinated large-carcass processing landscape: a dominant elongated carcass axis, multiple task bays, mandatory heavy-bone processing, substantial directional refuse, clean staging, and preserved haul circulation. It fails toward E01-012 if it drops back into the ordinary-carcass footprint/organization, toward a camp if hearth/residential logic dominates, or toward a knapping ground if lithic production becomes primary.
 
 ### DEEFM claim boundary
-Observed GitHub evidence proves the Stage 1 hero specification, Stage 2 generator source, focused test source, public export, Stage 3 worldgen contract, and this ledger update are committed on authoritative `main`. **No claim is made that tests have executed successfully in the authoritative runtime, that final NBT/template-pool artifacts have been materialized and loaded in Minecraft, or that E01-012 is production-admitted.**
+Observed GitHub evidence proves the Stage 1 hero specification, Stage 2 generator source, focused test source, public export, Stage 3 worldgen contract, and this ledger update are committed on authoritative `main`. **No claim is made that tests have executed successfully in the authoritative runtime, that final NBT/template-pool artifacts have been materialized and loaded in Minecraft, or that E01-013 is production-admitted.**
 
 ## Next run
 
-Proceed with **E01-013 — Large-Carcass Processing Site** through Stage 1 hero specification, Stage 2 deterministic build, and Stage 3 worldgen integration before advancing to E01-014.
+Proceed with **E01-014**, the next catalog ID after E01-013. The archetype label for E01-014 is not presently materialized in the authoritative repository or retrieved persistent catalog material, so it must be resolved from the authoritative master catalog before hero development rather than invented.
