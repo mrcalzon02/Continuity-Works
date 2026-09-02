@@ -70,6 +70,10 @@ from .early_human_quartzite_quarry import (
     QuartziteQuarryGenerationError,
     QuartziteQuarryGenerator,
 )
+from .early_human_butchery_site import (
+    ButcherySiteGenerationError,
+    ButcherySiteGenerator,
+)
 
 __all__ = [
     "StructureCapability", "RebuildGrade", "AccessClearance",
@@ -93,4 +97,5 @@ __all__ = [
     "StoneToolKnappingGroundGenerationError", "StoneToolKnappingGroundGenerator",
     "FlintProcurementPitGenerationError", "FlintProcurementPitGenerator",
     "QuartziteQuarryGenerationError", "QuartziteQuarryGenerator",
+    "ButcherySiteGenerationError", "ButcherySiteGenerator",
 ]
