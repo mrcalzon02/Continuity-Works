@@ -4,7 +4,7 @@ import io.continuityworks.spawnprotection.runtime.GenerationAttempt;
 import io.continuityworks.spawnprotection.runtime.GenerationAttemptContext;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.levelgen.RandomState;
-import net.minecraft.world.level.levelgen.structure.pools.PoolElementStructurePiece;
+import net.minecraft.world.level.levelgen.structure.PoolElementStructurePiece;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
