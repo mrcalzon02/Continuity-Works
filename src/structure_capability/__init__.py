@@ -46,6 +46,10 @@ from .early_human_lean_to import (
     LeanToWindbreakGenerationError,
     LeanToWindbreakGenerator,
 )
+from .early_human_hide_windbreak import (
+    HideWindbreakCampGenerationError,
+    HideWindbreakCampGenerator,
+)
 
 __all__ = [
     "StructureCapability", "RebuildGrade", "AccessClearance",
@@ -63,4 +67,5 @@ __all__ = [
     "DeepCaveRefugeGenerationError", "DeepCaveRefugeGenerator",
     "TemporaryBrushShelterGenerationError", "TemporaryBrushShelterGenerator",
     "LeanToWindbreakGenerationError", "LeanToWindbreakGenerator",
+    "HideWindbreakCampGenerationError", "HideWindbreakCampGenerator",
 ]
