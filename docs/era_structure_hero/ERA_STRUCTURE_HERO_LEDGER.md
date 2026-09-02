@@ -30,49 +30,46 @@ Source completion does not equal `PRODUCTION_ADMITTED`. Production admission add
 | E01-012 | Lower Paleolithic / Early Human | Butchery Site | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
 | E01-013 | Lower Paleolithic / Early Human | Large-Carcass Processing Site | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
 | E01-014 | Lower Paleolithic / Early Human | Bone-Breaking Station | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
-| E01-015 | Lower Paleolithic / Early Human | Marrow Processing Ground | NEXT | — | — | — |
+| E01-015 | Lower Paleolithic / Early Human | Marrow Processing Ground | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
+| E01-016 | Lower Paleolithic / Early Human | Watering-Hole Camp | NEXT | — | — | — |
 
 ## Last completed run
 
-**E01-014 — Bone-Breaking Station**
-
-### Catalog recovery
-The prior ledger had lost the E01-014 label. Reconciliation against the authoritative era structure master catalog recovered E01-014 as **Bone-Breaking Station**, E01-015 as **Marrow Processing Ground**, and E01-016 as **Watering-Hole Camp**. The recovered catalog labels are now materialized here so later sessions do not repeat the false blocker.
+**E01-015 — Marrow Processing Ground**
 
 ### Stage 1 — HERO SPEC
-Committed specification: `docs/era_structure_hero/E01-014_BONE_BREAKING_STATION.md`.
+Committed specification: `docs/era_structure_hero/E01-015_MARROW_PROCESSING_GROUND.md`.
 
-The specification defines a concentrated heavy-bone percussion and marrow-access station with clean-side heavy-bone staging, mandatory anvil/impact points, hammerstone evidence, cleared operator stances, anisotropic fracture fans, marrow handling, spent-bone discard, carry lanes, biome and culture hooks, condition states, semantic vanilla proxies, additive family rules, sparse loot/occupancy hooks, validation criteria, and production-readiness gates.
+The specification defines a post-fracture marrow-extraction and consumption landscape with clean-side opened-bone staging, one or more marrow-handling pockets, adjacent activity stances, grease/organic ground lenses, spent-fragment margins, short circulation links, condition states, biome/culture hooks, semantic vanilla material proxies, additive family relationships, sparse loot/occupancy hooks, validation criteria, and production-readiness requirements.
 
-Archetype distinction is explicit: E01-014 processes already-separated heavy bones. It does not generate a dominant carcass axis, broad hide-processing program, hearth-centered camp topology, or primary lithic-production landscape.
+Archetype distinction is explicit: E01-014 remains the high-energy bone-fracture workstation. E01-015 is organized around handling already-opened or easily opened bones, distributed marrow extraction/consumption, and low-energy spent-fragment disposal. Heavy percussion is absent or limited to one subordinate final-cracking point.
 
 ### Stage 2 — BUILD
-Committed implementation: `src/structure_capability/early_human_bone_breaking.py`.
+Committed implementation: `src/structure_capability/early_human_marrow_processing.py`.
 
 The deterministic generator provides:
-- S/M/L envelopes of 17×6×15, 25×7×21, and 35×8×29;
-- 1–5 scale/culture-dependent impact stations;
-- explicit clean and dirty directional vectors;
-- heavy-bone staging on the clean/incoming side;
-- stable anvil/impact and hammerstone proxies;
-- cleared operator stances;
-- anisotropic fracture fans projected to the dirty side;
-- marrow-handling pocket and spent-bone discard margin;
-- staging-to-impact carry lane;
-- culture profiles for marrow intensity, single-station reuse, distributed percussion, and clean staging priority;
+- S/M/L envelopes of 19×6×17, 29×7×25, and 41×8×33;
+- 1–5 scale/culture-dependent marrow-handling pockets;
+- seed-derived clean-to-dirty orientation;
+- clean-side opened-bone staging;
+- pocket-local opened-bone and grease/stain concentrations;
+- clear activity stances adjacent to handling pockets;
+- dirty-side spent-fragment disposal;
+- staging-to-pocket circulation paths plus a disposal path;
+- culture profiles for immediate consumption, distributed extraction, intensive cleaning, and repeated use;
 - active/recent/repeated/abandoned/weathered/scavenger-reworked/sediment-reworked/repurposed conditions;
-- optional subordinate hearth logic;
-- explicit material semantics, qualification gates, and deterministic fingerprints.
+- optional single light-percussion point and optional subordinate hearth;
+- explicit semantic material roles, qualification gates, and deterministic fingerprints.
 
-Focused test source: `tests/test_early_human_bone_breaking.py` covers deterministic replay, seed variation, S/M/L bounds, qualification topology, scale progression, culture variants, arid weathering, invalid inputs, additive compatibility, spacing validity, and minimum 500-block structure/jigsaw protection.
+Focused test source: `tests/test_early_human_marrow_processing.py` covers deterministic replay, seed variation, S/M/L bounds, marrow-processing qualification, scale progression, percussion suppression, repeated-use behavior, arid weathering, invalid inputs, additive compatibility, spacing validity, and minimum 500-block structure/jigsaw protection.
 
-Public export: `BoneBreakingStationGenerator` and `BoneBreakingStationGenerationError` are exported through `structure_capability.__init__`.
+Public export: `MarrowProcessingGroundGenerator` and `MarrowProcessingGroundGenerationError` are exported through `structure_capability.__init__`.
 
 ### Stage 3 — WORLDGEN
-`BoneBreakingStationGenerator.worldgen_bundle()` uses the existing Continuity Works Minecraft worldgen contract with:
+`MarrowProcessingGroundGenerator.worldgen_bundle()` uses the existing Continuity Works Minecraft worldgen contract with:
 - family `continuityworks:early_human_carcass_processing`;
-- structure ID `continuityworks:e01_014_bone_breaking_station`;
-- start pool `continuityworks:early_human/e01_014_bone_breaking_station`;
+- structure ID `continuityworks:e01_015_marrow_processing_ground`;
+- start pool `continuityworks:early_human/e01_015_marrow_processing_ground`;
 - `surface_structures` generation step;
 - `beard_thin` terrain adaptation;
 - `WORLD_SURFACE_WG` projection;
@@ -85,8 +82,8 @@ Public export: `BoneBreakingStationGenerator` and `BoneBreakingStationGeneration
 - existing geospatial worldgen validation.
 
 ### DEEFM claim boundary
-Observed GitHub evidence proves the Stage 1 hero specification, Stage 2 generator source, focused test source, public export, Stage 3 worldgen contract, and this ledger update are committed on authoritative `main`. **No claim is made that tests have executed successfully in the authoritative runtime, that final NBT/template-pool artifacts have been materialized and loaded in Minecraft, or that E01-014 is production-admitted.**
+Observed GitHub evidence proves the Stage 1 hero specification, Stage 2 generator source, focused test source, public export, Stage 3 worldgen contract, and this ledger update are committed on authoritative `main`. **No claim is made that tests have executed successfully in the authoritative runtime, that final NBT/template-pool artifacts have been materialized and loaded in Minecraft, or that E01-015 is production-admitted.**
 
 ## Next run
 
-Proceed with **E01-015 — Marrow Processing Ground** through Stage 1 hero specification, Stage 2 build, and Stage 3 worldgen integration before advancing to E01-016 Watering-Hole Camp.
+Proceed with **E01-016 — Watering-Hole Camp** through Stage 1 hero specification, Stage 2 build, and Stage 3 worldgen integration before advancing to E01-017 Riverbank Foraging Camp.
