@@ -58,6 +58,10 @@ from .early_human_multi_hearth import (
     MultiHearthGatheringSiteGenerationError,
     MultiHearthGatheringSiteGenerator,
 )
+from .early_human_knapping_ground import (
+    StoneToolKnappingGroundGenerationError,
+    StoneToolKnappingGroundGenerator,
+)
 
 __all__ = [
     "StructureCapability", "RebuildGrade", "AccessClearance",
@@ -78,4 +82,5 @@ __all__ = [
     "HideWindbreakCampGenerationError", "HideWindbreakCampGenerator",
     "HearthCircleGenerationError", "HearthCircleGenerator",
     "MultiHearthGatheringSiteGenerationError", "MultiHearthGatheringSiteGenerator",
+    "StoneToolKnappingGroundGenerationError", "StoneToolKnappingGroundGenerator",
 ]
