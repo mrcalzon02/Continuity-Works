@@ -1,0 +1,62 @@
+{
+  "package": "continuity-works-forge",
+  "version": "0.3.0-rc.1",
+  "release_date": "2026-09-02",
+  "status": "release-candidate-source-bundle",
+  "repository": "mrcalzon02/Continuity-Works",
+  "branch": "main",
+  "input_commit": "b417be1549437a9e22ebd60e24bafc19f9943621",
+  "target": {
+    "minecraft": "1.20.1",
+    "loader": "Forge",
+    "java": "17"
+  },
+  "components": {
+    "biome_runtime": {
+      "path": "biome-runtime",
+      "source_path": "examples/biome_expander/runtime_mod/1.20.1",
+      "source_tree": "837ad9978becc9c9ca0c1fec8b0f499d3b0fd4da",
+      "generated_biomes": 128,
+      "materialized_structure_templates": 2,
+      "runtime_validation": "pending"
+    },
+    "structure_spawn_protection": {
+      "path": "structure-spawn-protection",
+      "source_path": "modules/structure_spawn_protection/forge-1.20.1",
+      "source_tree": "d97da93784ec974d9af7dd06489d21fed63c3668",
+      "minimum_exclusion_radius_blocks": 500,
+      "placement_model": "footprint-based reservations with jigsaw piece handling",
+      "runtime_validation": "pending"
+    },
+    "structure_capability": {
+      "path": "structure-capability",
+      "source_path": "src/structure_capability",
+      "source_tree": "3a935418170d5efe3df2bbea8203939e4e75d573",
+      "role": "structure generators, schemas, worldgen contracts and capability implementation"
+    },
+    "era_structure_specs": {
+      "path": "era-structure-specs",
+      "source_path": "docs/era_structure_hero",
+      "source_tree": "306dc1369cabbc5ab572f5c5dad0188b0b1307a5",
+      "stage_2_source_integrated_through": "E01-015",
+      "stage_3_worldgen_integrated_through": "E01-015",
+      "final_nbt_materialization": "pending",
+      "minecraft_load_validation": "pending"
+    }
+  },
+  "distribution_gate": {
+    "binary_jars_built_in_this_commit": false,
+    "minecraft_runtime_validated": false,
+    "production_ready": false,
+    "reason": "The repository contains the authoritative Forge sources and structure contracts, but this environment cannot execute the required Forge/Gradle dependency resolution and Minecraft runtime validation. The included build_release_package.py fails closed unless both Forge JARs are successfully built or already present."
+  },
+  "binary_package_expected_contents": [
+    "mods/continuityworks_biomes*.jar",
+    "mods/continuityworks_structure_spawn_protection*.jar",
+    "structures/structure-capability/",
+    "structures/era-structure-specs/",
+    "RELEASE_MANIFEST.json",
+    "README.md",
+    "SHA256SUMS.txt"
+  ]
+}

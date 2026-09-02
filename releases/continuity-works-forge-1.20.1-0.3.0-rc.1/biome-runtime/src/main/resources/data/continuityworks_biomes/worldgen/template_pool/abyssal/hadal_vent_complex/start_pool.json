@@ -1,0 +1,15 @@
+{
+  "name": "continuityworks_biomes:abyssal/hadal_vent_complex/start_pool",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "continuityworks_biomes:abyssal/hadal_vent_complex",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "feature": "continuityworks_biomes:caves/literal_hex_lattice",
+  "placement": [
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

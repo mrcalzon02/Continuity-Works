@@ -1,0 +1,11 @@
+{
+  "feature": "continuityworks_biomes:caves/biome_network",
+  "placement": [
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

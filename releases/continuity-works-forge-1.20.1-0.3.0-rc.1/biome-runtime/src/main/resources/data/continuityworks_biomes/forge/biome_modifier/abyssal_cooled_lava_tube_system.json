@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#continuityworks_biomes:abyssal_fracture_biomes",
+  "features": "continuityworks_biomes:abyssal/cooled_lava_tube_system",
+  "step": "local_modifications"
+}

@@ -1,0 +1,19 @@
+{
+  "feature": "continuityworks_biomes:abyssal/shelf_sand_wave_field",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 4096
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "OCEAN_FLOOR_WG"
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

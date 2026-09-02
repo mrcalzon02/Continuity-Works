@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#continuityworks_biomes:anthology",
+  "features": "continuityworks_biomes:land/topology",
+  "step": "local_modifications"
+}

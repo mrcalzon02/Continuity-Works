@@ -1,0 +1,13 @@
+{
+  "anthology_primary_biomes": 128,
+  "families": 8,
+  "biomes_per_family": 16,
+  "runtime_materialization": "gradle_generateAnthologyBiomes",
+  "individual_config_gating": true,
+  "family_config_gating": true,
+  "terrablender_natural_placement": true,
+  "surface_rules": true,
+  "family_tags": true,
+  "github_actions_required": false,
+  "acceptance_status": "pending_local_compile_runtime_worldgen"
+}

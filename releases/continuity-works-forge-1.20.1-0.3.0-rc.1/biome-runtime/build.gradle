@@ -1,0 +1,92 @@
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+}
+
+group = mod_group
+version = mod_version
+base {
+    archivesName = 'ContinuityWorks-BiomeTemplates-Forge-1.20.1'
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+apply from: 'gradle/anthology.gradle'
+
+minecraft {
+    mappings channel: 'official', version: minecraft_version
+    copyIdeResources = true
+
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'info'
+            mods {
+                continuityworks_biomes {
+                    source sourceSets.main
+                }
+            }
+        }
+        client { }
+        server { args '--nogui' }
+    }
+}
+
+repositories {
+    maven { url = 'https://maven.minecraftforge.net/' }
+    maven { url = 'https://maven.blamejared.com' }
+    mavenCentral()
+}
+
+jarJar.enable()
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    implementation fg.deobf("com.github.glitchfiend:TerraBlender-forge:${minecraft_version}-${terrablender_version}")
+    jarJar(group: 'com.github.glitchfiend', name: 'TerraBlender-forge', version: "[${minecraft_version}-${terrablender_version},${minecraft_version}-3.1.0.0)") {
+        jarJar.pin(it, "${minecraft_version}-${terrablender_version}")
+    }
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [
+        minecraft_version: minecraft_version,
+        forge_version: forge_version,
+        terrablender_version: terrablender_version,
+        mod_version: mod_version,
+        mod_id: mod_id
+    ]
+    inputs.properties replaceProperties
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
+    }
+}
+
+jar {
+    manifest {
+        attributes([
+            'Specification-Title'     : 'Continuity Works Biome Templates',
+            'Specification-Vendor'    : 'Continuity Works',
+            'Specification-Version'   : '1',
+            'Implementation-Title'    : project.name,
+            'Implementation-Version'  : project.jar.archiveVersion,
+            'Implementation-Vendor'   : 'Continuity Works'
+        ])
+    }
+}
+
+reobf {
+    jarJar { }
+}
+
+tasks.named('jarJar').configure {
+    finalizedBy 'reobfJarJar'
+}
+
+tasks.named('assemble').configure {
+    dependsOn 'jarJar'
+}

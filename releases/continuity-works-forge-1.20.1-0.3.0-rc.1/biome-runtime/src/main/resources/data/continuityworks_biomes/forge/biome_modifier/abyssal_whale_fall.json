@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#continuityworks_biomes:abyssal_whale_fall_biomes",
+  "features": "continuityworks_biomes:abyssal/whale_fall",
+  "step": "local_modifications"
+}

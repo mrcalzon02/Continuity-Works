@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#continuityworks_biomes:abyssal_wood_fall_biomes",
+  "features": "continuityworks_biomes:abyssal/wood_fall",
+  "step": "local_modifications"
+}

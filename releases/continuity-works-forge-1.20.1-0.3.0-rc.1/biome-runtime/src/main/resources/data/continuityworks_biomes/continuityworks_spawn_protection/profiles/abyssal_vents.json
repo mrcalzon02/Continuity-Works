@@ -1,0 +1,13 @@
+{
+  "selectors": {
+    "structures": [
+      "continuityworks_biomes:abyssal/fracture_vent_field",
+      "continuityworks_biomes:abyssal/hadal_vent_complex"
+    ]
+  },
+  "family": "continuityworks_biomes:abyssal_vents",
+  "exclusion_radius": 500,
+  "jigsaw_piece_exclusion_radius": 500,
+  "protect_jigsaw_pieces": true,
+  "priority": 100
+}

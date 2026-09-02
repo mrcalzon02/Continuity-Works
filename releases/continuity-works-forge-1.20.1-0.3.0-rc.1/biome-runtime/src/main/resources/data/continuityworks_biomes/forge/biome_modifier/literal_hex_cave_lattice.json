@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#continuityworks_biomes:all_primary_biomes",
+  "features": "continuityworks_biomes:caves/literal_hex_lattice",
+  "step": "local_modifications"
+}

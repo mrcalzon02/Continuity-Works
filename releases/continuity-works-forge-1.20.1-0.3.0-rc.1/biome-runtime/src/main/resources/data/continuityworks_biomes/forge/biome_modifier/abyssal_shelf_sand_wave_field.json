@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#continuityworks_biomes:abyssal_slope_biomes",
+  "features": "continuityworks_biomes:abyssal/shelf_sand_wave_field",
+  "step": "local_modifications"
+}

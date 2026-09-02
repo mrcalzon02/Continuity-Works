@@ -1,0 +1,360 @@
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+
+def anthologyCatalogFile = file('src/main/anthology/biomes.json')
+def anthologyGeneratedJava = layout.buildDirectory.dir('generated/sources/anthology/java')
+def anthologyGeneratedResources = layout.buildDirectory.dir('generated/resources/anthology')
+
+sourceSets {
+    main {
+        java.srcDir(anthologyGeneratedJava)
+        resources.srcDir(anthologyGeneratedResources)
+    }
+}
+
+def anthologyFamilyDefaults = [
+    primordial:              [temperature: 0.72d, downfall: 0.70d, foliage: 0x7AAE57, grass: 0x668F48, sky: 0x7CC7F2, water: 4159204, fog: 12638463],
+    ancient:                 [temperature: 0.95d, downfall: 0.42d, foliage: 0x8FAF54, grass: 0xA19A50, sky: 0x79B7E5, water: 4159204, fog: 12638463],
+    medieval:                [temperature: 0.62d, downfall: 0.72d, foliage: 0x5E934A, grass: 0x6A8D4B, sky: 0x77AFE0, water: 4159204, fog: 12638463],
+    renaissance_clockwork:   [temperature: 0.76d, downfall: 0.60d, foliage: 0x6E9A4A, grass: 0x819448, sky: 0x74AEE0, water: 4159204, fog: 12638463],
+    industrial:              [temperature: 0.70d, downfall: 0.48d, foliage: 0x687157, grass: 0x6B6B54, sky: 0x7B91A8, water: 0x456A72, fog: 0x8A8D86],
+    atomic_post_collapse:    [temperature: 0.78d, downfall: 0.38d, foliage: 0x758253, grass: 0x80764D, sky: 0x8A927E, water: 0x516D61, fog: 0x8D8A77],
+    advanced_scifi:          [temperature: 0.72d, downfall: 0.58d, foliage: 0x5A9C72, grass: 0x6EA06D, sky: 0x71A9D7, water: 4159204, fog: 12638463],
+    neon_virtual:            [temperature: 0.80d, downfall: 0.45d, foliage: 0x39A68E, grass: 0x5A8D7D, sky: 0x5E9CE6, water: 0x2F9AA0, fog: 0x6C66A8]
+]
+
+def anthologyVegetation = [
+    temperate: ['minecraft:glow_lichen','minecraft:trees_birch_and_oak','minecraft:flower_default','minecraft:patch_grass_forest','minecraft:brown_mushroom_normal','minecraft:red_mushroom_normal','minecraft:patch_pumpkin','minecraft:patch_sugar_cane'],
+    cold: ['minecraft:glow_lichen','minecraft:patch_large_fern','minecraft:trees_taiga','minecraft:flower_default','minecraft:patch_grass_taiga_2','minecraft:brown_mushroom_taiga','minecraft:red_mushroom_taiga','minecraft:patch_berry_common'],
+    dry: ['minecraft:trees_savanna','minecraft:patch_grass_savanna','minecraft:patch_tall_grass','minecraft:patch_dead_bush','minecraft:patch_pumpkin'],
+    wet: ['minecraft:glow_lichen','minecraft:trees_swamp','minecraft:flower_swamp','minecraft:patch_grass_normal','minecraft:brown_mushroom_swamp','minecraft:red_mushroom_swamp','minecraft:patch_sugar_cane','minecraft:patch_pumpkin'],
+    sparse: ['minecraft:patch_dead_bush'],
+    synthetic: []
+]
+
+def anthologyOres = [
+    'minecraft:ore_dirt','minecraft:ore_gravel','minecraft:ore_granite_upper','minecraft:ore_granite_lower',
+    'minecraft:ore_diorite_upper','minecraft:ore_diorite_lower','minecraft:ore_andesite_upper','minecraft:ore_andesite_lower',
+    'minecraft:ore_tuff','minecraft:ore_coal_upper','minecraft:ore_coal_lower','minecraft:ore_iron_upper','minecraft:ore_iron_middle',
+    'minecraft:ore_iron_small','minecraft:ore_gold','minecraft:ore_gold_lower','minecraft:ore_redstone','minecraft:ore_redstone_lower',
+    'minecraft:ore_diamond','minecraft:ore_diamond_medium','minecraft:ore_diamond_large','minecraft:ore_diamond_buried',
+    'minecraft:ore_lapis','minecraft:ore_lapis_buried','minecraft:ore_copper','minecraft:underwater_magma',
+    'minecraft:disk_sand','minecraft:disk_clay','minecraft:disk_gravel'
+]
+
+def anthologySpawners = [
+    monster: [
+        [type:'minecraft:spider',weight:100,minCount:4,maxCount:4],
+        [type:'minecraft:zombie',weight:95,minCount:4,maxCount:4],
+        [type:'minecraft:skeleton',weight:100,minCount:4,maxCount:4],
+        [type:'minecraft:creeper',weight:100,minCount:4,maxCount:4],
+        [type:'minecraft:enderman',weight:10,minCount:1,maxCount:4]
+    ],
+    creature: [
+        [type:'minecraft:sheep',weight:12,minCount:4,maxCount:4],
+        [type:'minecraft:pig',weight:10,minCount:4,maxCount:4],
+        [type:'minecraft:chicken',weight:10,minCount:4,maxCount:4],
+        [type:'minecraft:cow',weight:8,minCount:4,maxCount:4]
+    ],
+    ambient: [[type:'minecraft:bat',weight:10,minCount:8,maxCount:8]],
+    axolotls: [],
+    underground_water_creature: [[type:'minecraft:glow_squid',weight:10,minCount:4,maxCount:6]],
+    water_creature: [],
+    water_ambient: [],
+    misc: []
+]
+
+def anthologySurfaceFor = { String family, String id ->
+    if (family == 'primordial') {
+        if (id.contains('obsidian')) return ['OBSIDIAN','BASALT']
+        if (id.contains('tar_pit') || id.contains('marsh')) return ['MUD','CLAY']
+        if (id.contains('tundra') || id.contains('glacial')) return ['SNOW_BLOCK','DIRT']
+        if (id.contains('basalt')) return ['BASALT','TUFF']
+        if (id.contains('bonefield')) return ['CALCITE','STONE']
+        return ['GRASS_BLOCK','DIRT']
+    }
+    if (family == 'ancient') {
+        if (id.contains('desert') || id.contains('wadi') || id.contains('salt_road')) return ['SAND','SANDSTONE']
+        if (id.contains('marble')) return ['CALCITE','STONE']
+        if (id.contains('red_clay')) return ['RED_SAND','RED_TERRACOTTA']
+        if (id.contains('volcanic')) return ['BASALT','TUFF']
+        if (id.contains('quarry')) return ['STONE','ANDESITE']
+        return ['GRASS_BLOCK','DIRT']
+    }
+    if (family == 'medieval') {
+        if (id.contains('moor') || id.contains('heath')) return ['COARSE_DIRT','DIRT']
+        if (id.contains('mine') || id.contains('highlands') || id.contains('holdfast')) return ['STONE','ANDESITE']
+        if (id.contains('plaguewood')) return ['PODZOL','DIRT']
+        if (id.contains('fenland')) return ['MUD','DIRT']
+        return ['GRASS_BLOCK','DIRT']
+    }
+    if (family == 'renaissance_clockwork') {
+        if (id.contains('dunes')) return ['SAND','SANDSTONE']
+        if (id.contains('quarry')) return ['STONE','ANDESITE']
+        if (id.contains('foundry')) return ['TUFF','STONE']
+        if (id.contains('canal') || id.contains('polders')) return ['GRASS_BLOCK','CLAY']
+        return ['GRASS_BLOCK','DIRT']
+    }
+    if (family == 'industrial') {
+        if (id.contains('slag') || id.contains('cinder')) return ['TUFF','BASALT']
+        if (id.contains('quarry') || id.contains('railcut') || id.contains('ridge')) return ['STONE','ANDESITE']
+        if (id.contains('marsh') || id.contains('river') || id.contains('canal')) return ['MUD','CLAY']
+        return ['COARSE_DIRT','STONE']
+    }
+    if (family == 'atomic_post_collapse') {
+        if (id.contains('glassed')) return ['SAND','SMOOTH_BASALT']
+        if (id.contains('blast') || id.contains('radstorm')) return ['TUFF','BASALT']
+        if (id.contains('marsh') || id.contains('flooded')) return ['MUD','CLAY']
+        if (id.contains('forest') || id.contains('orchard')) return ['COARSE_DIRT','DIRT']
+        return ['GRAVEL','STONE']
+    }
+    if (family == 'advanced_scifi') {
+        if (id.contains('desert') || id.contains('barrens') || id.contains('wastes') || id.contains('exclusion')) return ['SMOOTH_BASALT','TUFF']
+        if (id.contains('wetlands')) return ['MUD','CLAY']
+        if (id.contains('crystal') || id.contains('geode')) return ['CALCITE','AMETHYST_BLOCK']
+        return ['GRASS_BLOCK','DIRT']
+    }
+    if (family == 'neon_virtual') {
+        if (id.contains('city') || id.contains('grid') || id.contains('pulseway') || id.contains('canal')) return ['BLACK_CONCRETE','GRAY_CONCRETE']
+        if (id.contains('glass_desert')) return ['BLACK_STAINED_GLASS','SMOOTH_BASALT']
+        if (id.contains('forest') || id.contains('gardens')) return ['MOSS_BLOCK','BLACKSTONE']
+        if (id.contains('marsh')) return ['MUD','BLACKSTONE']
+        if (id.contains('badlands') || id.contains('mesa')) return ['BLACKSTONE','DEEPSLATE']
+        return ['SMOOTH_BASALT','BLACKSTONE']
+    }
+    return ['GRASS_BLOCK','DIRT']
+}
+
+def anthologyProfileFor = { String family, String id, int index ->
+    def base = new LinkedHashMap(anthologyFamilyDefaults[family])
+    def kind = 'temperate'
+    if (id.contains('tundra') || id.contains('glacial')) {
+        base.temperature = -0.15d
+        base.downfall = Math.max(base.downfall as double, 0.55d)
+        kind = 'cold'
+    } else if (id.contains('alpine')) {
+        base.temperature = 0.20d
+        base.downfall = Math.max(base.downfall as double, 0.55d)
+        kind = 'cold'
+    } else if (['desert','dunes','wadi','badlands','barrens','wastes','flats','steppe','heath','plateau','ridge','quarrylands','quarry','exclusion'].any { id.contains(it) }) {
+        base.temperature = Math.max(base.temperature as double, 1.05d)
+        base.downfall = Math.min(base.downfall as double, 0.18d)
+        kind = 'dry'
+    } else if (['marsh','floodplain','delta','coast','harbor','canal','polders','wetlands','fenland','river','basin'].any { id.contains(it) }) {
+        base.downfall = Math.max(base.downfall as double, 0.85d)
+        kind = 'wet'
+    }
+    if (['volcanic','tar_pit','blast_crater','glassed','fusion_desert'].any { id.contains(it) }) {
+        base.temperature = Math.max(base.temperature as double, 1.20d)
+        base.downfall = Math.min(base.downfall as double, 0.12d)
+        kind = 'dry'
+    }
+    if (['forest','grove','redwood','cedar','orchard'].any { id.contains(it) }) {
+        base.downfall = Math.max(base.downfall as double, 0.70d)
+        kind = (base.temperature as double) > 0.10d ? 'temperate' : 'cold'
+    }
+    if (family == 'industrial' && !['marsh','river','forest'].any { id.contains(it) }) kind = 'sparse'
+    if (family == 'atomic_post_collapse' && !['marsh','forest','orchard'].any { id.contains(it) }) kind = 'sparse'
+    if (family == 'neon_virtual') kind = 'synthetic'
+
+    base.foliage = Math.max(0, Math.min(0xFFFFFF, (base.foliage as int) + (index - 7) * 0x000301))
+    base.grass = Math.max(0, Math.min(0xFFFFFF, (base.grass as int) + (index - 7) * 0x000203))
+    base.kind = kind
+    base
+}
+
+def anthologyTemperatureBand = { double t ->
+    if (t < 0.0d) return 'ICY'
+    if (t < 0.35d) return 'COOL'
+    if (t < 0.75d) return 'NEUTRAL'
+    if (t < 1.10d) return 'WARM'
+    'HOT'
+}
+
+def anthologyHumidityBand = { double d ->
+    if (d < 0.20d) return 'ARID'
+    if (d < 0.40d) return 'DRY'
+    if (d < 0.65d) return 'NEUTRAL'
+    if (d < 0.85d) return 'WET'
+    'HUMID'
+}
+
+def anthologyFamilyEnum = { String family -> family.toUpperCase() }
+def anthologyContinentalness = ['COAST','NEAR_INLAND','MID_INLAND','FAR_INLAND']
+def anthologyErosion = ['EROSION_0','EROSION_1','EROSION_2','EROSION_3','EROSION_4','EROSION_5','EROSION_6']
+def anthologyWeirdness = [
+    'VALLEY','LOW_SLICE_NORMAL_DESCENDING','LOW_SLICE_VARIANT_ASCENDING',
+    'MID_SLICE_NORMAL_DESCENDING','MID_SLICE_VARIANT_ASCENDING','MID_SLICE_NORMAL_ASCENDING',
+    'MID_SLICE_VARIANT_DESCENDING','HIGH_SLICE_NORMAL_ASCENDING','HIGH_SLICE_VARIANT_DESCENDING',
+    'PEAK_NORMAL','PEAK_VARIANT','HIGH_SLICE_NORMAL_DESCENDING'
+]
+
+tasks.register('generateAnthologyBiomes') {
+    group = 'build'
+    description = 'Materializes the authoritative 128-biome anthology into generated Java and datapack resources.'
+    inputs.file(anthologyCatalogFile)
+    outputs.dir(anthologyGeneratedJava)
+    outputs.dir(anthologyGeneratedResources)
+
+    doLast {
+        delete(anthologyGeneratedJava)
+        delete(anthologyGeneratedResources)
+
+        def catalog = new JsonSlurper().parse(anthologyCatalogFile)
+        def javaRoot = anthologyGeneratedJava.get().asFile
+        def resourceRoot = anthologyGeneratedResources.get().asFile
+        def javaFile = new File(javaRoot, 'io/continuityworks/biomes/AnthologyBiomeCatalog.java')
+        def biomeDir = new File(resourceRoot, 'data/continuityworks_biomes/worldgen/biome')
+        def tagDir = new File(resourceRoot, 'data/continuityworks_biomes/tags/worldgen/biome')
+        javaFile.parentFile.mkdirs()
+        biomeDir.mkdirs()
+        tagDir.mkdirs()
+
+        def familyEntries = []
+        def allIds = []
+
+        catalog.families.eachWithIndex { familyEntry, familyIndex ->
+            String family = familyEntry.key
+            List ids = familyEntry.value as List
+            ids.eachWithIndex { rawId, index ->
+                String id = rawId as String
+                allIds << id
+                def profile = anthologyProfileFor(family, id, index)
+                def surface = anthologySurfaceFor(family, id)
+
+                def biome = [
+                    has_precipitation: (profile.downfall as double) > 0.20d,
+                    temperature: profile.temperature,
+                    downfall: profile.downfall,
+                    effects: [
+                        fog_color: profile.fog,
+                        sky_color: profile.sky,
+                        water_color: profile.water,
+                        water_fog_color: 329011,
+                        foliage_color: profile.foliage,
+                        grass_color: profile.grass
+                    ],
+                    spawners: anthologySpawners,
+                    spawn_costs: [:],
+                    carvers: [air:['minecraft:cave','minecraft:cave_extra_underground','minecraft:canyon']],
+                    features: [
+                        [],
+                        [],
+                        ['minecraft:amethyst_geode'],
+                        ['minecraft:monster_room'],
+                        [],
+                        [],
+                        anthologyOres,
+                        [],
+                        ['minecraft:spring_water','minecraft:spring_lava'],
+                        anthologyVegetation[profile.kind],
+                        []
+                    ]
+                ]
+                if ((profile.temperature as double) < 0.0d) {
+                    biome.temperature_modifier = 'frozen'
+                    biome.features[10] = ['minecraft:freeze_top_layer']
+                }
+                new File(biomeDir, "${id}.json").text = JsonOutput.prettyPrint(JsonOutput.toJson(biome)) + '\n'
+
+                familyEntries << [
+                    id: id,
+                    family: anthologyFamilyEnum(family),
+                    temperature: anthologyTemperatureBand(profile.temperature as double),
+                    humidity: anthologyHumidityBand(profile.downfall as double),
+                    continentalness: anthologyContinentalness[(index + familyIndex) % anthologyContinentalness.size()],
+                    erosion: anthologyErosion[(index + familyIndex * 2) % anthologyErosion.size()],
+                    weirdness: anthologyWeirdness[(index + familyIndex * 3) % anthologyWeirdness.size()],
+                    top: surface[0],
+                    under: surface[1]
+                ]
+            }
+
+            def familyTag = [
+                replace: false,
+                values: ids.collect { "continuityworks_biomes:${it}" }
+            ]
+            new File(tagDir, "anthology_${family}.json").text = JsonOutput.prettyPrint(JsonOutput.toJson(familyTag)) + '\n'
+        }
+
+        def anthologyTag = [
+            replace: false,
+            values: allIds.collect { "continuityworks_biomes:${it}" }
+        ]
+        new File(tagDir, 'anthology.json').text = JsonOutput.prettyPrint(JsonOutput.toJson(anthologyTag)) + '\n'
+
+        def familyEnums = catalog.families.keySet().collect { family ->
+            "${anthologyFamilyEnum(family)}(\"${family}\")"
+        }.join(',\n        ')
+
+        def javaEntries = familyEntries.collect { e ->
+            """new Entry(\"${e.id}\", Family.${e.family}, Temperature.${e.temperature}, Humidity.${e.humidity}, Continentalness.${e.continentalness}, Erosion.${e.erosion}, Weirdness.${e.weirdness}, Blocks.${e.top}, Blocks.${e.under})"""
+        }.join(',\n        ')
+
+        javaFile.text = """package io.continuityworks.biomes;
+
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import terrablender.api.ParameterUtils.Continentalness;
+import terrablender.api.ParameterUtils.Erosion;
+import terrablender.api.ParameterUtils.Humidity;
+import terrablender.api.ParameterUtils.Temperature;
+import terrablender.api.ParameterUtils.Weirdness;
+
+import java.util.List;
+
+public final class AnthologyBiomeCatalog {
+    public enum Family {
+        ${familyEnums};
+
+        private final String configKey;
+
+        Family(String configKey) {
+            this.configKey = configKey;
+        }
+
+        public String configKey() {
+            return configKey;
+        }
+    }
+
+    public record Entry(
+        String id,
+        Family family,
+        Temperature temperature,
+        Humidity humidity,
+        Continentalness continentalness,
+        Erosion erosion,
+        Weirdness weirdness,
+        Block top,
+        Block under
+    ) {
+        public ResourceKey<Biome> key() {
+            return ResourceKey.create(
+                Registries.BIOME,
+                new ResourceLocation(ContinuityWorksBiomeTemplates.MOD_ID, id)
+            );
+        }
+    }
+
+    public static final List<Entry> ENTRIES = List.of(
+        ${javaEntries}
+    );
+
+    private AnthologyBiomeCatalog() { }
+}
+"""
+    }
+}
+
+tasks.named('compileJava').configure {
+    dependsOn tasks.named('generateAnthologyBiomes')
+}
+
+tasks.named('processResources').configure {
+    dependsOn tasks.named('generateAnthologyBiomes')
+}

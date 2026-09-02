@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#continuityworks_biomes:abyssal_turbidity_biomes",
+  "features": "continuityworks_biomes:abyssal/turbidity_channel",
+  "step": "local_modifications"
+}

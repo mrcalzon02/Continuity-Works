@@ -1,0 +1,286 @@
+from __future__ import annotations
+from copy import deepcopy
+from pathlib import Path
+from .models import StructureRequest
+from .mod_awareness import ModInventory
+from .registry import RegistryResolver
+from .snapshot import SnapshotStore
+from .pipeline import StructurePipeline
+from .compatibility import compatibility_policy
+from .generators import (
+    DungeonGenerator,
+    GeneratorRegistry,
+    NativeDungeonProvider,
+    InfrastructureGenerator,
+    NativeInfrastructureProvider,
+)
+from .minecraft.content_tools import MinecraftContentTools
+from .versioning import resolve_minecraft_version
+from .tooling import tool_catalog
+from .request_resolution import CapabilityResolver
+from .seeded_aerospace_support_campus import SeededAerospaceSupportCampusGenerator
+
+
+class StructureCapability:
+    API_VERSION = "v1"
+
+    def __init__(self, project_root=".", state_root=None):
+        self.project_root = Path(project_root)
+        self.inventory = ModInventory(self.project_root)
+        self.inventory.scan()
+        self.registry = RegistryResolver(self.inventory)
+        self.content = MinecraftContentTools(self.registry, self.inventory)
+        self.request_resolution = CapabilityResolver(self.project_root)
+        state_root = state_root or self.project_root / ".structure-capability" / "snapshots"
+        self.snapshots = SnapshotStore(state_root)
+        self.pipeline = StructurePipeline(self.snapshots, self.registry)
+        self.dungeons = DungeonGenerator()
+        self.infrastructure = InfrastructureGenerator()
+        self.generators = GeneratorRegistry()
+        self.dungeon_provider = NativeDungeonProvider(self.dungeons)
+        self.infrastructure_provider = NativeInfrastructureProvider(self.infrastructure)
+        self.generators.register(self.dungeon_provider)
+        self.generators.register(self.infrastructure_provider)
+        self._aerospace_support_campus_generator = None
+
+    def capabilities(self):
+        return {
+            "service": "Continuity Works",
+            "service_slug": "continuity-works",
+            "api_version": self.API_VERSION,
+            "vanilla_first": True,
+            "compatibility_policy": compatibility_policy(),
+            "mod_awareness": [
+                "jar metadata", "data/assets namespaces", "explicit registry IDs",
+                "recipe/loot/structure resource discovery", "item model/texture candidates",
+            ],
+            "operations": [
+                "inventory", "audit", "plan", "generate", "resume", "dungeon_layout",
+                "infrastructure_layout", "aerospace_support_campus_generate",
+                "minecraft_version", "minecraft_registry_probe",
+                "minecraft_book_generate", "minecraft_loot_table_generate",
+                "minecraft_recipe_generate", "minecraft_advancement_generate",
+                "minecraft_tag_generate", "minecraft_datapack_manifest_generate",
+                "minecraft_content_package_generate", "minecraft_icon_assign",
+                "tool_index", "tool_contract", "tool_presets", "tool_request_resolve",
+            ],
+            "rebuild_grades": {
+                "0": "AUDIT_ONLY",
+                "1": "TOUCH_UP",
+                "2": "REFIT",
+                "3": "DETAIL_PASS",
+                "4": "FUNCTIONAL_REBUILD",
+                "5": "HEAVY_REBUILD",
+                "6": "FULL_RECONTEXTUALIZATION",
+            },
+            "generators": self.generators.describe(),
+            "dungeon_layout": {
+                "engine": "native_modular_v1",
+                "triple_fold_modularity": ["macro", "meso", "micro"],
+                "purpose_sizing": True,
+                "deterministic_seeded_generation": True,
+                "donjon_reference": "isolated_cc_by_nc_optional_reference",
+            },
+            "infrastructure_layout": {
+                "engine": "native_infrastructure_v1",
+                "inner_city_cross_section": {"road_width": 6, "terrain_padding_each_side": 5},
+                "highway_profiles": ["elevated_urban_water_crossing", "surface_highway"],
+                "jigsaw_assembly": True,
+                "lost_cities_contracts": ["tileable_grid", "randomized_coordinate", "sequential_jigsaw"],
+                "lost_cities_reference": {
+                    "repository": "McJtyMods/LostCities",
+                    "branch": "1.20",
+                    "use": "infer additive structural compatibility from public source",
+                    "native_systems_preserved": ["streets", "highways", "railways"],
+                    "replacement_allowed": False,
+                },
+                "purpose_depth_validation": True,
+                "world_seed_determinism": True,
+                "runtime_validation_required": True,
+            },
+            "aerospace_support_campus": {
+                "engine": "seeded_aerospace_support_campus_v1",
+                "scales": ["micro", "light", "standard", "heavy", "superheavy", "megastructure"],
+                "deterministic_seeded_generation": True,
+                "typed_site_graph": True,
+                "launch_anchor_reachability_gate": True,
+                "operator_language_intersection": True,
+                "vessel_state_variation": True,
+                "canonical_fingerprint": "sha256",
+                "road_baseline": {"local_road_width": 6, "terrain_padding_each_side": 5},
+            },
+            "minecraft_content_tools": {
+                "book": {"version_aware": True, "item_components_1_20_5_plus": True, "loot_compatible_output": True},
+                "loot_table": {"version_aware_paths": True, "weighted_and_guaranteed_entries": True, "components_and_legacy_nbt": True},
+                "recipe": {"version_aware_results": True, "version_aware_ingredients": True},
+                "advancement": {"version_aware_icon": True, "version_aware_paths": True, "criteria_and_rewards": True},
+                "tag": {"version_aware_paths": True, "registries": ["item", "block", "fluid", "entity_type", "function", "game_event"]},
+                "datapack_manifest": {"pack_mcmeta": True, "exact_pack_format_gate": True},
+                "content_package": {"aggregate_gate": True, "optional_structure_generation": True, "book_to_guaranteed_loot_binding": True},
+                "registry_probe": {"confidence_levels": ["vanilla", "exact", "candidate", "namespace", "unknown"]},
+                "icon_assignment": {"minecraft_item_icons": True, "deterministic_svg_fallback": True},
+                "reasoning_contract": "deterministic public gates and reason codes; no hidden chain-of-thought",
+            },
+            "minecraft_versions": {
+                "initial_contract": "1.12.x+",
+                "structure_materialization": "provider_validated",
+                "content_materialization": "version-adapted",
+            },
+            "ai_tool_calling": {
+                "catalog_endpoint": "/v1/tools",
+                "compact_index_endpoint": "/v1/tools/index",
+                "contract_endpoint": "/v1/tools/{tool_name}",
+                "preset_endpoint": "/v1/presets",
+                "resolver_endpoint": "/v1/resolve",
+                "discovery_endpoint": "/.well-known/continuity-works.json",
+                "vendor_extension": "x-continuity-works",
+                "portable_json_schema": True,
+                "progressive_disclosure": True,
+            },
+            "visual_review": {
+                "required": False,
+                "owner": "client",
+                "server_side_rendering": False,
+                "policy": "optional_client_review",
+                "reference_client": "StructureForge",
+                "description": "Continuity Works returns geometry, artifacts, and validation metadata; clients render and visually inspect results using their own compute when desired.",
+            },
+            "independent_visual_review_required": False,
+        }
+
+    def tools(self):
+        catalog = deepcopy(tool_catalog())
+        for tool in catalog.get("tools", []):
+            legacy = tool.pop("x-structuresmith", None)
+            if legacy:
+                tool["x-continuity-works"] = legacy
+        return catalog
+
+    def tool_index(self, group=None):
+        return self.request_resolution.index(group=group)
+
+    def tool_contract(self, name):
+        return self.request_resolution.contract(name)
+
+    def tool_presets(self, compact=True):
+        return self.request_resolution.presets(compact=compact)
+
+    def tool_preset(self, preset_id):
+        return self.request_resolution.preset(preset_id)
+
+    def resolve_tool_request(self, request):
+        return self.request_resolution.resolve_request(request)
+
+    def register_generator(self, provider):
+        self.generators.register(provider)
+        return provider
+
+    def inventory_project(self):
+        return self.inventory.to_dict()
+
+    def _request(self, request):
+        return request if isinstance(request, StructureRequest) else StructureRequest.from_dict(request)
+
+    def audit(self, request):
+        return self.pipeline.audit(self._request(request))
+
+    def plan(self, request):
+        return self.pipeline.plan(self._request(request))
+
+    def generate(self, request):
+        req = self._request(request)
+        result = self.pipeline.generate(req)
+        provider = self.generators.resolve(req.generation.get("kind"))
+        if not provider:
+            return result
+
+        generated = provider.generate(req, self.registry)
+        result["generation"]["provider_id"] = generated["provider_id"]
+        result["generation"]["status"] = generated["status"]
+        result["generated_layout"] = generated["generated_layout"]
+        if generated.get("structure_artifact"):
+            result["structure_artifact"] = generated["structure_artifact"]
+
+        planning_snapshot = result.get("snapshot")
+        result["planning_snapshot"] = planning_snapshot
+        generated_artifacts = {}
+        if generated.get("artifact_bytes") is not None:
+            prefix = req.structure_id.split(":")[-1]
+            for name, data in generated["artifact_bytes"].items():
+                generated_artifacts[f"{prefix}_{name}"] = data
+        snapshot_artifact = dict(result.get("structure_artifact") or {})
+        if snapshot_artifact.get("pieces"):
+            snapshot_artifact["pieces"] = [dict(piece) for piece in snapshot_artifact["pieces"]]
+            for piece in snapshot_artifact["pieces"]:
+                piece.pop("nbt_base64", None)
+        snapshot_artifact.pop("nbt_base64", None)
+        snapshot_payload = {
+            "request": req.to_dict(),
+            "generation": result.get("generation"),
+            "generated_layout": result.get("generated_layout"),
+            "structure_artifact": snapshot_artifact or None,
+        }
+        final_snapshot = self.snapshots.create(
+            req.structure_id, "generate", snapshot_payload,
+            parent=planning_snapshot.get("snapshot_id") if planning_snapshot else None,
+            generated_artifacts=generated_artifacts,
+        )
+        result["snapshot"] = final_snapshot
+        return result
+
+    def dungeon_layout(self, request):
+        return self.dungeon_provider.layout(request)
+
+    def infrastructure_layout(self, request):
+        return self.infrastructure_provider.layout(request)
+
+    def aerospace_support_campus_generate(self, request):
+        if not isinstance(request, dict):
+            raise TypeError("Aerospace support campus request must be an object.")
+        if self._aerospace_support_campus_generator is None:
+            self._aerospace_support_campus_generator = SeededAerospaceSupportCampusGenerator()
+        return self._aerospace_support_campus_generator.generate(
+            request.get("scale"),
+            request.get("seed"),
+            request.get("corporate_language_id"),
+        )
+
+    def minecraft_version(self, version):
+        return resolve_minecraft_version(version).to_dict()
+
+    def minecraft_registry_probe(self, request):
+        return self.content.registry_probe(request)
+
+    def minecraft_book_generate(self, request):
+        return self.content.book(request)
+
+    def minecraft_loot_table_generate(self, request):
+        return self.content.loot_table(request)
+
+    def minecraft_recipe_generate(self, request):
+        return self.content.recipe(request)
+
+    def minecraft_advancement_generate(self, request):
+        return self.content.advancement(request)
+
+    def minecraft_tag_generate(self, request):
+        return self.content.tag(request)
+
+    def minecraft_datapack_manifest_generate(self, request):
+        return self.content.datapack_manifest(request)
+
+    def minecraft_content_package_generate(self, request):
+        package_request = dict(request)
+        structure_result = None
+        structure_request = package_request.get("structure")
+        if structure_request:
+            structure_request = dict(structure_request)
+            structure_request.setdefault("target_version", package_request.get("target_version") or "1.20.1")
+            structure_result = self.generate(structure_request)
+        return self.content.package(package_request, structure_result=structure_result)
+
+    def minecraft_icon_assign(self, request):
+        return self.content.assign_icon(request)
+
+    def resume(self, snapshot_id):
+        return self.snapshots.load(snapshot_id)

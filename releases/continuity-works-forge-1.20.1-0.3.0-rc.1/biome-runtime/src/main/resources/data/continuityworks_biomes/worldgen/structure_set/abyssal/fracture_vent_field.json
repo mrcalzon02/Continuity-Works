@@ -1,0 +1,15 @@
+{
+  "structures": [
+    {
+      "structure": "continuityworks_biomes:abyssal/fracture_vent_field",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 78064601,
+    "spacing": 176,
+    "separation": 88,
+    "spread_type": "linear"
+  }
+}
