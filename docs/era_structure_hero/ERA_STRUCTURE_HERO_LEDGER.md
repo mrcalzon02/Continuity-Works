@@ -27,57 +27,54 @@ Source completion does not equal `PRODUCTION_ADMITTED`. Production admission add
 | E01-009 | Lower Paleolithic / Early Human | Stone Tool Knapping Ground | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
 | E01-010 | Lower Paleolithic / Early Human | Flint Procurement Pit | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
 | E01-011 | Lower Paleolithic / Early Human | Quartzite Quarry | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
-| E01-012 | Lower Paleolithic / Early Human | Butchery Site | NEXT | — | — | — |
+| E01-012 | Lower Paleolithic / Early Human | Butchery Site | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
+| E01-013 | Lower Paleolithic / Early Human | Large-Carcass Processing Site | NEXT | — | — | — |
 
 ## Last completed run
 
-**E01-011 — Quartzite Quarry**
+**E01-012 — Butchery Site**
 
 ### Stage 1 — HERO SPEC
-Committed specification: `docs/era_structure_hero/E01-011_QUARTZITE_QUARRY.md`.
+Committed specification: `docs/era_structure_hero/E01-012_BUTCHERY_SITE.md`.
 
 The specification defines:
-- extraction-first quarry identity and strict boundaries against E01-010 Flint Procurement Pit and E01-009 Stone Tool Knapping Ground;
-- Lower Paleolithic direct-percussion, hard-hammer, natural-joint, levering, and gravity technology ceiling;
-- S/M/L footprint classes with increasing working-face, bench, spoil, staging, and chronology complexity;
-- natural source exposure, working face, natural bench/work footing, extraction scars, coarse fragment apron, hammerstone zone, subordinate primary reduction, selected blank staging, haul route, and legacy exhausted face;
-- deterministic named procedural streams;
-- biome and culture variants bounded by era technology;
-- active, recently vacated, repeated-use, abandoned, partially collapsed, sediment-reworked, source-depleted, and repurposed conditions;
-- additive family composition under one explicit parent reservation only;
+- task-specific ordinary-carcass processing identity and strict separation from camps, generic refuse scatters, and E01-013 Large-Carcass Processing Site;
+- Lower Paleolithic direct-percussion, stone-tool, hammerstone/anvil, marrow-access, hide-removal, and opportunistic-fire technology ceiling;
+- S/M/L envelopes of 17×5×15, 27×6×23, and 39×7×33;
+- primary carcass-processing center, anatomically biased work positions, directional bone/offcut discard, marrow/anvil zone, hide/offcut edge, selected transport staging, circulation, and carry-out route;
+- biome adaptations and culture hooks for expedient field dressing, transport focus, marrow intensity, and consumption bias;
+- active, recent, repeated, abandoned, weathered, scavenger-reworked, sediment-reworked, and repurposed conditions;
+- vanilla block proxy semantics explicitly recorded rather than misrepresented as literal archaeological materials;
+- additive same-parent family composition and the minimum 500-block unrelated-structure exclusion rule;
 - sparse task-specific loot/occupancy hooks;
-- validation and production-readiness gates;
-- minimum 500-block unrelated-structure exclusion.
+- validation and production-readiness gates.
 
 ### Stage 2 — BUILD
-Committed implementation: `src/structure_capability/early_human_quartzite_quarry.py`.
+Committed implementation: `src/structure_capability/early_human_butchery_site.py`.
 
 The deterministic generator provides:
-- S/M/L physical output envelopes of 23×8×19, 37×10×31, and 57×12×45;
-- elongated source ridge/outcrop generation with deterministic strike and accessible working side;
-- 1–7 irregular face segments by scale;
-- bounded extraction scars carved into selected source-face cells;
-- natural bench/work footing immediately outside active faces;
-- anisotropic coarse fragment/spoil apron projected outward from the quarry face;
-- sparse hammerstone/battering proxies;
-- subordinate primary-reduction clusters only at medium/large scale;
-- selected quartzite-role blank staging and an outward haul route;
-- legacy/exhausted face chronology for repeated/source-depleted/repurposed conditions;
-- partial collapse, sediment reworking, and climate-bounded weathering transforms;
-- `minecraft:diorite` as an explicit semantic `quartzite_role_proxy`, avoiding manufactured quartz blocks and avoiding a false vanilla-geology claim;
-- deterministic structure fingerprint metadata;
-- bounded additive/non-destructive replacement policy;
-- qualification gates for extraction primacy, source face, scars, bench, coarse apron, hammerstone zone, staging, haul route, subordinate reduction, larger-than-procurement scale, open sky, and absence of later quarry infrastructure.
+- seed-derived carcass orientation and non-rectilinear central processing footprint;
+- 1–7 work positions depending on scale;
+- directional discard fans projected away from worker positions rather than isotropic random debris;
+- medium/large marrow/anvil evidence with culture-driven intensification;
+- selected transport staging placed away from the dirty core;
+- an outward carry route that clears conflicting discard cells to preserve circulation;
+- peripheral hide/offcut traces;
+- optional subordinate hearth association;
+- culture-profile variants for expedient field dressing, transport focus, marrow intensity, and consumption bias;
+- condition transforms for repeated use, abandonment/weathering, scavenger reworking, and sediment reworking;
+- deterministic fingerprints and explicit material-role semantics;
+- qualification gates requiring processing center, work positions, directional discard, staging, carry route, circulation, scale-appropriate marrow evidence, subordinate hearth, no permanent architecture, and sub-E01-013 scale.
 
-Focused test source: `tests/test_early_human_quartzite_quarry.py` covers deterministic replay, seed variation, S/M/L bounds, extraction-first qualification, semantic quartzite proxy policy, source-depleted chronology, arid weathering restrictions, invalid inputs, worldgen protection/additive compatibility, and placement contract validity.
+Focused test source: `tests/test_early_human_butchery_site.py` covers deterministic replay, seed variation, S/M/L bounds, processing qualification, marrow requirements, culture hooks, arid weathering restrictions, scavenger-reworked survival, invalid inputs, additive worldgen protection, and placement validity.
 
-Public export: `QuartziteQuarryGenerator` and `QuartziteQuarryGenerationError` are exported through `structure_capability.__init__`.
+Public export: `ButcherySiteGenerator` and `ButcherySiteGenerationError` are exported through `structure_capability.__init__`.
 
 ### Stage 3 — WORLDGEN
-`QuartziteQuarryGenerator.worldgen_bundle()` uses the existing Continuity Works Minecraft worldgen contract with:
-- family `continuityworks:early_human_lithic_source`;
-- structure ID `continuityworks:e01_011_quartzite_quarry`;
-- start pool `continuityworks:early_human/e01_011_quartzite_quarry`;
+`ButcherySiteGenerator.worldgen_bundle()` uses the existing Continuity Works Minecraft worldgen contract with:
+- family `continuityworks:early_human_carcass_processing`;
+- structure ID `continuityworks:e01_012_butchery_site`;
+- start pool `continuityworks:early_human/e01_012_butchery_site`;
 - `surface_structures` generation step;
 - `beard_thin` terrain adaptation;
 - `WORLD_SURFACE_WG` projection;
@@ -90,11 +87,11 @@ Public export: `QuartziteQuarryGenerator` and `QuartziteQuarryGenerationError` a
 - existing geospatial worldgen validation.
 
 ### Archetype distinction
-E01-011 qualifies only when a recognizable source face, extraction scars, natural bench, heavy coarse apron, selected blank staging, and haul route dominate the site. It fails toward E01-010 if shallow isolated procurement pits dominate without a quarry face, and fails toward E01-009 if reduction debris/work positions become the primary read. Engineered or industrial quarry systems are anachronistic and invalid.
+E01-012 qualifies only when the site reads first as carcass processing: a dominant processing center, nearby worker/tool positions, directional discard, selected transport staging, and a carry route. It fails toward a generic camp if hearth/shelter logic dominates, toward a knapping ground if lithic production dominates, and toward E01-013 if the footprint and biomass organization exceed the ordinary-carcass scale ceiling.
 
 ### DEEFM claim boundary
-Observed GitHub evidence proves the Stage 1 hero specification, Stage 2 generator source, focused test source, public export, Stage 3 worldgen contract, and this ledger update are committed on authoritative `main`. **No claim is made that tests have executed successfully in the authoritative runtime, that final NBT/template-pool artifacts have been materialized and loaded in Minecraft, or that E01-011 is production-admitted.**
+Observed GitHub evidence proves the Stage 1 hero specification, Stage 2 generator source, focused test source, public export, Stage 3 worldgen contract, and this ledger update are committed on authoritative `main`. **No claim is made that tests have executed successfully in the authoritative runtime, that final NBT/template-pool artifacts have been materialized and loaded in Minecraft, or that E01-012 is production-admitted.**
 
 ## Next run
 
-Proceed with **E01-012 — Butchery Site** through Stage 1 hero specification, Stage 2 deterministic build, and Stage 3 worldgen integration before advancing to E01-013.
+Proceed with **E01-013 — Large-Carcass Processing Site** through Stage 1 hero specification, Stage 2 deterministic build, and Stage 3 worldgen integration before advancing to E01-014.
