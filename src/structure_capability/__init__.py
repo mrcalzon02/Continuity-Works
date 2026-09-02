@@ -66,6 +66,10 @@ from .early_human_flint_procurement import (
     FlintProcurementPitGenerationError,
     FlintProcurementPitGenerator,
 )
+from .early_human_quartzite_quarry import (
+    QuartziteQuarryGenerationError,
+    QuartziteQuarryGenerator,
+)
 
 __all__ = [
     "StructureCapability", "RebuildGrade", "AccessClearance",
@@ -88,4 +92,5 @@ __all__ = [
     "MultiHearthGatheringSiteGenerationError", "MultiHearthGatheringSiteGenerator",
     "StoneToolKnappingGroundGenerationError", "StoneToolKnappingGroundGenerator",
     "FlintProcurementPitGenerationError", "FlintProcurementPitGenerator",
+    "QuartziteQuarryGenerationError", "QuartziteQuarryGenerator",
 ]
