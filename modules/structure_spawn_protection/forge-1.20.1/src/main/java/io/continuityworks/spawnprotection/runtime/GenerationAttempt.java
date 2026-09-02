@@ -7,8 +7,8 @@ import io.continuityworks.spawnprotection.model.BlockBox;
 import io.continuityworks.spawnprotection.model.Reservation;
 import io.continuityworks.spawnprotection.model.ReservationConflict;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.minecraft.world.level.levelgen.structure.pieces.StructurePiece;
 import net.minecraft.world.phys.AABB;
 
 import java.util.ArrayList;
