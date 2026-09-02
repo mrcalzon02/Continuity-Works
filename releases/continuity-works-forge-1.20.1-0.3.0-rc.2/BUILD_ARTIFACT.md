@@ -2,19 +2,22 @@
 
 The installable release artifact is a **JAR**, not a ZIP.
 
-Authoritative unified Forge project: `modules/continuityworks_runtime/forge-1.20.1/`
+Authoritative unified Forge project:
 
-Build input commit: `02031f70537b2c4340ad1866418a0750e2770518`
+`modules/continuityworks_runtime/forge-1.20.1/`
 
-JitPack build log:
-https://jitpack.io/com/github/mrcalzon02/Continuity-Works/02031f7/build.log
+Expected local Forge release filename:
 
-JitPack Maven artifact request (also triggers an on-demand build):
-https://jitpack.io/com/github/mrcalzon02/Continuity-Works/02031f7/Continuity-Works-02031f7.jar
-
-Expected local Forge build filename before JitPack publication:
 `ContinuityWorks-Forge-1.20.1-0.3.0-rc.2.jar`
 
-The unified JAR contains both `continuityworks_biomes` and `continuityworks_spawn_protection`. It compiles the authoritative 128-biome runtime sources, copies the existing biome worldgen resources including materialized NBT structure templates, copies SSPS resources, and embeds TerraBlender using ForgeGradle Jar-in-Jar. The SSPS implementation retains its hard minimum 500-block structure exclusion contract.
+The canonical local build/verification entry point is:
+
+`python releases/continuity-works-forge-1.20.1-0.3.0-rc.2/build_release_jar.py`
+
+The repository root `jitpack.yml` supplies an external no-GitHub-Actions build path for environments where Gradle/Forge dependencies are not locally available. For immutable build evidence, request JitPack against the exact final `main` commit rather than relying on a moving `main-SNAPSHOT` coordinate.
+
+The unified JAR contains both `continuityworks_biomes` and `continuityworks_spawn_protection`. It compiles the authoritative 128-biome runtime sources, includes the existing biome worldgen resources and currently materialized NBT structure templates, includes SSPS resources/classes, and embeds TerraBlender through ForgeGradle Jar-in-Jar. The SSPS implementation retains its hard minimum 500-block structure exclusion contract.
+
+The release builder validates the archive before it is copied into `dist/`; an unbuilt or incomplete archive is not accepted as the release artifact.
 
 No GitHub Actions are used by this build path.
