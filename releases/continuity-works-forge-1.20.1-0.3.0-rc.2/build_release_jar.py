@@ -23,6 +23,18 @@ VERSION = "0.3.0-rc.2"
 HERE = Path(__file__).resolve().parent
 REPO_ROOT = HERE.parents[1]
 PROJECT = REPO_ROOT / "modules" / "continuityworks_runtime" / "forge-1.20.1"
+BIOME_PROJECT = REPO_ROOT / "examples" / "biome_expander" / "runtime_mod" / "1.20.1"
+ANTHOLOGY_CATALOG = BIOME_PROJECT / "src" / "main" / "anthology" / "biomes.json"
+STATIC_BIOME_DIR = (
+    BIOME_PROJECT
+    / "src"
+    / "main"
+    / "resources"
+    / "data"
+    / "continuityworks_biomes"
+    / "worldgen"
+    / "biome"
+)
 DIST = HERE / "dist"
 EXPECTED_NAME = f"ContinuityWorks-Forge-1.20.1-{VERSION}.jar"
 OUTPUT = DIST / EXPECTED_NAME
@@ -66,6 +78,35 @@ def load_vanilla_placed_features() -> set[str]:
     if not isinstance(values, list) or not values or not all(isinstance(value, str) for value in values):
         raise SystemExit("Placed-feature registry snapshot has no valid values list")
     return {f"minecraft:{value}" for value in values}
+
+
+def expected_biome_counts() -> tuple[int, int, int]:
+    require(ANTHOLOGY_CATALOG, "anthology biome catalog")
+    require(STATIC_BIOME_DIR, "static biome definition directory")
+
+    catalog = json.loads(ANTHOLOGY_CATALOG.read_text(encoding="utf-8"))
+    families = catalog.get("families")
+    if not isinstance(families, dict) or not families:
+        raise SystemExit("Anthology biome catalog has no families mapping")
+
+    anthology_ids: list[str] = []
+    for family, ids in families.items():
+        if not isinstance(ids, list) or not all(isinstance(value, str) for value in ids):
+            raise SystemExit(f"Anthology family {family!r} has an invalid biome list")
+        anthology_ids.extend(ids)
+    if len(anthology_ids) != len(set(anthology_ids)):
+        raise SystemExit("Anthology biome catalog contains duplicate biome IDs")
+
+    static_ids = {path.stem for path in STATIC_BIOME_DIR.glob("*.json")}
+    overlap = sorted(set(anthology_ids) & static_ids)
+    if overlap:
+        raise SystemExit(
+            "Anthology and static biome definitions collide: " + ", ".join(overlap)
+        )
+
+    anthology_count = len(anthology_ids)
+    static_count = len(static_ids)
+    return anthology_count, static_count, anthology_count + static_count
 
 
 def iter_feature_ids(value: object):
@@ -114,6 +155,7 @@ def validate_jar(path: Path) -> dict[str, int]:
         raise SystemExit(f"Not a readable JAR/ZIP archive: {path}")
 
     vanilla_placed_features = load_vanilla_placed_features()
+    anthology_count, static_count, expected_biome_count = expected_biome_counts()
 
     with zipfile.ZipFile(path) as archive:
         names = set(archive.namelist())
@@ -140,9 +182,11 @@ def validate_jar(path: Path) -> dict[str, int]:
             if name.startswith("data/continuityworks_biomes/worldgen/biome/")
             and name.endswith(".json")
         ]
-        if len(biome_defs) < 128:
+        if len(biome_defs) != expected_biome_count:
             raise SystemExit(
-                f"Expected at least 128 generated Continuity Works biome definitions; found {len(biome_defs)}"
+                "Unexpected generated Continuity Works biome definition count: "
+                f"expected {expected_biome_count} "
+                f"({anthology_count} anthology + {static_count} static), found {len(biome_defs)}"
             )
 
         feature_reference_count = 0
@@ -196,6 +240,8 @@ def validate_jar(path: Path) -> dict[str, int]:
 
         return {
             "entries": len(names),
+            "anthology_biomes": anthology_count,
+            "static_biomes": static_count,
             "biome_definitions": len(biome_defs),
             "feature_references": feature_reference_count,
             "spawn_protection_mixin_classes": len(mixin_classes),
@@ -218,6 +264,8 @@ def main() -> int:
     require(PROJECT / "build.gradle", "unified Forge build file")
     require(PROJECT / "src/main/resources/META-INF/mods.toml", "unified mods.toml")
     require(VANILLA_PLACED_FEATURE_REGISTRY, "Minecraft 1.20.1 placed-feature registry snapshot")
+    require(ANTHOLOGY_CATALOG, "anthology biome catalog")
+    require(STATIC_BIOME_DIR, "static biome definition directory")
 
     if not args.skip_build:
         run_build()
