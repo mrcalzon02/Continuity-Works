@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import json
 import os
 from pathlib import Path
 import shutil
@@ -25,6 +26,9 @@ PROJECT = REPO_ROOT / "modules" / "continuityworks_runtime" / "forge-1.20.1"
 DIST = HERE / "dist"
 EXPECTED_NAME = f"ContinuityWorks-Forge-1.20.1-{VERSION}.jar"
 OUTPUT = DIST / EXPECTED_NAME
+VANILLA_PLACED_FEATURE_REGISTRY = (
+    REPO_ROOT / "tools" / "registries" / "minecraft-1.20.1-placed-features.json"
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -48,6 +52,28 @@ def sha256(path: Path) -> str:
 def require(path: Path, label: str) -> None:
     if not path.exists():
         raise SystemExit(f"Missing {label}: {path}")
+
+
+def load_vanilla_placed_features() -> set[str]:
+    require(VANILLA_PLACED_FEATURE_REGISTRY, "Minecraft 1.20.1 placed-feature registry snapshot")
+    payload = json.loads(VANILLA_PLACED_FEATURE_REGISTRY.read_text(encoding="utf-8"))
+    if payload.get("minecraft_version") != "1.20.1":
+        raise SystemExit(
+            "Placed-feature registry snapshot targets the wrong Minecraft version: "
+            f"{payload.get('minecraft_version')!r}"
+        )
+    values = payload.get("values")
+    if not isinstance(values, list) or not values or not all(isinstance(value, str) for value in values):
+        raise SystemExit("Placed-feature registry snapshot has no valid values list")
+    return {f"minecraft:{value}" for value in values}
+
+
+def iter_feature_ids(value: object):
+    if isinstance(value, str):
+        yield value
+    elif isinstance(value, list):
+        for child in value:
+            yield from iter_feature_ids(child)
 
 
 def gradle_command() -> list[str]:
@@ -87,6 +113,8 @@ def validate_jar(path: Path) -> dict[str, int]:
     if not zipfile.is_zipfile(path):
         raise SystemExit(f"Not a readable JAR/ZIP archive: {path}")
 
+    vanilla_placed_features = load_vanilla_placed_features()
+
     with zipfile.ZipFile(path) as archive:
         names = set(archive.namelist())
         required = {
@@ -117,6 +145,40 @@ def validate_jar(path: Path) -> dict[str, int]:
                 f"Expected at least 128 generated Continuity Works biome definitions; found {len(biome_defs)}"
             )
 
+        feature_reference_count = 0
+        unresolved_vanilla_features: dict[str, list[str]] = {}
+        for biome_name in sorted(biome_defs):
+            try:
+                biome = json.loads(archive.read(biome_name).decode("utf-8", errors="strict"))
+            except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+                raise SystemExit(f"Unreadable generated biome JSON {biome_name}: {exc}") from exc
+
+            feature_ids = list(iter_feature_ids(biome.get("features", [])))
+            feature_reference_count += len(feature_ids)
+            unresolved = sorted(
+                {
+                    feature_id
+                    for feature_id in feature_ids
+                    if feature_id.startswith("minecraft:")
+                    and feature_id not in vanilla_placed_features
+                }
+            )
+            if unresolved:
+                unresolved_vanilla_features[biome_name] = unresolved
+
+        if unresolved_vanilla_features:
+            details = "; ".join(
+                f"{name}: {', '.join(ids)}"
+                for name, ids in list(unresolved_vanilla_features.items())[:12]
+            )
+            extra = len(unresolved_vanilla_features) - 12
+            if extra > 0:
+                details += f"; ... and {extra} more biome files"
+            raise SystemExit(
+                "Generated biome data references Minecraft 1.20.1 placed features "
+                f"that do not exist in the pinned vanilla registry: {details}"
+            )
+
         mixin_classes = [
             name
             for name in names
@@ -135,6 +197,7 @@ def validate_jar(path: Path) -> dict[str, int]:
         return {
             "entries": len(names),
             "biome_definitions": len(biome_defs),
+            "feature_references": feature_reference_count,
             "spawn_protection_mixin_classes": len(mixin_classes),
             "materialized_nbt_structures": 2,
         }
@@ -154,6 +217,7 @@ def main() -> int:
     require(PROJECT, "unified Forge project")
     require(PROJECT / "build.gradle", "unified Forge build file")
     require(PROJECT / "src/main/resources/META-INF/mods.toml", "unified mods.toml")
+    require(VANILLA_PLACED_FEATURE_REGISTRY, "Minecraft 1.20.1 placed-feature registry snapshot")
 
     if not args.skip_build:
         run_build()
