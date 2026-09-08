@@ -40,6 +40,18 @@ STATIC_BIOME_DIR = (
 DIST = HERE / "dist"
 EXPECTED_NAME = f"ContinuityWorks-Forge-1.20.1-{VERSION}.jar"
 OUTPUT = DIST / EXPECTED_NAME
+MAX_RELEASE_BYTES = 1024 * 1024 * 1024
+FORBIDDEN_INFERENCE_TOKENS = (
+    "onnxruntime",
+    "tensorflow",
+    "pytorch",
+    "safetensors",
+    ".gguf",
+    ".onnx",
+    ".tflite",
+    ".pth",
+    ".pt",
+)
 VANILLA_PLACED_FEATURE_REGISTRY = (
     REPO_ROOT / "tools" / "registries" / "minecraft-1.20.1-placed-features.json"
 )
@@ -153,6 +165,11 @@ def select_jar() -> Path:
 
 
 def validate_jar(path: Path) -> dict[str, int]:
+    if path.stat().st_size >= MAX_RELEASE_BYTES:
+        raise SystemExit(
+            "Continuity Works unified JAR violates the lightweight distribution ceiling: "
+            f"{path.stat().st_size} bytes >= {MAX_RELEASE_BYTES} bytes"
+        )
     if not zipfile.is_zipfile(path):
         raise SystemExit(f"Not a readable JAR/ZIP archive: {path}")
 
@@ -172,6 +189,9 @@ def validate_jar(path: Path) -> dict[str, int]:
             "io/continuityworks/api/blueprint/BlueprintSpecification.class",
             "io/continuityworks/blueprint/runtime/ContinuityWorksBlueprintMod.class",
             "io/continuityworks/blueprint/runtime/DeterministicBlueprintApi.class",
+            "io/continuityworks/blueprint/runtime/ResourceBudgetedBlueprintApi.class",
+            "io/continuityworks/blueprint/runtime/FacilityCorpusPlanner.class",
+            "io/continuityworks/blueprint/runtime/FacilityCorpusVocabulary.class",
             "continuityworks/facility_library/manifest.json",
             "data/continuityworks_biomes/structures/abyssal/fracture_vent_field.nbt",
             "data/continuityworks_biomes/structures/abyssal/hadal_vent_complex.nbt",
@@ -179,6 +199,16 @@ def validate_jar(path: Path) -> dict[str, int]:
         missing = sorted(required - names)
         if missing:
             raise SystemExit("Unified JAR is missing required entries: " + ", ".join(missing))
+
+        forbidden_payloads = sorted(
+            name for name in names
+            if any(token in name.lower() for token in FORBIDDEN_INFERENCE_TOKENS)
+        )
+        if forbidden_payloads:
+            raise SystemExit(
+                "Continuity Works blueprint runtime must not bundle model weights or inference runtimes: "
+                + ", ".join(forbidden_payloads[:20])
+            )
 
         mods_toml = archive.read("META-INF/mods.toml").decode("utf-8", errors="strict")
         for mod_id in (
@@ -277,6 +307,7 @@ def validate_jar(path: Path) -> dict[str, int]:
 
         return {
             "entries": len(names),
+            "jar_bytes": path.stat().st_size,
             "anthology_biomes": anthology_count,
             "static_biomes": static_count,
             "biome_definitions": len(biome_defs),
@@ -284,6 +315,7 @@ def validate_jar(path: Path) -> dict[str, int]:
             "spawn_protection_mixin_classes": len(mixin_classes),
             "blueprint_api_classes": len(blueprint_api_classes),
             "facility_library_json": len(facility_library_json),
+            "forbidden_inference_payloads": len(forbidden_payloads),
             "materialized_nbt_structures": 2,
         }
 
