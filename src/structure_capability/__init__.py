@@ -86,6 +86,10 @@ from .early_human_marrow_processing import (
     MarrowProcessingGroundGenerationError,
     MarrowProcessingGroundGenerator,
 )
+from .early_human_watering_hole import (
+    WateringHoleCampGenerationError,
+    WateringHoleCampGenerator,
+)
 
 __all__ = [
     "StructureCapability", "RebuildGrade", "AccessClearance",
@@ -113,4 +117,5 @@ __all__ = [
     "LargeCarcassProcessingSiteGenerationError", "LargeCarcassProcessingSiteGenerator",
     "BoneBreakingStationGenerationError", "BoneBreakingStationGenerator",
     "MarrowProcessingGroundGenerationError", "MarrowProcessingGroundGenerator",
+    "WateringHoleCampGenerationError", "WateringHoleCampGenerator",
 ]
