@@ -160,7 +160,7 @@ function AuditImageStrip({ images }) {
                     <span>${slot}</span>
                     <small>optional client-rendered frame</small>
                   </div>
-                `
+                `}
               <figcaption>${image?.label || slot}</figcaption>
             </figure>
           `;
