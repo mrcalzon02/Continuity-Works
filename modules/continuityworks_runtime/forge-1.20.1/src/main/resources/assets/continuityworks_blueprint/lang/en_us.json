@@ -1,5 +1,6 @@
 {
   "item.continuityworks_blueprint.build_area_selector": "Continuity Works Build Area Selector",
   "key.continuityworks_blueprint.toggle_selection_highlight": "Toggle Build Area Highlight",
+  "key.continuityworks_blueprint.open_selection_editor": "Edit Selected Build Area",
   "key.categories.continuityworks_blueprint": "Continuity Works"
 }
