@@ -7,11 +7,8 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Low-overhead public provider wrapper.
- *
- * Continuity Works deliberately contains no neural inference runtime. This class
- * bounds request fan-out, input cardinality and retained results so Minecraft
- * remains the dominant memory consumer.
+ * Low-overhead public provider. Continuity Works deliberately contains no neural
+ * inference runtime; semantic inference stays with the optional consuming mod.
  */
 public final class ResourceBudgetedBlueprintApi implements ContinuityWorksBlueprintApi {
     public static final int MAX_ACTIVE_REQUESTS = 3;
@@ -20,29 +17,44 @@ public final class ResourceBudgetedBlueprintApi implements ContinuityWorksBluepr
     public static final int MAX_AVAILABLE_MATERIAL_ROWS = 512;
     public static final int MAX_SITE_CANDIDATES = 32;
     public static final int MAX_PERMITTED_STYLES = 32;
-    public static final int MAX_RECENT_MANIFESTS = 16;
+    public static final int MAX_CORPUS_CANDIDATES = FacilityCorpusPlanner.MAX_CANDIDATES;
+    public static final int MAX_CORPUS_OPERATIONS = FacilityCorpusPlanner.MAX_OPERATIONS;
 
-    private final DeterministicBlueprintApi delegate = new DeterministicBlueprintApi();
+    private final DeterministicBlueprintApi fallback = new DeterministicBlueprintApi();
+    private final FacilityCorpusPlanner corpus = new FacilityCorpusPlanner();
+    private final ThreadPoolExecutor plannerExecutor = new ThreadPoolExecutor(
+        1, 1, 0L, TimeUnit.MILLISECONDS,
+        new ArrayBlockingQueue<>(MAX_ACTIVE_REQUESTS - 1),
+        runnable -> {
+            Thread thread = new Thread(runnable, "continuityworks-blueprint-budgeted");
+            thread.setDaemon(true);
+            thread.setPriority(Thread.NORM_PRIORITY - 1);
+            return thread;
+        },
+        new ThreadPoolExecutor.AbortPolicy()
+    );
     private final Semaphore globalRequestPermits = new Semaphore(MAX_ACTIVE_REQUESTS, true);
     private final ConcurrentMap<UUID, CompletableFuture<BlueprintProposal>> activeRequests = new ConcurrentHashMap<>();
-    private final Map<UUID, MaterialManifest> recentManifests = Collections.synchronizedMap(
-        new LinkedHashMap<>(MAX_RECENT_MANIFESTS + 1, 0.75f, true) {
-            @Override
-            protected boolean removeEldestEntry(Map.Entry<UUID, MaterialManifest> eldest) {
-                return size() > MAX_RECENT_MANIFESTS;
-            }
-        }
-    );
+    private final ConcurrentMap<UUID, UUID> activeByCompanion = new ConcurrentHashMap<>();
+    private final ConcurrentMap<UUID, MaterialManifest> manifests = new ConcurrentHashMap<>();
     private final AtomicInteger completedRequests = new AtomicInteger();
 
     @Override
     public BlueprintApiVersion apiVersion() {
-        return delegate.apiVersion();
+        return fallback.apiVersion();
     }
 
     @Override
     public BlueprintVocabulary vocabulary() {
-        return delegate.vocabulary();
+        BlueprintVocabulary base = fallback.vocabulary();
+        List<SpecificationDescriptor> specs = new ArrayList<>(base.specifications());
+        specs.add(new SpecificationDescriptor("REFERENCE", Set.of(), true, "",
+            "Optional exact bundled Continuity Works facility reference id or slug."));
+        specs.add(new SpecificationDescriptor("ARCHETYPE", Set.of(), true, "",
+            "Optional bundled Continuity Works facility archetype id or slug."));
+        specs.add(new SpecificationDescriptor("CATEGORY", Set.of(), true, "",
+            "Optional bundled facility category such as fuel_petroleum or aerospace_orbital."));
+        return new BlueprintVocabulary("2", specs);
     }
 
     @Override
@@ -52,22 +64,29 @@ public final class ResourceBudgetedBlueprintApi implements ContinuityWorksBluepr
 
         if (completedRequests.get() >= MAX_COMPLETED_REQUESTS_PER_RUNTIME) {
             return CompletableFuture.failedFuture(new RejectedExecutionException(
-                "Continuity Works blueprint session budget reached "
-                    + MAX_COMPLETED_REQUESTS_PER_RUNTIME
-                    + " completed requests; restart the runtime before generating additional blueprints."
-            ));
+                "Continuity Works blueprint session budget reached " + MAX_COMPLETED_REQUESTS_PER_RUNTIME
+                    + " completed requests; restart the runtime before generating additional blueprints."));
         }
         if (!globalRequestPermits.tryAcquire()) {
             return CompletableFuture.failedFuture(new RejectedExecutionException(
-                "Continuity Works lightweight blueprint budget is saturated; at most "
-                    + MAX_ACTIVE_REQUESTS + " requests may be active or queued."
-            ));
+                "Continuity Works blueprint budget is saturated; at most " + MAX_ACTIVE_REQUESTS
+                    + " requests may be active or queued."));
+        }
+        UUID prior = activeByCompanion.putIfAbsent(request.companionUuid(), request.requestId());
+        if (prior != null) {
+            globalRequestPermits.release();
+            return CompletableFuture.failedFuture(new IllegalStateException(
+                "Companion already has active blueprint request " + prior));
         }
 
         final CompletableFuture<BlueprintProposal> future;
         try {
-            future = delegate.generate(request);
-        } catch (Throwable error) {
+            future = CompletableFuture.supplyAsync(
+                () -> corpus.plan(request).orElseGet(() -> fallback.generate(request).join()),
+                plannerExecutor
+            );
+        } catch (RejectedExecutionException error) {
+            activeByCompanion.remove(request.companionUuid(), request.requestId());
             globalRequestPermits.release();
             return CompletableFuture.failedFuture(error);
         }
@@ -75,8 +94,10 @@ public final class ResourceBudgetedBlueprintApi implements ContinuityWorksBluepr
         activeRequests.put(request.requestId(), future);
         future.whenComplete((proposal, error) -> {
             activeRequests.remove(request.requestId(), future);
+            activeByCompanion.remove(request.companionUuid(), request.requestId());
+            if (future.isCancelled()) fallback.cancel(request.requestId());
             if (proposal != null) {
-                recentManifests.put(proposal.blueprintId(), proposal.materials());
+                manifests.put(proposal.blueprintId(), proposal.materials());
                 completedRequests.incrementAndGet();
             }
             globalRequestPermits.release();
@@ -86,15 +107,15 @@ public final class ResourceBudgetedBlueprintApi implements ContinuityWorksBluepr
 
     @Override
     public ValidationResult validate(BlueprintProposal proposal, BlueprintContext context) {
-        return delegate.validate(proposal, context);
+        return fallback.validate(proposal, context);
     }
 
     @Override
     public MaterialManifest getMaterials(UUID blueprintId) {
         Objects.requireNonNull(blueprintId, "blueprintId");
-        MaterialManifest recent = recentManifests.get(blueprintId);
-        if (recent != null) return recent;
-        return delegate.getMaterials(blueprintId);
+        MaterialManifest manifest = manifests.get(blueprintId);
+        if (manifest != null) return manifest;
+        return fallback.getMaterials(blueprintId);
     }
 
     @Override
@@ -102,43 +123,39 @@ public final class ResourceBudgetedBlueprintApi implements ContinuityWorksBluepr
         Objects.requireNonNull(requestId, "requestId");
         CompletableFuture<BlueprintProposal> future = activeRequests.get(requestId);
         if (future != null) future.cancel(true);
-        delegate.cancel(requestId);
+        fallback.cancel(requestId);
     }
 
     public RuntimeBudgetSnapshot budgetSnapshot() {
         return new RuntimeBudgetSnapshot(
             MAX_ACTIVE_REQUESTS,
             globalRequestPermits.availablePermits(),
-            recentManifests.size(),
+            plannerExecutor.getQueue().size(),
             completedRequests.get(),
-            MAX_COMPLETED_REQUESTS_PER_RUNTIME
+            manifests.size(),
+            MAX_CORPUS_CANDIDATES,
+            MAX_CORPUS_OPERATIONS
         );
     }
 
     private static void validateInputBudget(BlueprintRequest request) {
-        if (request.specifications().size() > MAX_SPECIFICATIONS) {
-            throw new IllegalArgumentException("Too many blueprint specifications: " + request.specifications().size()
-                + " > " + MAX_SPECIFICATIONS);
-        }
-        if (request.availableMaterials().size() > MAX_AVAILABLE_MATERIAL_ROWS) {
-            throw new IllegalArgumentException("Too many material availability rows: " + request.availableMaterials().size()
-                + " > " + MAX_AVAILABLE_MATERIAL_ROWS);
-        }
-        if (request.candidateSites().size() > MAX_SITE_CANDIDATES) {
-            throw new IllegalArgumentException("Too many site candidates: " + request.candidateSites().size()
-                + " > " + MAX_SITE_CANDIDATES);
-        }
-        if (request.permittedStyles().size() > MAX_PERMITTED_STYLES) {
-            throw new IllegalArgumentException("Too many permitted styles: " + request.permittedStyles().size()
-                + " > " + MAX_PERMITTED_STYLES);
-        }
+        if (request.specifications().size() > MAX_SPECIFICATIONS)
+            throw new IllegalArgumentException("Too many blueprint specifications: " + request.specifications().size());
+        if (request.availableMaterials().size() > MAX_AVAILABLE_MATERIAL_ROWS)
+            throw new IllegalArgumentException("Too many material availability rows: " + request.availableMaterials().size());
+        if (request.candidateSites().size() > MAX_SITE_CANDIDATES)
+            throw new IllegalArgumentException("Too many site candidates: " + request.candidateSites().size());
+        if (request.permittedStyles().size() > MAX_PERMITTED_STYLES)
+            throw new IllegalArgumentException("Too many permitted styles: " + request.permittedStyles().size());
     }
 
     public record RuntimeBudgetSnapshot(
         int maxActiveRequests,
         int availableRequestPermits,
-        int recentManifestCount,
+        int queuedRequests,
         int completedRequestCount,
-        int maxCompletedRequestsPerRuntime
+        int retainedManifestCount,
+        int maxCorpusCandidates,
+        int maxCorpusOperations
     ) {}
 }

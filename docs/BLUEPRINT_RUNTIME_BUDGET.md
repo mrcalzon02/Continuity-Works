@@ -6,24 +6,18 @@ The in-game blueprint builder is deliberately deterministic and lightweight. Con
 
 The architectural target is comfortably below a 1 GiB Continuity Works overhead inside the Minecraft JVM, with normal blueprint-planning overhead expected to be far smaller. Exact heap impact must be measured in a Forge runtime before making a numerical runtime claim.
 
-The current provider enforces:
+The provider enforces at most 3 active or queued requests, 4,096 completed generations in one runtime session, 32 semantic specifications, 32 site candidates, 512 material rows, and 32 permitted styles per request. Corpus planning examines at most 8 candidate references and refuses to expand more than 131,072 placement operations for one proposal.
 
-- at most 3 active or queued blueprint requests globally;
-- at most 4,096 completed blueprint generations in one runtime session;
-- at most 32 semantic specifications per request;
-- at most 32 site candidates per request;
-- at most 512 material-availability rows per request;
-- at most 32 permitted style identifiers per request;
-- only 16 recent material manifests retained by the budgeted provider.
+## Lazy pre-solved corpus
 
-The current deterministic planner already uses one daemon planning worker and hard spatial caps. The budgeted provider sits in front of it so untrusted or tiny-model callers cannot create unbounded request fan-out or giant semantic input lists.
+The budgeted provider first attempts a deterministic pre-solved match against the bundled facility library. `REFERENCE`, `ARCHETYPE`, and `CATEGORY` are open semantic selectors so small inference engines can request known construction families without learning raw block geometry. The manifest index is loaded once; the runtime opens at most eight candidate reference JSON files and then loads only the selected corporate palette. It does not hydrate the full corpus, create embeddings, or add a model runtime.
 
-## Pre-solved-first direction
+Fixed references support the existing `block`, `fill_box`, `hollow_box`, `line`, and `cylinder` blueprint primitives, are rotated to the requested facing, must fit the caller's hard `ConstructionVolume`, and compile into the same `BlueprintProposal` contract. If no suitable pre-solved reference exists, Continuity Works falls back to the existing bounded procedural planner.
 
-The next planner layer should resolve purpose, `REFERENCE`, `ARCHETYPE`, or `CATEGORY` against the bundled facility corpus and load only the small manifest plus the selected reference/palette. It must not hydrate the whole architectural corpus, create embeddings, or add a model runtime. Fixed corpus references should be compiled directly into the same `BlueprintProposal` contract and fall back to the existing bounded procedural kernel when no pre-solved reference fits.
+Geometry-changing fields such as `STYLE`, `ROOF`, `FLOORS`, and `ENTRANCE` normally route to the procedural fallback rather than pretending a fixed corpus reference can mutate itself. Required unsupported fields remain visible through the specification-resolution/warning contract.
 
 ## Memory discipline
 
-Blueprint block lists are request products, not permanent world memory. The consumer should retain the blueprint UUID, objective, location, progress, and modifications rather than duplicating the full operation list in companion memory. World scans stay on the Minecraft server thread; deterministic planning runs away from that thread against immutable request/snapshot data.
+Blueprint block lists are request products, not permanent companion memory. The consumer should retain the blueprint UUID, objective, location, progress, and modifications rather than duplicate the full operation list. World scans stay on the Minecraft server thread; planning runs on a single low-priority daemon worker against immutable request/snapshot data.
 
-The sub-1 GiB requirement is a hard architectural ceiling, not permission to consume close to 1 GiB. Any future feature that introduces model weights, bulk corpus hydration, unbounded queues/caches, or unconstrained operation expansion violates this runtime contract.
+The sub-1 GiB requirement is a hard architectural ceiling, not permission to consume close to 1 GiB. Future model weights, bulk corpus hydration, unbounded queues/caches, or unconstrained operation expansion violate this runtime contract.
