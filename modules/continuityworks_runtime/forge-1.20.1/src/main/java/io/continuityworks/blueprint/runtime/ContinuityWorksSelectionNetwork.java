@@ -8,7 +8,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 final class ContinuityWorksSelectionNetwork {
-    private static final String PROTOCOL = "1";
+    private static final String PROTOCOL = "2";
     private static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(
         new ResourceLocation(ContinuityWorksBlueprintMod.MOD_ID, "selection"),
         () -> PROTOCOL,
@@ -26,6 +26,11 @@ final class ContinuityWorksSelectionNetwork {
             .decoder(SelectionSyncPacket::decode)
             .consumerMainThread(SelectionSyncPacket::handle)
             .add();
+        CHANNEL.messageBuilder(SelectionAdjustPacket.class, 1, NetworkDirection.PLAY_TO_SERVER)
+            .encoder(SelectionAdjustPacket::encode)
+            .decoder(SelectionAdjustPacket::decode)
+            .consumerMainThread(SelectionAdjustPacket::handle)
+            .add();
         registered = true;
     }
 
@@ -34,5 +39,9 @@ final class ContinuityWorksSelectionNetwork {
             .map(SelectionSyncPacket::from)
             .orElseGet(SelectionSyncPacket::empty);
         CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), packet);
+    }
+
+    static void requestAdjustment(SelectionFace face, int outwardDelta) {
+        CHANNEL.sendToServer(new SelectionAdjustPacket(face, outwardDelta));
     }
 }
