@@ -31,7 +31,7 @@ public final class CompactBlueprintMaterializer {
 
     private static boolean emit(CompactBlueprintPrimitive primitive, CompactPlacementSink sink, Counter counter) {
         return switch (primitive.kind()) {
-            case BLOCK -> one(primitive.from(), primitive.paletteKey(), sink, counter);
+            case BLOCK -> one(primitive.from(), primitive.paletteKey(), primitive.operationKind(), sink, counter);
             case LINE -> line(primitive, sink, counter);
             case FILL_BOX -> box(primitive, false, sink, counter);
             case HOLLOW_BOX -> box(primitive, true, sink, counter);
@@ -39,9 +39,9 @@ public final class CompactBlueprintMaterializer {
         };
     }
 
-    private static boolean one(BlockPosition position, String paletteKey, CompactPlacementSink sink, Counter counter) {
+    private static boolean one(BlockPosition position, String paletteKey, PlacementOperation.Kind currentKind, CompactPlacementSink sink, Counter counter) {
         if (counter.value > Integer.MAX_VALUE) throw new IllegalArgumentException("Placement sequence exceeds integer range");
-        boolean keepGoing = sink.accept((int)counter.value, PlacementOperation.Kind.PLACE, position, paletteKey);
+        boolean keepGoing = sink.accept((int)counter.value, currentKind, position, paletteKey);
         counter.value++;
         return keepGoing;
     }
@@ -50,7 +50,7 @@ public final class CompactBlueprintMaterializer {
         BlockPosition a = p.from(), b = p.to();
         for (int x = a.x(); x <= b.x(); x++) for (int y = a.y(); y <= b.y(); y++) for (int z = a.z(); z <= b.z(); z++) {
             if (hollow && x != a.x() && x != b.x() && y != a.y() && y != b.y() && z != a.z() && z != b.z()) continue;
-            if (!one(new BlockPosition(x, y, z), p.paletteKey(), sink, counter)) return false;
+            if (!one(new BlockPosition(x, y, z), p.paletteKey(), p.operationKind(), sink, counter)) return false;
         }
         return true;
     }
@@ -59,7 +59,7 @@ public final class CompactBlueprintMaterializer {
         BlockPosition a = p.from(), b = p.to();
         int dx = b.x() - a.x(), dy = b.y() - a.y(), dz = b.z() - a.z();
         int n = Math.max(Math.abs(dx), Math.max(Math.abs(dy), Math.abs(dz)));
-        if (n == 0) return one(a, p.paletteKey(), sink, counter);
+        if (n == 0) return one(a, p.paletteKey(), p.operationKind(), sink, counter);
         for (int i = 0; i <= n; i++) {
             double t = (double)i / n;
             BlockPosition pos = new BlockPosition(
@@ -67,7 +67,7 @@ public final class CompactBlueprintMaterializer {
                 (int)Math.round(a.y() + dy * t),
                 (int)Math.round(a.z() + dz * t)
             );
-            if (!one(pos, p.paletteKey(), sink, counter)) return false;
+            if (!one(pos, p.paletteKey(), p.operationKind(), sink, counter)) return false;
         }
         return true;
     }
@@ -82,7 +82,7 @@ public final class CompactBlueprintMaterializer {
                 || outside(x, z + 1, cx, cz, r) || outside(x, z - 1, cx, cz, r);
             for (int y = y0; y <= y1; y++) {
                 if (!p.solid() && !edge && !(p.caps() && (y == y0 || y == y1))) continue;
-                if (!one(new BlockPosition(x, y, z), p.paletteKey(), sink, counter)) return false;
+                if (!one(new BlockPosition(x, y, z), p.paletteKey(), p.operationKind(), sink, counter)) return false;
             }
         }
         return true;
