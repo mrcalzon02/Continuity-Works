@@ -6,6 +6,7 @@ import java.util.Objects;
 public record CompactBlueprintPrimitive(
     int sequence,
     Kind kind,
+    PlacementOperation.Kind operationKind,
     BlockPosition from,
     BlockPosition to,
     int radius,
@@ -21,10 +22,15 @@ public record CompactBlueprintPrimitive(
     public CompactBlueprintPrimitive {
         if (sequence < 0) throw new IllegalArgumentException("sequence must be non-negative");
         Objects.requireNonNull(kind, "kind");
+        Objects.requireNonNull(operationKind, "operationKind");
         Objects.requireNonNull(from, "from");
         Objects.requireNonNull(to, "to");
-        Objects.requireNonNull(paletteKey, "paletteKey");
-        if (paletteKey.isBlank()) throw new IllegalArgumentException("paletteKey must not be blank");
+        if (operationKind == PlacementOperation.Kind.CLEAR) {
+            paletteKey = null;
+        } else {
+            Objects.requireNonNull(paletteKey, "paletteKey");
+            if (paletteKey.isBlank()) throw new IllegalArgumentException("paletteKey must not be blank");
+        }
         if ((flags & ~KNOWN_FLAGS) != 0) throw new IllegalArgumentException("unknown primitive flags: " + flags);
 
         switch (kind) {
@@ -49,19 +55,19 @@ public record CompactBlueprintPrimitive(
     }
 
     public static CompactBlueprintPrimitive block(int sequence, BlockPosition position, String paletteKey) {
-        return new CompactBlueprintPrimitive(sequence, Kind.BLOCK, position, position, 0, 0, paletteKey);
+        return new CompactBlueprintPrimitive(sequence, Kind.BLOCK, PlacementOperation.Kind.PLACE, position, position, 0, 0, paletteKey);
     }
 
     public static CompactBlueprintPrimitive line(int sequence, BlockPosition from, BlockPosition to, String paletteKey) {
-        return new CompactBlueprintPrimitive(sequence, Kind.LINE, from, to, 0, 0, paletteKey);
+        return new CompactBlueprintPrimitive(sequence, Kind.LINE, PlacementOperation.Kind.PLACE, from, to, 0, 0, paletteKey);
     }
 
     public static CompactBlueprintPrimitive fillBox(int sequence, BlockPosition min, BlockPosition max, String paletteKey) {
-        return new CompactBlueprintPrimitive(sequence, Kind.FILL_BOX, min, max, 0, 0, paletteKey);
+        return new CompactBlueprintPrimitive(sequence, Kind.FILL_BOX, PlacementOperation.Kind.PLACE, min, max, 0, 0, paletteKey);
     }
 
     public static CompactBlueprintPrimitive hollowBox(int sequence, BlockPosition min, BlockPosition max, String paletteKey) {
-        return new CompactBlueprintPrimitive(sequence, Kind.HOLLOW_BOX, min, max, 0, 0, paletteKey);
+        return new CompactBlueprintPrimitive(sequence, Kind.HOLLOW_BOX, PlacementOperation.Kind.PLACE, min, max, 0, 0, paletteKey);
     }
 
     public static CompactBlueprintPrimitive cylinder(
@@ -74,7 +80,7 @@ public record CompactBlueprintPrimitive(
         String paletteKey
     ) {
         int primitiveFlags = (solid ? FLAG_SOLID : 0) | (caps ? FLAG_CAPS : 0);
-        return new CompactBlueprintPrimitive(sequence, Kind.CYLINDER, centerMinY, centerMaxY, radius, primitiveFlags, paletteKey);
+        return new CompactBlueprintPrimitive(sequence, Kind.CYLINDER, PlacementOperation.Kind.PLACE, centerMinY, centerMaxY, radius, primitiveFlags, paletteKey);
     }
 
     public boolean solid() { return (flags & FLAG_SOLID) != 0; }
