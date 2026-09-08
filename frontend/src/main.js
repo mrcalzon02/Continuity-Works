@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { Dashboard } from './components/Dashboard.js';
 import { ManualCapabilityWorkbench } from './components/ManualCapabilityWorkbench.js';
 
-class StructureForgeErrorBoundary extends React.Component {
+class ContinuityWorksErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = { error: null };
@@ -14,7 +14,7 @@ class StructureForgeErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, info) {
-    console.error('StructureForge frontend error:', error, info);
+    console.error('Continuity Works frontend error:', error, info);
   }
 
   render() {
@@ -29,11 +29,11 @@ class StructureForgeErrorBoundary extends React.Component {
         React.createElement(
           'div',
           { className: 'brand-lockup' },
-          React.createElement('div', { className: 'brand-mark', 'aria-hidden': 'true' }, 'SF'),
+          React.createElement('div', { className: 'brand-mark', 'aria-hidden': 'true' }, 'CW'),
           React.createElement(
             'div',
             null,
-            React.createElement('h1', null, 'StructureForge'),
+            React.createElement('h1', null, 'Continuity Works'),
             React.createElement('p', null, 'The interface hit a recoverable frontend rendering error.'),
           ),
         ),
@@ -48,7 +48,7 @@ class StructureForgeErrorBoundary extends React.Component {
             'div',
             { className: 'panel-heading' },
             React.createElement('span', { className: 'eyebrow' }, 'Frontend diagnostic'),
-            React.createElement('h2', null, 'StructureForge did not initialize completely'),
+            React.createElement('h2', null, 'Continuity Works did not initialize completely'),
             React.createElement(
               'p',
               null,
@@ -63,14 +63,14 @@ class StructureForgeErrorBoundary extends React.Component {
 }
 
 const rootElement = document.getElementById('root');
-if (!rootElement) throw new Error('StructureForge root element is missing.');
+if (!rootElement) throw new Error('Continuity Works root element is missing.');
 
 createRoot(rootElement).render(
   React.createElement(
     React.StrictMode,
     null,
     React.createElement(
-      StructureForgeErrorBoundary,
+      ContinuityWorksErrorBoundary,
       null,
       React.createElement(
         React.Fragment,
