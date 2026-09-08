@@ -29,7 +29,7 @@ public final class ContinuityWorksBlueprintMod {
         modBus.addListener(this::buildCreativeContents);
         ContinuityWorksSelectionNetwork.register();
         ContinuityWorksBlueprintServices.install(new ResourceBudgetedBlueprintApi());
-        ContinuityWorksCompactBlueprintServices.install(new CompactBlueprintProvider());
+        ContinuityWorksCompactBlueprintServices.install(new CorpusAwareCompactBlueprintProvider());
         ContinuityWorksSelectionServices.install(ContinuityWorksSelectionStore.INSTANCE);
     }
 
