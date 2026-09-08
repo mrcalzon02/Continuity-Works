@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.3",
+  "name": "Continuity Works",
+  "slug": "continuity-works",
+  "description": "Zero-JavaScript discovery for the executable Continuity Works API. GitHub Pages is the static frontend only.",
+  "frontend": "https://mrcalzon02.github.io/Continuity-Works/",
+  "api": "https://continuity-works-mrcalzon02-api.onrender.com",
+  "health": "https://continuity-works-mrcalzon02-api.onrender.com/v1/health",
+  "capabilities": "https://continuity-works-mrcalzon02-api.onrender.com/v1/capabilities",
+  "tools": "https://continuity-works-mrcalzon02-api.onrender.com/v1/tools",
+  "openapi": "https://continuity-works-mrcalzon02-api.onrender.com/openapi.json",
+  "discovery": "https://continuity-works-mrcalzon02-api.onrender.com/.well-known/continuity-works.json",
+  "serviceability": "https://continuity-works-mrcalzon02-api.onrender.com/v1/serviceability",
+  "llms": "https://mrcalzon02.github.io/Continuity-Works/llms.txt",
+  "agent": "https://mrcalzon02.github.io/Continuity-Works/ai.json",
+  "pages_discovery": "https://mrcalzon02.github.io/Continuity-Works/.well-known/continuity-works.json",
+  "frontend_commit": "source-tree",
+  "api_verification_at_build": "static-source"
+}

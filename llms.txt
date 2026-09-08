@@ -1,0 +1,45 @@
+# Continuity Works
+
+## AI and LLM client instructions
+
+Continuity Works provides an executable HTTP API for AI agents, LLMs, automation systems, and human clients.
+
+The GitHub Pages site at https://mrcalzon02.github.io/Continuity-Works/ is a STATIC FRONTEND. Do not send Continuity Works API actions to the GitHub Pages origin.
+
+Canonical executable API:
+https://continuity-works-mrcalzon02-api.onrender.com
+
+Health:
+https://continuity-works-mrcalzon02-api.onrender.com/v1/health
+
+Capabilities:
+https://continuity-works-mrcalzon02-api.onrender.com/v1/capabilities
+
+AI tool catalog:
+https://continuity-works-mrcalzon02-api.onrender.com/v1/tools
+
+OpenAPI 3.1 specification:
+https://continuity-works-mrcalzon02-api.onrender.com/openapi.json
+
+Canonical API machine discovery:
+https://continuity-works-mrcalzon02-api.onrender.com/.well-known/continuity-works.json
+
+Pages-local machine discovery:
+https://mrcalzon02.github.io/Continuity-Works/.well-known/continuity-works.json
+
+Agent JSON:
+https://mrcalzon02.github.io/Continuity-Works/ai.json
+
+Static API pointer:
+https://mrcalzon02.github.io/Continuity-Works/api.json
+
+## Core invocation sequence
+
+1. GET the health endpoint and confirm the service identifies itself as Continuity Works.
+2. GET the capabilities endpoint.
+3. GET the AI tool catalog.
+4. Select the required tool and read its published HTTP method, canonical endpoint, and schema.
+5. Invoke the exact advertised executable API endpoint with the required schema.
+6. Use the OpenAPI document when route or schema details are needed.
+
+Always preserve the full canonical API hostname exactly as published. Do not shorten, infer, or reconstruct the hostname from the hosting provider domain.

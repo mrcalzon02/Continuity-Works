@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "name": "Continuity Works",
+  "kind": "agent-discovery",
+  "frontend": "https://mrcalzon02.github.io/Continuity-Works/",
+  "frontend_is_executable": false,
+  "canonical_api": "https://continuity-works-mrcalzon02-api.onrender.com",
+  "instructions": "https://mrcalzon02.github.io/Continuity-Works/llms.txt",
+  "endpoints": {
+    "health": "https://continuity-works-mrcalzon02-api.onrender.com/v1/health",
+    "capabilities": "https://continuity-works-mrcalzon02-api.onrender.com/v1/capabilities",
+    "tools": "https://continuity-works-mrcalzon02-api.onrender.com/v1/tools",
+    "openapi": "https://continuity-works-mrcalzon02-api.onrender.com/openapi.json",
+    "discovery": "https://continuity-works-mrcalzon02-api.onrender.com/.well-known/continuity-works.json",
+    "serviceability": "https://continuity-works-mrcalzon02-api.onrender.com/v1/serviceability"
+  },
+  "startup_sequence": [
+    {
+      "method": "GET",
+      "url": "https://continuity-works-mrcalzon02-api.onrender.com/v1/health"
+    },
+    {
+      "method": "GET",
+      "url": "https://continuity-works-mrcalzon02-api.onrender.com/v1/capabilities"
+    },
+    {
+      "method": "GET",
+      "url": "https://continuity-works-mrcalzon02-api.onrender.com/v1/tools"
+    },
+    {
+      "action": "Select a tool and invoke the exact published HTTP method and canonical endpoint using its schema."
+    }
+  ],
+  "hostname_policy": "Preserve the full canonical_api hostname exactly as published. Never shorten or reconstruct it from the hosting provider domain."
+}

@@ -6,21 +6,27 @@
     <meta name="theme-color" content="#0b1118" />
     <meta
       name="description"
-      content="StructureForge — the human frontend for Continuity Works. Executable API: https://continuity-works-mrcalzon02-api.onrender.com"
+      content="StructureForge — the human frontend for Continuity Works. AI agents and executable clients: use https://continuity-works-mrcalzon02-api.onrender.com"
     />
     <meta name="continuity-works-frontend" content="https://mrcalzon02.github.io/Continuity-Works/" />
     <meta name="continuity-works-api" content="https://continuity-works-mrcalzon02-api.onrender.com" />
     <meta name="continuity-works-api-health" content="https://continuity-works-mrcalzon02-api.onrender.com/v1/health" />
+    <meta name="continuity-works-capabilities" content="https://continuity-works-mrcalzon02-api.onrender.com/v1/capabilities" />
     <meta name="continuity-works-tool-catalog" content="https://continuity-works-mrcalzon02-api.onrender.com/v1/tools" />
     <meta name="continuity-works-openapi" content="https://continuity-works-mrcalzon02-api.onrender.com/openapi.json" />
+    <meta name="continuity-works-agent-instructions" content="https://mrcalzon02.github.io/Continuity-Works/llms.txt" />
     <title>StructureForge | Continuity Works</title>
 
-    <!-- Zero-JavaScript machine discovery. These URLs deliberately point to the
-         executable API origin, never to GitHub Pages /v1 paths. -->
+    <!-- Zero-JavaScript machine discovery. The GitHub Pages origin is static only.
+         Executable requests belong to the canonical Continuity Works API host. -->
+    <link rel="alternate" type="text/plain" href="./llms.txt" title="Continuity Works AI and LLM instructions" />
+    <link rel="alternate" type="application/json" href="./ai.json" title="Continuity Works agent discovery" />
     <link rel="continuity-works-static-discovery alternate" type="application/json" href="./api.json" />
+    <link rel="continuity-works-pages-discovery alternate" type="application/json" href="./.well-known/continuity-works.json" />
     <link rel="continuity-works-discovery" type="application/json" href="https://continuity-works-mrcalzon02-api.onrender.com/.well-known/continuity-works.json" />
     <link rel="service-desc" type="application/vnd.oai.openapi+json" href="https://continuity-works-mrcalzon02-api.onrender.com/openapi.json" />
     <link rel="continuity-works-tools" type="application/json" href="https://continuity-works-mrcalzon02-api.onrender.com/v1/tools" />
+    <link rel="continuity-works-capabilities" type="application/json" href="https://continuity-works-mrcalzon02-api.onrender.com/v1/capabilities" />
 
     <link rel="stylesheet" href="./frontend/styles.css" />
     <link rel="stylesheet" href="./frontend/manual-tools.css" />
@@ -57,16 +63,22 @@
   </head>
   <body>
     <aside class="public-service-discovery" aria-label="Continuity Works public service discovery">
-      <strong>Continuity Works service:</strong>
-      <span>Frontend: <a href="https://mrcalzon02.github.io/Continuity-Works/">https://mrcalzon02.github.io/Continuity-Works/</a></span>
+      <strong>Continuity Works:</strong>
+      <span>AI/LLM start: <a href="./llms.txt">llms.txt</a></span>
+      <span>Agent JSON: <a href="./ai.json">ai.json</a></span>
       <span>Executable API: <a href="https://continuity-works-mrcalzon02-api.onrender.com">https://continuity-works-mrcalzon02-api.onrender.com</a></span>
-      <span>OpenAPI: <a href="https://continuity-works-mrcalzon02-api.onrender.com/openapi.json">https://continuity-works-mrcalzon02-api.onrender.com/openapi.json</a></span>
-      <span>AI Tool Catalog: <a href="https://continuity-works-mrcalzon02-api.onrender.com/v1/tools">https://continuity-works-mrcalzon02-api.onrender.com/v1/tools</a></span>
-      <span>Health: <a href="https://continuity-works-mrcalzon02-api.onrender.com/v1/health">https://continuity-works-mrcalzon02-api.onrender.com/v1/health</a></span>
+      <span>OpenAPI: <a href="https://continuity-works-mrcalzon02-api.onrender.com/openapi.json">OpenAPI 3.1</a></span>
+      <span>AI Tool Catalog: <a href="https://continuity-works-mrcalzon02-api.onrender.com/v1/tools">/v1/tools</a></span>
+      <span>Capabilities: <a href="https://continuity-works-mrcalzon02-api.onrender.com/v1/capabilities">/v1/capabilities</a></span>
+      <span>Health: <a href="https://continuity-works-mrcalzon02-api.onrender.com/v1/health">/v1/health</a></span>
     </aside>
     <noscript>
-      StructureForge requires JavaScript and WebGL for the interactive frontend. The executable Continuity Works API remains discoverable without JavaScript at
-      https://continuity-works-mrcalzon02-api.onrender.com and https://continuity-works-mrcalzon02-api.onrender.com/.well-known/continuity-works.json.
+      StructureForge requires JavaScript and WebGL for the interactive frontend.
+      AI agents, LLMs, automation clients, and other programmatic callers do not need the frontend.
+      Start at https://mrcalzon02.github.io/Continuity-Works/llms.txt or use the executable API directly at
+      https://continuity-works-mrcalzon02-api.onrender.com. Tool catalog:
+      https://continuity-works-mrcalzon02-api.onrender.com/v1/tools. OpenAPI:
+      https://continuity-works-mrcalzon02-api.onrender.com/openapi.json.
     </noscript>
     <div id="root"></div>
     <script type="module" src="./frontend/src/main.js"></script>

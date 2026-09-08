@@ -25,6 +25,8 @@ jobs:
         run: python -m pip install -e .
       - name: Compile Python
         run: python -m compileall -q src tests scripts
+      - name: Verify source-tree agent discovery
+        run: python scripts/agent_discoverability.py --static-dir .
       - name: Unit, API contract, and PUBLIC_SERVICEABILITY tests
         run: python -m unittest discover -s tests -v
 
@@ -41,6 +43,7 @@ jobs:
             --commit "$GITHUB_SHA" \
             --deployment candidate
           python scripts/public_serviceability.py --static-dir dist
+          python scripts/agent_discoverability.py --static-dir dist
 
       - name: Local executable API and public-boundary smoke
         shell: bash
@@ -86,7 +89,7 @@ jobs:
           print(json.dumps({
               'state': 'success' if state == 'success' else 'failure',
               'context': 'continuity-works/validate',
-              'description': 'Regression, frontend build, API contract, local PUBLIC_SERVICEABILITY',
+              'description': 'Regression, agent discovery, frontend build, API contract, local PUBLIC_SERVICEABILITY',
               'target_url': os.environ['TARGET_URL'],
           }))
           PY

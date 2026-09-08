@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "name": "Continuity Works",
+  "kind": "pages-agent-discovery",
+  "surface": "static",
+  "executable": false,
+  "frontend": "https://mrcalzon02.github.io/Continuity-Works/",
+  "api": "https://continuity-works-mrcalzon02-api.onrender.com",
+  "instructions": "https://mrcalzon02.github.io/Continuity-Works/llms.txt",
+  "agent": "https://mrcalzon02.github.io/Continuity-Works/ai.json",
+  "static_api": "https://mrcalzon02.github.io/Continuity-Works/api.json",
+  "endpoints": {
+    "health": "https://continuity-works-mrcalzon02-api.onrender.com/v1/health",
+    "capabilities": "https://continuity-works-mrcalzon02-api.onrender.com/v1/capabilities",
+    "tools": "https://continuity-works-mrcalzon02-api.onrender.com/v1/tools",
+    "openapi": "https://continuity-works-mrcalzon02-api.onrender.com/openapi.json",
+    "discovery": "https://continuity-works-mrcalzon02-api.onrender.com/.well-known/continuity-works.json",
+    "serviceability": "https://continuity-works-mrcalzon02-api.onrender.com/v1/serviceability"
+  },
+  "startup_sequence": [
+    "GET https://continuity-works-mrcalzon02-api.onrender.com/v1/health",
+    "GET https://continuity-works-mrcalzon02-api.onrender.com/v1/capabilities",
+    "GET https://continuity-works-mrcalzon02-api.onrender.com/v1/tools",
+    "Invoke the exact canonical endpoint and HTTP method published for the selected tool."
+  ]
+}

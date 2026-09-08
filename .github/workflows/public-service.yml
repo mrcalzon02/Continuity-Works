@@ -77,11 +77,16 @@ jobs:
             --deployment verified-api
           test -f dist/index.html
           test -f dist/api.json
+          test -f dist/llms.txt
+          test -f dist/ai.json
+          test -f dist/.well-known/continuity-works.json
           test -d dist/assets
           test -f frontend/src/components/ManualCapabilityWorkbench.js
           grep -q 'continuity-works-api' dist/index.html
           grep -R -q 'Manual Capability Workbench' dist/assets
           python scripts/public_serviceability.py --static-dir dist --expected-api "$CONTINUITY_WORKS_API"
+          python scripts/agent_discoverability.py --static-dir dist --expected-api "$CONTINUITY_WORKS_API"
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
       - name: Upload intended Pages artifact
@@ -118,7 +123,10 @@ jobs:
             if python scripts/public_serviceability.py \
               --pages "$CONTINUITY_WORKS_FRONTEND" \
               --expected-commit "$TARGET_SHA" \
-              --origin "$CONTINUITY_WORKS_ORIGIN"; then
+              --origin "$CONTINUITY_WORKS_ORIGIN" \
+              && python scripts/agent_discoverability.py \
+              --pages "$CONTINUITY_WORKS_FRONTEND" \
+              --expected-api "$CONTINUITY_WORKS_API"; then
               exit 0
             fi
             sleep 10
@@ -137,13 +145,22 @@ jobs:
       - name: Publish external serviceability status
         env:
           GH_TOKEN: ${{ github.token }}
-          VERIFIED: ${{ needs.pages-to-api.result }}
+          REMOTE_API_RESULT: ${{ needs.remote-api.result }}
+          BUILD_PAGES_RESULT: ${{ needs.build-pages.result }}
+          DEPLOY_PAGES_RESULT: ${{ needs.deploy-pages.result }}
+          PAGES_TO_API_RESULT: ${{ needs.pages-to-api.result }}
           TARGET_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         shell: bash
         run: |
           python - <<'PY' > /tmp/status.json
           import json, os
-          verified = os.environ.get('VERIFIED') == 'success'
+          results = {
+              'remote-api': os.environ.get('REMOTE_API_RESULT'),
+              'build-pages': os.environ.get('BUILD_PAGES_RESULT'),
+              'deploy-pages': os.environ.get('DEPLOY_PAGES_RESULT'),
+              'pages-to-api': os.environ.get('PAGES_TO_API_RESULT'),
+          }
+          verified = all(value == 'success' for value in results.values())
           print(json.dumps({
               'state': 'success' if verified else 'failure',
               'context': 'continuity-works/public-serviceability',
@@ -158,3 +175,13 @@ jobs:
             -H "X-GitHub-Api-Version: 2022-11-28" \
             --data @/tmp/status.json \
             "https://api.github.com/repos/${GITHUB_REPOSITORY}/statuses/${TARGET_SHA}"
+
+      - name: Fail closed when any required public-service stage did not succeed
+        if: >-
+          needs.remote-api.result != 'success' ||
+          needs.build-pages.result != 'success' ||
+          needs.deploy-pages.result != 'success' ||
+          needs.pages-to-api.result != 'success'
+        run: |
+          echo "Continuity Works public service was not fully verified; failing workflow."
+          exit 1
