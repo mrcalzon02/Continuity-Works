@@ -123,14 +123,15 @@ class MinecraftDatapackToolTests(unittest.TestCase):
             guaranteed_functions = loot["json"]["pools"][1]["entries"][0]["functions"]
             self.assertEqual(guaranteed_functions[0]["function"], "minecraft:set_components")
 
-    def test_tool_catalog_v13_preserves_existing_generation_contracts(self):
+    def test_tool_catalog_v14_preserves_existing_generation_contracts(self):
         catalog = tool_catalog()
         tools = {tool["name"]: tool for tool in catalog["tools"]}
-        self.assertEqual(catalog["schema_version"], "1.3")
-        self.assertEqual(len(tools), 17)
+        self.assertEqual(catalog["schema_version"], "1.4")
+        self.assertEqual(len(tools), 18)
         for name in (
             "minecraft_advancement_generate", "minecraft_tag_generate",
             "minecraft_datapack_manifest_generate", "minecraft_content_package_generate",
+            "aerospace_support_campus_generate",
         ):
             self.assertIn(name, tools)
         generation = tools["structure_generate"]["parameters"]["properties"]["generation"]["properties"]

@@ -75,6 +75,53 @@ class ButcherySiteGenerator:
                 z0 += sz
         return out
 
+    @staticmethod
+    def _reconcile_discard_with_circulation(
+        *,
+        blocks: dict[tuple[int, int, int], str],
+        discard_cells: set[tuple[int, int]],
+        carry_route: list[list[int]],
+        work_positions: list[list[int]],
+        center: tuple[int, int],
+        width: int,
+        depth: int,
+        discard_block: str,
+    ) -> None:
+        """Keep the haul route physically clear while retaining directional discard evidence."""
+        route_cells = {(point[0], point[2]) for point in carry_route}
+        for x, z in route_cells & discard_cells:
+            blocks.pop((x, 1, z), None)
+            discard_cells.discard((x, z))
+
+        if len(discard_cells) >= 4:
+            return
+
+        cx, cz = center
+        for anchor in work_positions:
+            vx, vz = anchor[0] - cx, anchor[2] - cz
+            magnitude = max(1.0, math.hypot(vx, vz))
+            vx, vz = vx / magnitude, vz / magnitude
+            px, pz = -vz, vx
+            for distance in range(2, max(width, depth)):
+                for lateral in (0, -1, 1, -2, 2):
+                    x = int(round(anchor[0] + vx * distance + px * lateral))
+                    z = int(round(anchor[2] + vz * distance + pz * lateral))
+                    cell = (x, z)
+                    if not (1 <= x < width - 1 and 1 <= z < depth - 1):
+                        continue
+                    if cell in route_cells or cell in discard_cells:
+                        continue
+                    if (x, 1, z) in blocks:
+                        continue
+                    blocks[(x, 1, z)] = discard_block
+                    discard_cells.add(cell)
+                    if len(discard_cells) >= 4:
+                        return
+
+        raise ButcherySiteGenerationError(
+            "E01-012 could not preserve both carry-route circulation and directional discard evidence"
+        )
+
     def generate(
         self,
         *,
@@ -188,7 +235,7 @@ class ButcherySiteGenerator:
         carry_route: list[list[int]] = []
         for x, z in self._line(staging_center, edge):
             blocks[(x, 0, z)] = palette["ground"]
-            if (x, z) in discard_cells and route_rng.random() < 0.9:
+            if (x, z) in discard_cells:
                 blocks.pop((x, 1, z), None)
                 discard_cells.discard((x, z))
             carry_route.append([x, 0, z])
@@ -241,6 +288,17 @@ class ButcherySiteGenerator:
             for pos in list(blocks):
                 if pos[1] == 1 and condition_rng.random() < 0.18:
                     blocks[pos] = palette["ground"]
+
+        self._reconcile_discard_with_circulation(
+            blocks=blocks,
+            discard_cells=discard_cells,
+            carry_route=carry_route,
+            work_positions=work_positions,
+            center=(cx, cz),
+            width=width,
+            depth=depth,
+            discard_block=palette["discard"],
+        )
 
         block_list = [
             {"pos": [x, y, z], "block": block}
