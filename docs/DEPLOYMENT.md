@@ -47,6 +47,16 @@ The runtime uses the existing dependency-free `structure_capability.server` impl
 
 Continuity Works does not require the project owner to provide free public compute. A consuming client or integrator may run the Python service locally or on infrastructure it controls. Server-side visual rendering is not part of the API contract; clients render returned geometry using their own resources when desired.
 
+### Health-route preflight policy
+
+The existing public-serviceability workflow distinguishes a missing API route from ordinary deployment lag. Before entering the bounded retry loop it probes the configured candidate at `/v1/health`.
+
+- HTTP `404` means the host is reachable but the Continuity Works health route is absent. This is treated as an activation/routing/configuration defect and fails immediately with that diagnosis instead of being misreported as a network outage and retried for many minutes.
+- A connection-level failure (`000`) is treated as potentially transient and is allowed to proceed to the existing bounded deployment wait.
+- Other HTTP responses proceed to the full `scripts/public_serviceability.py` acceptance harness, which remains authoritative for commit identity, CORS, discovery, OpenAPI, tool publication, and representative execution.
+
+This fail-fast behavior does not weaken `PUBLIC_SERVICEABILITY`: an absent or incorrect runtime still fails closed, and no public API verification is claimed until the full remote harness passes.
+
 ## Machine discovery
 
 External clients should begin with one of these machine-readable endpoints on the runtime they are using:
