@@ -1,0 +1,33 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+group = api_group
+version = api_version
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
+    withSourcesJar()
+}
+
+repositories {
+    mavenCentral()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 17
+}
+
+publishing {
+    publications {
+        api(MavenPublication) {
+            artifactId = 'continuityworks-api'
+            from components.java
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}
