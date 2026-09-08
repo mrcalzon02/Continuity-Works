@@ -19,8 +19,8 @@ class CompactBlueprintSourceTests(unittest.TestCase):
         properties = self.read(ROOT / "modules" / "continuityworks-api" / "gradle.properties")
         primitive = self.read(API / "CompactBlueprintPrimitive.java")
         plan = self.read(API / "CompactBlueprintPlan.java")
-        self.assertIn("new BlueprintApiVersion(1, 5, 0)", version)
-        self.assertIn("api_version=1.5.0", properties)
+        self.assertIn("new BlueprintApiVersion(1, 6, 0)", version)
+        self.assertIn("api_version=1.6.0", properties)
         for kind in ("BLOCK", "LINE", "FILL_BOX", "HOLLOW_BOX", "CYLINDER"):
             self.assertIn(kind, primitive)
         self.assertIn("PlacementOperation.Kind operationKind", primitive)
@@ -38,6 +38,32 @@ class CompactBlueprintSourceTests(unittest.TestCase):
         self.assertIn("Math.subtractExact(cx, r)", materializer)
         self.assertIn("@FunctionalInterface", sink)
         self.assertIn("boolean accept", sink)
+
+    def test_modifier_layer_is_compact_bounded_and_revalidation_gated(self) -> None:
+        modifier = self.read(API / "CompactBlueprintModifier.java")
+        module = self.read(API / "CompactBlueprintModule.java")
+        self.assertIn('MODIFIER_VERSION = "compact-modifier/v1"', modifier)
+        self.assertIn("MAX_MODIFIED_PRIMITIVES = 4096", modifier)
+        self.assertIn("MAX_REPEAT_COPIES = 64", modifier)
+        self.assertIn("MAX_MODIFIED_OPERATIONS = CompactBlueprintMaterializer.MAX_STREAM_OPERATIONS", modifier)
+        for method in (
+            "translate(",
+            "rotate(",
+            "mirror(",
+            "remapPalette(",
+            "replacePaletteEntry(",
+            "replacePrimitive(",
+            "compose(",
+            "repeat(",
+        ):
+            self.assertIn(method, modifier)
+        self.assertIn('"REVALIDATION_REQUIRED"', modifier)
+        self.assertIn('attributes.put("requires_revalidation", "true")', modifier)
+        self.assertIn("modified compact plan leaves the selected construction volume", modifier)
+        self.assertIn("CompactBlueprintMaterializer.forEachPlacement", modifier)
+        self.assertNotIn("List<PlacementOperation>", modifier)
+        self.assertIn("record CompactBlueprintModule", module)
+        self.assertIn("module primitive sequence must be contiguous from zero", module)
 
     def test_runtime_installs_corpus_aware_compact_provider(self) -> None:
         mod = self.read(RUNTIME / "ContinuityWorksBlueprintMod.java")
@@ -82,6 +108,8 @@ class CompactBlueprintSourceTests(unittest.TestCase):
         paths = [
             API / "CompactBlueprintPrimitive.java",
             API / "CompactBlueprintMaterializer.java",
+            API / "CompactBlueprintModifier.java",
+            API / "CompactBlueprintModule.java",
             API / "ContinuityWorksCompactBlueprintApi.java",
             RUNTIME / "CompactBlueprintProvider.java",
             RUNTIME / "CompactFacilityCorpusPlanner.java",
