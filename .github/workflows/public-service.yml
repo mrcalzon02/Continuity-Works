@@ -52,7 +52,9 @@ jobs:
           exit 1
 
   build-pages:
-    needs: remote-api
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -64,17 +66,17 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Build intended StructureForge Pages artifact
+      - name: Build intended Continuity Works Pages artifact
         working-directory: frontend
         run: |
           npm install --no-audit --no-fund
           npm run build
-      - name: Stamp verified API discovery and validate artifact
+      - name: Stamp configured API discovery and validate static artifact
         run: |
           python scripts/build_pages_discovery.py \
             --output dist/api.json \
             --commit "$TARGET_SHA" \
-            --deployment verified-api
+            --deployment configured-api-candidate
           test -f dist/index.html
           test -f dist/api.json
           test -f dist/llms.txt
