@@ -6,7 +6,7 @@ import sys
 
 # Deliberately retained only inside this non-user-facing validation guard.
 # These literals identify retired public branding that must never ship again.
-RETIRED_PUBLIC_BRANDS = ("StructureForge", "Structure Forge")
+RETIRED_PUBLIC_BRANDS = ("StructureForge", "Structure Forge", "StructureSmith")
 TEXT_SUFFIXES = {
     ".css",
     ".html",
@@ -49,7 +49,7 @@ def verify_static_branding(directory: str | Path) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Fail if retired StructureForge branding appears in a rendered Continuity Works static artifact."
+        description="Fail if retired pre-Continuity Works branding appears in a rendered static artifact."
     )
     parser.add_argument("--static-dir", required=True)
     args = parser.parse_args()
