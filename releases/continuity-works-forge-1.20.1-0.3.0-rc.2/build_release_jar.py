@@ -4,7 +4,7 @@
 This replaces the rc.1 outer ZIP workflow. The command fails closed: it does not
 produce or bless a distribution artifact unless the unified Forge project builds
 and the resulting archive contains every required runtime subsystem plus its
-worldgen, protection, and blueprint resources.
+worldgen, protection, selection, and blueprint resources.
 """
 
 from __future__ import annotations
@@ -192,16 +192,28 @@ def validate_jar(path: Path) -> dict[str, int]:
             "io/continuityworks/api/blueprint/BuildAreaSelection.class",
             "io/continuityworks/api/blueprint/ContinuityWorksSelectionApi.class",
             "io/continuityworks/api/blueprint/ContinuityWorksSelectionServices.class",
+            "io/continuityworks/api/blueprint/CompactBlueprintPrimitive.class",
+            "io/continuityworks/api/blueprint/CompactBlueprintPlan.class",
+            "io/continuityworks/api/blueprint/CompactPlacementSink.class",
+            "io/continuityworks/api/blueprint/CompactBlueprintMaterializer.class",
+            "io/continuityworks/api/blueprint/ContinuityWorksCompactBlueprintApi.class",
+            "io/continuityworks/api/blueprint/ContinuityWorksCompactBlueprintServices.class",
             "io/continuityworks/blueprint/runtime/ContinuityWorksBlueprintMod.class",
             "io/continuityworks/blueprint/runtime/DeterministicBlueprintApi.class",
             "io/continuityworks/blueprint/runtime/ResourceBudgetedBlueprintApi.class",
             "io/continuityworks/blueprint/runtime/FacilityCorpusPlanner.class",
             "io/continuityworks/blueprint/runtime/FacilityCorpusVocabulary.class",
+            "io/continuityworks/blueprint/runtime/CompactBlueprintProvider.class",
+            "io/continuityworks/blueprint/runtime/CompactFacilityCorpusPlanner.class",
+            "io/continuityworks/blueprint/runtime/CorpusAwareCompactBlueprintProvider.class",
             "io/continuityworks/blueprint/runtime/ContinuityWorksSelectionStore.class",
             "io/continuityworks/blueprint/runtime/BuildAreaSelectorItem.class",
             "io/continuityworks/blueprint/runtime/ContinuityWorksSelectionCommands.class",
             "io/continuityworks/blueprint/runtime/ContinuityWorksSelectionNetwork.class",
             "io/continuityworks/blueprint/runtime/SelectionSyncPacket.class",
+            "io/continuityworks/blueprint/runtime/SelectionAdjustPacket.class",
+            "io/continuityworks/blueprint/runtime/SelectionFace.class",
+            "io/continuityworks/blueprint/runtime/SelectionEditorScreen.class",
             "io/continuityworks/blueprint/runtime/ClientSelectionState.class",
             "io/continuityworks/blueprint/runtime/ContinuityWorksSelectionClientModEvents.class",
             "io/continuityworks/blueprint/runtime/ContinuityWorksSelectionClientEvents.class",
@@ -240,7 +252,7 @@ def validate_jar(path: Path) -> dict[str, int]:
             if name.startswith("io/continuityworks/api/blueprint/")
             and name.endswith(".class")
         ]
-        if len(blueprint_api_classes) < 20:
+        if len(blueprint_api_classes) < 26:
             raise SystemExit(
                 "Unified JAR does not contain the complete Continuity Works blueprint API: "
                 f"found {len(blueprint_api_classes)} API classes"
