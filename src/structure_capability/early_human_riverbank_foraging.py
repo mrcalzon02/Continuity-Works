@@ -319,17 +319,21 @@ class RiverbankForagingCampGenerator:
             {"pos": [x, y, z], "block": block}
             for (x, y, z), block in sorted(blocks.items())
         ]
-        xs = [p[0] for p in water_cells]
-        zs = [p[1] for p in water_cells]
-        water_span_x = max(xs) - min(xs) + 1
-        water_span_z = max(zs) - min(zs) + 1
-        water_major_span = max(water_span_x, water_span_z)
-        water_minor_span = min(water_span_x, water_span_z)
+        axial = [
+            (x - river_center[0]) * axis_x + (z - river_center[1]) * axis_z
+            for x, z in water_cells
+        ]
+        lateral = [
+            (x - river_center[0]) * dry_x + (z - river_center[1]) * dry_z
+            for x, z in water_cells
+        ]
+        water_major_span = max(axial) - min(axial) + 1.0
+        water_minor_span = max(lateral) - min(lateral) + 1.0
         qualification = {
             "water_cell_count": len(water_cells),
             "water_major_span": water_major_span,
             "water_minor_span": water_minor_span,
-            "river_is_linear": water_major_span >= max(10, water_minor_span * 2),
+            "river_is_linear": water_major_span >= max(10.0, water_minor_span * 2.0),
             "terrace_cell_count": len(terrace_cells),
             "water_access_lane_length": len(water_access_lane),
             "return_path_count": len(foraging_return_paths),
