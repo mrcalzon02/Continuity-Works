@@ -17,11 +17,13 @@ public final class ResourceBudgetedBlueprintApi implements ContinuityWorksBluepr
     public static final int MAX_AVAILABLE_MATERIAL_ROWS = 512;
     public static final int MAX_SITE_CANDIDATES = 32;
     public static final int MAX_PERMITTED_STYLES = 32;
+    public static final int MAX_RECENT_CORPUS_MANIFESTS = 16;
     public static final int MAX_CORPUS_CANDIDATES = FacilityCorpusPlanner.MAX_CANDIDATES;
     public static final int MAX_CORPUS_OPERATIONS = FacilityCorpusPlanner.MAX_OPERATIONS;
 
     private final DeterministicBlueprintApi fallback = new DeterministicBlueprintApi();
     private final FacilityCorpusPlanner corpus = new FacilityCorpusPlanner();
+    private final FacilityCorpusVocabulary corpusVocabulary = new FacilityCorpusVocabulary();
     private final ThreadPoolExecutor plannerExecutor = new ThreadPoolExecutor(
         1, 1, 0L, TimeUnit.MILLISECONDS,
         new ArrayBlockingQueue<>(MAX_ACTIVE_REQUESTS - 1),
@@ -36,7 +38,14 @@ public final class ResourceBudgetedBlueprintApi implements ContinuityWorksBluepr
     private final Semaphore globalRequestPermits = new Semaphore(MAX_ACTIVE_REQUESTS, true);
     private final ConcurrentMap<UUID, CompletableFuture<BlueprintProposal>> activeRequests = new ConcurrentHashMap<>();
     private final ConcurrentMap<UUID, UUID> activeByCompanion = new ConcurrentHashMap<>();
-    private final ConcurrentMap<UUID, MaterialManifest> manifests = new ConcurrentHashMap<>();
+    private final Map<UUID, MaterialManifest> corpusManifests = Collections.synchronizedMap(
+        new LinkedHashMap<>(MAX_RECENT_CORPUS_MANIFESTS + 1, 0.75f, true) {
+            @Override
+            protected boolean removeEldestEntry(Map.Entry<UUID, MaterialManifest> eldest) {
+                return size() > MAX_RECENT_CORPUS_MANIFESTS;
+            }
+        }
+    );
     private final AtomicInteger completedRequests = new AtomicInteger();
 
     @Override
@@ -47,14 +56,15 @@ public final class ResourceBudgetedBlueprintApi implements ContinuityWorksBluepr
     @Override
     public BlueprintVocabulary vocabulary() {
         BlueprintVocabulary base = fallback.vocabulary();
+        FacilityCorpusVocabulary.Snapshot manifest = corpusVocabulary.snapshot();
         List<SpecificationDescriptor> specs = new ArrayList<>(base.specifications());
-        specs.add(new SpecificationDescriptor("REFERENCE", Set.of(), true, "",
-            "Optional exact bundled Continuity Works facility reference id or slug."));
-        specs.add(new SpecificationDescriptor("ARCHETYPE", Set.of(), true, "",
-            "Optional bundled Continuity Works facility archetype id or slug."));
-        specs.add(new SpecificationDescriptor("CATEGORY", Set.of(), true, "",
-            "Optional bundled facility category such as fuel_petroleum or aerospace_orbital."));
-        return new BlueprintVocabulary("2", specs);
+        specs.add(new SpecificationDescriptor("REFERENCE", manifest.references(), true, "",
+            "Optional bundled facility reference slug. Values are manifest-derived; openValue preserves forward compatibility."));
+        specs.add(new SpecificationDescriptor("ARCHETYPE", manifest.archetypes(), true, "",
+            "Bundled facility archetype slug. Prefer one of the manifest-derived values for tiny-model reliability."));
+        specs.add(new SpecificationDescriptor("CATEGORY", manifest.categories(), true, "",
+            "Bundled facility category. Prefer one of the manifest-derived values for tiny-model reliability."));
+        return new BlueprintVocabulary("3:" + manifest.libraryVersion(), specs);
     }
 
     @Override
@@ -97,7 +107,9 @@ public final class ResourceBudgetedBlueprintApi implements ContinuityWorksBluepr
             activeByCompanion.remove(request.companionUuid(), request.requestId());
             if (future.isCancelled()) fallback.cancel(request.requestId());
             if (proposal != null) {
-                manifests.put(proposal.blueprintId(), proposal.materials());
+                if (proposal.blueprintVersion().startsWith("facility-corpus/")) {
+                    corpusManifests.put(proposal.blueprintId(), proposal.materials());
+                }
                 completedRequests.incrementAndGet();
             }
             globalRequestPermits.release();
@@ -113,7 +125,7 @@ public final class ResourceBudgetedBlueprintApi implements ContinuityWorksBluepr
     @Override
     public MaterialManifest getMaterials(UUID blueprintId) {
         Objects.requireNonNull(blueprintId, "blueprintId");
-        MaterialManifest manifest = manifests.get(blueprintId);
+        MaterialManifest manifest = corpusManifests.get(blueprintId);
         if (manifest != null) return manifest;
         return fallback.getMaterials(blueprintId);
     }
@@ -132,7 +144,7 @@ public final class ResourceBudgetedBlueprintApi implements ContinuityWorksBluepr
             globalRequestPermits.availablePermits(),
             plannerExecutor.getQueue().size(),
             completedRequests.get(),
-            manifests.size(),
+            corpusManifests.size(),
             MAX_CORPUS_CANDIDATES,
             MAX_CORPUS_OPERATIONS
         );
@@ -154,7 +166,7 @@ public final class ResourceBudgetedBlueprintApi implements ContinuityWorksBluepr
         int availableRequestPermits,
         int queuedRequests,
         int completedRequestCount,
-        int retainedManifestCount,
+        int retainedCorpusManifestCount,
         int maxCorpusCandidates,
         int maxCorpusOperations
     ) {}
