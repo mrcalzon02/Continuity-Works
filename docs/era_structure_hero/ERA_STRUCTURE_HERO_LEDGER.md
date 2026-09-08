@@ -84,8 +84,24 @@ Public export: `RiverbankForagingCampGenerator` and `RiverbankForagingCampGenera
 - same-parent-reservation requirement for compatible-family tight composition;
 - existing geospatial worldgen validation.
 
+### Validation repair and observed verification
+The first authoritative validation run after Stage 3 exposed three E01-017 failures. The common root cause was the river-linearity qualification: diagonal rivers were measured with axis-aligned X/Z bounding boxes, causing genuinely elongated river ribbons to appear too wide.
+
+Committed repair: `9513491b6e04da994f5330cda198db19b04694ad` (`Fix E01-017 river-axis linearity qualification`). The qualification now projects generated water cells onto the generator's river axis and perpendicular dry-bank axis before comparing major and minor spans.
+
+Observed validation on that repair commit:
+- Python installation and compile completed successfully;
+- source-tree agent discovery completed successfully;
+- full unit/API-contract/PUBLIC_SERVICEABILITY test step completed successfully;
+- Continuity Works frontend build completed successfully;
+- zero-JavaScript Pages discovery candidate stamping completed successfully;
+- local executable API and public-boundary smoke completed successfully;
+- `continuity-works/validate` published `success` for the repair commit.
+
+This closes the source-level E01-017 regression introduced during this run. It does **not** establish final Minecraft production admission.
+
 ### DEEFM claim boundary
-Observed GitHub write evidence establishes the Stage 1 specification, Stage 2 generator source, focused test source, public export, Stage 3 worldgen contract, and this ledger update on authoritative `main`. **No claim is made until close-out verification that the commits remain on current `main`; no claim is made that focused tests have executed successfully, final NBT/template-pool artifacts have been materialized/loaded in Minecraft, or E01-017 is production-admitted.**
+Observed GitHub evidence proves the Stage 1 hero specification, Stage 2 generator source, focused test source, public export, Stage 3 worldgen contract, the river-axis qualification repair, successful repository validation on repair commit `9513491b6e04da994f5330cda198db19b04694ad`, and this ledger update are on authoritative `main`. **No claim is made that final Minecraft NBT/template-pool artifacts have been materialized and loaded in Minecraft, that fresh-world river placement has been accepted, that visual/runtime review has passed, or that E01-017 is production-admitted.**
 
 ## Next run
 
