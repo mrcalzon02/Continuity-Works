@@ -11,9 +11,10 @@ public record BlueprintRequest(
     UUID ownerUuid,
     String dimensionId,
     String buildPurpose,
+    ConstructionVolume constructionVolume,
     BlockPosition preferredOrigin,
     Facing preferredFacing,
-    Bounds maximumBounds,
+    List<BlueprintSpecification> specifications,
     List<MaterialAvailability> availableMaterials,
     List<SiteCandidate> candidateSites,
     Set<String> permittedStyles
@@ -24,11 +25,15 @@ public record BlueprintRequest(
         Objects.requireNonNull(ownerUuid, "ownerUuid");
         Objects.requireNonNull(dimensionId, "dimensionId");
         Objects.requireNonNull(buildPurpose, "buildPurpose");
+        Objects.requireNonNull(constructionVolume, "constructionVolume");
         Objects.requireNonNull(preferredOrigin, "preferredOrigin");
         Objects.requireNonNull(preferredFacing, "preferredFacing");
-        Objects.requireNonNull(maximumBounds, "maximumBounds");
         if (dimensionId.isBlank()) throw new IllegalArgumentException("dimensionId must not be blank");
         if (buildPurpose.isBlank()) throw new IllegalArgumentException("buildPurpose must not be blank");
+        if (!constructionVolume.contains(preferredOrigin)) {
+            throw new IllegalArgumentException("preferredOrigin must be inside constructionVolume");
+        }
+        specifications = List.copyOf(specifications == null ? List.of() : specifications);
         availableMaterials = List.copyOf(availableMaterials == null ? List.of() : availableMaterials);
         candidateSites = List.copyOf(candidateSites == null ? List.of() : candidateSites);
         permittedStyles = Set.copyOf(permittedStyles == null ? Set.of() : permittedStyles);

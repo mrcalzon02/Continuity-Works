@@ -8,11 +8,10 @@ import java.util.UUID;
 
 public record BlueprintContext(
     UUID validationId,
-    long snapshotEpoch,
+    ConstructionVolume constructionVolume,
     String dimensionId,
     BlockPosition origin,
     Facing facing,
-    Bounds scannedBounds,
     List<ObservedBlock> observedBlocks,
     Set<ChunkPosition> loadedChunks,
     List<ClaimConstraint> claimConstraints,
@@ -21,10 +20,13 @@ public record BlueprintContext(
 ) {
     public BlueprintContext {
         Objects.requireNonNull(validationId, "validationId");
+        Objects.requireNonNull(constructionVolume, "constructionVolume");
         Objects.requireNonNull(dimensionId, "dimensionId");
         Objects.requireNonNull(origin, "origin");
         Objects.requireNonNull(facing, "facing");
-        Objects.requireNonNull(scannedBounds, "scannedBounds");
+        if (!constructionVolume.contains(origin)) {
+            throw new IllegalArgumentException("origin must be inside constructionVolume");
+        }
         observedBlocks = List.copyOf(observedBlocks == null ? List.of() : observedBlocks);
         loadedChunks = Set.copyOf(loadedChunks == null ? Set.of() : loadedChunks);
         claimConstraints = List.copyOf(claimConstraints == null ? List.of() : claimConstraints);

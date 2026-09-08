@@ -8,6 +8,14 @@ The intended flow is:
 
 `semantic intent -> consumer planner -> BlueprintRequest -> Continuity Works -> BlueprintProposal -> server snapshot validation -> player preview/approval -> consumer execution`
 
-Tiny inference engines should emit semantic intent only. They must never generate raw block placement operations or registry IDs. Continuity Works owns deterministic blueprint planning, palette selection, operation ordering, material accounting, integrity metadata, and proposal warnings. The consuming mod owns world-thread scanning, player approval, claim/permission/reach/inventory/chunk checks, and execution.
+## Bounded-volume contract
 
-Contract version `1.x` preserves source-level intent and proposal semantics. Consumers should call `ContinuityWorksBlueprintApi.apiVersion()` and reject incompatible major versions.
+The Minecraft-side consumer selects and scans an exact `ConstructionVolume` on the server thread. That immutable volume is passed into `BlueprintRequest`. Continuity Works must keep the proposal anchor and every world-space placement operation inside that volume. The same volume identity/snapshot epoch is carried into `BlueprintContext` for validation so stale or mismatched snapshots can be rejected.
+
+## Dynamic specifications
+
+Tiny inference engines emit only semantic key/value specifications such as `PURPOSE=BOTANIA_RUNE_WORKSHOP`, `SITE=NORTH_CLEARING`, `STYLE=HOLLOW_COURT`, and `SIZE=COMPACT`. `BlueprintSpecification` deliberately keeps keys and values open-ended so new vocabularies do not require a Java ABI change. `SpecificationResolution` is returned for every interpreted item with `APPLIED`, `DEFAULTED`, `UNSUPPORTED`, or `CONFLICT` status.
+
+The model never emits raw block placements or registry IDs. Continuity Works owns deterministic interpretation, blueprint planning, palette selection, operation ordering, material accounting, volume conformance, integrity metadata, and proposal warnings. The consuming mod owns world-thread scanning, player approval, claim/permission/reach/inventory/chunk checks, and execution.
+
+Contract version `1.x` preserves the blueprint intent/proposal family. Consumers should call `ContinuityWorksBlueprintApi.apiVersion()` and reject incompatible major versions.
