@@ -8,6 +8,6 @@ public final class ContinuityWorksBlueprintMod {
     public static final String MOD_ID = "continuityworks_blueprint";
 
     public ContinuityWorksBlueprintMod() {
-        ContinuityWorksBlueprintServices.install(new DeterministicBlueprintApi());
+        ContinuityWorksBlueprintServices.install(new ResourceBudgetedBlueprintApi());
     }
 }
