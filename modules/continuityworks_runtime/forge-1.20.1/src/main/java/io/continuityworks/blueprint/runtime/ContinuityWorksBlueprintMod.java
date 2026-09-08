@@ -1,6 +1,7 @@
 package io.continuityworks.blueprint.runtime;
 
 import io.continuityworks.api.blueprint.ContinuityWorksBlueprintServices;
+import io.continuityworks.api.blueprint.ContinuityWorksCompactBlueprintServices;
 import io.continuityworks.api.blueprint.ContinuityWorksSelectionServices;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
@@ -28,6 +29,7 @@ public final class ContinuityWorksBlueprintMod {
         modBus.addListener(this::buildCreativeContents);
         ContinuityWorksSelectionNetwork.register();
         ContinuityWorksBlueprintServices.install(new ResourceBudgetedBlueprintApi());
+        ContinuityWorksCompactBlueprintServices.install(new CompactBlueprintProvider());
         ContinuityWorksSelectionServices.install(ContinuityWorksSelectionStore.INSTANCE);
     }
 
