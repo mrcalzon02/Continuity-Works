@@ -43,29 +43,80 @@ public final class ContinuityWorksSelectionStore implements ContinuityWorksSelec
 
     public synchronized BuildAreaSelection set(ServerPlayer player, BlockPos a, BlockPos b, String source) {
         validate(player, a, b);
-        int minX = Math.min(a.getX(), b.getX()), minY = Math.min(a.getY(), b.getY()), minZ = Math.min(a.getZ(), b.getZ());
-        int maxX = Math.max(a.getX(), b.getX()), maxY = Math.max(a.getY(), b.getY()), maxZ = Math.max(a.getZ(), b.getZ());
         UUID owner = player.getUUID();
         String dimension = dimensionId(player);
         long epoch = epochs.merge(owner, 1L, Long::sum);
-        io.continuityworks.api.blueprint.Bounds bounds = new io.continuityworks.api.blueprint.Bounds(
-            new io.continuityworks.api.blueprint.BlockPosition(minX, minY, minZ),
-            new io.continuityworks.api.blueprint.BlockPosition(maxX, maxY, maxZ)
-        );
-        ConstructionVolume volume = new ConstructionVolume(
+        BuildAreaSelection selection = createSelection(
+            owner,
+            dimension,
             UUID.randomUUID(),
-            bounds,
             epoch,
+            a,
+            b,
             Map.of(
                 "dimension", dimension,
                 "owner", owner.toString(),
                 "source", source == null || source.isBlank() ? "unknown" : source
             )
         );
-        BuildAreaSelection selection = new BuildAreaSelection(owner, dimension, volume);
         selections.put(owner, selection);
         drafts.remove(owner);
         return selection;
+    }
+
+    /**
+     * Move one face of the existing selection. Positive delta pushes the face outward;
+     * negative delta pulls it inward. The opposite face never moves.
+     */
+    public synchronized BuildAreaSelection adjustFace(ServerPlayer player, SelectionFace face, int outwardDelta) {
+        if (outwardDelta != -1 && outwardDelta != 1) {
+            throw new IllegalArgumentException("Selection face adjustment must be -1 or +1 block");
+        }
+        UUID owner = player.getUUID();
+        BuildAreaSelection current = selections.get(owner);
+        if (current == null) {
+            throw new IllegalArgumentException("Continuity Works has no selected build area to modify.");
+        }
+        String dimension = dimensionId(player);
+        if (!dimension.equals(current.dimensionId())) {
+            throw new IllegalArgumentException("Selected build area belongs to dimension " + current.dimensionId() + ".");
+        }
+
+        var bounds = current.volume().bounds();
+        int minX = bounds.min().x(), minY = bounds.min().y(), minZ = bounds.min().z();
+        int maxX = bounds.max().x(), maxY = bounds.max().y(), maxZ = bounds.max().z();
+        switch (face) {
+            case UP -> maxY = moved(maxY, outwardDelta);
+            case DOWN -> minY = moved(minY, -outwardDelta);
+            case NORTH -> minZ = moved(minZ, -outwardDelta);
+            case SOUTH -> maxZ = moved(maxZ, outwardDelta);
+            case WEST -> minX = moved(minX, -outwardDelta);
+            case EAST -> maxX = moved(maxX, outwardDelta);
+        }
+
+        if (minX > maxX || minY > maxY || minZ > maxZ) {
+            throw new IllegalArgumentException("Cannot shrink a Continuity Works selection below one block on any axis.");
+        }
+
+        BlockPos a = new BlockPos(minX, minY, minZ);
+        BlockPos b = new BlockPos(maxX, maxY, maxZ);
+        validate(player, a, b);
+        long epoch = epochs.merge(owner, 1L, Long::sum);
+        Map<String, String> attributes = new HashMap<>(current.volume().attributes());
+        attributes.put("source", "selection_editor");
+        attributes.put("last_face_edit", face.name().toLowerCase(java.util.Locale.ROOT));
+
+        BuildAreaSelection updated = createSelection(
+            owner,
+            dimension,
+            current.volume().volumeId(),
+            epoch,
+            a,
+            b,
+            attributes
+        );
+        selections.put(owner, updated);
+        return updated;
     }
 
     public synchronized boolean clear(ServerPlayer player) {
@@ -80,6 +131,33 @@ public final class ContinuityWorksSelectionStore implements ContinuityWorksSelec
         drafts.clear();
         selections.clear();
         epochs.clear();
+    }
+
+    private static BuildAreaSelection createSelection(
+        UUID owner,
+        String dimension,
+        UUID volumeId,
+        long epoch,
+        BlockPos a,
+        BlockPos b,
+        Map<String, String> attributes
+    ) {
+        int minX = Math.min(a.getX(), b.getX()), minY = Math.min(a.getY(), b.getY()), minZ = Math.min(a.getZ(), b.getZ());
+        int maxX = Math.max(a.getX(), b.getX()), maxY = Math.max(a.getY(), b.getY()), maxZ = Math.max(a.getZ(), b.getZ());
+        io.continuityworks.api.blueprint.Bounds bounds = new io.continuityworks.api.blueprint.Bounds(
+            new io.continuityworks.api.blueprint.BlockPosition(minX, minY, minZ),
+            new io.continuityworks.api.blueprint.BlockPosition(maxX, maxY, maxZ)
+        );
+        ConstructionVolume volume = new ConstructionVolume(volumeId, bounds, epoch, attributes);
+        return new BuildAreaSelection(owner, dimension, volume);
+    }
+
+    private static int moved(int value, int delta) {
+        try {
+            return Math.addExact(value, delta);
+        } catch (ArithmeticException error) {
+            throw new IllegalArgumentException("Selection coordinate overflow while moving a build-area face.", error);
+        }
     }
 
     private static void validate(ServerPlayer player, BlockPos a, BlockPos b) {
