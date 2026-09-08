@@ -19,6 +19,7 @@ apply plugin: 'org.spongepowered.mixin'
 def repositoryRoot = file('../../..')
 def biomeProjectDir = new File(repositoryRoot, 'examples/biome_expander/runtime_mod/1.20.1')
 def spawnProtectionProjectDir = new File(repositoryRoot, 'modules/structure_spawn_protection/forge-1.20.1')
+def blueprintApiProjectDir = new File(repositoryRoot, 'modules/continuityworks-api')
 
 group = mod_group
 version = mod_version
@@ -34,6 +35,7 @@ sourceSets {
         java {
             srcDir new File(biomeProjectDir, 'src/main/java')
             srcDir new File(spawnProtectionProjectDir, 'src/main/java')
+            srcDir new File(blueprintApiProjectDir, 'src/main/java')
         }
     }
 }
@@ -57,6 +59,9 @@ minecraft {
                     source sourceSets.main
                 }
                 continuityworks_spawn_protection {
+                    source sourceSets.main
+                }
+                continuityworks_blueprint {
                     source sourceSets.main
                 }
             }
@@ -83,7 +88,7 @@ dependencies {
         jarJar.pin(it, "${minecraft_version}-${terrablender_version}")
     }
 
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    annotationProcessor 'org.spongepowered.mixin:0.8.5:processor'
 }
 
 mixin {
@@ -107,6 +112,9 @@ tasks.named('processResources', ProcessResources).configure {
     from(new File(spawnProtectionProjectDir, 'src/main/resources')) {
         exclude 'META-INF/mods.toml'
         exclude 'pack.mcmeta'
+    }
+    from(new File(repositoryRoot, 'facility_library')) {
+        into 'continuityworks/facility_library'
     }
 
     filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {

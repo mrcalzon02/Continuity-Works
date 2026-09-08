@@ -23,6 +23,16 @@ description='''
 Continuity Works structure placement protection. Enforces the hard minimum 500-block footprint-based exclusion contract, persistent reservations, registry enrollment, and per-piece jigsaw collision protection.
 '''
 
+[[mods]]
+modId="continuityworks_blueprint"
+version="${mod_version}"
+displayName="Continuity Works Blueprint Runtime"
+displayURL="https://github.com/mrcalzon02/Continuity-Works"
+authors="Continuity Works"
+description='''
+Loader-local Continuity Works blueprint provider. Accepts immutable bounded-volume planning requests, interprets compact semantic specifications, generates deterministic proposals asynchronously, and validates proposals against immutable server snapshots. It never performs world placement.
+'''
+
 [[dependencies.continuityworks_biomes]]
 modId="forge"
 mandatory=true
@@ -52,6 +62,20 @@ ordering="NONE"
 side="BOTH"
 
 [[dependencies.continuityworks_spawn_protection]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1,1.20.2)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.continuityworks_blueprint]]
+modId="forge"
+mandatory=true
+versionRange="[${forge_version},)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.continuityworks_blueprint]]
 modId="minecraft"
 mandatory=true
 versionRange="[1.20.1,1.20.2)"

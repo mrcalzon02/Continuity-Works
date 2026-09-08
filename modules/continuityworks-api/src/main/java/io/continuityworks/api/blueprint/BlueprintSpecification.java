@@ -1,5 +1,6 @@
 package io.continuityworks.api.blueprint;
 
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -20,6 +21,6 @@ public record BlueprintSpecification(String key, String value, Requirement requi
     }
 
     private static String normalize(String value) {
-        return value.trim().toUpperCase().replace('-', '_').replace(' ', '_');
+        return value.trim().toUpperCase(Locale.ROOT).replace('-', '_').replace(' ', '_');
     }
 }

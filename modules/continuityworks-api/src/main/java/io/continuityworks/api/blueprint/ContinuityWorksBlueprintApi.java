@@ -6,6 +6,8 @@ import java.util.concurrent.CompletableFuture;
 public interface ContinuityWorksBlueprintApi {
     BlueprintApiVersion apiVersion();
 
+    BlueprintVocabulary vocabulary();
+
     CompletableFuture<BlueprintProposal> generate(BlueprintRequest request);
 
     ValidationResult validate(BlueprintProposal proposal, BlueprintContext context);

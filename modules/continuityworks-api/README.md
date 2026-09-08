@@ -14,8 +14,12 @@ The Minecraft-side consumer selects and scans an exact `ConstructionVolume` on t
 
 ## Dynamic specifications
 
-Tiny inference engines emit only semantic key/value specifications such as `PURPOSE=BOTANIA_RUNE_WORKSHOP`, `SITE=NORTH_CLEARING`, `STYLE=HOLLOW_COURT`, and `SIZE=COMPACT`. `BlueprintSpecification` deliberately keeps keys and values open-ended so new vocabularies do not require a Java ABI change. `SpecificationResolution` is returned for every interpreted item with `APPLIED`, `DEFAULTED`, `UNSUPPORTED`, or `CONFLICT` status.
+Tiny inference engines emit only semantic key/value specifications such as `STYLE=HOLLOW_COURT`, `SIZE=COMPACT`, `ROOF=OPEN`, or `FLOORS=1`. `BlueprintSpecification` deliberately keeps keys and values open-ended so new vocabularies do not require a Java ABI change. `SpecificationResolution` is returned for every interpreted item with `APPLIED`, `DEFAULTED`, `UNSUPPORTED`, or `CONFLICT` status.
+
+Consumers can call `vocabulary()` to obtain the small current specification whitelist and supported values. This is intended to be passed directly to miniature inference engines instead of exposing the full Continuity Works schema.
 
 The model never emits raw block placements or registry IDs. Continuity Works owns deterministic interpretation, blueprint planning, palette selection, operation ordering, material accounting, volume conformance, integrity metadata, and proposal warnings. The consuming mod owns world-thread scanning, player approval, claim/permission/reach/inventory/chunk checks, and execution.
+
+`ContinuityWorksBlueprintServices.find()` is the optional in-JVM discovery point. A consumer should only load its Continuity Works integration path when the provider mod is present; absence of a provider is a supported state.
 
 Contract version `1.x` preserves the blueprint intent/proposal family. Consumers should call `ContinuityWorksBlueprintApi.apiVersion()` and reject incompatible major versions.
