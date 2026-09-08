@@ -21,15 +21,62 @@ final class ClientSelectionState {
     private ClientSelectionState() {}
 
     static void accept(SelectionSyncPacket packet) {
+        Minecraft minecraft = Minecraft.getInstance();
         if (!packet.present()) {
             selection = null;
             highlightEnabled = false;
+            if (minecraft.screen instanceof SelectionEditorScreen) minecraft.setScreen(null);
             return;
         }
         selection = new SyncedSelection(
             packet.dimensionId(), packet.volumeId(), packet.snapshotEpoch(),
             packet.minX(), packet.minY(), packet.minZ(), packet.maxX(), packet.maxY(), packet.maxZ()
         );
+        if (minecraft.screen instanceof SelectionEditorScreen && !hasSelectionInCurrentDimension()) {
+            minecraft.setScreen(null);
+        }
+    }
+
+    static boolean hasSelectionInCurrentDimension() {
+        Minecraft minecraft = Minecraft.getInstance();
+        return selection != null
+            && minecraft.level != null
+            && selection.dimensionId().equals(minecraft.level.dimension().location().toString());
+    }
+
+    static SelectionDimensions dimensions() {
+        SyncedSelection current = selection;
+        if (current == null) return new SelectionDimensions(0, 0, 0);
+        return new SelectionDimensions(
+            current.maxX() - current.minX() + 1,
+            current.maxY() - current.minY() + 1,
+            current.maxZ() - current.minZ() + 1
+        );
+    }
+
+    static void openEditor() {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (selection == null) {
+            if (minecraft.player != null) minecraft.player.displayClientMessage(
+                Component.literal("Continuity Works: no selected build volume to edit."), true);
+            return;
+        }
+        if (!hasSelectionInCurrentDimension()) {
+            if (minecraft.player != null) minecraft.player.displayClientMessage(
+                Component.literal("Continuity Works: selected build volume is in " + selection.dimensionId() + "."), true);
+            return;
+        }
+        minecraft.setScreen(new SelectionEditorScreen());
+    }
+
+    static void requestAdjustment(SelectionFace face, int delta) {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (!hasSelectionInCurrentDimension()) {
+            if (minecraft.player != null) minecraft.player.displayClientMessage(
+                Component.literal("Continuity Works: no editable build volume in this dimension."), true);
+            return;
+        }
+        ContinuityWorksSelectionNetwork.requestAdjustment(face, delta);
     }
 
     static void toggleHighlight() {
@@ -40,7 +87,7 @@ final class ClientSelectionState {
                 Component.literal("Continuity Works: no selected build volume to highlight."), true);
             return;
         }
-        if (minecraft.level == null || !selection.dimensionId().equals(minecraft.level.dimension().location().toString())) {
+        if (!hasSelectionInCurrentDimension()) {
             highlightEnabled = false;
             if (minecraft.player != null) minecraft.player.displayClientMessage(
                 Component.literal("Continuity Works: selected build volume is in " + selection.dimensionId() + "."), true);
@@ -54,7 +101,7 @@ final class ClientSelectionState {
     static void render(RenderLevelStageEvent event) {
         if (!highlightEnabled || selection == null || event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) return;
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.level == null || !selection.dimensionId().equals(minecraft.level.dimension().location().toString())) return;
+        if (!hasSelectionInCurrentDimension()) return;
 
         Vec3 camera = event.getCamera().getPosition();
         AABB box = new AABB(
@@ -78,6 +125,8 @@ final class ClientSelectionState {
             RenderSystem.enableDepthTest();
         }
     }
+
+    record SelectionDimensions(int width, int height, int depth) {}
 
     private record SyncedSelection(
         String dimensionId,
