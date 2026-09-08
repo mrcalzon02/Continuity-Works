@@ -1,8 +1,8 @@
-# StructureForge interactive frontend
+# Continuity Works interactive frontend
 
-This directory contains the browser interface for the **StructureForge** product surface built on the **StructureSmith** structural-reasoning system.
+This directory contains the browser interface for the **Continuity Works** structural-development workbench and public capability surface.
 
-The published GitHub Pages root (`/index.html`) intentionally uses browser-native ES modules and pinned ESM dependencies so the workbench can deploy from the repository's existing branch-based Pages configuration without introducing a second build/deployment system. The modules are still ordinary React components and can be moved behind Vite or another bundler later without changing the event contract.
+The published GitHub Pages root (`/index.html`) is built through the repository's existing Vite production path. The frontend remains a client of the Continuity Works HTTP API and does not create a second authoritative generation system.
 
 ## Runtime architecture
 
@@ -12,7 +12,7 @@ index.html
    └─ Dashboard
       ├─ XState pipeline machine
       ├─ Control schema / API request builder
-      ├─ StructureSmith HTTP API client
+      ├─ Continuity Works HTTP API client
       ├─ Serialized event player + SSE/WebSocket adapters
       └─ React Three Fiber voxel viewport
 ```
@@ -23,7 +23,7 @@ Pipeline state is deliberately explicit:
 Idle → Prompting → Drafting → Auditing → Rebuilding → Finalizing
 ```
 
-Controls lock as the relevant stage begins. By default, execution also pauses after each completed stage so a human can inspect the geometry, decision-rationale feed, and audit image frames before advancing.
+Controls lock as the relevant stage begins. By default, execution also pauses after each completed stage so a human can inspect the geometry, concise decision-rationale feed, and optional audit image frames before advancing.
 
 ## Stream event contract
 
@@ -44,21 +44,21 @@ The UI normalizes demo, HTTP-replay, future SSE, and future WebSocket input into
 
 ## Existing API compatibility
 
-The current StructureSmith server is synchronous. **Live API + serialized replay** calls the existing `/v1/generate`, `/v1/audit`, `/v1/plan`, and `/v1/minecraft/version` endpoints and then replays returned milestones at human-readable speed. `connectSSE()` and `connectWebSocket()` are already stubbed so a future native streaming backend can feed the same components without rewriting the UI.
+The current Continuity Works server is synchronous. **Live API + serialized replay** calls the existing `/v1/generate`, `/v1/audit`, `/v1/plan`, and `/v1/minecraft/version` endpoints and then replays returned milestones at human-readable speed. `connectSSE()` and `connectWebSocket()` remain available for a future native streaming backend using the same normalized event contract.
 
-The published demo mode requires no backend and is the safest way to inspect the frontend interaction model.
+The published demo mode requires no backend and remains useful for inspecting the frontend interaction model independently of API availability.
 
 ## Browser access / CORS
 
-The paired server change adds browser-safe CORS/OPTIONS handling. The default is `Access-Control-Allow-Origin: *`, appropriate for the current unauthenticated local/tool API. Deployments that want a narrower browser policy can set `STRUCTURESMITH_CORS_ORIGIN` to one origin or a comma-separated allowlist, for example:
+The paired server supports browser-safe CORS/OPTIONS handling. The canonical configuration variable is `CONTINUITY_WORKS_CORS_ORIGIN`; production deployments should set it to the trusted Pages origin or another explicit comma-separated allowlist.
 
 ```bash
-STRUCTURESMITH_CORS_ORIGIN=https://mrcalzon02.github.io python -m structure_capability.cli serve
+CONTINUITY_WORKS_CORS_ORIGIN=https://mrcalzon02.github.io python -m structure_capability.cli serve
 ```
 
-## Optional Vite workflow
+## Vite workflow
 
-The committed Pages entry remains directly runnable from the repository root, but the same modules also have a pinned Vite manifest for local development or a future compiled deployment:
+The production frontend uses the committed Vite build:
 
 ```bash
 cd frontend
@@ -67,4 +67,4 @@ npm run dev
 # or: npm run build
 ```
 
-The Vite build uses the repository root `index.html` as its entry and emits to `dist/` with the correct `/StructureSmith/` base path.
+The build emits to `dist/` using the `/Continuity-Works/` Pages base path and runs the rendered-artifact branding validation before acceptance.
