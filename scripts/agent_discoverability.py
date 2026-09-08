@@ -176,14 +176,14 @@ def _validate_bundle(
     _validate_text_surface("index.html", html, api, frontend)
     _validate_text_surface("llms.txt", llms, api, frontend)
 
-    for relative in (
-        "./llms.txt",
-        "./ai.json",
-        "./api.json",
-        "./.well-known/continuity-works.json",
+    for entrypoint in (
+        f"{frontend}llms.txt",
+        f"{frontend}ai.json",
+        f"{frontend}api.json",
+        f"{frontend}.well-known/continuity-works.json",
     ):
-        if relative not in html:
-            raise DiscoverabilityFailure(f"index.html does not link {relative}")
+        if entrypoint not in html:
+            raise DiscoverabilityFailure(f"index.html does not link canonical entrypoint {entrypoint}")
 
     _validate_api_json(api_doc, api, frontend)
     _validate_agent_json(agent_doc, api, frontend)
