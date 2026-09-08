@@ -30,10 +30,10 @@ def evaluate_plan(request, audit):
         scores["geospatial_fit"] = 0.5
         notes.append("Terrain class is unknown.")
 
-    # StructureSmith validates structural/mechanical/fitness contracts but does not
-    # render or visually approve generated geometry. Visual inspection is optional
-    # and belongs to the consuming client, which can render the returned geometry or
-    # artifacts locally (as StructureForge does) or in infrastructure it controls.
+    # Continuity Works validates structural, mechanical, and fitness contracts but
+    # does not render or visually approve generated geometry. Visual inspection is
+    # optional and belongs to the consuming client, which can render returned
+    # geometry or artifacts locally or in infrastructure it controls.
     scores["visual_quality"] = None
     return {
         "scores": scores,
