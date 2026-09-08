@@ -44,7 +44,7 @@ Public `/v1/tools` entries carry separate `implementation`, `http_route`, `canon
 
 The source `index.html` contains absolute Continuity Works API metadata and visible service addresses. Vite copies/builds a static `api.json` into the Pages artifact. A crawler that executes no React, WebGL, or JavaScript can therefore learn the executable API, health endpoint, tool catalog, OpenAPI document, and discovery document.
 
-The manual StructureForge workbench obtains its available capability list from the live `/v1/tools` Continuity Works publication catalog. It does not maintain a separate handwritten advertised list.
+The manual Continuity Works workbench obtains its available capability list from the live `/v1/tools` Continuity Works publication catalog. It does not maintain a separate handwritten advertised list.
 
 ## CORS
 
