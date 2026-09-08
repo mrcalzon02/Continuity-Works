@@ -198,6 +198,10 @@ def validate_jar(path: Path) -> dict[str, int]:
             "io/continuityworks/api/blueprint/CompactBlueprintMaterializer.class",
             "io/continuityworks/api/blueprint/CompactBlueprintModule.class",
             "io/continuityworks/api/blueprint/CompactBlueprintModifier.class",
+            "io/continuityworks/api/blueprint/CompactEditIntent.class",
+            "io/continuityworks/api/blueprint/CompactEditIntentCodec.class",
+            "io/continuityworks/api/blueprint/CompactBlueprintModuleResolver.class",
+            "io/continuityworks/api/blueprint/CompactBlueprintEditExecutor.class",
             "io/continuityworks/api/blueprint/ContinuityWorksCompactBlueprintApi.class",
             "io/continuityworks/api/blueprint/ContinuityWorksCompactBlueprintServices.class",
             "io/continuityworks/blueprint/runtime/ContinuityWorksBlueprintMod.class",
@@ -254,7 +258,7 @@ def validate_jar(path: Path) -> dict[str, int]:
             if name.startswith("io/continuityworks/api/blueprint/")
             and name.endswith(".class")
         ]
-        if len(blueprint_api_classes) < 26:
+        if len(blueprint_api_classes) < 30:
             raise SystemExit(
                 "Unified JAR does not contain the complete Continuity Works blueprint API: "
                 f"found {len(blueprint_api_classes)} API classes"
