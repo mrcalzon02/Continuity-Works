@@ -54,7 +54,7 @@ export const DEFAULT_CONTROLS = {
 export const CONTROL_MODULES = [
   {
     id: 'generator',
-    title: 'StructureForge Generator',
+    title: 'Continuity Works Generator',
     description: 'Spatial skeleton, Minecraft target, scale, and modularity.',
     editableStates: ['idle', 'prompting'],
     fields: [
@@ -90,7 +90,7 @@ export const CONTROL_MODULES = [
   },
   {
     id: 'infrastructure',
-    title: 'StructureForge Infrastructure',
+    title: 'Continuity Works Infrastructure',
     description: 'Road/highway geometry, world-seed placement, jigsaw assembly, Lost Cities integration, and urban/rural facility variants. These fields mirror the public infrastructure_layout API schema.',
     editableStates: ['idle', 'prompting'],
     fields: [
@@ -136,7 +136,7 @@ export const CONTROL_MODULES = [
     ],
   },
   {
-    id: 'purpose', title: 'StructureForge Purpose Model',
+    id: 'purpose', title: 'Continuity Works Purpose Model',
     description: 'What this place is for, who built it, and which zones are mandatory.',
     editableStates: ['idle', 'prompting'], fields: [
       { key: 'purposeKind', label: 'Purpose', type: 'select', options: [
@@ -152,7 +152,7 @@ export const CONTROL_MODULES = [
     ],
   },
   {
-    id: 'auditor', title: 'StructureForge Auditor', description: 'Fitness-for-purpose, mechanical, contextual, and visual review policy.',
+    id: 'auditor', title: 'Continuity Works Auditor', description: 'Fitness-for-purpose, mechanical, contextual, and visual review policy.',
     editableStates: ['idle', 'prompting', 'drafting'], fields: [
       { key: 'auditProfile', label: 'Audit profile', type: 'select', options: [
         ['purpose_and_mechanical', 'Purpose + mechanical'], ['full_context', 'Full context + culture + mechanics'],
@@ -167,7 +167,7 @@ export const CONTROL_MODULES = [
     ],
   },
   {
-    id: 'repair', title: 'StructureForge Repair', description: 'How far the system may intervene after a failed audit.',
+    id: 'repair', title: 'Continuity Works Repair', description: 'How far the system may intervene after a failed audit.',
     editableStates: ['idle', 'prompting', 'drafting', 'auditing'], fields: [
       { key: 'repairCeiling', label: 'Rebuild ceiling', type: 'select', options: [
         ['0', '0 — Audit only'], ['1', '1 — Touch-up'], ['2', '2 — Refit'], ['3', '3 — Detail pass'],
@@ -178,7 +178,7 @@ export const CONTROL_MODULES = [
     ],
   },
   {
-    id: 'renderer', title: 'StructureForge Renderer', description: 'Audit image cadence and required visual evidence.',
+    id: 'renderer', title: 'Continuity Works Renderer', description: 'Audit image cadence and required visual evidence.',
     editableStates: ['idle', 'prompting', 'drafting', 'auditing'], fields: [
       { key: 'renderAngles', label: 'Audit angles', type: 'select', options: [['single', 'Single preview'], ['four_angle', 'Four-angle review'], ['six_angle', 'Six-angle + plan']] },
       { key: 'damageStates', label: 'Damage states', type: 'select', options: [['intact', 'Intact only'], ['intact_and_ruined', 'Intact + ruined'], ['multi_state', 'Intact + damaged + ruined']] },
@@ -186,7 +186,7 @@ export const CONTROL_MODULES = [
     ],
   },
   {
-    id: 'validator', title: 'StructureForge Validator', description: 'Shipping gates after geometry and narrative intent converge.',
+    id: 'validator', title: 'Continuity Works Validator', description: 'Shipping gates after geometry and narrative intent converge.',
     editableStates: ['idle', 'prompting', 'drafting', 'auditing', 'rebuilding'], fields: [
       { key: 'validationProfile', label: 'Validation profile', type: 'select', options: [['shipping_gate', 'Shipping gate'], ['mechanical_only', 'Mechanical only'], ['worldgen_runtime', 'Worldgen runtime candidate']] },
       { key: 'worldgenCheck', label: 'Worldgen placement', type: 'select', options: [['required', 'Required'], ['deferred', 'Deferred'], ['not_applicable', 'Not applicable']] },
