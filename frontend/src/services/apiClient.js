@@ -1,4 +1,4 @@
-export class StructureForgeApiClient {
+export class ContinuityWorksApiClient {
   constructor(baseUrl = '') {
     this.baseUrl = baseUrl.replace(/\/$/, '');
   }
@@ -8,7 +8,7 @@ export class StructureForgeApiClient {
   }
 
   async request(path, { method = 'GET', body, signal } = {}) {
-    if (!this.baseUrl) throw new Error('No StructureSmith API base URL configured.');
+    if (!this.baseUrl) throw new Error('No Continuity Works API base URL configured.');
     const response = await fetch(`${this.baseUrl}${path}`, {
       method,
       signal,
