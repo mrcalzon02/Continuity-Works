@@ -3,8 +3,8 @@
 
 This replaces the rc.1 outer ZIP workflow. The command fails closed: it does not
 produce or bless a distribution artifact unless the unified Forge project builds
-and the resulting archive contains both runtime subsystems and their required
-worldgen/protection resources.
+and the resulting archive contains every required runtime subsystem plus its
+worldgen, protection, and blueprint resources.
 """
 
 from __future__ import annotations
@@ -23,6 +23,8 @@ VERSION = "0.3.0-rc.2"
 HERE = Path(__file__).resolve().parent
 REPO_ROOT = HERE.parents[1]
 PROJECT = REPO_ROOT / "modules" / "continuityworks_runtime" / "forge-1.20.1"
+BLUEPRINT_API_PROJECT = REPO_ROOT / "modules" / "continuityworks-api"
+FACILITY_LIBRARY = REPO_ROOT / "facility_library"
 BIOME_PROJECT = REPO_ROOT / "examples" / "biome_expander" / "runtime_mod" / "1.20.1"
 ANTHOLOGY_CATALOG = BIOME_PROJECT / "src" / "main" / "anthology" / "biomes.json"
 STATIC_BIOME_DIR = (
@@ -164,6 +166,13 @@ def validate_jar(path: Path) -> dict[str, int]:
             "continuityworks_spawn_protection.mixins.json",
             "io/continuityworks/biomes/ContinuityWorksBiomeTemplates.class",
             "io/continuityworks/spawnprotection/ContinuityWorksSpawnProtection.class",
+            "io/continuityworks/api/blueprint/ContinuityWorksBlueprintApi.class",
+            "io/continuityworks/api/blueprint/ContinuityWorksBlueprintServices.class",
+            "io/continuityworks/api/blueprint/ConstructionVolume.class",
+            "io/continuityworks/api/blueprint/BlueprintSpecification.class",
+            "io/continuityworks/blueprint/runtime/ContinuityWorksBlueprintMod.class",
+            "io/continuityworks/blueprint/runtime/DeterministicBlueprintApi.class",
+            "continuityworks/facility_library/manifest.json",
             "data/continuityworks_biomes/structures/abyssal/fracture_vent_field.nbt",
             "data/continuityworks_biomes/structures/abyssal/hadal_vent_complex.nbt",
         }
@@ -172,9 +181,37 @@ def validate_jar(path: Path) -> dict[str, int]:
             raise SystemExit("Unified JAR is missing required entries: " + ", ".join(missing))
 
         mods_toml = archive.read("META-INF/mods.toml").decode("utf-8", errors="strict")
-        for mod_id in ("continuityworks_biomes", "continuityworks_spawn_protection"):
+        for mod_id in (
+            "continuityworks_biomes",
+            "continuityworks_spawn_protection",
+            "continuityworks_blueprint",
+        ):
             if f'modId="{mod_id}"' not in mods_toml:
                 raise SystemExit(f"mods.toml does not declare {mod_id}")
+
+        blueprint_api_classes = [
+            name
+            for name in names
+            if name.startswith("io/continuityworks/api/blueprint/")
+            and name.endswith(".class")
+        ]
+        if len(blueprint_api_classes) < 20:
+            raise SystemExit(
+                "Unified JAR does not contain the complete Continuity Works blueprint API: "
+                f"found {len(blueprint_api_classes)} API classes"
+            )
+
+        facility_library_json = [
+            name
+            for name in names
+            if name.startswith("continuityworks/facility_library/")
+            and name.endswith(".json")
+        ]
+        if len(facility_library_json) < 100:
+            raise SystemExit(
+                "Unified JAR does not contain the expected pre-solved facility library: "
+                f"found {len(facility_library_json)} JSON resources"
+            )
 
         biome_defs = [
             name
@@ -245,6 +282,8 @@ def validate_jar(path: Path) -> dict[str, int]:
             "biome_definitions": len(biome_defs),
             "feature_references": feature_reference_count,
             "spawn_protection_mixin_classes": len(mixin_classes),
+            "blueprint_api_classes": len(blueprint_api_classes),
+            "facility_library_json": len(facility_library_json),
             "materialized_nbt_structures": 2,
         }
 
@@ -263,6 +302,8 @@ def main() -> int:
     require(PROJECT, "unified Forge project")
     require(PROJECT / "build.gradle", "unified Forge build file")
     require(PROJECT / "src/main/resources/META-INF/mods.toml", "unified mods.toml")
+    require(BLUEPRINT_API_PROJECT / "build.gradle", "Continuity Works blueprint API build file")
+    require(FACILITY_LIBRARY / "manifest.json", "Continuity Works facility library manifest")
     require(VANILLA_PLACED_FEATURE_REGISTRY, "Minecraft 1.20.1 placed-feature registry snapshot")
     require(ANTHOLOGY_CATALOG, "anthology biome catalog")
     require(STATIC_BIOME_DIR, "static biome definition directory")
