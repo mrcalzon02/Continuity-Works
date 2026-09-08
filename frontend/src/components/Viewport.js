@@ -86,7 +86,7 @@ class ViewportErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, info) {
-    console.error('StructureForge viewport failed safely:', error, info);
+    console.error('Continuity Works viewport failed safely:', error, info);
   }
 
   render() {
@@ -98,7 +98,7 @@ class ViewportErrorBoundary extends React.Component {
       React.createElement(
         'span',
         null,
-        'The StructureForge controls remain usable. Reload after enabling WebGL or inspect the browser console for the renderer error.',
+        'The Continuity Works controls remain usable. Reload after enabling WebGL or inspect the browser console for the renderer error.',
       ),
     );
   }
@@ -131,7 +131,7 @@ export function Viewport({ blocks, phase }) {
           : html`
             <div className="viewport-empty viewport-error" role="alert">
               <strong>WebGL unavailable</strong>
-              <span>The rest of StructureForge remains available without the 3D preview.</span>
+              <span>The rest of Continuity Works remains available without the 3D preview.</span>
             </div>
           `}
         ${canRenderWebGL && !blocks.length && html`
