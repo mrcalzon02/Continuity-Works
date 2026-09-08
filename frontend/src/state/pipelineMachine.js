@@ -19,7 +19,7 @@ export const PHASE_LABELS = {
 };
 
 export const pipelineMachine = createMachine({
-  id: 'structureforge-pipeline',
+  id: 'continuity-works-pipeline',
   initial: 'idle',
   states: {
     idle: {
