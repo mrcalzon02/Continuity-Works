@@ -35,6 +35,28 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Preflight configured API health route
+        shell: bash
+        run: |
+          set -u
+          for attempt in 1 2 3; do
+            status="$(curl --silent --show-error --location \
+              --output /tmp/continuity-works-health.txt \
+              --write-out '%{http_code}' \
+              --max-time 30 \
+              "$CONTINUITY_WORKS_API/v1/health" || true)"
+            if [ "$status" = "404" ]; then
+              echo "Configured API candidate is reachable but does not expose /v1/health (HTTP 404)." >&2
+              echo "Activate/correct the Continuity Works runtime at $CONTINUITY_WORKS_API before PUBLIC_SERVICEABILITY can pass." >&2
+              cat /tmp/continuity-works-health.txt >&2 || true
+              exit 1
+            fi
+            if [ "$status" != "000" ]; then
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "Configured API candidate could not be reached during health-route preflight; continuing to the bounded deployment wait." >&2
       - name: Wait for configured host to serve this exact main commit, then verify remote API
         shell: bash
         run: |
@@ -117,6 +139,28 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Preflight Pages-advertised API health route
+        shell: bash
+        run: |
+          set -u
+          for attempt in 1 2 3; do
+            status="$(curl --silent --show-error --location \
+              --output /tmp/continuity-works-health.txt \
+              --write-out '%{http_code}' \
+              --max-time 30 \
+              "$CONTINUITY_WORKS_API/v1/health" || true)"
+            if [ "$status" = "404" ]; then
+              echo "Pages advertises an API candidate that is reachable but missing /v1/health (HTTP 404)." >&2
+              echo "The Pages artifact remains deployed, but Pages-to-API PUBLIC_SERVICEABILITY cannot be verified." >&2
+              cat /tmp/continuity-works-health.txt >&2 || true
+              exit 1
+            fi
+            if [ "$status" != "000" ]; then
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "Pages-advertised API could not be reached during preflight; continuing to the bounded discovery wait." >&2
       - name: Verify discovery exactly as a zero-JavaScript external agent encounters it
         shell: bash
         run: |
