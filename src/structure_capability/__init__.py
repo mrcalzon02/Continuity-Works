@@ -90,6 +90,10 @@ from .early_human_watering_hole import (
     WateringHoleCampGenerationError,
     WateringHoleCampGenerator,
 )
+from .early_human_riverbank_foraging import (
+    RiverbankForagingCampGenerationError,
+    RiverbankForagingCampGenerator,
+)
 
 __all__ = [
     "StructureCapability", "RebuildGrade", "AccessClearance",
@@ -118,4 +122,5 @@ __all__ = [
     "BoneBreakingStationGenerationError", "BoneBreakingStationGenerator",
     "MarrowProcessingGroundGenerationError", "MarrowProcessingGroundGenerator",
     "WateringHoleCampGenerationError", "WateringHoleCampGenerator",
+    "RiverbankForagingCampGenerationError", "RiverbankForagingCampGenerator",
 ]
