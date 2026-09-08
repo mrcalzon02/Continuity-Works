@@ -196,6 +196,8 @@ def validate_jar(path: Path) -> dict[str, int]:
             "io/continuityworks/api/blueprint/CompactBlueprintPlan.class",
             "io/continuityworks/api/blueprint/CompactPlacementSink.class",
             "io/continuityworks/api/blueprint/CompactBlueprintMaterializer.class",
+            "io/continuityworks/api/blueprint/CompactBlueprintModule.class",
+            "io/continuityworks/api/blueprint/CompactBlueprintModifier.class",
             "io/continuityworks/api/blueprint/ContinuityWorksCompactBlueprintApi.class",
             "io/continuityworks/api/blueprint/ContinuityWorksCompactBlueprintServices.class",
             "io/continuityworks/blueprint/runtime/ContinuityWorksBlueprintMod.class",
