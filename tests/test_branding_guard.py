@@ -2,7 +2,14 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.verify_branding import find_retired_branding, verify_static_branding
+from scripts.verify_branding import (
+    find_retired_branding,
+    find_retired_source_branding,
+    verify_source_branding,
+    verify_static_branding,
+)
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 class BrandingGuardTests(unittest.TestCase):
@@ -46,6 +53,30 @@ class BrandingGuardTests(unittest.TestCase):
             (root / "asset.bin").write_bytes(b"StructureForge")
             (root / "index.html").write_text("Continuity Works", encoding="utf-8")
             verify_static_branding(root)
+
+    def test_source_guard_catches_backend_docs_and_metadata(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "docs").mkdir()
+            (root / "docs" / "status.md").write_text("Retired Structure Forge service", encoding="utf-8")
+            (root / "service.py").write_text("NAME = 'Continuity Works'", encoding="utf-8")
+            findings = find_retired_source_branding(root)
+            self.assertTrue(any(path == Path("docs/status.md") for path, _ in findings))
+            with self.assertRaises(RuntimeError):
+                verify_source_branding(root)
+
+    def test_source_guard_skips_generated_and_dependency_trees(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            for directory in ("dist", "node_modules", ".git"):
+                path = root / directory
+                path.mkdir()
+                (path / "ignored.js").write_text("StructureForge", encoding="utf-8")
+            (root / "README.md").write_text("Continuity Works", encoding="utf-8")
+            verify_source_branding(root)
+
+    def test_authoritative_repository_source_tree_is_clean(self):
+        verify_source_branding(PROJECT_ROOT)
 
 
 if __name__ == "__main__":
