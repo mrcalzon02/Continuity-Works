@@ -15,4 +15,18 @@ public interface ContinuityWorksCompactBlueprintApi {
     default long streamPlacements(CompactBlueprintPlan plan, CompactPlacementSink sink) {
         return CompactBlueprintMaterializer.forEachPlacement(plan, sink);
     }
+
+    /** Apply a non-module semantic edit such as translate, rotate, mirror, or palette remap. */
+    default CompactBlueprintPlan applyEdit(CompactBlueprintPlan plan, String encodedIntent) {
+        return CompactBlueprintEditExecutor.parseAndApply(plan, encodedIntent);
+    }
+
+    /** Apply any semantic edit, resolving COMPOSE/REPEAT only from trusted pre-authored modules. */
+    default CompactBlueprintPlan applyEdit(
+        CompactBlueprintPlan plan,
+        String encodedIntent,
+        CompactBlueprintModuleResolver modules
+    ) {
+        return CompactBlueprintEditExecutor.parseAndApply(plan, encodedIntent, modules);
+    }
 }
