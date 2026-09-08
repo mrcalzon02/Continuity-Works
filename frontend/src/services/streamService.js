@@ -244,11 +244,11 @@ function infrastructureApiEvents(phase, generated) {
 export function serializeApiResponseToEvents(phase, payload) {
   const generated = payload?.generated_layout || payload?.layout || null;
   if (generated?.engine === 'native_infrastructure_v1') return [
-    say(phase, `Received ${phase} response from StructureSmith.`, 'The synchronous result is replayed at human-readable pace until native server events are available.'),
+    say(phase, `Received ${phase} response from Continuity Works.`, 'The synchronous result is replayed at human-readable pace until native server events are available.'),
     ...infrastructureApiEvents(phase, generated),
     say(phase, 'Infrastructure response replay complete.', 'Viewport and narration were reconstructed from the authoritative API result.'),
   ];
-  const events = [say(phase, `Received ${phase} response from StructureSmith.`, 'The synchronous API response is replayed as milestones until a native SSE/WebSocket stream is available.')];
+  const events = [say(phase, `Received ${phase} response from Continuity Works.`, 'The synchronous API response is replayed as milestones until a native SSE/WebSocket stream is available.')];
   const layout = payload?.generated_layout || payload?.layout || payload?.plan || null;
   const fitness = layout?.fitness || payload?.fitness || payload?.audit || null;
   if (fitness) events.push(say(phase, 'API returned a fitness/audit result.', JSON.stringify(fitness).slice(0, 360)));
