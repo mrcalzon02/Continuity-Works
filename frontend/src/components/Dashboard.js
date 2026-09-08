@@ -13,7 +13,7 @@ import {
   buildGenerateRequest,
 } from '../config/controlSchema.js';
 import { DEFAULT_API_BASE_URL } from '../config/runtime.js';
-import { StructureForgeApiClient } from '../services/apiClient.js';
+import { ContinuityWorksApiClient } from '../services/apiClient.js';
 import {
   buildDemoPhaseEvents,
   playSerializedEvents,
@@ -31,7 +31,7 @@ const PACE_OPTIONS = [
 function PhaseRail({ phase }) {
   const currentIndex = PIPELINE_PHASES.indexOf(phase);
   return html`
-    <nav className="phase-rail" aria-label="StructureForge pipeline phases">
+    <nav className="phase-rail" aria-label="Continuity Works pipeline phases">
       ${PIPELINE_PHASES.map((item, index) => {
         const className = [
           'phase-step',
@@ -154,13 +154,13 @@ function AuditImageStrip({ images }) {
           return html`
             <figure className=${`audit-frame ${image ? 'ready' : ''}`} key=${slot}>
               ${image
-                ? html`<img src=${image.url} alt=${`${image.label} StructureForge audit preview`} />`
+                ? html`<img src=${image.url} alt=${`${image.label} Continuity Works audit preview`} />`
                 : html`
                   <div className="image-placeholder">
                     <span>${slot}</span>
                     <small>optional client-rendered frame</small>
                   </div>
-                `}
+                `
               <figcaption>${image?.label || slot}</figcaption>
             </figure>
           `;
@@ -206,7 +206,7 @@ export function Dashboard() {
   const [apiBase, setApiBase] = useState(DEFAULT_API_BASE_URL);
   const [apiStatus, setApiStatus] = useState('not checked');
   const runnerRef = useRef(null);
-  const api = useMemo(() => new StructureForgeApiClient(apiBase), [apiBase]);
+  const api = useMemo(() => new ContinuityWorksApiClient(apiBase), [apiBase]);
   const request = useMemo(() => buildGenerateRequest(controls), [controls]);
 
   const onControlChange = (key, value) => {
@@ -326,10 +326,10 @@ export function Dashboard() {
     <div className="app-shell">
       <header className="topbar">
         <div className="brand-lockup">
-          <div className="brand-mark" aria-hidden="true">SF</div>
+          <div className="brand-mark" aria-hidden="true">CW</div>
           <div>
             <div className="brand-line">
-              <h1>StructureForge</h1>
+              <h1>Continuity Works</h1>
               <span className="system-badge">Continuity Works API</span>
             </div>
             <p>Generate, audit, rebuild, and validate Minecraft structures with AI.</p>
