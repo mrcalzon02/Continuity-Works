@@ -31,6 +31,15 @@ class BrandingGuardTests(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 verify_static_branding(root)
 
+    def test_structuresmith_retired_brand_fails_case_insensitively(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "app.js").write_text("const generatedBy = 'structuresmith';", encoding="utf-8")
+            findings = find_retired_branding(root)
+            self.assertTrue(any(brand == "StructureSmith" for _, brand in findings))
+            with self.assertRaises(RuntimeError):
+                verify_static_branding(root)
+
     def test_binary_or_unrelated_files_do_not_false_positive(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
