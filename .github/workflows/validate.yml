@@ -30,7 +30,7 @@ jobs:
       - name: Unit, API contract, and PUBLIC_SERVICEABILITY tests
         run: python -m unittest discover -s tests -v
 
-      - name: Build StructureForge frontend
+      - name: Build Continuity Works frontend
         working-directory: frontend
         run: |
           npm install --no-audit --no-fund
