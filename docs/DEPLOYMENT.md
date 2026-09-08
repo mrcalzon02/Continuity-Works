@@ -57,6 +57,12 @@ The existing public-serviceability workflow distinguishes a missing API route fr
 
 This fail-fast behavior does not weaken `PUBLIC_SERVICEABILITY`: an absent or incorrect runtime still fails closed, and no public API verification is claimed until the full remote harness passes.
 
+### Rendered branding gate
+
+Every production-style frontend build runs `scripts/verify_branding.py` against the generated `dist/` artifact before the artifact is accepted for static serviceability or Pages upload. The gate scans rendered HTML, JavaScript, CSS, JSON, source maps, SVG, text, manifest, and XML output and fails if retired `StructureForge` or `Structure Forge` branding appears, case-insensitively.
+
+The retired-name literals remain only inside the non-user-facing validation guard and its focused regression tests so the project can detect reintroduction. They are not an accepted public alias, migration identity, or user-facing historical brand. A clean source grep is therefore not the acceptance criterion: the built Pages artifact itself must pass the branding gate.
+
 ## Machine discovery
 
 External clients should begin with one of these machine-readable endpoints on the runtime they are using:
