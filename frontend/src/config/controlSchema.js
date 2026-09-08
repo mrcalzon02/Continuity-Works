@@ -38,7 +38,7 @@ export const DEFAULT_CONTROLS = {
   deckThickness: '2',
   minClearance: '6',
   jigsawEnabled: 'true',
-  jigsawPool: 'structuresmith:infrastructure',
+  jigsawPool: 'continuityworks:infrastructure',
   connectorWidth: '3',
   jigsawMaxDepth: '8',
   lostCitiesEnabled: 'false',
