@@ -29,7 +29,7 @@ The retired `/.well-known/structuresmith.json` path is retained only as an unadv
 
 ## Runtime and client boundary
 
-GitHub Pages hosts the static **StructureForge** workbench. It does not execute Python. An executable Continuity Works runtime may be local, client-hosted, or hosted on infrastructure chosen by an integrator:
+GitHub Pages hosts the static **Continuity Works** workbench. It does not execute Python. An executable Continuity Works runtime may be local, client-hosted, or hosted on infrastructure chosen by an integrator:
 
 ```text
 AI / external client ───────┐
@@ -41,7 +41,7 @@ AI / external client ───────┐
                     /               \
           generators             content tools
 
-StructureForge browser client ──> same API contract when configured
+Continuity Works browser client ──> same API contract when configured
 ```
 
 The repository includes an optional non-billable reference deployment configuration, but Continuity Works does not require the project owner to provide open public compute for third-party callers.
@@ -50,7 +50,7 @@ The repository includes an optional non-billable reference deployment configurat
 
 **Continuity Works does not perform server-side 3D rendering as a required part of generation.** The API returns geometry, layouts, block operations, NBT/artifacts, validation results, and the metadata required for a client to inspect or render the result.
 
-Visual rendering and visual review are optional client responsibilities. A browser, game/editor integration, desktop tool, AI client, or other consumer that wants a 3D preview renders the returned information using compute it controls. StructureForge's browser viewport is the reference client-side implementation.
+Visual rendering and visual review are optional client responsibilities. A browser, game/editor integration, desktop tool, AI client, or other consumer that wants a 3D preview renders the returned information using compute it controls. The Continuity Works browser viewport is the reference client-side implementation.
 
 Generation is not blocked because a visual review was not performed.
 
@@ -258,7 +258,3 @@ The upstream `dungeon.pl` reference is kept isolated under `reference/donjon/` b
 - `docs/PUBLIC_SERVICEABILITY.md`
 - `docs/INFRASTRUCTURE_GENERATION.md`
 - `docs/MINECRAFT_CONTENT_API_TOOLS.md`
-- `docs/COMPATIBILITY_POLICY.md`
-- `docs/SNAPSHOTS_AND_GENERATIONAL_EXECUTION.md`
-
-**Design rule:** reuse → audit → repair → refine → generate/rebuild only as far as necessary → validate → snapshot → optional client-owned review.
