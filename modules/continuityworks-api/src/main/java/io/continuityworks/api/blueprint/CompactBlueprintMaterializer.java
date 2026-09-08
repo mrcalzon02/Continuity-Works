@@ -10,10 +10,15 @@ public final class CompactBlueprintMaterializer {
 
     public static long forEachPlacement(CompactBlueprintPlan plan, CompactPlacementSink sink) {
         Objects.requireNonNull(plan, "plan");
+        return forEachPlacement(plan.primitives(), sink);
+    }
+
+    public static long forEachPlacement(List<CompactBlueprintPrimitive> primitives, CompactPlacementSink sink) {
+        Objects.requireNonNull(primitives, "primitives");
         Objects.requireNonNull(sink, "sink");
         Counter counter = new Counter();
-        for (CompactBlueprintPrimitive primitive : plan.primitives()) {
-            if (!emit(primitive, sink, counter)) break;
+        for (CompactBlueprintPrimitive primitive : primitives) {
+            if (!emit(Objects.requireNonNull(primitive, "primitive"), sink, counter)) break;
         }
         return counter.value;
     }
