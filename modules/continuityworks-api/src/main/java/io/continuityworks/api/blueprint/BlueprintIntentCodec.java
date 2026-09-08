@@ -20,7 +20,7 @@ public final class BlueprintIntentCodec {
     private static final Set<String> RESERVED = Set.of("TASK", "PURPOSE", "SITE");
     private static final Set<String> FORBIDDEN_PLACEMENT_KEYS = Set.of(
         "BLOCK", "BLOCKS", "BLOCK_STATE", "PALETTE", "PLACE", "PLACEMENT", "PLACEMENTS",
-        "OPERATION", "OPERATIONS", "SETBLOCK", "FILL_COMMAND", "COMMAND", "COMMANDS", "NBT", "SNBT"
+        "OPERATION", "OPERATIONS", "SETBLOCK", "FILL", "FILL_COMMAND", "COMMAND", "COMMANDS", "NBT", "SNBT"
     );
 
     private BlueprintIntentCodec() {}
