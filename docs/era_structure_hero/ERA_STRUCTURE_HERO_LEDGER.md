@@ -31,45 +31,48 @@ Source completion does not equal `PRODUCTION_ADMITTED`. Production admission add
 | E01-013 | Lower Paleolithic / Early Human | Large-Carcass Processing Site | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
 | E01-014 | Lower Paleolithic / Early Human | Bone-Breaking Station | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
 | E01-015 | Lower Paleolithic / Early Human | Marrow Processing Ground | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
-| E01-016 | Lower Paleolithic / Early Human | Watering-Hole Camp | NEXT | — | — | — |
+| E01-016 | Lower Paleolithic / Early Human | Watering-Hole Camp | HERO_SPEC_COMPLETE | BUILD_COMPLETE_SOURCE | WORLDGEN_CONTRACT_INTEGRATED | VALIDATION_PENDING |
+| E01-017 | Lower Paleolithic / Early Human | Riverbank Foraging Camp | NEXT | — | — | — |
 
 ## Last completed run
 
-**E01-015 — Marrow Processing Ground**
+**E01-016 — Watering-Hole Camp**
 
 ### Stage 1 — HERO SPEC
-Committed specification: `docs/era_structure_hero/E01-015_MARROW_PROCESSING_GROUND.md`.
+Committed specification: `docs/era_structure_hero/E01-016_WATERING_HOLE_CAMP.md`.
 
-The specification defines a post-fracture marrow-extraction and consumption landscape with clean-side opened-bone staging, one or more marrow-handling pockets, adjacent activity stances, grease/organic ground lenses, spent-fragment margins, short circulation links, condition states, biome/culture hooks, semantic vanilla material proxies, additive family relationships, sparse loot/occupancy hooks, validation criteria, and production-readiness requirements.
+The specification defines a temporary/repeated camp organized around a bounded freshwater margin: dry setback terrace, water-access lane, external dry approach, hearth/rest zone, temporary windbreak traces, light activity, dry-side refuse, animal spoor/trample cues, biome/culture variants, condition states, additive family relationships, sparse loot/occupancy hooks, validation criteria, and production-readiness gates.
 
-Archetype distinction is explicit: E01-014 remains the high-energy bone-fracture workstation. E01-015 is organized around handling already-opened or easily opened bones, distributed marrow extraction/consumption, and low-energy spent-fragment disposal. Heavy percussion is absent or limited to one subordinate final-cracking point.
+Archetype distinction is explicit: E01-016 is a camp organized around a standing or slow-refresh watering place. It does not become an engineered reservoir, river-linear foraging site, generic dry-land hearth camp, or carcass-processing landscape.
 
 ### Stage 2 — BUILD
-Committed implementation: `src/structure_capability/early_human_marrow_processing.py`.
+Committed implementation: `src/structure_capability/early_human_watering_hole.py`.
 
 The deterministic generator provides:
-- S/M/L envelopes of 19×6×17, 29×7×25, and 41×8×33;
-- 1–5 scale/culture-dependent marrow-handling pockets;
-- seed-derived clean-to-dirty orientation;
-- clean-side opened-bone staging;
-- pocket-local opened-bone and grease/stain concentrations;
-- clear activity stances adjacent to handling pockets;
-- dirty-side spent-fragment disposal;
-- staging-to-pocket circulation paths plus a disposal path;
-- culture profiles for immediate consumption, distributed extraction, intensive cleaning, and repeated use;
-- active/recent/repeated/abandoned/weathered/scavenger-reworked/sediment-reworked/repurposed conditions;
-- optional single light-percussion point and optional subordinate hearth;
+- S/M/L envelopes of 31×8×27, 43×9×37, and 57×10×49;
+- seed-derived water-facing/dry-side orientation;
+- bounded irregular freshwater-margin and bank proxies;
+- arid reduction of water footprint;
+- dry camp terrace with scale/culture-dependent setback;
+- terrace-to-water access lane and separate external approach lane;
+- subordinate hearth/rest zone and temporary windbreak traces;
+- light tool/activity evidence;
+- dry-side refuse projection;
+- separate animal spoor/trample sector;
+- optional medium/large carcass-opportunism traces that remain subordinate;
+- active/recent/repeated/abandoned/weathered/flood-reworked/scavenger-reworked/repurposed conditions;
+- post-transform restoration of critical circulation;
 - explicit semantic material roles, qualification gates, and deterministic fingerprints.
 
-Focused test source: `tests/test_early_human_marrow_processing.py` covers deterministic replay, seed variation, S/M/L bounds, marrow-processing qualification, scale progression, percussion suppression, repeated-use behavior, arid weathering, invalid inputs, additive compatibility, spacing validity, and minimum 500-block structure/jigsaw protection.
+Focused test source: `tests/test_early_human_watering_hole.py` covers deterministic replay, seed variation, S/M/L bounds, watering-hole qualification, arid water reduction/no-moss behavior, cautious-observation setback/spoor behavior, subordinate carcass opportunism, invalid inputs, additive compatibility, spacing validity, and minimum 500-block structure/jigsaw protection.
 
-Public export: `MarrowProcessingGroundGenerator` and `MarrowProcessingGroundGenerationError` are exported through `structure_capability.__init__`.
+Public export: `WateringHoleCampGenerator` and `WateringHoleCampGenerationError` are exported through `structure_capability.__init__`.
 
 ### Stage 3 — WORLDGEN
-`MarrowProcessingGroundGenerator.worldgen_bundle()` uses the existing Continuity Works Minecraft worldgen contract with:
-- family `continuityworks:early_human_carcass_processing`;
-- structure ID `continuityworks:e01_015_marrow_processing_ground`;
-- start pool `continuityworks:early_human/e01_015_marrow_processing_ground`;
+`WateringHoleCampGenerator.worldgen_bundle()` uses the existing Continuity Works Minecraft worldgen contract with:
+- family `continuityworks:early_human_water_access`;
+- structure ID `continuityworks:e01_016_watering_hole_camp`;
+- start pool `continuityworks:early_human/e01_016_watering_hole_camp`;
 - `surface_structures` generation step;
 - `beard_thin` terrain adaptation;
 - `WORLD_SURFACE_WG` projection;
@@ -82,8 +85,8 @@ Public export: `MarrowProcessingGroundGenerator` and `MarrowProcessingGroundGene
 - existing geospatial worldgen validation.
 
 ### DEEFM claim boundary
-Observed GitHub evidence proves the Stage 1 hero specification, Stage 2 generator source, focused test source, public export, Stage 3 worldgen contract, and this ledger update are committed on authoritative `main`. **No claim is made that tests have executed successfully in the authoritative runtime, that final NBT/template-pool artifacts have been materialized and loaded in Minecraft, or that E01-015 is production-admitted.**
+Observed GitHub evidence proves the Stage 1 hero specification, Stage 2 generator source, focused test source, public export, Stage 3 worldgen contract, and this ledger update are committed on authoritative `main`. **No claim is made that the new focused tests have executed successfully in the authoritative runtime, that final NBT/template-pool artifacts have been materialized and loaded in Minecraft, or that E01-016 is production-admitted.**
 
 ## Next run
 
-Proceed with **E01-016 — Watering-Hole Camp** through Stage 1 hero specification, Stage 2 build, and Stage 3 worldgen integration before advancing to E01-017 Riverbank Foraging Camp.
+Proceed with **E01-017 — Riverbank Foraging Camp** through Stage 1 hero specification, Stage 2 build, and Stage 3 worldgen integration unless a higher-priority defect or user-visible repair supersedes it.
