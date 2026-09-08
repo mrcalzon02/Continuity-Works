@@ -40,7 +40,7 @@ final class CompactFacilityCorpusPlanner {
             if (candidate == null) continue;
             if (best == null || candidate.score() > best.score()) best = candidate;
         }
-        if (best == null) throw new IllegalArgumentException("No matching Continuity Works facility reference fits the selected construction volume.");
+        if (best == null) throw new IllegalArgumentException("No matching Continuity Works facility reference fits the selected construction volume within the bounded candidate window.");
         return Optional.of(compile(best, request, specs));
     }
 
@@ -132,6 +132,7 @@ final class CompactFacilityCorpusPlanner {
         if (primitives.size() > CompactBlueprintProvider.MAX_PRIMITIVES) {
             throw new IllegalArgumentException("Facility reference exceeds compact primitive budget " + CompactBlueprintProvider.MAX_PRIMITIVES);
         }
+        OperationCounts operationCounts = operationCounts(primitives);
 
         BlockPosition anchor = anchor(request.preferredOrigin(), request.constructionVolume().bounds(), c.dims());
         Bounds localBounds = new Bounds(new BlockPosition(0, 0, 0),
@@ -146,8 +147,6 @@ final class CompactFacilityCorpusPlanner {
         if (!materialIssues.isEmpty()) warnings.add(new BlueprintWarning("MATERIALS_INCOMPLETE", BlueprintWarning.Severity.WARNING,
             "Current material snapshot cannot satisfy all ordered primitive placements."));
 
-        long rawPlacements = count(primitives, false);
-        long clears = count(primitives, true);
         double confidence = warnings.stream().anyMatch(w -> w.severity() == BlueprintWarning.Severity.ERROR) ? 0.45 : 0.99;
         Map<String, String> metadata = Map.of(
             "reference", c.refId(),
@@ -162,7 +161,7 @@ final class CompactFacilityCorpusPlanner {
         CompactBlueprintPlan plan = new CompactBlueprintPlan(
             blueprintId, version, "SHA-256", hash, request.dimensionId(), request.constructionVolume(), localBounds,
             anchor, request.preferredFacing(), ledger, palette, manifest, primitives, materialIssues,
-            new WorkloadEstimate(rawPlacements, clears, 0, rawPlacements + clears),
+            new WorkloadEstimate(operationCounts.placements(), operationCounts.clears(), 0, operationCounts.total()),
             new PreviewMetadata(request.buildPurpose(), c.ref().has("description") ? c.ref().get("description").getAsString() : c.refId(),
                 c.entry().category(), metadata),
             confidence, warnings
@@ -189,11 +188,7 @@ final class CompactFacilityCorpusPlanner {
             if (archetype != null) {
                 String wanted = slug(archetype.value());
                 String hay = slug(entry.id()) + " " + normalize(entry.path());
-                if (!hay.contains(wanted)) {
-                    JsonObject refJson = json(entry.path());
-                    if (!idMatches(archetype.value(), text(refJson, "archetype_id"))) continue;
-                }
-                score += 800;
+                score += tokenScore(wanted, hay);
             }
             ranked.add(new Scored(entry, score));
         }
@@ -287,7 +282,7 @@ final class CompactFacilityCorpusPlanner {
                 required.merge(material, 1L, Long::sum);
             }
             return true;
-        });
+        }, CompactBlueprintProvider.MAX_RAW_PLACEMENTS);
         Map<String, Long> available = new HashMap<>();
         for (MaterialAvailability row : availableRows) available.merge(row.materialId(), row.availableCount(), Long::sum);
         Map<String, Long> missing = new HashMap<>();
@@ -308,13 +303,24 @@ final class CompactFacilityCorpusPlanner {
         return List.copyOf(out);
     }
 
-    private static long count(List<CompactBlueprintPrimitive> primitives, boolean clearsOnly) {
-        final long[] value = {0L};
-        CompactBlueprintMaterializer.forEachPlacement(primitives, (sequence, kind, relative, paletteKey) -> {
-            if ((kind == PlacementOperation.Kind.CLEAR) == clearsOnly) value[0]++;
+    private static OperationCounts operationCounts(List<CompactBlueprintPrimitive> primitives) {
+        final long[] placements = {0L};
+        final long[] clears = {0L};
+        long total = CompactBlueprintMaterializer.forEachPlacement(primitives, (sequence, kind, relative, paletteKey) -> {
+            if (kind == PlacementOperation.Kind.CLEAR) clears[0]++;
+            else placements[0]++;
             return true;
-        });
-        return value[0];
+        }, CompactBlueprintProvider.MAX_RAW_PLACEMENTS);
+        return new OperationCounts(placements[0], clears[0], total);
+    }
+
+    private static int tokenScore(String wanted, String hay) {
+        if (hay.contains(wanted)) return 800;
+        int score = 0;
+        for (String token : wanted.split("_")) {
+            if (token.length() > 2 && hay.contains(token)) score += 80;
+        }
+        return score;
     }
 
     private static String canonical(Candidate c, BlueprintRequest request, BlockPosition anchor,
@@ -416,4 +422,5 @@ final class CompactFacilityCorpusPlanner {
     private record Candidate(Entry entry, JsonObject ref, String refId, String archetypeId, String corporateId,
                              Dims dims, String sizeClass, int score, int sourceWidth, int sourceDepth) {}
     private record SourcePrimitive(JsonObject json, String block) {}
+    private record OperationCounts(long placements, long clears, long total) {}
 }
