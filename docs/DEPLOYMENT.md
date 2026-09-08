@@ -11,7 +11,7 @@ Continuity Works API runtime
                 v
 StructureCapability -> generators/content tools
 
-GitHub Pages StructureForge frontend
+GitHub Pages Continuity Works frontend
                 |
                 +---------> same API contract when a runtime is configured
 ```
