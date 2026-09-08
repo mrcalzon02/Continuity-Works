@@ -5,8 +5,11 @@ from pathlib import Path
 import sys
 
 # Deliberately retained only inside this non-user-facing validation guard.
-# These literals identify retired public branding that must never ship again.
+# The rendered artifact rejects every retired public identity. The source-tree
+# guard is scoped to the explicit Structure Forge cleanup requirement; legacy
+# StructureSmith compatibility tokens remain separately bounded by contract tests.
 RETIRED_PUBLIC_BRANDS = ("StructureForge", "Structure Forge", "StructureSmith")
+RETIRED_SOURCE_BRANDS = ("StructureForge", "Structure Forge")
 STATIC_TEXT_SUFFIXES = {
     ".css",
     ".html",
@@ -48,6 +51,7 @@ SOURCE_EXCLUDED_DIRS = {
     "__pycache__",
     "dist",
     "node_modules",
+    "releases",  # immutable historical release snapshots, not active source authority
     "venv",
 }
 # These two files must contain the retired literals so the guard can detect and test them.
@@ -57,14 +61,18 @@ SOURCE_LITERAL_ALLOWLIST = {
 }
 
 
-def _find_branding_in_text(path: Path, relative_path: Path) -> list[tuple[Path, str]]:
+def _find_branding_in_text(
+    path: Path,
+    relative_path: Path,
+    brands: tuple[str, ...],
+) -> list[tuple[Path, str]]:
     try:
         text = path.read_text(encoding="utf-8")
     except UnicodeDecodeError:
         return []
     folded = text.casefold()
     findings: list[tuple[Path, str]] = []
-    for original in RETIRED_PUBLIC_BRANDS:
+    for original in brands:
         if original.casefold() in folded:
             findings.append((relative_path, original))
     return findings
@@ -76,12 +84,14 @@ def find_retired_branding(root: Path) -> list[tuple[Path, str]]:
     for path in sorted(root.rglob("*")):
         if not path.is_file() or path.suffix.lower() not in STATIC_TEXT_SUFFIXES:
             continue
-        findings.extend(_find_branding_in_text(path, path.relative_to(root)))
+        findings.extend(
+            _find_branding_in_text(path, path.relative_to(root), RETIRED_PUBLIC_BRANDS)
+        )
     return findings
 
 
 def find_retired_source_branding(root: Path) -> list[tuple[Path, str]]:
-    """Find retired branding across authoritative source while excluding generated/dependency trees."""
+    """Find retired Structure Forge branding across active authoritative source."""
     findings: list[tuple[Path, str]] = []
     for path in sorted(root.rglob("*")):
         if not path.is_file() or path.suffix.lower() not in SOURCE_TEXT_SUFFIXES:
@@ -91,7 +101,7 @@ def find_retired_source_branding(root: Path) -> list[tuple[Path, str]]:
             continue
         if relative in SOURCE_LITERAL_ALLOWLIST:
             continue
-        findings.extend(_find_branding_in_text(path, relative))
+        findings.extend(_find_branding_in_text(path, relative, RETIRED_SOURCE_BRANDS))
     return findings
 
 
