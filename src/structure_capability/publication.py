@@ -50,23 +50,23 @@ PUBLIC_CAPABILITIES: dict[str, PublicCapabilitySpec] = {
     ),
     "structure_audit": PublicCapabilitySpec(
         "structure_audit", "POST", "/v1/audit", "audit",
-        manual_surface="structureforge_dashboard",
+        manual_surface="continuity_works_dashboard",
     ),
     "structure_plan": PublicCapabilitySpec(
         "structure_plan", "POST", "/v1/plan", "plan",
-        manual_surface="structureforge_dashboard",
+        manual_surface="continuity_works_dashboard",
     ),
     "structure_generate": PublicCapabilitySpec(
         "structure_generate", "POST", "/v1/generate", "generate",
-        manual_surface="structureforge_dashboard",
+        manual_surface="continuity_works_dashboard",
     ),
     "dungeon_layout": PublicCapabilitySpec(
         "dungeon_layout", "POST", "/v1/dungeon/layout", "dungeon_layout",
-        manual_surface="structureforge_dashboard",
+        manual_surface="continuity_works_dashboard",
     ),
     "infrastructure_layout": PublicCapabilitySpec(
         "infrastructure_layout", "POST", "/v1/infrastructure/layout", "infrastructure_layout",
-        manual_surface="structureforge_dashboard",
+        manual_surface="continuity_works_dashboard",
     ),
     "aerospace_support_campus_generate": PublicCapabilitySpec(
         "aerospace_support_campus_generate",
