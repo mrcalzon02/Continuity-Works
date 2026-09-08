@@ -16,6 +16,9 @@ public final class ContinuityWorksSelectionClientEvents {
         while (ContinuityWorksSelectionClientModEvents.TOGGLE_HIGHLIGHT.consumeClick()) {
             ClientSelectionState.toggleHighlight();
         }
+        while (ContinuityWorksSelectionClientModEvents.OPEN_SELECTION_EDITOR.consumeClick()) {
+            ClientSelectionState.openEditor();
+        }
     }
 
     @SubscribeEvent
