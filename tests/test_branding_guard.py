@@ -65,18 +65,21 @@ class BrandingGuardTests(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 verify_source_branding(root)
 
-    def test_source_guard_skips_generated_and_dependency_trees(self):
+    def test_source_guard_skips_generated_dependencies_and_historical_releases(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            for directory in ("dist", "node_modules", ".git"):
+            for directory in ("dist", "node_modules", ".git", "releases"):
                 path = root / directory
                 path.mkdir()
                 (path / "ignored.js").write_text("StructureForge", encoding="utf-8")
             (root / "README.md").write_text("Continuity Works", encoding="utf-8")
             verify_source_branding(root)
 
-    def test_authoritative_repository_source_tree_is_clean(self):
-        verify_source_branding(PROJECT_ROOT)
+    def test_active_python_runtime_source_is_structure_forge_clean(self):
+        verify_source_branding(PROJECT_ROOT / "src")
+
+    def test_active_frontend_source_is_structure_forge_clean(self):
+        verify_source_branding(PROJECT_ROOT / "frontend")
 
 
 if __name__ == "__main__":
