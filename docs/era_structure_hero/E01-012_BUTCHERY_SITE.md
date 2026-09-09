@@ -56,7 +56,7 @@ Use deterministic named random streams derived from world seed plus catalog ID. 
 
 The generator must fail qualification if carcass-processing relationships cannot be read from the resulting topology.
 
-## Biome and environmental adaptation
+## Biome and environmental adaptations
 
 ### Temperate
 
