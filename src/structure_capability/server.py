@@ -3,7 +3,9 @@ from __future__ import annotations
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 import os
+from urllib.error import HTTPError, URLError
 from urllib.parse import parse_qs, unquote, urlsplit
+from urllib.request import Request, urlopen
 
 from .api import StructureCapability
 from .publication import (
@@ -21,6 +23,18 @@ from .tooling import tool_catalog
 DEFAULT_CORS_ORIGINS = "https://mrcalzon02.github.io"
 CANONICAL_DISCOVERY_PATH = "/.well-known/continuity-works.json"
 LEGACY_DISCOVERY_PATH = "/.well-known/structuresmith.json"
+DECISION_BRIDGE_PREFIX = "/v1/blueprints/decision"
+DECISION_BRIDGE_ENV = "CONTINUITY_WORKS_DECISION_AUTHORITY_URL"
+DECISION_BRIDGE_TIMEOUT_ENV = "CONTINUITY_WORKS_DECISION_AUTHORITY_TIMEOUT_SECONDS"
+DECISION_BRIDGE_DEFAULT_TIMEOUT = 10.0
+DECISION_BRIDGE_ROUTES = {
+    f"{DECISION_BRIDGE_PREFIX}/profile": "GET",
+    f"{DECISION_BRIDGE_PREFIX}/begin": "POST",
+    f"{DECISION_BRIDGE_PREFIX}/next": "POST",
+    f"{DECISION_BRIDGE_PREFIX}/apply": "POST",
+    f"{DECISION_BRIDGE_PREFIX}/validate": "POST",
+    f"{DECISION_BRIDGE_PREFIX}/finalize": "POST",
+}
 
 
 def _tool_index() -> dict:
@@ -33,6 +47,10 @@ def _json_response(description: str = "Successful Continuity Works JSON response
 
 def _error_response() -> dict:
     return {"description": "Request rejected by the Continuity Works public validation boundary.", "content": {"application/json": {"schema": {"type": "object", "required": ["error"], "properties": {"error": {"type": "string"}, "message": {"type": "string"}}}}}}
+
+
+def _unavailable_response() -> dict:
+    return {"description": "The authoritative Java decision service is not attached to this HTTP process.", "content": {"application/json": {"schema": {"type": "object", "required": ["error", "message"], "properties": {"error": {"type": "string"}, "message": {"type": "string"}}}}}}
 
 
 def _post_operation(operation_id: str, summary: str, schema: dict | None = None, tool_name: str | None = None) -> dict:
@@ -49,6 +67,106 @@ def _get_operation(operation_id: str, summary: str, tool_name: str | None = None
     if tool_name:
         operation["x-continuity-works-tool"] = tool_name
     return operation
+
+
+def _decision_authority_url() -> str | None:
+    configured = (os.environ.get(DECISION_BRIDGE_ENV) or "").strip()
+    if not configured:
+        return None
+    parsed = urlsplit(configured)
+    if parsed.scheme not in {"http", "https"} or not parsed.netloc or parsed.query or parsed.fragment:
+        raise ValueError(f"{DECISION_BRIDGE_ENV} must be an absolute http(s) origin/base URL without query or fragment")
+    return configured.rstrip("/")
+
+
+def _decision_authority_timeout() -> float:
+    raw = (os.environ.get(DECISION_BRIDGE_TIMEOUT_ENV) or "").strip()
+    if not raw:
+        return DECISION_BRIDGE_DEFAULT_TIMEOUT
+    try:
+        value = float(raw)
+    except ValueError as exc:
+        raise ValueError(f"{DECISION_BRIDGE_TIMEOUT_ENV} must be a number") from exc
+    if value <= 0 or value > 60:
+        raise ValueError(f"{DECISION_BRIDGE_TIMEOUT_ENV} must be greater than 0 and no more than 60")
+    return value
+
+
+def decision_bridge_document() -> dict:
+    authority = _decision_authority_url()
+    return {
+        "enabled": authority is not None,
+        "mode": "delegated_authoritative_java",
+        "protocol": "cw-decision-1",
+        "authority_configured": authority is not None,
+        "routes": dict(DECISION_BRIDGE_ROUTES) if authority else {},
+        "invariant": "Inference selects. State accumulates. Catalog defines. Generator builds. Validator decides legality.",
+        "python_reimplementation": False,
+    }
+
+
+def _decision_openapi_paths() -> dict:
+    if _decision_authority_url() is None:
+        return {}
+    state_schema = {
+        "type": "object",
+        "required": ["state"],
+        "properties": {"state": {"type": "object"}},
+        "additionalProperties": False,
+    }
+    apply_schema = {
+        "type": "object",
+        "required": ["state", "encoded_mutations"],
+        "properties": {
+            "state": {"type": "object"},
+            "encoded_mutations": {"type": "string", "maxLength": 256},
+        },
+        "additionalProperties": False,
+    }
+    begin_schema = {
+        "type": "object",
+        "required": ["request"],
+        "properties": {"request": {"type": "object"}},
+        "additionalProperties": False,
+    }
+    return {
+        f"{DECISION_BRIDGE_PREFIX}/profile": {
+            "get": {
+                **_get_operation("blueprintDecisionProfile", "Retrieve the authoritative compact decision-chain profile."),
+                "x-continuity-works-authority": "delegated_java",
+            }
+        },
+        f"{DECISION_BRIDGE_PREFIX}/begin": {
+            "post": {
+                **_post_operation("blueprintDecisionBegin", "Begin authoritative compact blueprint decision state.", begin_schema),
+                "x-continuity-works-authority": "delegated_java",
+            }
+        },
+        f"{DECISION_BRIDGE_PREFIX}/next": {
+            "post": {
+                **_post_operation("blueprintDecisionNext", "Retrieve only dependency-valid next mutators.", state_schema),
+                "x-continuity-works-authority": "delegated_java",
+            }
+        },
+        f"{DECISION_BRIDGE_PREFIX}/apply": {
+            "post": {
+                **_post_operation("blueprintDecisionApply", "Apply bounded semantic mutations through the authoritative decision chain.", apply_schema),
+                "x-continuity-works-authority": "delegated_java",
+            }
+        },
+        f"{DECISION_BRIDGE_PREFIX}/validate": {
+            "post": {
+                **_post_operation("blueprintDecisionValidate", "Validate accumulated decision state deterministically.", state_schema),
+                "x-continuity-works-authority": "delegated_java",
+            }
+        },
+        f"{DECISION_BRIDGE_PREFIX}/finalize": {
+            "post": {
+                **_post_operation("blueprintDecisionFinalize", "Finalize valid semantic decision state into blueprint specifications.", state_schema),
+                "x-continuity-works-authority": "delegated_java",
+            }
+        },
+    }
 
 
 def openapi_document(base_url: str | None = None) -> dict:
@@ -68,6 +186,7 @@ def openapi_document(base_url: str | None = None) -> dict:
         "/openapi.json": {"get": _get_operation("openapi", "Retrieve this OpenAPI 3.1 document.")},
         CANONICAL_DISCOVERY_PATH: {"get": _get_operation("continuityWorksDiscovery", "Retrieve absolute Continuity Works machine-discovery metadata.")},
     }
+    paths.update(_decision_openapi_paths())
     for name, spec in PUBLIC_CAPABILITIES.items():
         tool = tools.get(name)
         if tool is None:
@@ -75,19 +194,27 @@ def openapi_document(base_url: str | None = None) -> dict:
         operation = _get_operation(name, tool["description"], tool_name=name) if spec.http_method == "GET" else _post_operation(name, tool["description"], schema=tool["parameters"], tool_name=name)
         paths.setdefault(spec.path, {})[spec.http_method.lower()] = operation
     schema_version = str(tool_catalog().get("schema_version", "unknown"))
-    return {"openapi": "3.1.0", "info": {"title": "Continuity Works Capability API", "version": installed_version(), "description": "Executable HTTP boundary for Continuity Works capabilities. GitHub Pages is a separate static frontend."}, "servers": [{"url": base, "description": "Canonical Continuity Works executable API for this service instance."}], "paths": paths, "x-continuity-works": {"api_version": "v1", "tool_schema_version": schema_version, "frontend": canonical_frontend_url(), "api": base, "tool_catalog": f"{base}/v1/tools", "compact_tool_index": f"{base}/v1/tools/index", "tool_contract": f"{base}/v1/tools/{{tool_name}}", "presets": f"{base}/v1/presets", "resolver": f"{base}/v1/resolve", "health": f"{base}/v1/health", "serviceability": f"{base}/v1/serviceability", "discovery": f"{base}{CANONICAL_DISCOVERY_PATH}", "progressive_disclosure": True, "public_gate": "PUBLIC_SERVICEABILITY"}}
+    return {"openapi": "3.1.0", "info": {"title": "Continuity Works Capability API", "version": installed_version(), "description": "Executable HTTP boundary for Continuity Works capabilities. GitHub Pages is a separate static frontend."}, "servers": [{"url": base, "description": "Canonical Continuity Works executable API for this service instance."}], "paths": paths, "x-continuity-works": {"api_version": "v1", "tool_schema_version": schema_version, "frontend": canonical_frontend_url(), "api": base, "tool_catalog": f"{base}/v1/tools", "compact_tool_index": f"{base}/v1/tools/index", "tool_contract": f"{base}/v1/tools/{{tool_name}}", "presets": f"{base}/v1/presets", "resolver": f"{base}/v1/resolve", "health": f"{base}/v1/health", "serviceability": f"{base}/v1/serviceability", "discovery": f"{base}{CANONICAL_DISCOVERY_PATH}", "decision_bridge": decision_bridge_document(), "progressive_disclosure": True, "public_gate": "PUBLIC_SERVICEABILITY"}}
 
 
 def discovery_document(capability: StructureCapability, base_url: str | None = None) -> dict:
     base = (base_url or CANONICAL_API_URL).rstrip("/")
     catalog = published_tool_catalog(tool_catalog(), capability, base)
     identity = deployment_identity(base, str(catalog.get("schema_version", "unknown")))
-    return {"schema_version": "1.2", "name": "Continuity Works", "slug": "continuity-works", "description": "Machine discovery for the executable Continuity Works API. The GitHub Pages origin is a static frontend only.", "frontend": canonical_frontend_url(), "api": base, "build": identity, "endpoints": {"health": f"{base}/v1/health", "serviceability": f"{base}/v1/serviceability", "tools": f"{base}/v1/tools", "compact_tools": f"{base}/v1/tools/index", "presets": f"{base}/v1/presets", "resolver": f"{base}/v1/resolve", "openapi": f"{base}/openapi.json", "discovery": f"{base}{CANONICAL_DISCOVERY_PATH}"}, "capabilities": [{"name": tool["name"], **tool.get("x-continuity-works", {}).get("publication", {})} for tool in catalog.get("tools", [])]}
+    endpoints = {"health": f"{base}/v1/health", "serviceability": f"{base}/v1/serviceability", "tools": f"{base}/v1/tools", "compact_tools": f"{base}/v1/tools/index", "presets": f"{base}/v1/presets", "resolver": f"{base}/v1/resolve", "openapi": f"{base}/openapi.json", "discovery": f"{base}{CANONICAL_DISCOVERY_PATH}"}
+    if _decision_authority_url() is not None:
+        endpoints["blueprint_decision_profile"] = f"{base}{DECISION_BRIDGE_PREFIX}/profile"
+        endpoints["blueprint_decision_begin"] = f"{base}{DECISION_BRIDGE_PREFIX}/begin"
+        endpoints["blueprint_decision_next"] = f"{base}{DECISION_BRIDGE_PREFIX}/next"
+        endpoints["blueprint_decision_apply"] = f"{base}{DECISION_BRIDGE_PREFIX}/apply"
+        endpoints["blueprint_decision_validate"] = f"{base}{DECISION_BRIDGE_PREFIX}/validate"
+        endpoints["blueprint_decision_finalize"] = f"{base}{DECISION_BRIDGE_PREFIX}/finalize"
+    return {"schema_version": "1.3", "name": "Continuity Works", "slug": "continuity-works", "description": "Machine discovery for the executable Continuity Works API. The GitHub Pages origin is a static frontend only.", "frontend": canonical_frontend_url(), "api": base, "build": identity, "endpoints": endpoints, "decision_bridge": decision_bridge_document(), "capabilities": [{"name": tool["name"], **tool.get("x-continuity-works", {}).get("publication", {})} for tool in catalog.get("tools", [])]}
 
 
 def health_document(base_url: str | None = None) -> dict:
     schema_version = str(tool_catalog().get("schema_version", "unknown"))
-    return {"ok": True, **deployment_identity(base_url or CANONICAL_API_URL, schema_version)}
+    return {"ok": True, **deployment_identity(base_url or CANONICAL_API_URL, schema_version), "decision_bridge": decision_bridge_document()}
 
 
 def serviceability_document(capability: StructureCapability, base_url: str | None = None) -> dict:
@@ -97,6 +224,7 @@ def serviceability_document(capability: StructureCapability, base_url: str | Non
     gate = static_serviceability(capability, raw_catalog, openapi_document(base), discovery, base)
     gate["build"] = deployment_identity(base, str(raw_catalog.get("schema_version", "unknown")))
     gate["capabilities"] = discovery["capabilities"]
+    gate["decision_bridge"] = decision_bridge_document()
     return gate
 
 
@@ -170,6 +298,41 @@ class Handler(BaseHTTPRequestHandler):
         if spec.argument_mode == "none": return fn()
         if spec.argument_mode == "version": return fn((body or {}).get("version"))
         return fn(body or {})
+    def _decision_bridge(self, method: str, path: str, body: dict | None = None):
+        authority = _decision_authority_url()
+        if authority is None:
+            return self._send(503, {
+                "error": "decision_authority_unavailable",
+                "message": f"{DECISION_BRIDGE_ENV} is not configured; the Python service will not reimplement authoritative Java decision semantics.",
+                "decision_bridge": decision_bridge_document(),
+            })
+        if authority == self._public_base_url().rstrip("/"):
+            return self._send(503, {
+                "error": "decision_authority_loop",
+                "message": f"{DECISION_BRIDGE_ENV} points back to this HTTP service; attach the separate authoritative Java decision service instead.",
+            })
+        expected = DECISION_BRIDGE_ROUTES.get(path)
+        if expected != method.upper():
+            return self._send(404, {"error": "not_found"})
+        data = None if body is None else json.dumps(body).encode("utf-8")
+        headers = {"Accept": "application/json"}
+        if data is not None:
+            headers["Content-Type"] = "application/json"
+        request = Request(f"{authority}{path}", data=data, headers=headers, method=method.upper())
+        try:
+            with urlopen(request, timeout=_decision_authority_timeout()) as response:
+                raw = response.read()
+                payload = json.loads(raw) if raw else {}
+                return self._send(response.status, payload)
+        except HTTPError as error:
+            raw = error.read()
+            try:
+                payload = json.loads(raw) if raw else {"error": "decision_authority_http_error"}
+            except json.JSONDecodeError:
+                payload = {"error": "decision_authority_http_error", "message": raw.decode("utf-8", "replace")}
+            return self._send(error.code, payload)
+        except (URLError, TimeoutError, OSError) as error:
+            return self._send(502, {"error": "decision_authority_unreachable", "message": str(error)})
     def do_OPTIONS(self):
         self.send_response(204); self._cors_headers(); self.end_headers()
     def do_GET(self):
@@ -189,6 +352,7 @@ class Handler(BaseHTTPRequestHandler):
             if path.startswith("/v1/presets/"): return self._send(200, self.capability.tool_preset(unquote(path.removeprefix("/v1/presets/"))))
             if path == "/openapi.json": return self._send(200, openapi_document(base))
             if path in {CANONICAL_DISCOVERY_PATH, LEGACY_DISCOVERY_PATH}: return self._send(200, discovery_document(self.capability, base))
+            if path in DECISION_BRIDGE_ROUTES: return self._decision_bridge("GET", path)
             spec = _route("GET", path)
             if spec: return self._send(200, self._invoke_public(spec))
             return self._send(404, {"error": "not_found"})
@@ -199,6 +363,7 @@ class Handler(BaseHTTPRequestHandler):
             body = self._json(); path = self._path()
             if path == "/v1/resolve": return self._send(200, self.capability.resolve_tool_request(body))
             if path == "/v1/resume": return self._send(200, self.capability.resume(body["snapshot_id"]))
+            if path in DECISION_BRIDGE_ROUTES: return self._decision_bridge("POST", path, body)
             spec = _route("POST", path)
             if spec: return self._send(200, self._invoke_public(spec, body))
             return self._send(404, {"error": "not_found"})
