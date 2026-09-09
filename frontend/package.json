@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --config vite.config.js",
-    "build": "vite build --config vite.config.js && python ../scripts/verify_branding.py --static-dir ../dist",
+    "build": "python ../scripts/verify_branding.py --source-root .. && vite build --config vite.config.js && python ../scripts/verify_branding.py --static-dir ../dist",
     "preview": "vite preview --config vite.config.js"
   },
   "dependencies": {
