@@ -1277,7 +1277,7 @@ The core modules should exchange plain data contracts rather than import each ot
 
 ---
 
-## 23. Frontend / StructureForge Integration Plan
+## 23. Frontend / Continuity Works Integration Plan
 
 The frontend should expose Biome Expander as a separate capability surface with progressive stages rather than a single large form.
 
@@ -2504,7 +2504,8 @@ That contract should remain true even as the number of supported loaders, versio
       "reason_code": "PROVIDER_OPERATION_UNSUPPORTED",
       "message": "This provider creates owned biome resources but does not append features to an upstream biome."
     }
-  ]
+  ],
+  "status": "SUPPORTED_WITH_RUNTIME_VALIDATION"
 }
 ```
 
