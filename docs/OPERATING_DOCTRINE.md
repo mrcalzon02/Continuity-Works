@@ -12,7 +12,7 @@ Generated/shipping artifacts are outputs unless the project explicitly declares 
 
 **Presentation track (optional, client-owned):** baseline → purpose program → massing → circulation → architectural pass → interior/operations → historical/damage pass → detailing → optional rendered inspection.
 
-Functional completion must never depend on StructureSmith's server producing a render. A consuming project may impose stricter presentation or art-review requirements for itself, but those requirements remain local to that client.
+Functional completion must never depend on the Continuity Works service producing a render. A consuming project may impose stricter presentation or art-review requirements for itself, but those requirements remain local to that client.
 
 ## 3. Existing geometry is evidence, not sacred geometry
 
@@ -57,11 +57,11 @@ Condition variants should express causes: fire, flood, impact, structural failur
 
 ## 9. Rendering belongs to the client
 
-StructureSmith returns geometry, structure artifacts, validation results, and the metadata needed to inspect them. It does **not** require the public API host to create visual renders and does not reserve server compute for visual review.
+Continuity Works returns geometry, structure artifacts, validation results, and the metadata needed to inspect them. It does **not** require the public API host to create visual renders and does not reserve server compute for visual review.
 
-Clients that want a three-dimensional preview or visual inspection should render the returned information locally or in infrastructure they control. StructureForge's browser-side 3D viewport is the reference implementation of this model.
+Clients that want a three-dimensional preview or visual inspection should render the returned information locally or in infrastructure they control. The Continuity Works browser-side 3D viewport is the reference implementation of this model.
 
-Visual review is advisory at the StructureSmith API boundary. A consuming project can require its own human or automated visual review before accepting an asset, but that policy does not block StructureSmith generation and does not transfer rendering cost to the StructureSmith service operator.
+Visual review is advisory at the Continuity Works API boundary. A consuming project can require its own human or automated visual review before accepting an asset, but that policy does not block Continuity Works generation and does not transfer rendering cost to the Continuity Works service operator.
 
 ## 10. Vanilla first; verified mods second
 
@@ -74,7 +74,7 @@ Never hallucinate registry IDs.
 
 ## 11. Promotion gate
 
-A StructureSmith-generated artifact should normally satisfy:
+A Continuity Works-generated artifact should normally satisfy:
 - provenance/source known;
 - source preserved where applicable;
 - normalization complete;
@@ -84,4 +84,4 @@ A StructureSmith-generated artifact should normally satisfy:
 - generated artifact hash/provenance recorded;
 - regression/rotation/terrain placement checked at the appropriate project gate.
 
-Visual inspection may be added by the consuming project as its own optional or mandatory downstream policy, but it is not a StructureSmith server gate.
+Visual inspection may be added by the consuming project as its own optional or mandatory downstream policy, but it is not a Continuity Works server gate.
