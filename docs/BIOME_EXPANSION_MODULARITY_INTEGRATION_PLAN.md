@@ -2504,8 +2504,7 @@ That contract should remain true even as the number of supported loaders, versio
       "reason_code": "PROVIDER_OPERATION_UNSUPPORTED",
       "message": "This provider creates owned biome resources but does not append features to an upstream biome."
     }
-  ],
-  "status": "SUPPORTED_WITH_RUNTIME_VALIDATION"
+  ]
 }
 ```
 
