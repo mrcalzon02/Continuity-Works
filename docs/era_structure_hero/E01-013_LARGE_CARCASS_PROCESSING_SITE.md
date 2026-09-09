@@ -50,7 +50,33 @@ The generator must emit a deterministic fingerprint, explicit component metadata
 
 ## Biome and environmental adaptations
 
-Supported biome families are temperate, boreal, tundra, savanna, arid, tropical, and coastal. Palette choices adapt surface traces to local ground and available stone proxies while preserving the same functional program. Wet/vegetated settings may develop moss/ground overprint when weathered; arid settings use dry mineral/sand proxies and must not acquire wet-biome mossing. Tundra favors stone/gravel preservation and pale hide proxies. Coastal variants remain terrestrial processing sites and do not become marine processing facilities.
+### Temperate
+
+Palette choices adapt surface traces to temperate local ground and available stone proxies while preserving the same functional program.
+
+### Boreal
+
+Palette choices adapt surface traces to boreal local ground and available stone proxies while preserving the same functional program.
+
+### Tundra
+
+Tundra favors stone/gravel preservation and pale hide proxies while preserving the same functional program.
+
+### Savanna
+
+Palette choices adapt surface traces to savanna local ground and available stone proxies while preserving the same functional program.
+
+### Arid
+
+Arid settings use dry mineral/sand proxies and must not acquire wet-biome mossing while preserving the same functional program.
+
+### Tropical
+
+Palette choices adapt surface traces to tropical local ground and available stone proxies while preserving the same functional program. Wet/vegetated settings may develop moss/ground overprint when weathered.
+
+### Coastal
+
+Coastal variants remain terrestrial processing sites and do not become marine processing facilities while preserving the same functional program.
 
 Placement prefers broadly traversable surface terrain. The structure may blend with local surface height through the established worldgen contract but must not destructively flatten unrelated terrain or overwrite existing structures.
 
