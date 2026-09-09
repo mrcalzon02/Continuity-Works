@@ -22,8 +22,8 @@ import java.util.concurrent.Executor;
  * Minimal authoritative HTTP transport for {@link ContinuityWorksDecisionAuthorityAdapter}.
  *
  * <p>The listener owns only serialization, request/session revision checks and HTTP status mapping.
- * Decision vocabulary, dependency semantics, validation and finalization remain delegated to the
- * configured Continuity Works API through {@code ContinuityWorksDecisionAuthorityAdapter}.</p>
+ * Decision vocabulary, dependency semantics, candidate legality, validation and finalization remain
+ * delegated to the configured Continuity Works API through {@code ContinuityWorksDecisionAuthorityAdapter}.</p>
  *
  * <p>This service is intended to sit behind the existing delegated Python publication bridge or
  * an equivalent local companion-mod transport. It does not expose raw world mutation operations.</p>
@@ -33,15 +33,25 @@ public final class ContinuityWorksDecisionAuthorityHttpServer implements AutoClo
     public static final int DEFAULT_MAX_BODY_BYTES = 64 * 1024;
 
     private final ContinuityWorksDecisionAuthorityAdapter authority;
+    private final BlueprintDecisionCandidateSource candidateSource;
     private final HttpServer server;
     private final int maxBodyBytes;
     private final ConcurrentHashMap<UUID, BlueprintDecisionChain.State> sessions = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, BlueprintRequest> requests = new ConcurrentHashMap<>();
 
     public ContinuityWorksDecisionAuthorityHttpServer(
         ContinuityWorksCompactBlueprintApi api,
         InetSocketAddress address
     ) throws IOException {
-        this(new ContinuityWorksDecisionAuthorityAdapter(api), address, DEFAULT_MAX_BODY_BYTES, null);
+        this(new ContinuityWorksDecisionAuthorityAdapter(api), null, address, DEFAULT_MAX_BODY_BYTES, null);
+    }
+
+    public ContinuityWorksDecisionAuthorityHttpServer(
+        ContinuityWorksCompactBlueprintApi api,
+        BlueprintDecisionCandidateSource candidateSource,
+        InetSocketAddress address
+    ) throws IOException {
+        this(new ContinuityWorksDecisionAuthorityAdapter(api), candidateSource, address, DEFAULT_MAX_BODY_BYTES, null);
     }
 
     public ContinuityWorksDecisionAuthorityHttpServer(
@@ -50,7 +60,18 @@ public final class ContinuityWorksDecisionAuthorityHttpServer implements AutoClo
         int maxBodyBytes,
         Executor executor
     ) throws IOException {
+        this(authority, null, address, maxBodyBytes, executor);
+    }
+
+    public ContinuityWorksDecisionAuthorityHttpServer(
+        ContinuityWorksDecisionAuthorityAdapter authority,
+        BlueprintDecisionCandidateSource candidateSource,
+        InetSocketAddress address,
+        int maxBodyBytes,
+        Executor executor
+    ) throws IOException {
         this.authority = Objects.requireNonNull(authority, "authority");
+        this.candidateSource = candidateSource;
         Objects.requireNonNull(address, "address");
         if (maxBodyBytes < 1) throw new IllegalArgumentException("maxBodyBytes must be positive");
         this.maxBodyBytes = maxBodyBytes;
@@ -71,6 +92,10 @@ public final class ContinuityWorksDecisionAuthorityHttpServer implements AutoClo
         return sessions.size();
     }
 
+    public boolean dynamicCandidateSourceConfigured() {
+        return candidateSource != null;
+    }
+
     public void restoreDecision(BlueprintDecisionChain.State state) {
         Objects.requireNonNull(state, "state");
         BlueprintDecisionChain.State existing = sessions.putIfAbsent(state.requestId(), state);
@@ -79,14 +104,31 @@ public final class ContinuityWorksDecisionAuthorityHttpServer implements AutoClo
         }
     }
 
+    /** Restore request context and state together so dynamic candidate discovery can resume safely. */
+    public void restoreDecision(BlueprintRequest request, BlueprintDecisionChain.State state) {
+        Objects.requireNonNull(request, "request");
+        Objects.requireNonNull(state, "state");
+        if (!request.requestId().equals(state.requestId())) {
+            throw new IllegalArgumentException("request and decision state requestId must match");
+        }
+        restoreDecision(state);
+        BlueprintRequest existing = requests.putIfAbsent(request.requestId(), request);
+        if (existing != null && !existing.equals(request)) {
+            throw new IllegalStateException("decision request already has different authoritative request context: " + request.requestId());
+        }
+    }
+
     public void forgetDecision(UUID requestId) {
-        sessions.remove(Objects.requireNonNull(requestId, "requestId"));
+        UUID id = Objects.requireNonNull(requestId, "requestId");
+        sessions.remove(id);
+        requests.remove(id);
     }
 
     @Override
     public void close() {
         server.stop(0);
         sessions.clear();
+        requests.clear();
     }
 
     private void handle(HttpExchange exchange) throws IOException {
@@ -99,7 +141,8 @@ public final class ContinuityWorksDecisionAuthorityHttpServer implements AutoClo
                     "service", "continuity-works-decision-authority",
                     "apiVersion", authority.apiVersion().toString(),
                     "protocolVersion", authority.decisionProfile().protocolVersion(),
-                    "activeDecisions", activeDecisionCount()
+                    "activeDecisions", activeDecisionCount(),
+                    "dynamicCandidateSourceConfigured", dynamicCandidateSourceConfigured()
                 ));
                 return;
             }
@@ -121,10 +164,14 @@ public final class ContinuityWorksDecisionAuthorityHttpServer implements AutoClo
                 case "/begin" -> begin(exchange, body);
                 case "/next" -> next(exchange, body);
                 case "/apply" -> apply(exchange, body);
+                case "/candidates" -> candidates(exchange, body);
+                case "/apply-candidate" -> applyCandidate(exchange, body);
                 case "/validate" -> validate(exchange, body);
                 case "/finalize" -> finalizeDecision(exchange, body);
                 default -> sendError(exchange, 404, "not_found", "Unknown Continuity Works decision-authority operation.");
             }
+        } catch (StaleCandidateDictionaryException error) {
+            sendError(exchange, 409, "stale_candidate_dictionary", error.getMessage());
         } catch (StaleDecisionException error) {
             sendError(exchange, 409, "stale_decision_state", error.getMessage());
         } catch (IllegalStateException error) {
@@ -147,6 +194,7 @@ public final class ContinuityWorksDecisionAuthorityHttpServer implements AutoClo
         if (existing != null) {
             throw new IllegalStateException("decision request already exists: " + state.requestId());
         }
+        requests.put(state.requestId(), request);
         send(exchange, 200, Map.of("state", stateDocument(state)));
     }
 
@@ -163,9 +211,40 @@ public final class ContinuityWorksDecisionAuthorityHttpServer implements AutoClo
             : supplied.revision();
         String encodedMutations = string(required(body, "encoded_mutations"), "encoded_mutations");
         BlueprintDecisionChain.State revised = authority.applyDecision(current, expectedRevision, encodedMutations);
-        if (!sessions.replace(current.requestId(), current, revised)) {
-            throw new StaleDecisionException("decision state changed concurrently; refresh before applying inference output");
+        replaceCurrentState(current, revised, "refresh before applying inference output");
+        send(exchange, 200, Map.of("state", stateDocument(revised)));
+    }
+
+    private void candidates(HttpExchange exchange, Map<String, Object> body) throws IOException {
+        BlueprintDecisionChain.State supplied = decodeState(object(required(body, "state")));
+        BlueprintDecisionChain.State current = requireCurrentState(supplied);
+        BlueprintRequest request = requireRequest(current.requestId());
+        long expectedRevision = body.containsKey("expected_revision")
+            ? longNumber(required(body, "expected_revision"), "expected_revision")
+            : supplied.revision();
+        String mutatorCode = string(required(body, "mutator_code"), "mutator_code");
+        BlueprintDecisionCandidates.Dictionary dictionary = authority.decisionCandidates(
+            request, current, expectedRevision, mutatorCode, candidateSource);
+        send(exchange, 200, Map.of("dictionary", dictionaryDocument(dictionary)));
+    }
+
+    private void applyCandidate(HttpExchange exchange, Map<String, Object> body) throws IOException {
+        BlueprintDecisionChain.State supplied = decodeState(object(required(body, "state")));
+        BlueprintDecisionChain.State current = requireCurrentState(supplied);
+        long expectedRevision = body.containsKey("expected_revision")
+            ? longNumber(required(body, "expected_revision"), "expected_revision")
+            : supplied.revision();
+        BlueprintDecisionCandidates.Dictionary dictionary = decodeDictionary(object(required(body, "dictionary")));
+        if (dictionary.revision() != current.revision()) {
+            throw new StaleCandidateDictionaryException(
+                "candidate dictionary revision " + dictionary.revision()
+                    + " does not match authoritative decision revision " + current.revision()
+            );
         }
+        String localChoiceCode = string(required(body, "local_choice_code"), "local_choice_code");
+        BlueprintDecisionChain.State revised = authority.applyCandidateDecision(
+            current, expectedRevision, dictionary, localChoiceCode);
+        replaceCurrentState(current, revised, "refresh candidate dictionary before applying inference output");
         send(exchange, 200, Map.of("state", stateDocument(revised)));
     }
 
@@ -177,10 +256,18 @@ public final class ContinuityWorksDecisionAuthorityHttpServer implements AutoClo
     private void finalizeDecision(HttpExchange exchange, Map<String, Object> body) throws IOException {
         BlueprintDecisionChain.State current = requireCurrentState(decodeState(object(required(body, "state"))));
         BlueprintDecisionChain.FinalizedDecision finalized = authority.finalizeDecision(current);
-        if (!sessions.replace(current.requestId(), current, finalized.state())) {
-            throw new StaleDecisionException("decision state changed concurrently; refresh before finalization");
-        }
+        replaceCurrentState(current, finalized.state(), "refresh before finalization");
         send(exchange, 200, finalizedDocument(finalized));
+    }
+
+    private void replaceCurrentState(
+        BlueprintDecisionChain.State current,
+        BlueprintDecisionChain.State revised,
+        String staleMessage
+    ) {
+        if (!sessions.replace(current.requestId(), current, revised)) {
+            throw new StaleDecisionException("decision state changed concurrently; " + staleMessage);
+        }
     }
 
     private BlueprintDecisionChain.State requireCurrentState(BlueprintDecisionChain.State supplied) {
@@ -198,6 +285,17 @@ public final class ContinuityWorksDecisionAuthorityHttpServer implements AutoClo
         return current;
     }
 
+    private BlueprintRequest requireRequest(UUID requestId) {
+        BlueprintRequest request = requests.get(requestId);
+        if (request == null) {
+            throw new IllegalStateException(
+                "decision request context is unavailable for candidate discovery: " + requestId
+                    + "; restore request context with the decision state before requesting dynamic candidates"
+            );
+        }
+        return request;
+    }
+
     private Map<String, Object> profileDocument() {
         BlueprintDecisionChain.Profile profile = authority.decisionProfile();
         LinkedHashMap<String, Object> out = new LinkedHashMap<>();
@@ -210,6 +308,7 @@ public final class ContinuityWorksDecisionAuthorityHttpServer implements AutoClo
         out.put("stateCarriedAcrossInferences", profile.stateCarriedAcrossInferences());
         out.put("deterministicValidation", profile.deterministicValidation());
         out.put("deterministicFinalization", profile.deterministicFinalization());
+        out.put("dynamicCandidateSourceConfigured", dynamicCandidateSourceConfigured());
         out.put("principles", profile.principles());
         List<Object> mutators = new ArrayList<>();
         for (BlueprintDecisionChain.Mutator mutator : profile.mutators()) {
@@ -237,6 +336,25 @@ public final class ContinuityWorksDecisionAuthorityHttpServer implements AutoClo
         out.put("revision", state.revision());
         out.put("selections", state.selections());
         out.put("finalized", state.finalized());
+        return out;
+    }
+
+    private static Map<String, Object> dictionaryDocument(BlueprintDecisionCandidates.Dictionary dictionary) {
+        LinkedHashMap<String, Object> out = new LinkedHashMap<>();
+        out.put("protocolVersion", dictionary.protocolVersion());
+        out.put("requestId", dictionary.requestId().toString());
+        out.put("revision", dictionary.revision());
+        out.put("mutatorCode", dictionary.mutatorCode());
+        out.put("sourceVersion", dictionary.sourceVersion());
+        out.put("dictionaryId", dictionary.dictionaryId());
+        List<Object> choices = new ArrayList<>();
+        for (BlueprintDecisionCandidates.Choice choice : dictionary.choices()) {
+            choices.add(Map.of(
+                "localCode", choice.localCode(),
+                "semanticValue", choice.semanticValue()
+            ));
+        }
+        out.put("choices", choices);
         return out;
     }
 
@@ -366,6 +484,26 @@ public final class ContinuityWorksDecisionAuthorityHttpServer implements AutoClo
         return new BlueprintDecisionChain.State(requestId, revision, selections, finalized);
     }
 
+    private static BlueprintDecisionCandidates.Dictionary decodeDictionary(Map<String, Object> value) {
+        List<BlueprintDecisionCandidates.Choice> choices = new ArrayList<>();
+        for (Object entry : list(required(value, "choices"), "dictionary.choices")) {
+            Map<String, Object> choice = object(entry);
+            choices.add(new BlueprintDecisionCandidates.Choice(
+                string(required(choice, "localCode"), "dictionary.choices.localCode"),
+                string(required(choice, "semanticValue"), "dictionary.choices.semanticValue")
+            ));
+        }
+        return new BlueprintDecisionCandidates.Dictionary(
+            string(required(value, "protocolVersion"), "dictionary.protocolVersion"),
+            uuid(required(value, "requestId"), "dictionary.requestId"),
+            longNumber(required(value, "revision"), "dictionary.revision"),
+            string(required(value, "mutatorCode"), "dictionary.mutatorCode"),
+            string(required(value, "sourceVersion"), "dictionary.sourceVersion"),
+            string(required(value, "dictionaryId"), "dictionary.dictionaryId"),
+            choices
+        );
+    }
+
     private Object readJson(HttpExchange exchange) throws IOException {
         String contentType = exchange.getRequestHeaders().getFirst("Content-Type");
         if (contentType != null && !contentType.toLowerCase().startsWith("application/json")) {
@@ -486,6 +624,11 @@ public final class ContinuityWorksDecisionAuthorityHttpServer implements AutoClo
         } catch (IllegalArgumentException error) {
             throw new IllegalArgumentException(field + " has unsupported value: " + text, error);
         }
+    }
+
+    private static final class StaleCandidateDictionaryException extends RuntimeException {
+        private static final long serialVersionUID = 1L;
+        StaleCandidateDictionaryException(String message) { super(message); }
     }
 
     private static final class StaleDecisionException extends RuntimeException {
