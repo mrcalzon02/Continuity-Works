@@ -7,8 +7,8 @@ import java.util.Objects;
  *
  * <p>This adapter deliberately delegates every semantic operation through the
  * configured {@link ContinuityWorksCompactBlueprintApi}. It does not reimplement
- * mutator vocabulary, dependency rules, validation, or finalization. A later HTTP,
- * IPC, or companion-mod transport can bind to this class while preserving one
+ * mutator vocabulary, dependency rules, candidate legality, validation, or finalization.
+ * HTTP, IPC, or companion-mod transports can bind to this class while preserving one
  * authoritative decision implementation.</p>
  */
 public final class ContinuityWorksDecisionAuthorityAdapter {
@@ -50,6 +50,42 @@ public final class ContinuityWorksDecisionAuthorityAdapter {
     ) {
         requireRevision(state, expectedRevision);
         return api.applyDecision(state, Objects.requireNonNull(encodedMutations, "encodedMutations"));
+    }
+
+    /**
+     * Build a compact choice dictionary for one currently selectable mutator through
+     * the authoritative provider. Dynamic values come only from the supplied source;
+     * fixed mutators continue to use the decision-chain vocabulary.
+     */
+    public BlueprintDecisionCandidates.Dictionary decisionCandidates(
+        BlueprintRequest request,
+        BlueprintDecisionChain.State state,
+        long expectedRevision,
+        String mutatorCode,
+        BlueprintDecisionCandidateSource source
+    ) {
+        requireRevision(state, expectedRevision);
+        return api.decisionCandidates(
+            Objects.requireNonNull(request, "request"),
+            state,
+            Objects.requireNonNull(mutatorCode, "mutatorCode"),
+            source
+        );
+    }
+
+    /** Resolve one state-bound compact candidate code and apply its semantic value authoritatively. */
+    public BlueprintDecisionChain.State applyCandidateDecision(
+        BlueprintDecisionChain.State state,
+        long expectedRevision,
+        BlueprintDecisionCandidates.Dictionary dictionary,
+        String localChoiceCode
+    ) {
+        requireRevision(state, expectedRevision);
+        return api.applyCandidateDecision(
+            state,
+            Objects.requireNonNull(dictionary, "dictionary"),
+            Objects.requireNonNull(localChoiceCode, "localChoiceCode")
+        );
     }
 
     /** Validate accumulated semantic state without materializing geometry. */
