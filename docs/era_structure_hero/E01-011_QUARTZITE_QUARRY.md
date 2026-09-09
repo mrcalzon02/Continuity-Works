@@ -85,13 +85,26 @@ Named substreams must make seed replay stable and allow one subsystem to change 
 
 ## Biome and environmental adaptations
 
-- Temperate: stone/diorite/calcite-role source with coarse dirt and gravel footing.
-- Boreal: stone/tuff host rock, gravel debris, sparse moss only outside active extraction cells.
-- Tundra: exposed stone, gravel/frozen-looking footing, minimal vegetation.
-- Savanna: granite/stone host, coarse dirt apron, high-exposure open quarry face.
-- Arid: sandstone/gravel host surfaces with quartzite-role source remaining visually distinct; no vegetation bedding proxies.
-- Tropical: weathered stone, dirt margins, limited moss on abandoned surfaces but never across active face scars.
-- Coastal: gravel/stone terraces; reject sites vulnerable to partial sediment reworking.
+### Temperate
+Stone/diorite/calcite-role source with coarse dirt and gravel footing.
+
+### Boreal
+Stone/tuff host rock, gravel debris, sparse moss only outside active extraction cells.
+
+### Tundra
+Exposed stone, gravel/frozen-looking footing, minimal vegetation.
+
+### Savanna
+Granite/stone host, coarse dirt apron, high-exposure open quarry face.
+
+### Arid
+Sandstone/gravel host surfaces with quartzite-role source remaining visually distinct; no vegetation bedding proxies.
+
+### Tropical
+Weathered stone, dirt margins, limited moss on abandoned surfaces but never across active face scars.
+
+### Coastal
+Gravel/stone terraces; reject sites vulnerable to partial sediment reworking.
 
 Terrain adaptation must preserve major natural landform logic. The quarry may expose and articulate a source outcrop but must not flatten a large region into an artificial platform.
 
