@@ -1,91 +1,92 @@
 Continuity Works Capability API v0.3.2
-Validation date: 2026-09-08
+Validation date: 2026-09-09
 =====================================
 
-RESULT: AUTHORITATIVE ERA-CATALOG CANDIDATE SOURCE VALIDATED; WHOLE-SOURCE/RENDERED NAMING GATES PASS; EXACT EXECUTABLE HEAD DEPLOYED THROUGH GITHUB PAGES; REMOTE JAVA DECISION AUTHORITY STILL NOT ATTACHED OR VERIFIED
+RESULT: PRODUCTION ERA-CATALOG DECISION-AUTHORITY BOOTSTRAP WIRED AND EXECUTABLE; BOOTSTRAP REGRESSION PATH DEFECT REPAIRED; WHOLE-SOURCE/RENDERED NAMING GATES PASS; EXACT REPAIR HEAD DEPLOYED THROUGH GITHUB PAGES; REMOTE JAVA DECISION AUTHORITY STILL NOT ATTACHED OR VERIFIED
 
 Authority and accepted evidence
 -------------------------------
 Authoritative repository: mrcalzon02/Continuity-Works
 Authoritative branch: main
-Cycle starting head: 89d85512e82dd63cbf1c073353e7d596445bfbb7
-Catalog-source implementation commit: 0a943179df8130b8a061053ae3ce1f436e14d44b
-Accepted executable / regression head: ea6dc548fed63ad0efa3a85f55263b2f05f4b4ba
-Successful exact-head validation run: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34323553515
-Successful exact-head GitHub Pages build/deployment: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34323553066
+Cycle starting head: 42a12a16ceb3c4cb3cea6a45c23624776a2b3995
+Production bootstrap implementation commit already present at reconciliation: 539a0f112c07460edc1e86b2218b24105fae12d4
+Rejected bootstrap-regression head: 42a12a16ceb3c4cb3cea6a45c23624776a2b3995
+Rejected-head validation run: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34329580433
+Accepted repair commit / executable head: 06a1bc73237f0985080db594ded6d483dc16caa1
+Successful exact-repair-head validation run: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34333959724
+Successful exact-repair-head GitHub Pages build/deployment: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34333958732
 
-Current increment completed
+Reconciliation finding and repair
+---------------------------------
+The repository had advanced beyond the previous validation record: production composition helper ContinuityWorksDecisionAuthorityBootstrap had already been committed on main and a Java HTTP regression had been added to exercise it.
+
+The bootstrap implementation itself correctly composes existing authorities:
+- the supplied hero ledger remains the structure-catalog authority;
+- EraStructureCatalogCandidateSource extracts materialized catalog IDs and content-derived source identity;
+- ContinuityWorksDecisionAuthorityHttpServer remains the transport;
+- ContinuityWorksDecisionAuthorityAdapter / ContinuityWorksCompactBlueprintApi remain the decision-authority seams;
+- no catalog, decision, validation, or generation semantics are duplicated in the bootstrap.
+
+However, the new regression test referenced a nonexistent top-level ledger path. The authoritative ledger is:
+- docs/era_structure_hero/ERA_STRUCTURE_HERO_LEDGER.md
+
+The failing test instead looked for a file directly under docs/. Exact-head validation run 34329580433 therefore failed in test_decision_authority_bootstrap_java.py at the explicit HERO_LEDGER.is_file() assertion. The remainder of the workflow correctly failed closed rather than promoting that head as accepted.
+
+Smallest coherent root-cause repair:
+- tests/test_decision_authority_bootstrap_java.py now points to the actual authoritative ledger path.
+- No alternate ledger, copied catalog, compatibility alias, fallback path, weakened assertion, or duplicate source of truth was introduced.
+
+Accepted bootstrap behavior
 ---------------------------
-The compact inference path now has a real STRUCTURE_CATALOG candidate provider backed directly by existing project authority rather than a test-only candidate list.
+The repaired regression compiles the complete Continuity Works Java API module under Java 17 and starts the production decision-authority bootstrap against the actual repository ledger.
 
-New authoritative adapter:
-- modules/continuityworks-api/src/main/java/io/continuityworks/api/blueprint/EraStructureCatalogCandidateSource.java
+Observed behavior verifies:
+- the bootstrap configures a dynamic authoritative candidate source;
+- decision profile discovery succeeds;
+- a real decision session can begin;
+- STRUCTURE_CATALOG candidate discovery reads the live ledger;
+- E01-001 is exposed as the first materialized hero entry;
+- E01-017 is exposed as the latest materialized hero entry;
+- E01-018 is not exposed because its authoritative catalog label remains unmaterialized;
+- the dictionary carries a cw-era-ledger-sha256 content-derived source version.
 
-Focused executable regression:
-- tests/test_era_structure_catalog_candidate_source_java.py
+Current authoritative catalog candidates
+----------------------------------------
+The live hero ledger currently materializes 17 Stage-1-complete entries, E01-001 through E01-017. E01-018 remains explicitly blocked with no authoritative archetype label and must not be invented or inferred.
 
-The source reads docs/era_structure_hero/ERA_STRUCTURE_HERO_LEDGER.md as the authority snapshot. It does not embed or maintain a second catalog. It parses the materialized catalog rows in ledger order and exposes only rows whose Stage-1 state is HERO_SPEC_COMPLETE. The currently unlabeled next row is therefore not selectable and no missing archetype name is invented.
-
-Current authoritative candidates
---------------------------------
-The observed live ledger contains 17 materialized hero-spec entries, E01-001 through E01-017. The provider exposes those exact catalog IDs in authoritative ledger order. The blocked E01-018 row is excluded because its label is not materialized and its Stage-1 state is NEXT.
-
-This preserves the existing project boundary: E01-018 remains blocked until its authoritative master-catalog label is recovered. Runtime inference can now select among actual developed catalog identities without silently widening the structure catalog.
-
-Source-version and stale-dictionary integrity
----------------------------------------------
-EraStructureCatalogCandidateSource derives sourceVersion from SHA-256 of the exact UTF-8 ledger snapshot using the prefix cw-era-ledger-sha256:. No separate manual catalog-version constant is required.
-
-Consequences:
-- a byte change in the authority snapshot changes sourceVersion;
-- candidate dictionaries inherit that content-derived sourceVersion;
-- existing dictionary identity therefore changes when the authoritative ledger snapshot changes;
-- local compact choice codes remain ephemeral and resolve back to semantic catalog IDs before mutation;
-- the provider only answers the STRUCTURE_CATALOG archetype mutator and rejects archetype-profile mutators;
-- request/state identity must match;
-- a ledger snapshot with no materialized hero-spec rows fails closed.
-
-This is intentionally one-way authority flow: ledger -> candidate source -> state-bound dictionary -> semantic decision chain. The candidate source cannot widen mutation wire legality because BlueprintDecisionCandidates still dry-runs candidate values through BlueprintDecisionChain.apply before publishing a dictionary.
-
-Focused regression observed
----------------------------
-tests/test_era_structure_catalog_candidate_source_java.py compiles the complete Continuity Works Java API module under Java 17 and then executes a harness against the live repository ledger.
-
-The harness verifies:
-- exactly 17 currently materialized selectable IDs;
-- E01-001 is first and E01-017 is the current last selectable ID;
-- the unlabeled E01-018 placeholder is not exposed;
-- sourceVersion is a content-derived SHA-256 identity;
-- a real A candidate dictionary contains the same 17 semantic IDs;
-- compact base-36 code G resolves to semantic E01-017 before mutation;
-- the dictionary carries the exact ledger sourceVersion;
-- the catalog provider rejects a B/archetype-profile request;
-- a non-semantic ledger byte change preserves candidate IDs but changes the source version, proving stale-snapshot invalidation;
-- an empty/unmaterialized ledger fails closed.
+The established candidate integrity contract remains:
+- source identity derives from the exact authority snapshot;
+- dictionaries bind protocol, request UUID, exact revision, mutator, source version, ordered choices, and deterministic SHA-256 identity;
+- local base-36 codes remain ephemeral;
+- compact local choices resolve back to authoritative semantic values before BlueprintDecisionChain mutation;
+- stale revision/dictionary reuse fails closed;
+- candidate providers cannot widen mutation wire legality because candidate values are dry-run through the authoritative decision chain.
 
 Exact-head validation observed
 ------------------------------
-Validate Continuity Works run 34323553515 completed successfully for exact executable head ea6dc548fed63ad0efa3a85f55263b2f05f4b4ba. Observed successful stages include:
+Validate Continuity Works run 34333959724 completed successfully for exact repair head 06a1bc73237f0985080db594ded6d483dc16caa1.
+
+Observed successful stages include:
 - package installation;
 - Python source compilation;
 - source-tree agent discovery;
-- unit/API contract/PUBLIC_SERVICEABILITY tests, including the new Java 17 live-ledger candidate regression;
+- unit/API contract/PUBLIC_SERVICEABILITY tests, including the repaired Java 17 production-bootstrap regression;
 - production Continuity Works frontend build;
 - zero-JavaScript Pages discovery stamping;
 - local executable API and public-boundary smoke;
 - validation-status publication.
 
-GitHub Pages build/deployment run 34323553066 completed successfully for the same exact executable head.
+GitHub Pages build/deployment run 34333958732 also completed successfully for the exact same repair head.
 
 Naming/branding cleanup state
 -----------------------------
-The active retired pre-Continuity public-brand cleanup remains closed for authoritative active source and the directly observed build/deployment path. This increment introduces no retired public-brand occurrence. The exact executable head passed the repository naming guard, production frontend build, rendered/static discovery generation, and GitHub Pages deployment.
+The retired pre-Continuity public-brand cleanup remains closed for active authoritative source and the directly observed generated/deployment path. The exact repair head passed the repository-wide naming guard, production frontend build, rendered/static discovery generation, and GitHub Pages deployment.
 
-A separate browser-executed visual inspection is still not claimed. The naming guard plus exact-head production frontend generation and successful Pages deployment remain the strongest directly observed evidence in this run.
+A separate browser-executed visual inspection is still not claimed. The whole-source guard plus exact-head production frontend generation and successful Pages deployment are the strongest directly observed acceptance evidence for this run.
 
 Compact decision-chain contract
 -------------------------------
-The in-process Java compact-blueprint API remains version 1.8.0 and protocol cw-decision-1. This provider is additive and requires no compatibility-version change.
+The in-process Java compact-blueprint API remains version 1.8.0 and protocol cw-decision-1.
 
 The validated tiny-inference contract remains:
 - reference workload: Qwen 2.5 Instruct Q4-class or comparable small local controller;
@@ -97,28 +98,28 @@ The validated tiny-inference contract remains:
 - raw block placement, NBT/SNBT, commands, operation lists, and primitive geometry remain forbidden at the inference boundary;
 - deterministic validation/finalization remain Continuity Works responsibilities.
 
-Candidate transport state
--------------------------
-The previously validated candidate transport remains authoritative and unchanged:
+Candidate transport and bootstrap state
+---------------------------------------
+The candidate transport and production composition path are now source-integrated and locally executable:
 - ContinuityWorksDecisionAuthorityAdapter delegates candidate discovery/application through ContinuityWorksCompactBlueprintApi;
-- ContinuityWorksDecisionAuthorityHttpServer exposes candidate discovery/application while preserving request context and stale-revision rejection;
-- the Python publication service conditionally advertises/proxies those routes only when a separate Java authority is configured;
-- candidate dictionaries bind protocol, request UUID, exact revision, mutator, source version, ordered choices, and deterministic SHA-256 identity;
-- local base-36 codes resolve to authoritative semantic values before BlueprintDecisionChain mutation.
+- ContinuityWorksDecisionAuthorityHttpServer exposes decision and candidate routes while preserving request context and stale-revision rejection;
+- ContinuityWorksDecisionAuthorityBootstrap composes the HTTP authority with EraStructureCatalogCandidateSource sourced from the supplied authoritative hero ledger;
+- the Python publication service conditionally advertises/proxies decision routes only when a separate Java authority is configured.
 
-Net implementation change from cycle start
-------------------------------------------
-Compared with cycle starting head 89d85512e82dd63cbf1c073353e7d596445bfbb7, the executable implementation delta is exactly two added files:
-- modules/continuityworks-api/src/main/java/io/continuityworks/api/blueprint/EraStructureCatalogCandidateSource.java
-- tests/test_era_structure_catalog_candidate_source_java.py
+This proves repository-local production composition. It does not prove that a Java authority process is attached to the deployed public service.
 
-This validation-state update modifies only the existing VALIDATION_REPORT.txt authority. No alternate branch, pull request, parallel decision implementation, workaround layer, or new GitHub Action was introduced.
+Net implementation change in this cycle
+---------------------------------------
+Compared with cycle starting head 42a12a16ceb3c4cb3cea6a45c23624776a2b3995, the executable repair changes exactly:
+- tests/test_decision_authority_bootstrap_java.py
+
+This continuity update modifies only the existing VALIDATION_REPORT.txt authority. No alternate branch, pull request, parallel implementation, workaround layer, duplicate ledger, or new GitHub Action was introduced.
 
 Public API / deployment boundary
 --------------------------------
 PUBLIC REMOTE DECISION AUTHORITY: NOT VERIFIED LIVE.
 
-Repository execution now proves that catalog candidates can originate from the authoritative era ledger and flow through the existing dictionary semantics. GitHub Pages deployment proves the static/public frontend artifact for the exact executable head. No deployed remote Java decision process, production binding to that process, external authority-health read-back, or public end-to-end catalog-candidate decision sequence was directly observed. Those remote claims remain open.
+Repository execution now proves that the production Java bootstrap can obtain STRUCTURE_CATALOG candidates from the real era ledger and serve them through the Java HTTP authority locally. GitHub Pages deployment proves the static/public frontend artifact for the exact repair head. No deployed remote Java decision process, production environment binding to that process, external authority-health read-back, or public end-to-end decision sequence against the real Java authority was directly observed. Those remote claims remain open.
 
 Era structure program boundary
 ------------------------------
@@ -126,8 +127,8 @@ E01-001 through E01-017 remain source-developed through hero/build/worldgen stag
 
 Next dependency-valid work
 --------------------------
-1. Attach the real era-ledger catalog source to the actual Java decision-authority bootstrap/configuration path so production candidate discovery uses project authority without test injection.
-2. Add ARCHETYPE_PROFILE candidate providers for biome/environment first, then culture, condition, and palette only where existing hero specifications publish authoritative option vocabularies; do not invent missing options.
-3. Preserve authority fingerprints across persistence/resume so a restored decision cannot reuse a dictionary derived from an older catalog/profile snapshot.
+1. Add an authoritative ARCHETYPE_PROFILE candidate source for the B biome/environment mutator, deriving options from the selected archetype's existing hero specification rather than embedding a second vocabulary. Fingerprint the exact source snapshot so stale profile dictionaries fail closed.
+2. Extend profile candidates to culture, condition, and palette only where the selected hero specification exposes an authoritative machine-safe option vocabulary; do not invent missing options.
+3. Preserve catalog/profile authority fingerprints across persistence/resume so a restored decision cannot reuse a dictionary derived from an older authority snapshot.
 4. Remote Java authority attachment remains the highest external integration blocker and stays open until directly observed through the deployed public boundary.
 5. Resume hero-structure development at E01-018 only when its authoritative catalog label is recovered.
