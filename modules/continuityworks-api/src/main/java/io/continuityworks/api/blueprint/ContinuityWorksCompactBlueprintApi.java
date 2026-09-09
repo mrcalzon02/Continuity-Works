@@ -12,6 +12,39 @@ public interface ContinuityWorksCompactBlueprintApi {
     MaterialManifest getCompactMaterials(UUID blueprintId);
     void cancelCompact(UUID requestId);
 
+    /** Discover the tiny-inference decision protocol, token ceiling, mutator graph and fixed vocabularies. */
+    default BlueprintDecisionChain.Profile decisionProfile() {
+        return BlueprintDecisionChain.profile();
+    }
+
+    /** Start a deterministic decision state. Rich state is carried outside the model output budget. */
+    default BlueprintDecisionChain.State beginDecision(BlueprintRequest request) {
+        return BlueprintDecisionChain.begin(request);
+    }
+
+    /** Return only currently dependency-valid semantic mutators for the next bounded inference. */
+    default BlueprintDecisionChain.Step nextDecision(BlueprintDecisionChain.State state) {
+        return BlueprintDecisionChain.next(state);
+    }
+
+    /** Apply a compact mutator response such as A=E01-017 or Z=M;B=RIVERBANK. */
+    default BlueprintDecisionChain.State applyDecision(
+        BlueprintDecisionChain.State state,
+        String encodedMutations
+    ) {
+        return BlueprintDecisionChain.apply(state, encodedMutations);
+    }
+
+    /** Validate accumulated semantic decisions without generating or mutating world geometry. */
+    default BlueprintDecisionChain.Validation validateDecision(BlueprintDecisionChain.State state) {
+        return BlueprintDecisionChain.validate(state);
+    }
+
+    /** Freeze a valid decision state into semantic BlueprintSpecifications for deterministic generation. */
+    default BlueprintDecisionChain.FinalizedDecision finalizeDecision(BlueprintDecisionChain.State state) {
+        return BlueprintDecisionChain.finalizeDecision(state);
+    }
+
     default long streamPlacements(CompactBlueprintPlan plan, CompactPlacementSink sink) {
         return CompactBlueprintMaterializer.forEachPlacement(plan, sink);
     }
