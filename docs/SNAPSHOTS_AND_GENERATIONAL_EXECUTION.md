@@ -19,7 +19,7 @@ For each target:
 11. **Promote or revise** according to the consuming project's policy.
 12. **Record next action**.
 
-StructureSmith itself does not require step 10 in order to generate, validate, snapshot, or return an artifact.
+Continuity Works itself does not require step 10 in order to generate, validate, snapshot, or return an artifact.
 
 ## Generational scripting
 
@@ -51,10 +51,10 @@ The exact numbers are not sacred; the principle is. Each generation records:
 
 ## Client-side rendering
 
-A snapshot may contain enough geometry, NBT artifacts, layout metadata, or block operations for a client to construct a 3D view. Rendering those results is the client's responsibility. StructureForge demonstrates this pattern in the browser.
+A snapshot may contain enough geometry, NBT artifacts, layout metadata, or block operations for a client to construct a 3D view. Rendering those results is the client's responsibility. The Continuity Works browser client demonstrates this pattern.
 
-A client that needs fixed-camera comparisons can generate and store them itself. Rendering success proves only that the client's renderer succeeded; it is not part of the StructureSmith server's mechanical validation claim.
+A client that needs fixed-camera comparisons can generate and store them itself. Rendering success proves only that the client's renderer succeeded; it is not part of the Continuity Works service's mechanical validation claim.
 
 ## Review ownership
 
-Automated StructureSmith validation and optional client visual review are separate concerns. The client decides whether visual review is unnecessary, advisory, or mandatory for its own downstream workflow. No such client policy causes the StructureSmith API host to perform or fund rendering.
+Automated Continuity Works validation and optional client visual review are separate concerns. The client decides whether visual review is unnecessary, advisory, or mandatory for its own downstream workflow. No such client policy causes the Continuity Works API host to perform or fund rendering.
