@@ -1,7 +1,7 @@
 package io.continuityworks.api.blueprint;
 
 public record BlueprintApiVersion(int major, int minor, int patch) {
-    public static final BlueprintApiVersion CURRENT = new BlueprintApiVersion(1, 9, 0);
+    public static final BlueprintApiVersion CURRENT = new BlueprintApiVersion(1, 8, 0);
 
     public BlueprintApiVersion {
         if (major < 0 || minor < 0 || patch < 0) {
