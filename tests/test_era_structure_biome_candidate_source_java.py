@@ -97,16 +97,24 @@ public final class EraBiomeCandidateHarness {
             "TEMPERATE", "BOREAL", "TUNDRA", "SAVANNA", "ARID", "TROPICAL", "COASTAL_TRANSITION"
         )), "E01-017 explicit bold biome labels must remain ordered semantic candidates");
 
-        BlueprintRequest proseRequest = request(UUID.fromString("66666666-6666-6666-6666-666666666666"));
-        BlueprintDecisionChain.State proseOnly = selectArchetype(api, proseRequest, "E01-010");
-        boolean proseRejected = false;
-        try {
-            biomeSource.candidates(proseRequest, proseOnly, biome);
-        } catch (IllegalStateException expected) {
-            proseRejected = expected.getMessage().contains("refusing to infer candidates from prose");
-        }
-        require(proseRejected,
-            "prose-only biome discussion must fail closed instead of becoming guessed inference vocabulary");
+        BlueprintRequest procurementRequest = request(UUID.fromString("66666666-6666-6666-6666-666666666666"));
+        BlueprintDecisionChain.State procurement = selectArchetype(api, procurementRequest, "E01-010");
+        BlueprintDecisionCandidateSource.CandidateSet procurementSet = biomeSource.candidates(
+            procurementRequest, procurement, biome
+        );
+        require(procurementSet.values().equals(List.of(
+            "TEMPERATE_BOREAL", "TUNDRA_ALPINE", "SAVANNA_ARID", "TROPICAL", "COASTAL_RIVERINE"
+        )), "E01-010 normalized headings must expose only the five pre-existing environmental groupings");
+        BlueprintDecisionCandidates.Dictionary procurementDictionary = api.decisionCandidates(
+            procurementRequest, procurement, "B", biomeSource
+        );
+        require(procurementDictionary.choices().size() == 5,
+            "E01-010 dictionary must expose five normalized authoritative profiles");
+        BlueprintDecisionChain.State selectedProcurementBiome = api.applyCandidateDecision(
+            procurement, procurementDictionary, "4"
+        );
+        require("COASTAL_RIVERINE".equals(selectedProcurementBiome.selection("B")),
+            "E01-010 compact candidate must resolve back to the normalized authoritative semantic profile");
 
         boolean missingArchetypeRejected = false;
         try {
@@ -124,6 +132,12 @@ public final class EraBiomeCandidateHarness {
         BlueprintDecisionCandidates.Dictionary routedB = api.decisionCandidates(request, overhang, "B", routed);
         require(routedB.choices().get(0).semanticValue().equals("TEMPERATE_FOREST"),
             "production routing must expose the selected hero spec's BIOME authority");
+        BlueprintDecisionCandidates.Dictionary routedProcurementB = api.decisionCandidates(
+            procurementRequest, procurement, "B", routed
+        );
+        require(routedProcurementB.choices().get(0).semanticValue().equals("TEMPERATE_BOREAL")
+            && routedProcurementB.choices().size() == 5,
+            "production routing must expose E01-010 normalized BIOME authority");
 
         BlueprintDecisionChain.Mutator culture = BlueprintDecisionChain.profile().mutators().stream()
             .filter(candidate -> candidate.code().equals("C"))
