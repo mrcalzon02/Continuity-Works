@@ -2,29 +2,28 @@ Continuity Works Capability API v0.3.2
 Validation date: 2026-09-09
 =====================================
 
-RESULT: E01-012 BIOME/ENVIRONMENT AUTHORITY NORMALIZED WITHOUT NEW SEMANTICS; AUTHORITATIVE B CANDIDATES NOW RESOLVE THROUGH PRODUCTION ROUTING; INITIAL EXACT-HEAD REGRESSION WAS REJECTED AND ROOT CAUSE REPAIRED; REPAIRED EXACT-HEAD VALIDATION PASSED; REPAIRED EXACT-HEAD PAGES BUILD AND DEPLOYMENT PASSED; REMOTE JAVA DECISION AUTHORITY REMAINS UNVERIFIED LIVE
+RESULT: E01-013 BIOME/ENVIRONMENT AUTHORITY NORMALIZED WITHOUT NEW SEMANTICS; AUTHORITATIVE B CANDIDATES NOW RESOLVE THROUGH PRODUCTION ROUTING; EXACT-HEAD VALIDATION AND PAGES DEPLOYMENT PASSED; REMOTE JAVA DECISION AUTHORITY REMAINS UNVERIFIED LIVE
 
 Authority and accepted evidence
 -------------------------------
 Authoritative repository: mrcalzon02/Continuity-Works
 Authoritative branch: main
-Cycle starting head: 4626adeb140552f6698865dca8a0cd00c63671f8
-Initial source-normalization commit: c4d0a2887c615286f49471084e4e6707ac291ecb
-Initial regression head, rejected: 10a4eb4d4ed91db80033b250b906b412dd2150b0
-Root-cause repair / accepted executable head: 34f875957eb52787c15135b977e17e90f38194ca
-Rejected validation run: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34356426166
-Successful repaired exact-head validation run: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34356615044
-Successful repaired exact-head Pages deployment run: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34356613903
+Cycle starting head: 134693e3f5546f93231be929dafe1c06a1c387b8
+Source-normalization commit: 81f7b242d4f47eea96b112e10bf0b53dadbd7930
+Accepted executable head: cddd05d14c47d5c5074cc970de48799c42e6623c
+Successful exact-head validation run: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34362949198
+Successful exact-head Pages deployment run: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34362947714
+Public-serviceability observation run: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34363065051
 
 Reconciliation and selected work
 --------------------------------
-The live repository reconciled at 4626adeb140552f6698865dca8a0cd00c63671f8. The existing validation authority identified E01-012 Butchery Site as the next dependency-valid repair because its seven already-authoritative biome/environment labels were encoded as bold list entries rather than the explicit machine-facing profile form used by EraStructureBiomeCandidateSource.
+The live repository reconciled at 134693e3f5546f93231be929dafe1c06a1c387b8. The existing validation authority identified E01-013 Large-Carcass Processing Site as the next dependency-valid repair because its seven already-authoritative biome/environment families were expressed as prose/list categories rather than the explicit machine-facing profile form consumed by EraStructureBiomeCandidateSource.
 
-Repository searches for the retired public naming returned no active source matches before mutation. No naming defect preempted the candidate-authority repair.
+Repository searches for the retired public naming returned no active source matches before mutation. No naming defect preempted this candidate-authority repair.
 
 Implemented repair
 ------------------
-E01-012 already defined exactly seven environmental categories:
+E01-013 already defined exactly seven environmental categories:
 - Temperate
 - Boreal
 - Tundra
@@ -33,13 +32,9 @@ E01-012 already defined exactly seven environmental categories:
 - Tropical
 - Coastal
 
-The source repair promoted those exact categories to level-three profile headings and retained each category's existing descriptive semantics. No category was added, removed, merged, split, or inferred from external knowledge.
+The source repair promoted those exact categories to level-three profile headings and retained the pre-existing environmental semantics. No category was added, removed, merged, split, or inferred from external knowledge. The established plural biome/environment adaptations section contract was preserved, so no parser relaxation, alias, fallback, duplicate source, or workaround layer was required.
 
-The first source edit retained the pre-existing singular section title. Exact-head validation correctly exposed that this did not satisfy the established machine parser, whose authoritative section contract requires the plural adaptations heading. The rejected head therefore failed closed instead of silently treating the source as machine-readable.
-
-The root-cause repair changed only that section title to the already-established plural form. No parser relaxation, alias, fallback, duplicated source, or workaround layer was added.
-
-EraStructureBiomeCandidateSource now obtains seven authoritative E01-012 B candidates through its existing parser and content-fingerprint contract:
+EraStructureBiomeCandidateSource now obtains seven authoritative E01-013 B candidates through its existing parser and content-fingerprint contract:
 - TEMPERATE
 - BOREAL
 - TUNDRA
@@ -50,37 +45,31 @@ EraStructureBiomeCandidateSource now obtains seven authoritative E01-012 B candi
 
 Regression change
 -----------------
-The existing Java 17 biome-candidate regression now verifies E01-012 against the actual repository hero specification:
+The existing Java 17 biome-candidate regression now verifies E01-013 against the actual repository hero specification:
 - the seven normalized candidates appear in source order;
-- the E01-012 dictionary contains exactly seven choices;
+- the E01-013 dictionary contains exactly seven choices;
 - compact local code 6 resolves back to semantic COASTAL before authoritative mutation;
-- production candidate routing exposes exactly the same seven E01-012 choices.
+- production candidate routing exposes exactly the same seven E01-013 choices.
 
-Existing coverage for E01-001, E01-010, E01-011, E01-017, missing archetype state, unconfigured future profile mutators, source-version invalidation, catalog routing, and compact-choice resolution remains intact.
-
-Rejected-head observation and repair
-------------------------------------
-Validate Continuity Works run 34356426166 for exact head 10a4eb4d4ed91db80033b250b906b412dd2150b0 failed in the Java biome-candidate regression with an explicit missing biome/environment adaptations-section error. All earlier setup/discovery work and the repository naming guard reached before the failure passed, but the frontend/public-boundary stages were skipped after the test failure. That head is not accepted.
-
-Inspection of EraStructureBiomeCandidateSource showed the established section matcher requires the plural adaptations form. Inspection of the edited E01-012 source showed the singular form remained. Commit 34f875957eb52787c15135b977e17e90f38194ca repaired that exact source mismatch directly.
+Existing coverage for E01-001, E01-010, E01-011, E01-012, E01-017, missing archetype state, unconfigured future profile mutators, source-version invalidation, catalog routing, and compact-choice resolution remains intact.
 
 Observed source/diff verification
 ---------------------------------
-Comparison from cycle starting head 4626adeb140552f6698865dca8a0cd00c63671f8 to accepted executable head 34f875957eb52787c15135b977e17e90f38194ca changes exactly:
-- docs/era_structure_hero/E01-012_BUTCHERY_SITE.md
+Comparison from cycle starting head 134693e3f5546f93231be929dafe1c06a1c387b8 to accepted executable head cddd05d14c47d5c5074cc970de48799c42e6623c changes exactly:
+- docs/era_structure_hero/E01-013_LARGE_CARCASS_PROCESSING_SITE.md
 - tests/test_era_structure_biome_candidate_source_java.py
 
-The diff contains the source profile normalization, the one-line section-contract correction, and focused E01-012 regression coverage. No production parser, transport, routing, alternate branch, pull request, duplicate authority, parallel implementation, or new workflow was introduced.
+The diff contains only the source profile normalization and focused E01-013 regression coverage. No production parser, transport, routing, alternate branch, pull request, duplicate authority, parallel implementation, or new workflow was introduced.
 
 Exact-head validation observed
 ------------------------------
-Validate Continuity Works run 34356615044 completed successfully for exact repaired executable head 34f875957eb52787c15135b977e17e90f38194ca.
+Validate Continuity Works run 34362949198 completed successfully for exact executable head cddd05d14c47d5c5074cc970de48799c42e6623c.
 
 Observed successful stages include:
 - package installation;
 - Python source compilation;
 - source-tree agent discovery;
-- unit/API contract/PUBLIC_SERVICEABILITY tests, including the updated Java 17 E01-012 biome-candidate regression;
+- unit/API contract/PUBLIC_SERVICEABILITY tests, including the updated Java 17 E01-013 biome-candidate regression;
 - production Continuity Works frontend build;
 - zero-JavaScript Pages discovery stamping;
 - local executable API and public-boundary smoke;
@@ -88,13 +77,13 @@ Observed successful stages include:
 
 Pages/public artifact observation
 ---------------------------------
-GitHub Pages run 34356613903 completed successfully for exact repaired executable head 34f875957eb52787c15135b977e17e90f38194ca. Its build job completed Jekyll generation and artifact upload successfully, and its deploy job completed the GitHub Pages deployment successfully.
+GitHub Pages run 34362947714 completed successfully for exact executable head cddd05d14c47d5c5074cc970de48799c42e6623c. Its build job completed the production/static artifact path and upload successfully, and its deploy job completed the GitHub Pages deployment successfully.
 
-A separate direct browser fetch was attempted during this cycle but the available web retrieval path could not safely resolve the Pages URL from search, so no browser-render claim is made. The successful exact-head frontend generation, Pages artifact build, upload, and deploy remain the strongest directly observed public-output evidence for this run.
+No separate browser-render claim is made. The successful exact-head production frontend generation, naming gate, Pages artifact build, upload, and deploy are the strongest directly observed public-output evidence for this cycle.
 
 Naming cleanup state
 --------------------
-The retired public naming cleanup remains closed for active authoritative source and the directly observed generated/static deployment path. Repository searches for the retired names returned no matches before mutation. The accepted repaired exact head then passed the repository-wide naming guard, production frontend generation, public-boundary checks, and exact-head Pages build/deployment.
+The retired public naming cleanup remains closed for active authoritative source and the directly observed generated/static deployment path. Repository searches returned no active legacy-name matches before mutation. The accepted executable head then passed the repository-wide naming guard, production frontend generation, public-boundary checks, and exact-head Pages build/deployment.
 
 No browser-render claim is made beyond those directly observed artifacts.
 
@@ -114,7 +103,7 @@ Public API / deployment boundary
 --------------------------------
 PUBLIC REMOTE DECISION AUTHORITY: NOT VERIFIED LIVE.
 
-This cycle verified repository behavior, local executable/public-boundary smoke, and exact-head Pages deployment. It did not directly observe a deployed Java decision-authority process serving the decision endpoints through the public environment. That boundary remains open and no remote Java authority success is claimed.
+Public-serviceability run 34363065051 observed the exact-head Pages artifact path but both configured external API health checks failed closed. This cycle therefore verifies repository behavior, local executable/public-boundary smoke, and the deployed Pages artifact; it does not verify a deployed Java decision-authority process serving the decision endpoints through the public environment. That boundary remains open and no remote Java authority success is claimed.
 
 Era structure program boundary
 ------------------------------
@@ -122,9 +111,9 @@ E01-001 through E01-017 remain source-developed through hero/build/worldgen stag
 
 Next dependency-valid work
 --------------------------
-1. Normalize E01-013 Large-Carcass Processing Site's existing seven named biome families into explicit machine-facing profile labels while preserving temperate, boreal, tundra, savanna, arid, tropical, and coastal exactly. Its current biome section names those seven families in prose but does not expose parser-consumable profile labels. Add regression coverage proving production B discovery for E01-013.
+1. Normalize E01-014 Bone-Breaking Station's existing seven named biome families into explicit machine-facing profile labels while preserving temperate, boreal, tundra, savanna, arid, tropical, and coastal exactly. Its current biome section names those seven families as prose/list entries but does not expose parser-consumable level-three profile headings. Add regression coverage proving production B discovery for E01-014.
 2. Continue the same source normalization through any remaining completed hero specifications whose B sections are not yet machine-readable, one bounded archetype at a time.
-3. E01-012 already exposes four explicit culture-profile identifiers (`expedient_field_dressing`, `transport_focused`, `marrow_intensive`, `consumption_biased`); E01-013 likewise exposes explicit culture identifiers. After B normalization is complete across eligible sources, add authoritative C culture candidates only from explicit machine-safe source labels rather than narrative inference.
+3. After B normalization is complete across eligible sources, add authoritative C culture candidates only from explicit machine-safe source labels rather than narrative inference.
 4. Add Q condition and K palette profile sources only where corresponding explicit authoritative option vocabularies exist; do not derive arbitrary choices from narrative prose.
 5. Preserve catalog/profile authority fingerprints across persistence/resume so a restored decision cannot reuse a dictionary derived from an older authority snapshot.
 6. Remote Java authority attachment remains the highest external integration blocker and stays open until directly observed through the deployed public boundary.
