@@ -15,10 +15,13 @@ Delegated Python publication commit: 43fe5c17e6bbdaf9d351a615759d31c4ce8a7d1c
 Accepted executable / regression head: 4863f14aa8f003453baf039d622a9c4134b31cd3
 Successful exact-head validation run: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34319276969
 Successful exact-head GitHub Pages build/deployment: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34319275656
+Initial validation-record commit: f02052b956f5e881937c20969b2865ffc8028989 (failed the whole-source branding guard because this report itself reintroduced prohibited retired-brand literals while describing the clean search; repaired without weakening or exempting the guard)
 
 Branding cleanup state
 ----------------------
-The active retired pre-Continuity branding cleanup remains closed for authoritative active source, production frontend build artifacts, and the directly observed GitHub Pages deployment path. Repository code searches for the retired StructureForge and spaced Structure Forge public names returned no active source matches in this cycle. Exact-head validation on 4863f14aa8f003453baf039d622a9c4134b31cd3 completed the source tests and production frontend build successfully, and the same exact head completed GitHub Pages build/deployment successfully.
+The active retired pre-Continuity branding cleanup remains closed for authoritative active source, production frontend build artifacts, and the directly observed GitHub Pages deployment path. Targeted repository searches for both prohibited retired public-brand forms returned no active source matches on the accepted executable head. Exact-head validation on 4863f14aa8f003453baf039d622a9c4134b31cd3 completed the source tests and production frontend build successfully, and the same exact head completed GitHub Pages build/deployment successfully.
+
+The first validation-record-only commit in this cycle correctly failed closed because this report accidentally restated the prohibited retired-brand literals. The failure was confined to the report text: the two-process candidate regression and other implementation tests still passed before the whole-source branding guard terminated the job. This repair removes those literals from active authority and leaves the guard unchanged.
 
 A separate browser-executed visual inspection is still not claimed. Whole-source validation, production frontend build, rendered/static discovery generation, source search, and exact-head Pages deployment remain the strongest directly observed evidence.
 
@@ -108,13 +111,16 @@ Validate Continuity Works run 34319276969 completed successfully for exact execu
 
 GitHub Pages build/deployment run 34319275656 also completed successfully for the same exact executable head.
 
+The subsequent record-only head f02052b956f5e881937c20969b2865ffc8028989 failed the whole-source branding gate because the report itself contained prohibited retired-brand literals. That record-only head is not accepted as validation evidence; the guard failure is the reason for this direct authority repair.
+
 Net implementation change from cycle start
 ------------------------------------------
-Compared with cycle starting head ec1ac57b6ae178aba7cf3c5db30094f640640dc4, the intended implementation changes before this validation-state record are exactly:
+Compared with cycle starting head ec1ac57b6ae178aba7cf3c5db30094f640640dc4, the intended implementation changes before this validation-state repair are exactly:
 - modules/continuityworks-api/src/main/java/io/continuityworks/api/blueprint/ContinuityWorksDecisionAuthorityAdapter.java
 - modules/continuityworks-api/src/main/java/io/continuityworks/api/blueprint/ContinuityWorksDecisionAuthorityHttpServer.java
 - src/structure_capability/server.py
 - tests/test_blueprint_decision_bridge_java.py
+- VALIDATION_REPORT.txt
 
 No alternate decision engine, branch, pull request, workaround layer, or new GitHub Action was introduced.
 
