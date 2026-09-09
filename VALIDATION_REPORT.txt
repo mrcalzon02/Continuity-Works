@@ -2,42 +2,64 @@ Continuity Works Capability API v0.3.2
 Validation date: 2026-09-08
 =====================================
 
-RESULT: ACTIVE BRANDING CLEANUP IN PROGRESS; WHOLE-SOURCE GATE ENFORCED; EXTERNAL API HOST NOT VERIFIED
+RESULT: WHOLE-SOURCE AND RENDERED BRANDING GATES PASS; COMPACT DECISION-CHAIN API VALIDATED; EXTERNAL API HOST NOT VERIFIED
 
 Measured validation
 -------------------
 Authoritative repository: mrcalzon02/Continuity-Works
 Authoritative branch: main
-Last fully validated implementation before whole-source gate promotion: d29b1646c2c8cde90ec080c4a6b3431572c8853c
-Successful baseline validation run: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34293162057
+Validated implementation SHA before this record-only update: f1c833d305f5236ce5bba267d0f350c3e2dc9a52
+Successful validation run: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34299354745
+Successful GitHub Pages build/deployment for the same SHA: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34299353940
 
-Whole-source gate promotion
----------------------------
-The branding verifier now supports active authoritative source-tree inspection in addition to rendered/static artifact inspection. The regression suite includes a whole-active-repository source assertion, and the normal frontend production build runs the source-tree branding gate before Vite and the rendered-artifact gate after Vite.
+Branding cleanup state
+----------------------
+The final directly observed stale frontend-integration heading in docs/BIOME_EXPANSION_MODULARITY_INTEGRATION_PLAN.md was repaired at its authoritative source. Net comparison against the pre-repair head shows exactly one line changed in that authority: the obsolete frontend product name was replaced by Continuity Works. An accidental unrelated provider-probe example edit introduced during whole-file replacement was detected by diff inspection and immediately restored before acceptance.
 
-This promotion intentionally failed closed on its first authoritative run rather than allowing stale documentation identity to remain hidden behind a clean frontend bundle. Run https://github.com/mrcalzon02/Continuity-Works/actions/runs/34294636441 observed the stale documentation set directly.
+Repository validation then passed the whole-active-source branding assertion and completed the production frontend build successfully. The normal frontend build runs source-tree branding verification before Vite and rendered/static artifact verification after Vite, so source cleanliness and generated production-artifact cleanliness are both enforced. GitHub Pages also completed a successful build/deployment for the same validated commit.
 
-Authoritative cleanup performed after that observation:
-- docs/GENERATION_PROVIDER_CONTRACT.md: public service/browser wording updated to Continuity Works.
-- docs/INFRASTRUCTURE_GENERATION.md: document title, UI wording, runtime-validation wording, and static-validation wording updated to Continuity Works while preserving stable machine-facing compatibility identifiers.
-- docs/OPERATING_DOCTRINE.md: public API/service/rendering identity updated to Continuity Works.
-- docs/SNAPSHOTS_AND_GENERATIONAL_EXECUTION.md: service, browser-client, validation, and review-ownership wording updated to Continuity Works.
-- this validation record no longer embeds the retired public naming literals merely to describe their removal.
+This closes the active retired Forge-branding cleanup requirement for authoritative source, production build artifacts, and the directly observed Pages deployment path. A separate browser-executed visual inspection was not obtained in this validation cycle and is therefore not claimed.
 
-Remaining branding blocker
+Compact decision-chain API
 --------------------------
-Whole-source acceptance is not yet claimed. One directly observed authoritative documentation occurrence remains in docs/BIOME_EXPANSION_MODULARITY_INTEGRATION_PLAN.md: the section 23 frontend integration heading still uses the retired pre-Continuity Works browser name. That large authority document must be repaired without truncating or broadly rewriting unrelated biome-planning content, then the complete validation path must be observed passing before repository-wide source cleanliness is claimed.
+The in-process Java compact-blueprint API is now version 1.8.0 and includes the deterministic decision-chain contract for very small real-time inference controllers.
 
-Observed validation gates from the last fully passing baseline
--------------------------------------------------------------
+Validated contract highlights:
+- protocol: cw-decision-1
+- reference inference profile: Qwen 2.5 Instruct Q4-class
+- hard output ceiling: 64 tokens per inference
+- preferred operating target: 32 tokens
+- state persists outside the model output budget
+- up to four compact semantic mutations may be accepted per inference, while single-mutation progression remains preferred
+- dependency-valid mutators cover archetype, scale, biome/environment, culture, family mode, orientation, condition, palette, and detail
+- upstream-choice changes invalidate only dependent selections
+- catalog/archetype identifiers preserve their wire identity
+- raw block placement, NBT/SNBT, commands, operation lists, and primitive geometry are forbidden at the decision boundary
+- deterministic validation and finalization remain owned by Continuity Works
+- post-generation compact edits continue through the existing bounded translate/rotate/mirror/palette-remap/compose/repeat layer rather than a parallel mutation implementation
+
+The exact-head Java 17 behavioral harness for the decision chain passed as part of the complete repository test step. The compact blueprint module Gradle version and regression assertions are synchronized at API version 1.8.0.
+
+HTTP exposure boundary
+----------------------
+The decision-chain contract is currently exposed through the in-process Java integration API. It is not yet represented as executable public HTTP routes. Documentation explicitly preserves that boundary rather than advertising remote execution that does not exist.
+
+The next API development step is to expose decision profile/state progression/legal mutators/mutation application/validation/finalization through the existing authoritative public capability/publication architecture without creating a second decision engine or duplicating generator logic.
+
+Observed validation gates
+-------------------------
+For f1c833d305f5236ce5bba267d0f350c3e2dc9a52:
 - Python package installation succeeded.
 - Python source/tests/scripts compilation succeeded.
 - source-tree agent discovery succeeded.
 - complete unit/API contract/PUBLIC_SERVICEABILITY test step succeeded.
+- Java 17 compact-blueprint and decision-chain behavioral harnesses succeeded.
+- whole-active-repository branding gate succeeded.
 - production frontend build succeeded.
-- rendered/static artifact branding gate rejects retired public identities.
+- rendered/static artifact branding gate succeeded as part of the frontend build.
 - zero-JavaScript Pages discovery stamping succeeded.
 - local executable API and public-boundary smoke succeeded.
+- GitHub Pages build/deployment succeeded for the exact same SHA.
 - existing worldgen regression coverage continues to enforce the 500-block minimum structure and jigsaw-piece protection contract.
 
 Continuity Works public naming contract
@@ -65,7 +87,7 @@ PUBLIC API SERVICE: NOT VERIFIED LIVE.
 
 The configured Render candidate remains an external verification boundary. Repository/local validation does not establish that the candidate serves `/v1/health` or the Continuity Works API. The existing public-serviceability workflow remains fail-closed and must pass remote health, discovery, publication, commit-identity, CORS, and Pages-to-API checks before a live API claim is permitted.
 
-GitHub Pages deployment is a static/browser deployment and is not evidence that Python API execution exists remotely.
+GitHub Pages deployment is a verified static/browser deployment for the validated SHA; it is not evidence that Python API execution exists remotely.
 
 Era structure program boundary
 ------------------------------
@@ -73,7 +95,7 @@ E01-001 through E01-017 remain source-developed through hero/build/worldgen stag
 
 Next dependency-valid work
 --------------------------
-1. Repair the remaining retired browser-name heading in docs/BIOME_EXPANSION_MODULARITY_INTEGRATION_PLAN.md without damaging the large existing authority document.
-2. Re-run and observe the complete validation path, including whole-source and rendered-artifact branding gates.
-3. Keep the external API candidate issue open until directly verified or externally repaired.
+1. Keep the external API candidate issue open until directly verified or externally repaired; do not claim remote API serviceability from local validation or Pages deployment.
+2. Extend the existing authoritative API architecture with a non-duplicative HTTP/publication bridge for the validated compact decision-chain contract so clients can inspect legal mutators, advance compact state, validate, and finalize through the same source of truth.
+3. Keep inference responsibilities limited to compact semantic selection while catalog, deterministic mutators, generator, validation, materialization, and exclusion enforcement remain authoritative code/data responsibilities.
 4. Resume hero-structure development at E01-018 only when its authoritative catalog label is recovered.
