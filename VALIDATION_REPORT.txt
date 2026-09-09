@@ -2,27 +2,40 @@ Continuity Works Capability API v0.3.2
 Validation date: 2026-09-08
 =====================================
 
-RESULT: REPOSITORY/LOCAL PASS; EXTERNAL API HOST NOT VERIFIED
+RESULT: ACTIVE BRANDING CLEANUP IN PROGRESS; WHOLE-SOURCE GATE ENFORCED; EXTERNAL API HOST NOT VERIFIED
 
 Measured validation
 -------------------
 Authoritative repository: mrcalzon02/Continuity-Works
 Authoritative branch: main
-Validated implementation commit: d29b1646c2c8cde90ec080c4a6b3431572c8853c
-GitHub Actions run: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34293162057
-Workflow: Validate Continuity Works
-Workflow conclusion: success
+Last fully validated implementation before whole-source gate promotion: d29b1646c2c8cde90ec080c4a6b3431572c8853c
+Successful baseline validation run: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34293162057
 
-Observed validation gates
--------------------------
+Whole-source gate promotion
+---------------------------
+The branding verifier now supports active authoritative source-tree inspection in addition to rendered/static artifact inspection. The regression suite includes a whole-active-repository source assertion, and the normal frontend production build runs the source-tree branding gate before Vite and the rendered-artifact gate after Vite.
+
+This promotion intentionally failed closed on its first authoritative run rather than allowing stale documentation identity to remain hidden behind a clean frontend bundle. Run https://github.com/mrcalzon02/Continuity-Works/actions/runs/34294636441 observed the stale documentation set directly.
+
+Authoritative cleanup performed after that observation:
+- docs/GENERATION_PROVIDER_CONTRACT.md: public service/browser wording updated to Continuity Works.
+- docs/INFRASTRUCTURE_GENERATION.md: document title, UI wording, runtime-validation wording, and static-validation wording updated to Continuity Works while preserving stable machine-facing compatibility identifiers.
+- docs/OPERATING_DOCTRINE.md: public API/service/rendering identity updated to Continuity Works.
+- docs/SNAPSHOTS_AND_GENERATIONAL_EXECUTION.md: service, browser-client, validation, and review-ownership wording updated to Continuity Works.
+- this validation record no longer embeds the retired public naming literals merely to describe their removal.
+
+Remaining branding blocker
+--------------------------
+Whole-source acceptance is not yet claimed. One directly observed authoritative documentation occurrence remains in docs/BIOME_EXPANSION_MODULARITY_INTEGRATION_PLAN.md: the section 23 frontend integration heading still uses the retired pre-Continuity Works browser name. That large authority document must be repaired without truncating or broadly rewriting unrelated biome-planning content, then the complete validation path must be observed passing before repository-wide source cleanliness is claimed.
+
+Observed validation gates from the last fully passing baseline
+-------------------------------------------------------------
 - Python package installation succeeded.
 - Python source/tests/scripts compilation succeeded.
 - source-tree agent discovery succeeded.
 - complete unit/API contract/PUBLIC_SERVICEABILITY test step succeeded.
-- active Python runtime source contains no retired StructureForge / Structure Forge identity.
-- active frontend source contains no retired StructureForge / Structure Forge identity.
 - production frontend build succeeded.
-- rendered/static artifact branding gate rejects StructureForge, Structure Forge, and StructureSmith identities.
+- rendered/static artifact branding gate rejects retired public identities.
 - zero-JavaScript Pages discovery stamping succeeded.
 - local executable API and public-boundary smoke succeeded.
 - existing worldgen regression coverage continues to enforce the 500-block minimum structure and jigsaw-piece protection contract.
@@ -42,56 +55,25 @@ GitHub status prefix: continuity-works/*
 Frontend URL: https://mrcalzon02.github.io/Continuity-Works/
 Configured optional API candidate: https://continuity-works-mrcalzon02-api.onrender.com
 
-The active browser/frontend authority is Continuity Works. The former frontend architecture
-authority named for StructureForge has been replaced by
-`docs/CONTINUITY_WORKS_FRONTEND_ARCHITECTURE.md`, and the active frontend README, capability
-metadata, fitness narration, and publication manual-surface identifiers use Continuity Works.
-
 Internal compatibility boundary
 -------------------------------
-The internal Python package `structure_capability` and class `StructureCapability` remain stable
-implementation names. Legacy StructureSmith environment/vendor-extension compatibility remains
-only where existing compatibility contracts still explicitly require it; it is not canonical or
-advertised public identity. Historical release snapshots under `releases/` are not active source
-authority and remain immutable historical artifacts.
-
-Branding cleanup state
-----------------------
-The active runtime and frontend source trees are now guarded against recurrence of the explicit
-StructureForge / Structure Forge identity. The rendered production artifact remains guarded
-against StructureForge, Structure Forge, and StructureSmith.
-
-Repository-wide documentation cleanup is still open: the new source-tree audit identified older
-design/operating documents that contain retired StructureForge-era wording. Those documents are
-not accepted as clean merely because the active runtime and rendered frontend are clean. They must
-be rebranded incrementally at their authoritative source before a repository-wide source-clean
-gate can be promoted from audit capability to full-tree acceptance.
+The internal Python package `structure_capability` and class `StructureCapability` remain stable implementation names. Legacy compatibility tokens remain only where existing compatibility contracts still explicitly require them; they are not canonical or advertised public identity. Historical release snapshots under `releases/` are not active source authority and remain immutable historical artifacts.
 
 Public API / deployment boundary
 --------------------------------
 PUBLIC API SERVICE: NOT VERIFIED LIVE.
 
-The configured Render candidate remains an external verification boundary. Repository/local
-validation does not establish that the candidate serves `/v1/health` or the Continuity Works API.
-The existing public-serviceability workflow remains fail-closed and must pass remote health,
-discovery, publication, commit-identity, CORS, and Pages-to-API checks before a live API claim is
-permitted.
+The configured Render candidate remains an external verification boundary. Repository/local validation does not establish that the candidate serves `/v1/health` or the Continuity Works API. The existing public-serviceability workflow remains fail-closed and must pass remote health, discovery, publication, commit-identity, CORS, and Pages-to-API checks before a live API claim is permitted.
 
-GitHub Pages deployment is a static/browser deployment and is not evidence that Python API
-execution exists remotely.
+GitHub Pages deployment is a static/browser deployment and is not evidence that Python API execution exists remotely.
 
 Era structure program boundary
 ------------------------------
-E01-001 through E01-017 remain source-developed through hero/build/worldgen stages with production
-admission still requiring target runtime/materialization/placement evidence. E01-018 remains
-blocked until its authoritative master-catalog archetype label is recovered; no archetype name is
-to be invented.
+E01-001 through E01-017 remain source-developed through hero/build/worldgen stages with production admission still requiring target runtime/materialization/placement evidence. E01-018 remains blocked until its authoritative master-catalog archetype label is recovered; no archetype name is to be invented.
 
 Next dependency-valid work
 --------------------------
-1. Continue authoritative documentation cleanup for remaining StructureForge / Structure Forge
-   wording exposed by the source audit, then promote the source-branding gate to whole active
-   repository coverage when genuinely clean.
-2. Keep the external API candidate issue open until directly verified or externally repaired.
-3. Resume hero-structure development at E01-018 only when its authoritative catalog label is
-   recovered.
+1. Repair the remaining retired browser-name heading in docs/BIOME_EXPANSION_MODULARITY_INTEGRATION_PLAN.md without damaging the large existing authority document.
+2. Re-run and observe the complete validation path, including whole-source and rendered-artifact branding gates.
+3. Keep the external API candidate issue open until directly verified or externally repaired.
+4. Resume hero-structure development at E01-018 only when its authoritative catalog label is recovered.
