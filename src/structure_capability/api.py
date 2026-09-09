@@ -278,3 +278,9 @@ class StructureCapability:
             structure_request.setdefault("target_version", package_request.get("target_version") or "1.20.1")
             structure_result = self.generate(structure_request)
         return self.content.package(package_request, structure_result=structure_result)
+
+    def minecraft_icon_assign(self, request):
+        return self.content.assign_icon(request)
+
+    def resume(self, snapshot_id):
+        return self.snapshots.load(snapshot_id)
