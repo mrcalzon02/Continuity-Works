@@ -39,6 +39,21 @@ public final class RoutingBlueprintDecisionCandidateSource implements BlueprintD
         return new RoutingBlueprintDecisionCandidateSource(routes);
     }
 
+    public static RoutingBlueprintDecisionCandidateSource of(
+        String firstCode,
+        BlueprintDecisionCandidateSource firstSource,
+        String secondCode,
+        BlueprintDecisionCandidateSource secondSource,
+        String thirdCode,
+        BlueprintDecisionCandidateSource thirdSource
+    ) {
+        LinkedHashMap<String, BlueprintDecisionCandidateSource> routes = new LinkedHashMap<>();
+        routes.put(firstCode, firstSource);
+        routes.put(secondCode, secondSource);
+        routes.put(thirdCode, thirdSource);
+        return new RoutingBlueprintDecisionCandidateSource(routes);
+    }
+
     @Override
     public CandidateSet candidates(
         BlueprintRequest request,
