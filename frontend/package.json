@@ -13,8 +13,8 @@
     "@react-three/fiber": "latest",
     "@xstate/react": "latest",
     "htm": "latest",
-    "react": "latest",
-    "react-dom": "latest",
+    "react": ">=19 <19.3",
+    "react-dom": ">=19 <19.3",
     "three": "latest",
     "xstate": "latest"
   },
