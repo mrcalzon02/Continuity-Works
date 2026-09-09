@@ -1,8 +1,8 @@
-# StructureForge Infrastructure Generation
+# Continuity Works Infrastructure Generation
 
 ## Purpose
 
-`native_infrastructure_v1` extends StructureSmith with deterministic infrastructure and common-facility layout contracts that can be consumed by humans, AI tool callers, datapack/Forge/Fabric adapters, or downstream Minecraft structure compilers.
+`native_infrastructure_v1` extends Continuity Works with deterministic infrastructure and common-facility layout contracts that can be consumed by humans, AI tool callers, datapack/Forge/Fabric adapters, or downstream Minecraft structure compilers.
 
 The generator is intentionally not a black-box city builder. Every generated result includes its spatial contract, purpose depth, jigsaw connectors, placement derivation, compatibility manifest, fitness findings, and explicit runtime gates.
 
@@ -92,7 +92,7 @@ The `infrastructure_layout` entry in `/v1/tools` publishes the complete JSON-Sch
 
 ## UX/API parity
 
-The StructureForge web interface exposes the same infrastructure variables in the **StructureForge Infrastructure** dropdown:
+The Continuity Works web interface exposes the same infrastructure variables in the **Continuity Works Infrastructure** surface:
 
 - module type and urban/rural variant;
 - deterministic module seed and world seed;
@@ -131,7 +131,7 @@ Emits a jigsaw pool, maximum assembly depth, and explicit named connectors. Road
 
 ### Runtime boundary
 
-StructureSmith can validate the **contract** without pretending it has run the Lost Cities mod. Returned results therefore use:
+Continuity Works can validate the **contract** without pretending it has run the Lost Cities mod. Returned results therefore use:
 
 ```text
 CONTRACT_READY_RUNTIME_TEST_REQUIRED
@@ -186,6 +186,6 @@ The manifest records the seed, fingerprint, candidate anchor, fitness state, and
 
 A generated infrastructure result has two deliberately separate validation levels.
 
-**Static/authoring validation** can be automated in StructureSmith: dimensional invariants, purpose depth, zone presence, deterministic placement derivation, jigsaw connector presence, and Lost Cities adapter contract completeness.
+**Static/authoring validation** can be automated in Continuity Works: dimensional invariants, purpose depth, zone presence, deterministic placement derivation, jigsaw connector presence, and Lost Cities adapter contract completeness.
 
 **Runtime validation** cannot be honestly simulated by static Python output: fresh-world placement, actual Lost Cities lot/grid behavior, collision with real terrain/city generation, jigsaw expansion inside the selected Minecraft/mod version, and gameplay traversal. Those remain explicit runtime gates instead of being falsely marked complete.
