@@ -56,10 +56,32 @@ public final class DecisionAuthorityServerHarness {
         }
     }
 
+    private static final BlueprintDecisionCandidateSource CANDIDATES = (request, state, mutator) -> {
+        if ("A".equals(mutator.code())) {
+            return new BlueprintDecisionCandidateSource.CandidateSet(
+                "test-catalog-1",
+                List.of(
+                    "continuityworks:e01_017_riverbank_foraging_camp",
+                    "continuityworks:e01_016_open_foraging_camp"
+                )
+            );
+        }
+        if ("B".equals(mutator.code())) {
+            return new BlueprintDecisionCandidateSource.CandidateSet(
+                "test-biome-profile-1",
+                List.of("riverbank", "wooded_bank")
+            );
+        }
+        return new BlueprintDecisionCandidateSource.CandidateSet(
+            "test-profile-1",
+            List.of("default")
+        );
+    };
+
     public static void main(String[] args) throws Exception {
         try (ContinuityWorksDecisionAuthorityHttpServer server =
                  new ContinuityWorksDecisionAuthorityHttpServer(
-                     new FakeApi(), new InetSocketAddress("127.0.0.1", 0))) {
+                     new FakeApi(), CANDIDATES, new InetSocketAddress("127.0.0.1", 0))) {
             server.start();
             System.out.println("PORT=" + server.address().getPort());
             System.out.flush();
@@ -155,6 +177,7 @@ class DecisionBridgeJavaIntegrationTests(unittest.TestCase):
                 self.assertEqual(profile["protocolVersion"], "cw-decision-1")
                 self.assertEqual(profile["apiVersion"], "1.8.0")
                 self.assertEqual(profile["maxOutputTokens"], 64)
+                self.assertTrue(profile["dynamicCandidateSourceConfigured"])
 
                 request_id = "11111111-1111-1111-1111-111111111111"
                 begin_body = {
@@ -193,54 +216,113 @@ class DecisionBridgeJavaIntegrationTests(unittest.TestCase):
                 self.assertEqual(status, 200, next_step)
                 self.assertEqual([item["code"] for item in next_step["nextMutators"]], ["A"])
 
+                status, candidates = self.request(
+                    base_url,
+                    "POST",
+                    "/v1/blueprints/decision/candidates",
+                    {"state": state0, "mutator_code": "A"},
+                )
+                self.assertEqual(status, 200, candidates)
+                archetypes = candidates["dictionary"]
+                self.assertEqual(archetypes["revision"], 0)
+                self.assertEqual(archetypes["mutatorCode"], "A")
+                self.assertEqual(archetypes["sourceVersion"], "test-catalog-1")
+                self.assertEqual(
+                    archetypes["choices"],
+                    [
+                        {
+                            "localCode": "0",
+                            "semanticValue": "continuityworks:e01_017_riverbank_foraging_camp",
+                        },
+                        {
+                            "localCode": "1",
+                            "semanticValue": "continuityworks:e01_016_open_foraging_camp",
+                        },
+                    ],
+                )
+
                 status, applied = self.request(
                     base_url,
                     "POST",
-                    "/v1/blueprints/decision/apply",
+                    "/v1/blueprints/decision/apply-candidate",
                     {
                         "state": state0,
-                        "encoded_mutations": "A=continuityworks:e01_017_riverbank_foraging_camp",
+                        "dictionary": archetypes,
+                        "local_choice_code": "0",
                     },
                 )
                 self.assertEqual(status, 200, applied)
                 state1 = applied["state"]
                 self.assertEqual(state1["revision"], 1)
+                self.assertEqual(
+                    state1["selections"]["A"],
+                    "continuityworks:e01_017_riverbank_foraging_camp",
+                )
 
-                status, stale = self.request(
+                status, stale_dictionary = self.request(
                     base_url,
                     "POST",
-                    "/v1/blueprints/decision/apply",
-                    {"state": state0, "encoded_mutations": "A=E01-017"},
+                    "/v1/blueprints/decision/apply-candidate",
+                    {
+                        "state": state1,
+                        "dictionary": archetypes,
+                        "local_choice_code": "1",
+                    },
                 )
-                self.assertEqual(status, 409, stale)
-                self.assertEqual(stale["error"], "stale_decision_state")
+                self.assertEqual(status, 409, stale_dictionary)
+                self.assertEqual(stale_dictionary["error"], "stale_candidate_dictionary")
+
+                status, scale_candidates = self.request(
+                    base_url,
+                    "POST",
+                    "/v1/blueprints/decision/candidates",
+                    {"state": state1, "mutator_code": "Z"},
+                )
+                self.assertEqual(status, 200, scale_candidates)
+                scale_dictionary = scale_candidates["dictionary"]
+                self.assertEqual(
+                    [choice["semanticValue"] for choice in scale_dictionary["choices"]],
+                    ["S", "M", "L"],
+                )
+
+                status, scale_applied = self.request(
+                    base_url,
+                    "POST",
+                    "/v1/blueprints/decision/apply-candidate",
+                    {
+                        "state": state1,
+                        "dictionary": scale_dictionary,
+                        "local_choice_code": "1",
+                    },
+                )
+                self.assertEqual(status, 200, scale_applied)
+                state2 = scale_applied["state"]
+                self.assertEqual(state2["selections"]["Z"], "M")
 
                 status, applied_required = self.request(
                     base_url,
                     "POST",
                     "/v1/blueprints/decision/apply",
                     {
-                        "state": state1,
-                        "encoded_mutations": "Z=M;B=riverbank;F=I",
+                        "state": state2,
+                        "encoded_mutations": "B=riverbank;F=I",
                     },
                 )
                 self.assertEqual(status, 200, applied_required)
-                state2 = applied_required["state"]
-                self.assertEqual(state2["revision"], 2)
+                state3 = applied_required["state"]
 
                 status, validation = self.request(
-                    base_url, "POST", "/v1/blueprints/decision/validate", {"state": state2}
+                    base_url, "POST", "/v1/blueprints/decision/validate", {"state": state3}
                 )
                 self.assertEqual(status, 200, validation)
                 self.assertTrue(validation["valid"])
                 self.assertTrue(validation["readyToFinalize"])
 
                 status, finalized = self.request(
-                    base_url, "POST", "/v1/blueprints/decision/finalize", {"state": state2}
+                    base_url, "POST", "/v1/blueprints/decision/finalize", {"state": state3}
                 )
                 self.assertEqual(status, 200, finalized)
                 self.assertTrue(finalized["state"]["finalized"])
-                self.assertEqual(finalized["state"]["revision"], 3)
                 self.assertTrue(
                     any(
                         item["key"] == "ARCHETYPE"
