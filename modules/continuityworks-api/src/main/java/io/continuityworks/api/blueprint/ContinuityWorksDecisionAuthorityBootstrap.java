@@ -9,8 +9,8 @@ import java.util.concurrent.Executor;
 /**
  * Production composition helpers for the Continuity Works decision authority.
  *
- * <p>This class owns wiring only. The supplied hero ledger remains the structure-catalog
- * authority, {@link EraStructureCatalogCandidateSource} owns catalog extraction, and
+ * <p>This class owns wiring only. The supplied hero ledger and sibling hero specifications
+ * remain authoritative, their candidate-source adapters own extraction, and
  * {@link ContinuityWorksDecisionAuthorityHttpServer} remains the transport. No decision,
  * candidate, validation, or generation semantics are duplicated here.</p>
  */
@@ -19,7 +19,7 @@ public final class ContinuityWorksDecisionAuthorityBootstrap {
 
     /**
      * Construct the normal HTTP authority with STRUCTURE_CATALOG candidates sourced from
-     * the supplied authoritative era-structure hero ledger snapshot.
+     * the supplied hero ledger and BIOME candidates sourced from the selected sibling hero spec.
      */
     public static ContinuityWorksDecisionAuthorityHttpServer fromEraStructureHeroLedger(
         ContinuityWorksCompactBlueprintApi api,
@@ -31,7 +31,7 @@ public final class ContinuityWorksDecisionAuthorityBootstrap {
         Objects.requireNonNull(address, "address");
         return new ContinuityWorksDecisionAuthorityHttpServer(
             api,
-            EraStructureCatalogCandidateSource.fromHeroLedger(heroLedger),
+            productionCandidateSource(heroLedger),
             address
         );
     }
@@ -52,10 +52,22 @@ public final class ContinuityWorksDecisionAuthorityBootstrap {
         Objects.requireNonNull(address, "address");
         return new ContinuityWorksDecisionAuthorityHttpServer(
             authority,
-            EraStructureCatalogCandidateSource.fromHeroLedger(heroLedger),
+            productionCandidateSource(heroLedger),
             address,
             maxBodyBytes,
             executor
+        );
+    }
+
+    /** Build the transport-neutral production candidate routing from the existing hero authority. */
+    public static BlueprintDecisionCandidateSource productionCandidateSource(Path heroLedger) throws IOException {
+        Objects.requireNonNull(heroLedger, "heroLedger");
+        Path absoluteLedger = heroLedger.toAbsolutePath().normalize();
+        Path heroDirectory = absoluteLedger.getParent();
+        if (heroDirectory == null) throw new IllegalArgumentException("hero ledger must have a parent directory");
+        return RoutingBlueprintDecisionCandidateSource.of(
+            "A", EraStructureCatalogCandidateSource.fromHeroLedger(absoluteLedger),
+            "B", new EraStructureBiomeCandidateSource(heroDirectory)
         );
     }
 }
