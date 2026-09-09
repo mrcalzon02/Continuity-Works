@@ -111,7 +111,20 @@ Primary extraction geometry must remain stable if later decorative passes are ad
 
 ## Biome / Environment Adaptations
 
-Temperate and boreal sites favor weathered slopes, gravel lenses, and forest-edge exposures. Tundra/alpine variants expose more stone and need less overburden. Savanna/arid variants use stronger sediment and weathered-bedrock contrast and must avoid flash-flood channels. Tropical variants emphasize rapid vegetation recolonization and soil infill. Coastal/riverine variants may use gravel-terrace or eroded-bank procurement but must remain above active destructive flow.
+### Temperate / Boreal
+Temperate and boreal sites favor weathered slopes, gravel lenses, and forest-edge exposures.
+
+### Tundra / Alpine
+Tundra/alpine variants expose more stone and need less overburden.
+
+### Savanna / Arid
+Savanna/arid variants use stronger sediment and weathered-bedrock contrast and must avoid flash-flood channels.
+
+### Tropical
+Tropical variants emphasize rapid vegetation recolonization and soil infill.
+
+### Coastal / Riverine
+Coastal/riverine variants may use gravel-terrace or eroded-bank procurement but must remain above active destructive flow.
 
 ## Culture-Variant Hooks
 
