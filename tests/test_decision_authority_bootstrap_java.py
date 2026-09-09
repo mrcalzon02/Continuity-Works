@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 API_SRC = ROOT / "modules" / "continuityworks-api" / "src" / "main" / "java"
-HERO_LEDGER = ROOT / "docs" / "ERA_STRUCTURE_HERO_LEDGER.md"
+HERO_LEDGER = ROOT / "docs" / "era_structure_hero" / "ERA_STRUCTURE_HERO_LEDGER.md"
 
 HARNESS = r"""
 import io.continuityworks.api.blueprint.*;
