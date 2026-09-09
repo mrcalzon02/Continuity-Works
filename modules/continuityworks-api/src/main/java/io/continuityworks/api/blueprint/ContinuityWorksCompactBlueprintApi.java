@@ -35,6 +35,25 @@ public interface ContinuityWorksCompactBlueprintApi {
         return BlueprintDecisionChain.apply(state, encodedMutations);
     }
 
+    /** Build a state-bound compact choice dictionary from fixed or authoritative dynamic candidates. */
+    default BlueprintDecisionCandidates.Dictionary decisionCandidates(
+        BlueprintRequest request,
+        BlueprintDecisionChain.State state,
+        String mutatorCode,
+        BlueprintDecisionCandidateSource source
+    ) {
+        return BlueprintDecisionCandidates.create(request, state, mutatorCode, source);
+    }
+
+    /** Resolve one compact dictionary code back to its semantic value and apply it authoritatively. */
+    default BlueprintDecisionChain.State applyCandidateDecision(
+        BlueprintDecisionChain.State state,
+        BlueprintDecisionCandidates.Dictionary dictionary,
+        String localChoiceCode
+    ) {
+        return BlueprintDecisionCandidates.apply(state, dictionary, localChoiceCode);
+    }
+
     /** Validate accumulated semantic decisions without generating or mutating world geometry. */
     default BlueprintDecisionChain.Validation validateDecision(BlueprintDecisionChain.State state) {
         return BlueprintDecisionChain.validate(state);
