@@ -13,6 +13,7 @@ API_SRC = ROOT / "modules" / "continuityworks-api" / "src" / "main" / "java"
 HARNESS = r"""
 import io.continuityworks.api.blueprint.*;
 import java.util.*;
+import java.util.concurrent.*;
 
 public final class DecisionChainHarness {
     private static void require(boolean condition, String message) {
@@ -21,6 +22,37 @@ public final class DecisionChainHarness {
 
     private static boolean hasCode(BlueprintDecisionChain.Step step, String code) {
         return step.nextMutators().stream().anyMatch(mutator -> code.equals(mutator.code()));
+    }
+
+    private static final class FakeApi implements ContinuityWorksCompactBlueprintApi {
+        @Override
+        public BlueprintApiVersion apiVersion() {
+            return BlueprintApiVersion.CURRENT;
+        }
+
+        @Override
+        public BlueprintVocabulary vocabulary() {
+            return null;
+        }
+
+        @Override
+        public CompletableFuture<CompactBlueprintPlan> generateCompact(BlueprintRequest request) {
+            return CompletableFuture.completedFuture(null);
+        }
+
+        @Override
+        public ValidationResult validateCompact(CompactBlueprintPlan plan, BlueprintContext context) {
+            return null;
+        }
+
+        @Override
+        public MaterialManifest getCompactMaterials(UUID blueprintId) {
+            return null;
+        }
+
+        @Override
+        public void cancelCompact(UUID requestId) {
+        }
     }
 
     public static void main(String[] args) {
@@ -86,6 +118,35 @@ public final class DecisionChainHarness {
             rejectedScale = true;
         }
         require(rejectedScale, "fixed mutator vocabularies must fail closed");
+
+        ContinuityWorksDecisionAuthorityAdapter authority =
+            new ContinuityWorksDecisionAuthorityAdapter(new FakeApi());
+        require(authority.apiVersion().equals(BlueprintApiVersion.CURRENT),
+            "authority adapter must report its configured provider API version");
+        require(authority.decisionProfile().protocolVersion().equals(BlueprintDecisionChain.PROTOCOL_VERSION),
+            "authority adapter must delegate protocol discovery to the configured provider");
+
+        BlueprintDecisionChain.State transportState =
+            new BlueprintDecisionChain.State(requestId, 0, Map.of(), false);
+        transportState = authority.applyDecision(transportState, 0,
+            "A=continuityworks:e01_017_riverbank_foraging_camp");
+        require(transportState.revision() == 1,
+            "authority adapter must return the provider's revised immutable decision state");
+
+        boolean rejectedStale = false;
+        try {
+            authority.applyDecision(transportState, 0, "Z=M");
+        } catch (IllegalStateException expected) {
+            rejectedStale = true;
+        }
+        require(rejectedStale,
+            "authority adapter must reject late inference output against a stale revision");
+
+        transportState = authority.applyDecision(transportState, 1, "Z=M;B=riverbank;F=I");
+        require(authority.validateDecision(transportState).readyToFinalize(),
+            "authority adapter must delegate semantic validation rather than reimplement it");
+        require(authority.finalizeDecision(transportState).state().finalized(),
+            "authority adapter must delegate finalization to the authoritative provider");
     }
 }
 """
