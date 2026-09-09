@@ -58,13 +58,33 @@ The generator must fail qualification if carcass-processing relationships cannot
 
 ## Biome and environmental adaptation
 
-- **Temperate:** coarse dirt/grass-edge footing; moderate weathering and moss only in abandoned states.
-- **Boreal:** podzol/coarse-dirt character, darker stone tool proxies, limited organic persistence.
-- **Tundra:** gravel/stone footing, minimal vegetation reclaim, stronger exposed-bone persistence proxy.
-- **Savanna:** dry coarse dirt, broad trampling, sparse vegetation reclaim.
-- **Arid:** sand/sandstone footing, no moss; wind-reworked discard in degraded states.
-- **Tropical:** dirt/mud-like footing proxy, rapid organic disappearance, stronger reclaim in abandoned states.
-- **Coastal:** gravel/sand footing, possible shell/gravel contamination but never enough to redefine the site.
+### Temperate
+
+coarse dirt/grass-edge footing; moderate weathering and moss only in abandoned states.
+
+### Boreal
+
+podzol/coarse-dirt character, darker stone tool proxies, limited organic persistence.
+
+### Tundra
+
+gravel/stone footing, minimal vegetation reclaim, stronger exposed-bone persistence proxy.
+
+### Savanna
+
+dry coarse dirt, broad trampling, sparse vegetation reclaim.
+
+### Arid
+
+sand/sandstone footing, no moss; wind-reworked discard in degraded states.
+
+### Tropical
+
+dirt/mud-like footing proxy, rapid organic disappearance, stronger reclaim in abandoned states.
+
+### Coastal
+
+gravel/sand footing, possible shell/gravel contamination but never enough to redefine the site.
 
 Avoid biome transformations that overwrite terrain broadly. All placement is bounded and additive/non-destructive.
 
