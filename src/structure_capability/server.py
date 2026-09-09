@@ -32,6 +32,8 @@ DECISION_BRIDGE_ROUTES = {
     f"{DECISION_BRIDGE_PREFIX}/begin": "POST",
     f"{DECISION_BRIDGE_PREFIX}/next": "POST",
     f"{DECISION_BRIDGE_PREFIX}/apply": "POST",
+    f"{DECISION_BRIDGE_PREFIX}/candidates": "POST",
+    f"{DECISION_BRIDGE_PREFIX}/apply-candidate": "POST",
     f"{DECISION_BRIDGE_PREFIX}/validate": "POST",
     f"{DECISION_BRIDGE_PREFIX}/finalize": "POST",
 }
@@ -123,6 +125,25 @@ def _decision_openapi_paths() -> dict:
         },
         "additionalProperties": False,
     }
+    candidate_schema = {
+        "type": "object",
+        "required": ["state", "mutator_code"],
+        "properties": {
+            "state": {"type": "object"},
+            "mutator_code": {"type": "string", "minLength": 1, "maxLength": 8},
+        },
+        "additionalProperties": False,
+    }
+    apply_candidate_schema = {
+        "type": "object",
+        "required": ["state", "dictionary", "local_choice_code"],
+        "properties": {
+            "state": {"type": "object"},
+            "dictionary": {"type": "object"},
+            "local_choice_code": {"type": "string", "minLength": 1, "maxLength": 8},
+        },
+        "additionalProperties": False,
+    }
     begin_schema = {
         "type": "object",
         "required": ["request"],
@@ -151,6 +172,18 @@ def _decision_openapi_paths() -> dict:
         f"{DECISION_BRIDGE_PREFIX}/apply": {
             "post": {
                 **_post_operation("blueprintDecisionApply", "Apply bounded semantic mutations through the authoritative decision chain.", apply_schema),
+                "x-continuity-works-authority": "delegated_java",
+            }
+        },
+        f"{DECISION_BRIDGE_PREFIX}/candidates": {
+            "post": {
+                **_post_operation("blueprintDecisionCandidates", "Retrieve a state-bound authoritative compact candidate dictionary.", candidate_schema),
+                "x-continuity-works-authority": "delegated_java",
+            }
+        },
+        f"{DECISION_BRIDGE_PREFIX}/apply-candidate": {
+            "post": {
+                **_post_operation("blueprintDecisionApplyCandidate", "Resolve a compact candidate code and apply its authoritative semantic value.", apply_candidate_schema),
                 "x-continuity-works-authority": "delegated_java",
             }
         },
@@ -207,6 +240,8 @@ def discovery_document(capability: StructureCapability, base_url: str | None = N
         endpoints["blueprint_decision_begin"] = f"{base}{DECISION_BRIDGE_PREFIX}/begin"
         endpoints["blueprint_decision_next"] = f"{base}{DECISION_BRIDGE_PREFIX}/next"
         endpoints["blueprint_decision_apply"] = f"{base}{DECISION_BRIDGE_PREFIX}/apply"
+        endpoints["blueprint_decision_candidates"] = f"{base}{DECISION_BRIDGE_PREFIX}/candidates"
+        endpoints["blueprint_decision_apply_candidate"] = f"{base}{DECISION_BRIDGE_PREFIX}/apply-candidate"
         endpoints["blueprint_decision_validate"] = f"{base}{DECISION_BRIDGE_PREFIX}/validate"
         endpoints["blueprint_decision_finalize"] = f"{base}{DECISION_BRIDGE_PREFIX}/finalize"
     return {"schema_version": "1.3", "name": "Continuity Works", "slug": "continuity-works", "description": "Machine discovery for the executable Continuity Works API. The GitHub Pages origin is a static frontend only.", "frontend": canonical_frontend_url(), "api": base, "build": identity, "endpoints": endpoints, "decision_bridge": decision_bridge_document(), "capabilities": [{"name": tool["name"], **tool.get("x-continuity-works", {}).get("publication", {})} for tool in catalog.get("tools", [])]}
