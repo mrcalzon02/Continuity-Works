@@ -52,13 +52,33 @@ The generator must emit explicit metadata for impact stations, staging, stance c
 
 Supported biome families are temperate, boreal, tundra, savanna, arid, tropical, and coastal. The functional program remains unchanged while ground and stone proxies adapt to local material context.
 
-- Temperate: coarse dirt, andesite/stone, gravel.
-- Boreal: podzol/stone, gravel, limited moss weathering only in degraded states.
-- Tundra: gravel/stone, pale mineral palette, no wet-biome mossing.
-- Savanna: coarse dirt/granite, dry fracture apron.
-- Arid: sand/red sand/stone; no moss or moisture-rich surface treatment.
-- Tropical: dirt/rooted dirt/andesite with stronger organic overprint in weathered states.
-- Coastal: gravel/stone/sand mixtures while remaining a terrestrial heavy-bone station.
+### Temperate
+
+Coarse dirt, andesite/stone, gravel.
+
+### Boreal
+
+Podzol/stone, gravel, limited moss weathering only in degraded states.
+
+### Tundra
+
+Gravel/stone, pale mineral palette, no wet-biome mossing.
+
+### Savanna
+
+Coarse dirt/granite, dry fracture apron.
+
+### Arid
+
+Sand/red sand/stone; no moss or moisture-rich surface treatment.
+
+### Tropical
+
+Dirt/rooted dirt/andesite with stronger organic overprint in weathered states.
+
+### Coastal
+
+Gravel/stone/sand mixtures while remaining a terrestrial heavy-bone station.
 
 Placement prefers firm, reasonably level ground able to support repeated percussion. Terrain integration must remain bounded and additive rather than flattening unrelated terrain.
 
