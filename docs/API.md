@@ -8,7 +8,7 @@ The public product/service name is **Continuity Works**. The internal Python pac
 Returns the Continuity Works service identity, stable API version, supported lifecycle operations, rebuild grades, procedural-generation features, Minecraft version/content policy, progressive-disclosure endpoints, and review policy.
 
 ### `.tools()`
-Returns the portable JSON-Schema AI function/tool catalog used by `GET /v1/tools`. Public tool entries use `x-continuity-works` semantic-icon/publication metadata and declare the deterministic public validation-gate reasoning contract. Catalog schema version 1.3 exposes 17 deliberate tools.
+Returns the portable JSON-Schema AI function/tool catalog used by `GET /v1/tools`. Public tool entries use `x-continuity-works` semantic-icon/publication metadata and declare the deterministic public validation-gate reasoning contract. Catalog schema version 1.4 exposes 18 deliberate tools.
 
 ### `.inventory_project()`
 Returns discovered local mods, namespaces, explicit registry inventory, discoverable Minecraft resource IDs/candidates, and the inventory hash.
@@ -72,6 +72,29 @@ Returns a semantic Minecraft item icon when available or a deterministic lightwe
 ### `.resume(snapshot_id)`
 Loads the persisted snapshot manifest.
 
+## Compact Java blueprint API
+
+The in-process Java integration surface under `modules/continuityworks-api` is intended for consuming Minecraft mods that need deterministic structure planning without moving block lists through an inference model. `BlueprintApiVersion.CURRENT` is `1.8.0` for the decision-chain surface.
+
+`ContinuityWorksCompactBlueprintApi` retains the existing compact-plan and semantic edit operations and now exposes the tiny-inference decision chain as default methods so existing providers are not forced into a parallel implementation.
+
+### Decision-chain methods
+
+- `decisionProfile()` returns protocol `cw-decision-1`, the reference Qwen 2.5 Instruct Q4-class workload assumption, the hard 64-token model-output ceiling, the preferred 32-token operating target, the mutator graph, fixed vocabularies and architectural principles.
+- `beginDecision(BlueprintRequest)` creates deterministic decision state associated with the request ID. Rich state is outside the inference output budget.
+- `nextDecision(State)` returns only dependency-valid next mutators plus a compact prompt hint. It does not generate geometry.
+- `applyDecision(State, String)` accepts up to four terse semantic mutations such as `A=E01-017`, `Z=M`, or `B=riverbank;F=I` and returns a new revision of the state.
+- `validateDecision(State)` deterministically checks required selections, dependency validity and fixed-value legality.
+- `finalizeDecision(State)` freezes a valid state into semantic `BlueprintSpecification` values; deterministic generation remains a separate Continuity Works operation.
+
+The initial mutator codes are `A` archetype, `Z` scale, `B` biome/environment, `C` culture, `F` family mode, `O` orientation, `Q` condition, `K` palette and `D` detail density. `A`, `B`, `C`, `Q` and `K` are catalog/archetype-driven rather than model-invented. Fixed compact choices are exposed directly by the API.
+
+Changing an upstream choice invalidates only dependent choices. Changing biome invalidates orientation and palette while preserving unrelated scale/family decisions; changing archetype invalidates the downstream archetype branch. This supports consecutive reasoning calls and cheap repair instead of forcing complete regeneration of a decision tree.
+
+The decision boundary forbids raw block placement, NBT/SNBT, commands, primitive geometry and operation lists. It complements rather than replaces `CompactEditIntent`: the decision chain selects structure semantics before generation, while the compact edit surface performs bounded plan-level `TRANSLATE`, `ROTATE`, `MIRROR`, `PALETTE_REMAP`, `COMPOSE` and `REPEAT` transformations after a plan exists.
+
+See `BLUEPRINT_RUNTIME_BUDGET.md` for the token/resource contract and state-machine rationale.
+
 ## HTTP
 
 Run locally:
@@ -114,6 +137,8 @@ POST /v1/minecraft/content-package
 POST /v1/minecraft/icon
 POST /v1/resume
 ```
+
+The decision-chain methods described above are currently the in-process Java integration contract. They are not listed as HTTP routes until an HTTP bridge is implemented and validated; documentation must not imply remote executability before that boundary exists.
 
 The retired `/.well-known/structuresmith.json` path is a non-canonical compatibility alias only.
 
