@@ -2,14 +2,15 @@ Continuity Works Capability API v0.3.2
 Validation date: 2026-09-09
 =====================================
 
-RESULT: RETIRED PUBLIC BRANDING PURGED FROM THE VALIDATION AUTHORITY; FIRST EXPLICIT C-CANDIDATE SOURCE AND REGRESSION ADDED; PRODUCTION C ROUTING REMAINS PENDING ACCEPTANCE
+RESULT: RETIRED PUBLIC BRANDING PURGED FROM ACTIVE VALIDATION AUTHORITY; FIRST EXPLICIT C-CANDIDATE SOURCE ACCEPTED; PRODUCTION C ROUTING REMAINS THE NEXT DEPENDENCY-VALID STEP
 
 Authority and observed evidence
 -------------------------------
 Authoritative repository: mrcalzon02/Continuity-Works
 Authoritative branch: main
 Cycle starting head: 9f633d10c78c283d3b3d101329b6da42853c88f7
-Rejected culture-regression head: 84657bc46d84d589f3b4ba1af91f2ecdef3200a4
+Rejected intermediate head: 84657bc46d84d589f3b4ba1af91f2ecdef3200a4
+Accepted executable head: ee5c31c93697c26f971a4c57b6ca2666eaf3c2e5
 
 Reconciliation and selected work
 --------------------------------
@@ -35,21 +36,39 @@ Added tests/test_era_structure_culture_candidate_source_java.py. Its Java 17 har
 
 Production routing boundary
 ---------------------------
-An attempted same-cycle production C route was deliberately backed out before acceptance because the existing biome-candidate regression still asserts that C is unconfigured. The authoritative production router therefore remains unchanged at A and B only. This preserves the accepted production contract while the new C source is validated independently. Production C routing is the next implementation step after source acceptance and reconciliation of the existing regression expectation.
+An attempted same-cycle production C route was deliberately backed out before acceptance because the existing biome-candidate regression still asserts that C is unconfigured. The authoritative production router therefore remains unchanged at A and B only. This preserves the accepted production contract while the new C source is validated independently. Production C routing is the next implementation step after reconciling that existing regression expectation.
 
-Observed verification and rejection
------------------------------------
-The exact-head Validate Continuity Works run for 84657bc46d84d589f3b4ba1af91f2ecdef3200a4 compiled the repository and executed the new Java culture regression successfully. The new E01-012 culture-candidate test passed, as did the existing whole E01-001 through E01-017 B-candidate corpus regression and the existing direct biome candidate regression.
+Rejected intermediate and root-cause repair
+-------------------------------------------
+The exact-head validation run for 84657bc46d84d589f3b4ba1af91f2ecdef3200a4 compiled the repository and executed the new Java culture regression successfully. The E01-012 culture-candidate test passed, as did the existing whole E01-001 through E01-017 B-candidate corpus regression and the direct biome-candidate regression.
 
-That head was nevertheless rejected by the whole-active-repository branding guard. The failure identified the pre-existing VALIDATION_REPORT.txt itself as containing both forbidden retired public-name spellings in its naming-cleanup narrative. Because the validation authority is active project source, this was a genuine cleanup defect rather than a false positive.
+That head was rejected by the whole-active-repository branding guard because the pre-existing VALIDATION_REPORT.txt itself embedded both forbidden legacy product spellings while describing the cleanup as complete. This was a genuine authority defect and demonstrated why an indexed source search alone is not acceptance evidence.
 
-This update removes those literal retired-name strings from the authoritative validation record instead of weakening, excluding, or bypassing the guard.
+The repair changed the authoritative validation record directly. No guard exclusion, compatibility exception, parser bypass, or validation weakening was introduced.
+
+Accepted verification
+---------------------
+The repaired exact head ee5c31c93697c26f971a4c57b6ca2666eaf3c2e5 completed the full Validate Continuity Works workflow successfully.
+
+Observed successful stages include:
+- repository checkout at the exact head;
+- Python package installation and compilation;
+- source-tree agent discovery;
+- complete unit/API/PUBLIC_SERVICEABILITY test phase, including the new Java 17 culture-candidate regression, the B-candidate corpus regression, and the whole-active-repository retired-brand guard;
+- production Continuity Works frontend build;
+- zero-JavaScript Pages discovery stamping;
+- local executable API and public-boundary smoke;
+- validation-status publication.
+
+The exact-head GitHub Pages build and deployment for ee5c31c93697c26f971a4c57b6ca2666eaf3c2e5 also completed successfully.
+
+Net implementation state
+------------------------
+Comparison from cycle starting head 9f633d10c78c283d3b3d101329b6da42853c88f7 to accepted executable head ee5c31c93697c26f971a4c57b6ca2666eaf3c2e5 leaves the intended net implementation changes only: the new authoritative culture candidate source, its Java regression, and this existing validation authority. Temporary production-routing edits were fully restored before acceptance and therefore do not alter the resulting production router.
 
 Naming cleanup state
 --------------------
-Active repository searches for the two retired public naming forms returned no indexed source matches before validation. The stronger whole-repository validation guard then found the validation authority's literal reporting references and rejected the head, proving source search alone was insufficient.
-
-The validation authority has now been corrected to describe the cleanup without embedding the forbidden names. Acceptance remains contingent on the repaired exact head passing the existing whole-repository naming guard and subsequent build/deployment stages.
+The accepted exact head passed the repository-wide retired-brand guard and then successfully produced and deployed the Pages artifact. This is stronger evidence than source search alone. A separate browser-rendered retrieval of the public Pages URL could not be established through the available web retrieval path during this cycle, so independent visual-page inspection remains unclaimed.
 
 Compact decision-chain contract
 -------------------------------
@@ -67,16 +86,14 @@ PUBLIC REMOTE DECISION AUTHORITY: NOT VERIFIED LIVE.
 
 No deployed Java decision-authority process was directly observed in this cycle. No remote decision serviceability or production acceptance is claimed.
 
-A separate browser-rendered retrieval of the public Pages URL could not be established through the available web retrieval path. Live visual-page inspection therefore remains unclaimed. Exact-head generated/deployment evidence must be observed before any public-output acceptance claim.
-
 Era structure program boundary
 ------------------------------
 E01-001 through E01-017 remain source-developed through the currently recorded hero/build/worldgen stages, while production admission still requires target Minecraft runtime/materialization/placement evidence. E01-018 remains blocked until its authoritative master-catalog archetype label is recovered; no archetype name is to be invented.
 
 Next dependency-valid work
 --------------------------
-1. Obtain exact-head acceptance for the validation-authority branding repair and independent E01-012 C-candidate source regression.
-2. Reconcile the existing biome-candidate regression's intentional unconfigured-C assertion, then route C through the existing production candidate authority without changing transport or decision semantics.
+1. Reconcile the existing biome-candidate regression's intentional unconfigured-C assertion, then route the accepted C source through the existing production candidate authority without changing transport or decision semantics.
+2. Add production candidate-dictionary and compact-code regression coverage for E01-012 C through the normal router.
 3. Reconcile E01-001 through E01-017 for which hero specifications actually expose explicit culture vocabularies; normalize authoritative sources only where existing semantics can be preserved exactly, and fail closed on narrative-only material.
 4. Add Q condition and K palette profile sources only where corresponding explicit authoritative option vocabularies exist.
 5. Preserve catalog/profile authority fingerprints across persistence/resume so a restored decision cannot reuse a dictionary derived from an older authority snapshot.
