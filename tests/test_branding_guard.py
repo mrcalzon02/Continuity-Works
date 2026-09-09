@@ -81,6 +81,10 @@ class BrandingGuardTests(unittest.TestCase):
     def test_active_frontend_source_is_structure_forge_clean(self):
         verify_source_branding(PROJECT_ROOT / "frontend")
 
+    def test_whole_active_repository_source_is_structure_forge_clean(self):
+        """Fail closed if retired Forge branding returns anywhere in active authority."""
+        verify_source_branding(PROJECT_ROOT)
+
 
 if __name__ == "__main__":
     unittest.main()
