@@ -154,6 +154,25 @@ public final class EraBiomeCandidateHarness {
         require("COASTAL".equals(selectedButcheryBiome.selection("B")),
             "E01-012 compact candidate must resolve back to the normalized authoritative semantic profile");
 
+        BlueprintRequest largeCarcassRequest = request(UUID.fromString("99999999-9999-9999-9999-999999999999"));
+        BlueprintDecisionChain.State largeCarcass = selectArchetype(api, largeCarcassRequest, "E01-013");
+        BlueprintDecisionCandidateSource.CandidateSet largeCarcassSet = biomeSource.candidates(
+            largeCarcassRequest, largeCarcass, biome
+        );
+        require(largeCarcassSet.values().equals(List.of(
+            "TEMPERATE", "BOREAL", "TUNDRA", "SAVANNA", "ARID", "TROPICAL", "COASTAL"
+        )), "E01-013 normalized headings must expose exactly its seven pre-existing environmental categories");
+        BlueprintDecisionCandidates.Dictionary largeCarcassDictionary = api.decisionCandidates(
+            largeCarcassRequest, largeCarcass, "B", biomeSource
+        );
+        require(largeCarcassDictionary.choices().size() == 7,
+            "E01-013 dictionary must expose seven normalized authoritative profiles");
+        BlueprintDecisionChain.State selectedLargeCarcassBiome = api.applyCandidateDecision(
+            largeCarcass, largeCarcassDictionary, "6"
+        );
+        require("COASTAL".equals(selectedLargeCarcassBiome.selection("B")),
+            "E01-013 compact candidate must resolve back to the normalized authoritative semantic profile");
+
         boolean missingArchetypeRejected = false;
         try {
             biomeSource.candidates(request, api.beginDecision(request), biome);
@@ -190,6 +209,13 @@ public final class EraBiomeCandidateHarness {
             && routedButcheryB.choices().get(6).semanticValue().equals("COASTAL")
             && routedButcheryB.choices().size() == 7,
             "production routing must expose E01-012 normalized BIOME authority");
+        BlueprintDecisionCandidates.Dictionary routedLargeCarcassB = api.decisionCandidates(
+            largeCarcassRequest, largeCarcass, "B", routed
+        );
+        require(routedLargeCarcassB.choices().get(0).semanticValue().equals("TEMPERATE")
+            && routedLargeCarcassB.choices().get(6).semanticValue().equals("COASTAL")
+            && routedLargeCarcassB.choices().size() == 7,
+            "production routing must expose E01-013 normalized BIOME authority");
 
         BlueprintDecisionChain.Mutator culture = BlueprintDecisionChain.profile().mutators().stream()
             .filter(candidate -> candidate.code().equals("C"))
