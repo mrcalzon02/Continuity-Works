@@ -2,48 +2,54 @@ Continuity Works Capability API v0.3.2
 Validation date: 2026-09-09
 =====================================
 
-RESULT: E01-001 THROUGH E01-017 NOW HAVE A SINGLE CORPUS-LEVEL PRODUCTION B-CANDIDATE REGRESSION; EXACT-HEAD VALIDATION AND PAGES DEPLOYMENT SUCCEEDED; LIVE JAVA AUTHORITY REMAINS OPEN
+RESULT: RETIRED PUBLIC BRANDING PURGED FROM THE VALIDATION AUTHORITY; FIRST EXPLICIT C-CANDIDATE SOURCE AND REGRESSION ADDED; PRODUCTION C ROUTING REMAINS PENDING ACCEPTANCE
 
 Authority and observed evidence
 -------------------------------
 Authoritative repository: mrcalzon02/Continuity-Works
 Authoritative branch: main
-Cycle starting head: fcd6b5af4ddb41e8a53d273d88de19a2105f67fe
-Accepted executable commit: 3c11a731d338b412d80dec4a0b026b9e1aaa8df9
+Cycle starting head: 9f633d10c78c283d3b3d101329b6da42853c88f7
+Rejected culture-regression head: 84657bc46d84d589f3b4ba1af91f2ecdef3200a4
 
 Reconciliation and selected work
 --------------------------------
-The live repository reconciled at fcd6b5af4ddb41e8a53d273d88de19a2105f67fe. The existing validation authority identified whole-corpus E01-001 through E01-017 biome/environment reconciliation as the next dependency-valid improvement after direct E01-016 coverage.
+The live repository reconciled at 9f633d10c78c283d3b3d101329b6da42853c88f7 with no intervening commits. The next dependency-valid implementation gap was authoritative C culture-profile candidate discovery from explicit machine-safe labels already present in hero specifications.
 
-No additional hero-spec rewrite was justified before corpus verification. The correct bounded repair was therefore a single regression that exercises every currently eligible hero specification against the existing EraStructureBiomeCandidateSource and the production candidate-routing bootstrap.
+E01-012 Butchery Site already declares four explicit supported behavioral profile identifiers in its Culture-variant hooks section: expedient_field_dressing, transport_focused, marrow_intensive, and consumption_biased. E01-001 Rock Overhang Camp contains narrative culture hooks but no explicit supported profile vocabulary suitable for inference candidates.
 
-Implemented corpus guard
-------------------------
-Added tests/test_era_structure_biome_candidate_corpus_java.py.
+Implemented culture authority slice
+-----------------------------------
+Added modules/continuityworks-api/src/main/java/io/continuityworks/api/blueprint/EraStructureCultureCandidateSource.java.
 
-The Java 17 harness iterates E01-001 through E01-017 and requires, for every archetype:
-- exactly one authoritative hero specification exists;
-- the direct B candidate source returns at least one explicit candidate;
-- candidate semantics are unique while preserving authoritative source order;
-- sourceVersion is bound to the exact hero-spec snapshot through cw-hero-biome-sha256;
-- ContinuityWorksDecisionAuthorityBootstrap.productionCandidateSource exposes exactly the same ordered semantic values;
-- the final compact local dictionary code resolves back to the matching authoritative semantic B value before mutation.
+The source:
+- answers only mutator C;
+- requires selected archetype A and matching request state;
+- resolves exactly one sibling hero specification from the authoritative hero directory;
+- accepts only explicit culture labels inside the Culture-variant hooks section;
+- supports level-three profile headings, bold profile bullets, and inline-code identifiers only on a sentence explicitly declaring supported profiles;
+- canonicalizes explicit labels into decision-safe identifiers;
+- binds sourceVersion to the exact hero-spec bytes through cw-hero-culture-sha256;
+- fails closed when a hero specification exposes only narrative culture prose rather than inventing candidate vocabulary.
 
-This closes the previous gap where B availability had been proven only through individual archetype regressions rather than as a maintained corpus invariant.
+Added tests/test_era_structure_culture_candidate_source_java.py. Its Java 17 harness proves that E01-012 exposes exactly EXPEDIENT_FIELD_DRESSING, TRANSPORT_FOCUSED, MARROW_INTENSIVE, and CONSUMPTION_BIASED in authoritative order; the dictionary exposes four choices; compact code 3 resolves to CONSUMPTION_BIASED; E01-001 narrative-only hooks fail closed; and culture discovery requires archetype A.
 
-Observed verification
----------------------
-Direct commit inspection confirmed 3c11a731d338b412d80dec4a0b026b9e1aaa8df9 adds only tests/test_era_structure_biome_candidate_corpus_java.py.
+Production routing boundary
+---------------------------
+An attempted same-cycle production C route was deliberately backed out before acceptance because the existing biome-candidate regression still asserts that C is unconfigured. The authoritative production router therefore remains unchanged at A and B only. This preserves the accepted production contract while the new C source is validated independently. Production C routing is the next implementation step after source acceptance and reconciliation of the existing regression expectation.
 
-The exact-head Validate Continuity Works run for 3c11a731d338b412d80dec4a0b026b9e1aaa8df9 completed successfully. The unit/API/PUBLIC_SERVICEABILITY test phase passed with the new corpus regression included, and the complete validation workflow completed successfully.
+Observed verification and rejection
+-----------------------------------
+The exact-head Validate Continuity Works run for 84657bc46d84d589f3b4ba1af91f2ecdef3200a4 compiled the repository and executed the new Java culture regression successfully. The new E01-012 culture-candidate test passed, as did the existing whole E01-001 through E01-017 B-candidate corpus regression and the existing direct biome candidate regression.
 
-The exact-head GitHub Pages build/deployment for 3c11a731d338b412d80dec4a0b026b9e1aaa8df9 also completed successfully.
+That head was nevertheless rejected by the whole-active-repository branding guard. The failure identified the pre-existing VALIDATION_REPORT.txt itself as containing both forbidden retired public-name spellings in its naming-cleanup narrative. Because the validation authority is active project source, this was a genuine cleanup defect rather than a false positive.
+
+This update removes those literal retired-name strings from the authoritative validation record instead of weakening, excluding, or bypassing the guard.
 
 Naming cleanup state
 --------------------
-The accepted executable head passed the repository validation suite that contains the retired-name guard and then successfully produced/deployed the Pages artifact. A separate browser-rendered retrieval of the public Pages URL could not be established through the available web retrieval path during this cycle, so independent visual-page inspection remains unclaimed.
+Active repository searches for the two retired public naming forms returned no indexed source matches before validation. The stronger whole-repository validation guard then found the validation authority's literal reporting references and rejected the head, proving source search alone was insufficient.
 
-No new Structure Forge or StructureForge authority, UI text, generated/static asset, metadata, deployment path, or documentation was introduced by this cycle.
+The validation authority has now been corrected to describe the cleanup without embedding the forbidden names. Acceptance remains contingent on the repaired exact head passing the existing whole-repository naming guard and subsequent build/deployment stages.
 
 Compact decision-chain contract
 -------------------------------
@@ -61,15 +67,17 @@ PUBLIC REMOTE DECISION AUTHORITY: NOT VERIFIED LIVE.
 
 No deployed Java decision-authority process was directly observed in this cycle. No remote decision serviceability or production acceptance is claimed.
 
+A separate browser-rendered retrieval of the public Pages URL could not be established through the available web retrieval path. Live visual-page inspection therefore remains unclaimed. Exact-head generated/deployment evidence must be observed before any public-output acceptance claim.
+
 Era structure program boundary
 ------------------------------
 E01-001 through E01-017 remain source-developed through the currently recorded hero/build/worldgen stages, while production admission still requires target Minecraft runtime/materialization/placement evidence. E01-018 remains blocked until its authoritative master-catalog archetype label is recovered; no archetype name is to be invented.
 
 Next dependency-valid work
 --------------------------
-1. Begin authoritative C culture-profile candidate discovery only from explicit machine-safe culture labels already present in the eligible hero corpus.
-2. First reconcile E01-001 through E01-017 for which hero specifications actually expose explicit culture vocabularies; do not infer culture choices from narrative prose.
-3. Implement the smallest source/router/regression repair needed for the first dependency-valid C corpus slice, preserving authority fingerprints and fail-closed behavior.
+1. Obtain exact-head acceptance for the validation-authority branding repair and independent E01-012 C-candidate source regression.
+2. Reconcile the existing biome-candidate regression's intentional unconfigured-C assertion, then route C through the existing production candidate authority without changing transport or decision semantics.
+3. Reconcile E01-001 through E01-017 for which hero specifications actually expose explicit culture vocabularies; normalize authoritative sources only where existing semantics can be preserved exactly, and fail closed on narrative-only material.
 4. Add Q condition and K palette profile sources only where corresponding explicit authoritative option vocabularies exist.
 5. Preserve catalog/profile authority fingerprints across persistence/resume so a restored decision cannot reuse a dictionary derived from an older authority snapshot.
 6. Remote Java authority attachment remains the highest external integration blocker and stays open until directly observed through the deployed public boundary.
