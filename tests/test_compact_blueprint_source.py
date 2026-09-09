@@ -19,8 +19,8 @@ class CompactBlueprintSourceTests(unittest.TestCase):
         properties = self.read(ROOT / "modules" / "continuityworks-api" / "gradle.properties")
         primitive = self.read(API / "CompactBlueprintPrimitive.java")
         plan = self.read(API / "CompactBlueprintPlan.java")
-        self.assertIn("new BlueprintApiVersion(1, 7, 0)", version)
-        self.assertIn("api_version=1.7.0", properties)
+        self.assertIn("new BlueprintApiVersion(1, 8, 0)", version)
+        self.assertIn("api_version=1.8.0", properties)
         for kind in ("BLOCK", "LINE", "FILL_BOX", "HOLLOW_BOX", "CYLINDER"):
             self.assertIn(kind, primitive)
         self.assertIn("PlacementOperation.Kind operationKind", primitive)
