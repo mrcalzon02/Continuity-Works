@@ -2,7 +2,7 @@ Continuity Works Capability API v0.3.2
 Validation date: 2026-09-08
 =====================================
 
-RESULT: WHOLE-SOURCE AND RENDERED BRANDING GATES PASS; COMPACT DECISION-CHAIN API VALIDATED; DELEGATED HTTP BRIDGE IMPLEMENTED; LIVE JAVA AUTHORITY AND EXTERNAL API HOST NOT VERIFIED
+RESULT: WHOLE-SOURCE AND RENDERED BRANDING GATES PASS; COMPACT DECISION-CHAIN API AND JAVA AUTHORITY ADAPTER VALIDATED; DELEGATED HTTP BRIDGE IMPLEMENTED; LIVE REMOTE JAVA AUTHORITY NOT ATTACHED OR VERIFIED
 
 Measured validation
 -------------------
@@ -12,13 +12,16 @@ Previously fully validated implementation SHA: f1c833d305f5236ce5bba267d0f350c3e
 Previously successful validation run: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34299354745
 Previously successful GitHub Pages build/deployment for the same SHA: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34299353940
 Decision HTTP bridge implementation commit: 2479d1c665f9539bd4cebb29d43ddafb7a8967da
-Decision HTTP bridge regression-test commit / source head before this record-only update: d09b3d0acd4305a57646541f9c366ee1060ed632
+Decision HTTP bridge regression-test commit: d09b3d0acd4305a57646541f9c366ee1060ed632
+Java decision authority adapter implementation commit: 100983bdbf58492b237ca7a1e025907046e7ba4e
+Java decision authority adapter regression-test commit / validated source head before this record-only update: b95bf7029e171258e75d88da0de46e88603713cc
+Successful validation run for b95bf7029e171258e75d88da0de46e88603713cc: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34307181006
 
 Branding cleanup state
 ----------------------
 The final directly observed stale frontend-integration heading in docs/BIOME_EXPANSION_MODULARITY_INTEGRATION_PLAN.md was repaired at its authoritative source. Net comparison against the pre-repair head shows exactly one line changed in that authority: the obsolete frontend product name was replaced by Continuity Works. An accidental unrelated provider-probe example edit introduced during whole-file replacement was detected by diff inspection and immediately restored before acceptance.
 
-Repository validation then passed the whole-active-source branding assertion and completed the production frontend build successfully. The normal frontend build runs source-tree branding verification before Vite and rendered/static artifact verification after Vite, so source cleanliness and generated production-artifact cleanliness are both enforced. GitHub Pages also completed a successful build/deployment for the same validated commit.
+Repository validation then passed the whole-active-source branding assertion and completed the production frontend build successfully. The normal frontend build runs source-tree branding verification before Vite and rendered/static artifact verification after Vite, so source cleanliness and generated production-artifact cleanliness are both enforced. GitHub Pages also completed a successful build/deployment for the same previously validated commit.
 
 This closes the active retired Forge-branding cleanup requirement for authoritative source, production build artifacts, and the directly observed Pages deployment path. A separate browser-executed visual inspection was not obtained in that validation cycle and is therefore not claimed.
 
@@ -40,11 +43,21 @@ Validated contract highlights:
 - deterministic validation and finalization remain owned by Continuity Works
 - post-generation compact edits continue through the existing bounded translate/rotate/mirror/palette-remap/compose/repeat layer rather than a parallel mutation implementation
 
-The Java 17 behavioral harness for the decision chain passed as part of the previously complete repository validation step. The compact blueprint module Gradle version and regression assertions are synchronized at API version 1.8.0.
+The Java 17 behavioral harness for the decision chain passed as part of repository validation. The compact blueprint module Gradle version and regression assertions remain synchronized at API version 1.8.0.
+
+Java decision authority adapter
+-------------------------------
+modules/continuityworks-api now includes ContinuityWorksDecisionAuthorityAdapter as a thin transport-facing authority around a configured ContinuityWorksCompactBlueprintApi provider. It deliberately delegates API version reporting, decision-profile discovery, begin, next, apply, validate, and finalize operations through the configured provider instead of reimplementing mutator vocabulary, dependency semantics, validation, or finalization.
+
+The adapter adds transport-safe expected-revision checking before mutation application. Late asynchronous inference output that targets an older decision revision fails closed with a stale-revision error, while the authoritative immutable state returned by the provider remains the state of record. This gives a future HTTP/IPC/companion transport a stable Java authority seam without creating a second decision engine.
+
+The existing tests/test_blueprint_decision_chain_java.py Java 17 harness was extended rather than creating a parallel test framework. It compiles every Java source under modules/continuityworks-api, instantiates the authority adapter over a minimal ContinuityWorksCompactBlueprintApi provider, verifies provider API/protocol delegation, verifies immutable revision advancement, verifies stale revision rejection, verifies delegated validation, and verifies delegated finalization.
+
+GitHub validation run 34307181006 completed successfully for exact head b95bf7029e171258e75d88da0de46e88603713cc. Its validate job passed package installation, Python compilation, source-tree discovery, the unit/API contract/PUBLIC_SERVICEABILITY test step, the Continuity Works frontend build, Pages discovery stamping, local executable API/public-boundary smoke, and validation-status publication. Because the Java authority regression lives inside the repository unit/API test suite and the workflow concluded success on that exact head, the adapter is accepted at repository/runtime-harness level.
 
 Delegated HTTP decision bridge
 ------------------------------
-The existing Python HTTP/publication server now contains a non-duplicative conditional bridge for the Java decision-chain contract. The bridge exposes the route family only when CONTINUITY_WORKS_DECISION_AUTHORITY_URL names a separate authoritative decision service:
+The existing Python HTTP/publication server contains a non-duplicative conditional bridge for the Java decision-chain contract. The bridge exposes the route family only when CONTINUITY_WORKS_DECISION_AUTHORITY_URL names a separate authoritative decision service:
 - GET  /v1/blueprints/decision/profile
 - POST /v1/blueprints/decision/begin
 - POST /v1/blueprints/decision/next
@@ -54,33 +67,27 @@ The existing Python HTTP/publication server now contains a non-duplicative condi
 
 The Python service does not implement, reinterpret, or persist decision semantics. It forwards configured calls to the authoritative service. With no authority configured, the routes are omitted from OpenAPI and machine discovery and direct calls fail closed with decision_authority_unavailable. A self-referential authority URL is rejected with decision_authority_loop so the service cannot accidentally recurse into itself. The configured authority address is not disclosed through health/discovery metadata. Timeout and URL validation remain bounded at the bridge boundary.
 
-Regression coverage was added in tests/test_server.py for both states: unconfigured authority remains unadvertised/fail-closed, while a configured authoritative test double causes the six routes to appear in OpenAPI and discovery and receives profile/apply requests unchanged. The exact committed bridge source was also exercised in an isolated local HTTP behavior harness: unconfigured profile returned 503, configured profile and apply were delegated successfully, and self-loop configuration returned 503. Python AST parsing of the bridge and regression-test source passed before repository writes.
-
-This is source/isolated-harness evidence, not a full repository validation run. No claim is made that the configured Render service currently has a Java authority attached or that these decision routes are live on the internet.
+Regression coverage in tests/test_server.py covers both states: unconfigured authority remains unadvertised/fail-closed, while a configured authoritative test double causes the six routes to appear in OpenAPI and discovery and receives profile/apply requests unchanged. The bridge remains accepted at source/local-harness/repository-suite level, but no claim is made that the configured Render service currently has a Java authority process attached or that these decision routes execute remotely.
 
 Observed repository state for this incremental cycle
 ----------------------------------------------------
-Direct branch read-back after the implementation/test commits showed main at d09b3d0acd4305a57646541f9c366ee1060ed632 with parent 2479d1c665f9539bd4cebb29d43ddafb7a8967da. Comparison against the prior head 52093275a6d43510c1c1bf5cc5d81545266f26b2 showed main ahead by exactly two commits with only:
-- src/structure_capability/server.py
-- tests/test_server.py
+The cycle began from recorded main head abb3cd6de6d6914e9f8e778c1efda0d15bda7f39. The implementation added only the Java authority adapter and extended the existing Java decision-chain regression harness before this state-record update:
+- modules/continuityworks-api/src/main/java/io/continuityworks/api/blueprint/ContinuityWorksDecisionAuthorityAdapter.java
+- tests/test_blueprint_decision_chain_java.py
 
-The server read-back returned blob c4f18f9a6d3157ccf7a5a196a905a7e888cf6c31, matching the blob created by the bridge implementation write. No commit-status checks were present for d09b3d0acd4305a57646541f9c366ee1060ed632 at the observation point, so a CI/full-suite pass is not claimed for this cycle.
+Direct source read-back from main returned the adapter and extended regression harness after their commits. The existing validation workflow then completed successfully for b95bf7029e171258e75d88da0de46e88603713cc. This record update changes only VALIDATION_REPORT.txt and does not alter executable behavior.
 
-Observed validation gates from the prior full run
---------------------------------------------------
-For f1c833d305f5236ce5bba267d0f350c3e2dc9a52:
+Observed validation gates for b95bf7029e171258e75d88da0de46e88603713cc
+------------------------------------------------------------------------
 - Python package installation succeeded.
-- Python source/tests/scripts compilation succeeded.
+- Python source compilation succeeded.
 - source-tree agent discovery succeeded.
-- complete unit/API contract/PUBLIC_SERVICEABILITY test step succeeded.
-- Java 17 compact-blueprint and decision-chain behavioral harnesses succeeded.
-- whole-active-repository branding gate succeeded.
+- unit/API contract/PUBLIC_SERVICEABILITY test step succeeded, including the Java 17 decision-chain/authority-adapter behavioral harness.
 - production frontend build succeeded.
-- rendered/static artifact branding gate succeeded as part of the frontend build.
 - zero-JavaScript Pages discovery stamping succeeded.
 - local executable API and public-boundary smoke succeeded.
-- GitHub Pages build/deployment succeeded for the exact same SHA.
-- existing worldgen regression coverage continues to enforce the 500-block minimum structure and jigsaw-piece protection contract.
+- validation-status publication succeeded.
+- existing branding and worldgen regression coverage therefore remained green on the same code head.
 
 Continuity Works public naming contract
 ---------------------------------------
@@ -107,7 +114,7 @@ PUBLIC API SERVICE: NOT VERIFIED LIVE.
 
 The configured Render candidate remains an external verification boundary. Repository/source validation does not establish that the candidate serves /v1/health or the Continuity Works API. The existing public-serviceability acceptance remains fail-closed and must pass remote health, discovery, publication, commit-identity, CORS, and Pages-to-API checks before a live API claim is permitted.
 
-The new decision bridge adds an additional explicit boundary: remote decision routes must not be advertised until a separate authoritative Java decision service is attached through CONTINUITY_WORKS_DECISION_AUTHORITY_URL. The Python Render deployment is intentionally not a second decision engine.
+The decision bridge adds an additional explicit boundary: remote decision routes must not be advertised until a separate authoritative Java decision service is attached through CONTINUITY_WORKS_DECISION_AUTHORITY_URL. The Java authority adapter now provides the authoritative in-process seam for such a service, but it is not itself an HTTP listener or deployment. The Python Render deployment is intentionally not a second decision engine.
 
 GitHub Pages deployment remains verified only for the previously validated static/browser SHA; it is not evidence that Python API execution or Java decision execution exists remotely.
 
@@ -117,8 +124,8 @@ E01-001 through E01-017 remain source-developed through hero/build/worldgen stag
 
 Next dependency-valid work
 --------------------------
-1. Implement or attach the authoritative Java-side decision transport/adapter that invokes BlueprintDecisionChain/ContinuityWorksCompactBlueprintApi directly, then configure the Python bridge to that authority in an environment where both sides can be exercised end-to-end. Do not duplicate decision logic in Python.
-2. Run the complete repository validation/public-serviceability suite on the resulting exact head before claiming the bridge accepted beyond source/isolated-harness level.
+1. Bind a minimal Java transport/service layer to ContinuityWorksDecisionAuthorityAdapter and exercise the existing Python delegated decision bridge against that real authority end-to-end. The transport must remain a thin serialization/HTTP-or-IPC boundary and must not duplicate decision semantics.
+2. Configure the Python bridge to the Java authority in an environment where both sides can be observed, then run the complete repository/public-serviceability checks on the exact integrated head before claiming remote decision-route acceptance.
 3. Add authoritative dynamic candidate binding/dictionaries for STRUCTURE_CATALOG and ARCHETYPE_PROFILE mutators so tiny inference controllers select only legal catalog/profile values rather than free-form identifiers.
 4. Keep the external API candidate issue open until directly verified; do not claim remote serviceability from repository state or Pages deployment.
 5. Resume hero-structure development at E01-018 only when its authoritative catalog label is recovered.
