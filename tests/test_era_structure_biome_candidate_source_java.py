@@ -192,6 +192,25 @@ public final class EraBiomeCandidateHarness {
         require("COASTAL".equals(selectedBoneBreakingBiome.selection("B")),
             "E01-014 compact candidate must resolve back to the normalized authoritative semantic profile");
 
+        BlueprintRequest marrowRequest = request(UUID.fromString("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"));
+        BlueprintDecisionChain.State marrow = selectArchetype(api, marrowRequest, "E01-015");
+        BlueprintDecisionCandidateSource.CandidateSet marrowSet = biomeSource.candidates(
+            marrowRequest, marrow, biome
+        );
+        require(marrowSet.values().equals(List.of(
+            "TEMPERATE", "BOREAL", "TUNDRA", "SAVANNA", "ARID", "TROPICAL", "COASTAL"
+        )), "E01-015 existing bold biome labels must expose exactly its seven authoritative categories");
+        BlueprintDecisionCandidates.Dictionary marrowDictionary = api.decisionCandidates(
+            marrowRequest, marrow, "B", biomeSource
+        );
+        require(marrowDictionary.choices().size() == 7,
+            "E01-015 dictionary must expose seven authoritative profiles");
+        BlueprintDecisionChain.State selectedMarrowBiome = api.applyCandidateDecision(
+            marrow, marrowDictionary, "6"
+        );
+        require("COASTAL".equals(selectedMarrowBiome.selection("B")),
+            "E01-015 compact candidate must resolve back to the authoritative semantic profile");
+
         boolean missingArchetypeRejected = false;
         try {
             biomeSource.candidates(request, api.beginDecision(request), biome);
@@ -242,6 +261,13 @@ public final class EraBiomeCandidateHarness {
             && routedBoneBreakingB.choices().get(6).semanticValue().equals("COASTAL")
             && routedBoneBreakingB.choices().size() == 7,
             "production routing must expose E01-014 normalized BIOME authority");
+        BlueprintDecisionCandidates.Dictionary routedMarrowB = api.decisionCandidates(
+            marrowRequest, marrow, "B", routed
+        );
+        require(routedMarrowB.choices().get(0).semanticValue().equals("TEMPERATE")
+            && routedMarrowB.choices().get(6).semanticValue().equals("COASTAL")
+            && routedMarrowB.choices().size() == 7,
+            "production routing must expose E01-015 existing BIOME authority");
 
         BlueprintDecisionChain.Mutator culture = BlueprintDecisionChain.profile().mutators().stream()
             .filter(candidate -> candidate.code().equals("C"))
