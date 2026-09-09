@@ -2,20 +2,20 @@ Continuity Works Capability API v0.3.2
 Validation date: 2026-09-09
 =====================================
 
-RESULT: E01-015 BIOME/ENVIRONMENT AUTHORITY NOW HAS DIRECT PRODUCTION B-DISCOVERY REGRESSION COVERAGE; HERO SOURCE REMAINED UNCHANGED; SOURCE/DIFF/BRANDING READ-BACK PASSED; EXECUTABLE VALIDATION WAS STILL IN PROGRESS AT LAST OBSERVATION
+RESULT: E01-015 BIOME/ENVIRONMENT AUTHORITY HAS DIRECT PRODUCTION B-DISCOVERY REGRESSION COVERAGE; HERO SOURCE REMAINED UNCHANGED; EXACT-HEAD VALIDATION AND PAGES DEPLOYMENT SUCCEEDED; LIVE JAVA AUTHORITY REMAINS OPEN
 
 Authority and observed evidence
 -------------------------------
 Authoritative repository: mrcalzon02/Continuity-Works
 Authoritative branch: main
 Cycle starting head: d3a6a6d9519aeaa8f77248435c41694a52905b9d
-Regression-coverage commit: 94a901e0ed229eededac60e9a5df5c82a0833d16
+Accepted executable commit: 94a901e0ed229eededac60e9a5df5c82a0833d16
 
 Reconciliation and selected work
 --------------------------------
 The live repository reconciled at d3a6a6d9519aeaa8f77248435c41694a52905b9d. The existing validation authority identified E01-015 Marrow Processing Ground as the next dependency-valid repair because its authoritative biome section already uses explicit bold profile labels accepted by EraStructureBiomeCandidateSource, but lacked direct regression coverage through candidate discovery, compact semantic resolution, and production routing.
 
-Repository searches for both retired public-name forms returned no active source matches before mutation, so no naming defect preempted this candidate-authority repair. A direct browser/render retrieval of the public Pages site could not be established through the available web path, so live visual acceptance remains open rather than inferred from source cleanliness.
+Repository searches for both retired public-name forms returned no active source matches before mutation, so no naming defect preempted this candidate-authority repair. A direct browser/render retrieval of the public Pages site could not be established through the available web path, so browser visual acceptance remains open rather than inferred from source cleanliness.
 
 Implemented repair
 ------------------
@@ -28,7 +28,7 @@ No E01-015 hero-spec source normalization was performed. Its existing seven expl
 - Tropical
 - Coastal
 
-The existing Java 17 biome-candidate regression was extended to assert that E01-015:
+The existing Java 17 biome-candidate regression now asserts that E01-015:
 - exposes exactly TEMPERATE, BOREAL, TUNDRA, SAVANNA, ARID, TROPICAL, COASTAL in source order;
 - produces a seven-choice B dictionary;
 - resolves compact local code 6 back to semantic COASTAL before authoritative mutation;
@@ -40,19 +40,17 @@ Observed verification
 ---------------------
 Direct read-back of docs/era_structure_hero/E01-015_MARROW_PROCESSING_GROUND.md confirmed the plural biome/environment adaptations section and seven existing bold environmental profile labels.
 
-Direct commit diff read-back for 94a901e0ed229eededac60e9a5df5c82a0833d16 confirmed the commit changes exactly tests/test_era_structure_biome_candidate_source_java.py and contains only the E01-015 candidate/dictionary/compact-resolution assertions plus production-routing assertions.
+Direct commit diff read-back for 94a901e0ed229eededac60e9a5df5c82a0833d16 confirmed the executable commit changes exactly tests/test_era_structure_biome_candidate_source_java.py and contains only the E01-015 candidate/dictionary/compact-resolution assertions plus production-routing assertions.
+
+The existing Validate Continuity Works workflow for exact head 94a901e0ed229eededac60e9a5df5c82a0833d16 completed successfully. The exact-head Pages build/deployment also completed successfully.
 
 Post-write repository searches for both retired public-name forms remained empty.
 
-Executable-validation boundary
-------------------------------
-The repository's existing Validate Continuity Works workflow for exact head 94a901e0ed229eededac60e9a5df5c82a0833d16 was directly observed in progress at the last check. The Pages build/deployment for the same head was also observed in progress. Neither is promoted to success until a completed successful conclusion is directly observed.
-
-The local execution container still could not resolve github.com, so no independent local checkout/build/test execution was available during this cycle. Unobserved execution is not treated as acceptance.
+The local execution container still could not resolve github.com, so no independent local checkout/build/test execution was available during this cycle. The successful exact-head repository validation is the strongest directly observed executable evidence for this change.
 
 Naming cleanup state
 --------------------
-Authoritative source search remains clean for the retired public naming forms. Browser-render acceptance remains open because the public Pages URL could not be directly rendered through the available web retrieval path during this cycle. Source cleanliness alone is not treated as live-page acceptance.
+Authoritative source search remains clean for the retired public naming forms, and the exact executable head passed repository validation and completed Pages deployment. Browser-render acceptance remains open because the public Pages URL could not be directly rendered through the available web retrieval path during this cycle.
 
 Compact decision-chain contract
 -------------------------------
