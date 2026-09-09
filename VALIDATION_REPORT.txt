@@ -2,66 +2,69 @@ Continuity Works Capability API v0.3.2
 Validation date: 2026-09-09
 =====================================
 
-RESULT: E01-010 BIOME/ENVIRONMENT AUTHORITY NORMALIZED WITHOUT NEW SEMANTICS; AUTHORITATIVE B CANDIDATES NOW RESOLVE THROUGH PRODUCTION ROUTING; FULL EXACT-HEAD VALIDATION PASSED; EXACT VALIDATED PAGES ARTIFACT DEPLOYED; REMOTE JAVA DECISION AUTHORITY REMAINS UNAVAILABLE
+RESULT: E01-011 BIOME/ENVIRONMENT AUTHORITY NORMALIZED WITHOUT NEW SEMANTICS; AUTHORITATIVE B CANDIDATES NOW RESOLVE THROUGH PRODUCTION ROUTING; FULL EXACT-HEAD VALIDATION PASSED; EXACT-HEAD PAGES BUILD AND DEPLOYMENT PASSED; REMOTE JAVA DECISION AUTHORITY REMAINS UNAVAILABLE
 
 Authority and accepted evidence
 -------------------------------
 Authoritative repository: mrcalzon02/Continuity-Works
 Authoritative branch: main
-Cycle starting head: 0382a4254af50d2c51cae28afaece3093f62672d
-Executable implementation/test head: cb8d5f6f77bbc01d2a764de46e9075839eadf1c2
-Successful exact-head validation run: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34344956071
-Exact validated Pages artifact deployment observed in public-service run: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34345058165
+Cycle starting head: 36bf16dba9f9b5498227b7b0e8fec485012f4877
+Source-normalization commit: 78bfcee48c00dbab6d8abe1ab7cc4f07aefe29e3
+Executable implementation/test head: 10a517c9310c1987437640b7409db9d88d2c8ad2
+Successful exact-head validation run: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34350966114
+Successful exact-head Pages deployment run: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34350965768
 
 Reconciliation and selected work
 --------------------------------
-The live repository reconciled at 0382a4254af50d2c51cae28afaece3093f62672d. The authoritative validation record identified normalization of completed hero specifications whose biome/environment sections remained prose-only as the next dependency-valid repository repair. The existing Java regression named E01-010 Flint Procurement Pit as the first explicit failing case.
+The live repository reconciled at 36bf16dba9f9b5498227b7b0e8fec485012f4877. The existing validation authority named E01-011 Quartzite Quarry as the next dependency-valid repair because its biome/environment section already contained seven explicit categories but encoded them as plain list entries rather than the machine-facing profile shape consumed by EraStructureBiomeCandidateSource.
 
-The active retired-public-naming search remained clean before mutation. No naming repair preempted the candidate-authority work.
+Repository searches for the retired public naming returned no active source matches before mutation. No naming defect preempted the candidate-authority repair.
 
 Implemented repair
 ------------------
-The existing E01-010 hero specification already described five environmental groupings in prose:
-- temperate and boreal;
-- tundra/alpine;
-- savanna/arid;
-- tropical;
-- coastal/riverine.
+The existing E01-011 hero specification already defined exactly seven environmental categories:
+- Temperate
+- Boreal
+- Tundra
+- Savanna
+- Arid
+- Tropical
+- Coastal
 
-The repair promoted those exact groupings into explicit level-three profile headings inside the existing Biome / Environment Adaptations section. No category was split, added, renamed into a different ecological concept, or inferred from external knowledge. The descriptive sentences remain attached to the same groupings.
+The repair promoted those exact categories to level-three headings inside the existing Biome and environmental adaptations section. Their original descriptions remain attached to the same categories. No category was added, removed, merged, split, or inferred from external knowledge.
 
-EraStructureBiomeCandidateSource therefore now obtains five authoritative E01-010 B candidates using its existing parser and source-fingerprint contract:
-- TEMPERATE_BOREAL
-- TUNDRA_ALPINE
-- SAVANNA_ARID
+EraStructureBiomeCandidateSource therefore now obtains seven authoritative E01-011 B candidates through its existing parser and source-fingerprint contract:
+- TEMPERATE
+- BOREAL
+- TUNDRA
+- SAVANNA
+- ARID
 - TROPICAL
-- COASTAL_RIVERINE
+- COASTAL
 
-No Java production logic changed. The authority document was repaired at its source so the existing candidate pipeline could consume it.
+No production Java parser, transport, routing, or duplicate vocabulary implementation changed. The authoritative hero source was repaired so the existing candidate pipeline can consume its existing semantics directly.
 
 Regression change
 -----------------
-The existing Java 17 regression was changed from asserting that E01-010 must fail closed as prose-only to asserting the new authoritative behavior:
-- the five normalized candidates appear in source order;
-- the E01-010 candidate dictionary contains exactly five choices;
-- compact local code 4 resolves back to semantic COASTAL_RIVERINE before authoritative mutation;
-- production candidate routing exposes the same five E01-010 choices.
+The existing Java 17 biome-candidate regression now verifies E01-011 against the actual repository authority:
+- the seven normalized candidates appear in source order;
+- the E01-011 candidate dictionary contains exactly seven choices;
+- compact local code 6 resolves back to semantic COASTAL before authoritative mutation;
+- production candidate routing exposes exactly the same seven E01-011 choices.
 
-Existing coverage for E01-001, E01-017, missing archetype state, unconfigured future profile mutators, source-version invalidation, catalog routing, and compact-choice resolution remains intact.
+Existing coverage for E01-001, E01-010, E01-017, missing archetype state, unconfigured future profile mutators, source-version invalidation, catalog routing, and compact-choice resolution remains intact.
 
 Observed source/diff verification
 ---------------------------------
-Direct source read-back of executable head cb8d5f6f77bbc01d2a764de46e9075839eadf1c2 confirmed the five E01-010 headings and their original descriptive sentences.
-
-Comparison from cycle starting head 0382a4254af50d2c51cae28afaece3093f62672d to executable head cb8d5f6f77bbc01d2a764de46e9075839eadf1c2 changes exactly:
-- docs/era_structure_hero/E01-010_FLINT_PROCUREMENT_PIT.md
+Comparison from cycle starting head 36bf16dba9f9b5498227b7b0e8fec485012f4877 to executable head 10a517c9310c1987437640b7409db9d88d2c8ad2 changes exactly:
+- docs/era_structure_hero/E01-011_QUARTZITE_QUARRY.md
 - tests/test_era_structure_biome_candidate_source_java.py
 
-No alternate branch, pull request, duplicate vocabulary, parser workaround, parallel implementation, or new workflow was introduced.
+The diff contains the seven heading promotions plus focused regression additions. No production parser, alternate branch, pull request, duplicate authority, parallel implementation, or new workflow was introduced.
 
 Exact-head validation observed
 ------------------------------
-Validate Continuity Works run 34344956071 completed successfully for exact executable head cb8d5f6f77bbc01d2a764de46e9075839eadf1c2.
+Validate Continuity Works run 34350966114 completed successfully for exact executable head 10a517c9310c1987437640b7409db9d88d2c8ad2.
 
 Observed successful stages include:
 - package installation;
@@ -75,15 +78,15 @@ Observed successful stages include:
 
 Pages/public artifact observation
 ---------------------------------
-Public-service run 34345058165 built, stamped, configured, uploaded, and deployed the exact validated Pages artifact for cb8d5f6f77bbc01d2a764de46e9075839eadf1c2 successfully. This is the strongest directly observed rendered/static deployment artifact for the naming-cleanup requirement in this cycle.
+GitHub Pages run 34350965768 completed successfully for exact executable head 10a517c9310c1987437640b7409db9d88d2c8ad2. Its build job completed Jekyll generation and artifact upload successfully, and its deploy job completed the GitHub Pages deployment successfully.
 
-The same public-service run failed closed overall because the configured remote API health preflight failed, and the Pages-advertised API health preflight also failed. The exact validated Pages artifact deployment itself succeeded. No remote Java authority success is claimed.
+This is the strongest directly observed generated/static deployment evidence obtained in this cycle. A separate browser-executed visual inspection was not obtained, so no browser-render claim is made.
 
 Naming cleanup state
 --------------------
-The retired public naming cleanup remains closed for active authoritative source and the directly observed generated/static deployment path. Repository searches for the retired names returned no matches before mutation, and the accepted exact head passed the repository-wide naming guard and production frontend build. The exact validated Pages artifact was then deployed successfully.
+The retired public naming cleanup remains closed for active authoritative source and the directly observed generated/static deployment path. Repository searches for the retired names returned no matches before mutation. The accepted exact head then passed the repository validation chain including the production frontend build and public-boundary checks, followed by a successful exact-head Pages build/deployment.
 
-A separate browser-executed visual inspection was not obtained in this cycle. The whole-source guard plus exact-head production frontend generation, discovery stamping, and successful exact-artifact Pages deployment are the strongest direct evidence observed.
+A separate browser-executed visual inspection was not obtained. The repository-wide checks, exact-head frontend generation, Pages artifact build, and successful deployment are the strongest directly observed evidence in this cycle.
 
 Compact decision-chain contract
 -------------------------------
@@ -101,7 +104,7 @@ Public API / deployment boundary
 --------------------------------
 PUBLIC REMOTE DECISION AUTHORITY: NOT VERIFIED LIVE.
 
-Run 34345058165 directly observed failure of the configured remote API health preflight and the Pages-advertised API health preflight. The remote Java decision process therefore remains unavailable/unverified through the public boundary. This issue stays open.
+This cycle verified repository behavior, local executable/public-boundary smoke, and exact-head Pages deployment. It did not directly observe a deployed Java decision-authority process serving the decision endpoints through the public environment. That boundary remains open and no remote Java authority success is claimed.
 
 Era structure program boundary
 ------------------------------
@@ -109,9 +112,9 @@ E01-001 through E01-017 remain source-developed through hero/build/worldgen stag
 
 Next dependency-valid work
 --------------------------
-1. Normalize E01-011 Quartzite Quarry's existing plain-list biome/environment profiles into the explicit machine-facing profile shape already consumed by EraStructureBiomeCandidateSource, preserving the seven existing categories exactly. Add regression coverage proving production B discovery for E01-011.
+1. Normalize E01-012 Butchery Site's existing seven bold biome/environment profile bullets into the explicit machine-facing heading shape already consumed by EraStructureBiomeCandidateSource, preserving Temperate, Boreal, Tundra, Savanna, Arid, Tropical, and Coastal exactly. Add regression coverage proving production B discovery for E01-012.
 2. Continue the same source normalization through any remaining completed hero specifications whose B sections are not yet machine-readable, one bounded archetype at a time.
-3. Add authoritative C culture candidates only where the selected hero specification exposes explicit machine-safe culture profile labels; normalize source documents before making C broadly available.
+3. E01-012 already exposes four explicit culture-profile identifiers (`expedient_field_dressing`, `transport_focused`, `marrow_intensive`, `consumption_biased`); after B normalization is complete across eligible sources, add authoritative C culture candidates only from explicit machine-safe source labels rather than narrative inference.
 4. Add Q condition and K palette profile sources only where corresponding explicit authoritative option vocabularies exist; do not derive arbitrary choices from narrative prose.
 5. Preserve catalog/profile authority fingerprints across persistence/resume so a restored decision cannot reuse a dictionary derived from an older authority snapshot.
 6. Remote Java authority attachment remains the highest external integration blocker and stays open until directly observed through the deployed public boundary.
