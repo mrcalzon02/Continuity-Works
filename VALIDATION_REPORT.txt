@@ -2,56 +2,48 @@ Continuity Works Capability API v0.3.2
 Validation date: 2026-09-09
 =====================================
 
-RESULT: E01-016 BIOME/ENVIRONMENT AUTHORITY NOW HAS DIRECT PRODUCTION B-DISCOVERY REGRESSION COVERAGE; AN EXACT-HEAD FRONTEND DEPENDENCY REGRESSION WAS FOUND AND REPAIRED AT ITS PACKAGE AUTHORITY; FULL VALIDATION AND PAGES DEPLOYMENT SUCCEEDED; LIVE JAVA AUTHORITY REMAINS OPEN
+RESULT: E01-001 THROUGH E01-017 NOW HAVE A SINGLE CORPUS-LEVEL PRODUCTION B-CANDIDATE REGRESSION; EXACT-HEAD VALIDATION AND PAGES DEPLOYMENT SUCCEEDED; LIVE JAVA AUTHORITY REMAINS OPEN
 
 Authority and observed evidence
 -------------------------------
 Authoritative repository: mrcalzon02/Continuity-Works
 Authoritative branch: main
-Cycle starting head: ae0f01dc7e408c73d2b960f636e6f9e6600f6365
-E01-016 regression commit: 9823fee836323d63bc1eab353ac7520e22cdfb04
-Accepted executable commit: 782b9ed32135a50ee894f4c4e4cd7a7767cd900c
+Cycle starting head: fcd6b5af4ddb41e8a53d273d88de19a2105f67fe
+Accepted executable commit: 3c11a731d338b412d80dec4a0b026b9e1aaa8df9
 
 Reconciliation and selected work
 --------------------------------
-The live repository reconciled at ae0f01dc7e408c73d2b960f636e6f9e6600f6365. The existing validation authority identified E01-016 Watering Hole Camp as the next dependency-valid candidate-authority improvement. Its authoritative hero specification already exposes seven explicit environmental labels accepted by EraStructureBiomeCandidateSource, including Coastal-transition, so the hero source required no normalization.
+The live repository reconciled at fcd6b5af4ddb41e8a53d273d88de19a2105f67fe. The existing validation authority identified whole-corpus E01-001 through E01-017 biome/environment reconciliation as the next dependency-valid improvement after direct E01-016 coverage.
 
-Repository searches for both retired public-name forms returned no active source matches before mutation, so no naming defect preempted the E01-016 candidate-authority work. Direct browser/render retrieval of the public Pages URL could not be established through the available web path; browser visual acceptance therefore remains open rather than inferred from source cleanliness.
+No additional hero-spec rewrite was justified before corpus verification. The correct bounded repair was therefore a single regression that exercises every currently eligible hero specification against the existing EraStructureBiomeCandidateSource and the production candidate-routing bootstrap.
 
-Implemented E01-016 verification
---------------------------------
-A focused Java 17 regression now proves that E01-016:
-- exposes exactly TEMPERATE, BOREAL, TUNDRA, SAVANNA, ARID, TROPICAL, COASTAL_TRANSITION in source order;
-- binds its candidate source version to the exact hero-spec snapshot;
-- produces a seven-choice B dictionary;
-- resolves compact local code 6 back to semantic COASTAL_TRANSITION before authoritative mutation;
-- exposes the same seven-value dictionary through ContinuityWorksDecisionAuthorityBootstrap.productionCandidateSource.
+Implemented corpus guard
+------------------------
+Added tests/test_era_structure_biome_candidate_corpus_java.py.
 
-No E01-016 hero specification, production parser, transport layer, alternate candidate source, alias, fallback, or duplicate vocabulary was changed.
+The Java 17 harness iterates E01-001 through E01-017 and requires, for every archetype:
+- exactly one authoritative hero specification exists;
+- the direct B candidate source returns at least one explicit candidate;
+- candidate semantics are unique while preserving authoritative source order;
+- sourceVersion is bound to the exact hero-spec snapshot through cw-hero-biome-sha256;
+- ContinuityWorksDecisionAuthorityBootstrap.productionCandidateSource exposes exactly the same ordered semantic values;
+- the final compact local dictionary code resolves back to the matching authoritative semantic B value before mutation.
 
-Exact-head defect discovered and repaired
------------------------------------------
-The first executable head 9823fee836323d63bc1eab353ac7520e22cdfb04 passed the complete 357-test unit/API/PUBLIC_SERVICEABILITY suite, including the new E01-016 Java regression and repository naming guard, but its workflow failed during the production frontend build.
-
-The observed npm dependency resolution selected React 19.3.0 while the installed React Three Fiber 9.7.0 peer contract requires React below 19.3. The authoritative frontend/package.json declared both react and react-dom as unconstrained latest releases, allowing an incompatible major-minor edge to enter an otherwise unchanged build.
-
-The root-cause repair at 782b9ed32135a50ee894f4c4e4cd7a7767cd900c changes only those two dependency declarations from latest to the compatible range >=19 <19.3. Peer checks were not bypassed, no legacy-peer workaround was used, and no package or workflow layer was disabled.
+This closes the previous gap where B availability had been proven only through individual archetype regressions rather than as a maintained corpus invariant.
 
 Observed verification
 ---------------------
-Direct commit inspection confirmed 9823fee836323d63bc1eab353ac7520e22cdfb04 adds only tests/test_e01_016_biome_candidate_source_java.py.
+Direct commit inspection confirmed 3c11a731d338b412d80dec4a0b026b9e1aaa8df9 adds only tests/test_era_structure_biome_candidate_corpus_java.py.
 
-The first exact-head validation demonstrated that all 357 tests and the repository naming guard passed before the frontend dependency failure, proving the E01-016 authority assertions independently of the subsequently repaired npm boundary.
+The exact-head Validate Continuity Works run for 3c11a731d338b412d80dec4a0b026b9e1aaa8df9 completed successfully. The unit/API/PUBLIC_SERVICEABILITY test phase passed with the new corpus regression included, and the complete validation workflow completed successfully.
 
-Direct commit inspection confirmed 782b9ed32135a50ee894f4c4e4cd7a7767cd900c changes only frontend/package.json with two additions and two deletions, constraining react and react-dom to >=19 <19.3.
-
-The existing Validate Continuity Works workflow for exact head 782b9ed32135a50ee894f4c4e4cd7a7767cd900c completed successfully. Its unit/API/PUBLIC_SERVICEABILITY tests, production frontend build, zero-JavaScript Pages discovery stamping, local executable API/public-boundary smoke, validation-status publication, and repository naming guard all succeeded.
-
-The exact-head Pages build/deployment for 782b9ed32135a50ee894f4c4e4cd7a7767cd900c also completed successfully.
+The exact-head GitHub Pages build/deployment for 3c11a731d338b412d80dec4a0b026b9e1aaa8df9 also completed successfully.
 
 Naming cleanup state
 --------------------
-Authoritative source search remains clean for the retired public naming forms. The accepted exact executable head passed the repository naming guard, successfully generated the production frontend/static artifact, and completed exact-head Pages deployment. A separate browser-rendered inspection could not be established through the available web retrieval path during this cycle, so that narrower visual evidence remains unclaimed.
+The accepted executable head passed the repository validation suite that contains the retired-name guard and then successfully produced/deployed the Pages artifact. A separate browser-rendered retrieval of the public Pages URL could not be established through the available web retrieval path during this cycle, so independent visual-page inspection remains unclaimed.
+
+No new Structure Forge or StructureForge authority, UI text, generated/static asset, metadata, deployment path, or documentation was introduced by this cycle.
 
 Compact decision-chain contract
 -------------------------------
@@ -75,9 +67,9 @@ E01-001 through E01-017 remain source-developed through the currently recorded h
 
 Next dependency-valid work
 --------------------------
-1. Reconcile every E01-001 through E01-017 hero specification against EraStructureBiomeCandidateSource and direct production routing to identify any remaining B-authority gaps now that E01-016 has explicit regression coverage.
-2. Repair any corpus-level B gap at its authoritative hero source or regression boundary before expanding mutator scope.
-3. After B coverage is complete across the eligible corpus, add authoritative C culture candidates only from explicit machine-safe source labels rather than narrative inference.
+1. Begin authoritative C culture-profile candidate discovery only from explicit machine-safe culture labels already present in the eligible hero corpus.
+2. First reconcile E01-001 through E01-017 for which hero specifications actually expose explicit culture vocabularies; do not infer culture choices from narrative prose.
+3. Implement the smallest source/router/regression repair needed for the first dependency-valid C corpus slice, preserving authority fingerprints and fail-closed behavior.
 4. Add Q condition and K palette profile sources only where corresponding explicit authoritative option vocabularies exist.
 5. Preserve catalog/profile authority fingerprints across persistence/resume so a restored decision cannot reuse a dictionary derived from an older authority snapshot.
 6. Remote Java authority attachment remains the highest external integration blocker and stays open until directly observed through the deployed public boundary.
