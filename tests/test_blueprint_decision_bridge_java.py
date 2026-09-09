@@ -199,7 +199,6 @@ class DecisionBridgeJavaIntegrationTests(unittest.TestCase):
                     "/v1/blueprints/decision/apply",
                     {
                         "state": state0,
-                        "expected_revision": 0,
                         "encoded_mutations": "A=continuityworks:e01_017_riverbank_foraging_camp",
                     },
                 )
@@ -211,7 +210,7 @@ class DecisionBridgeJavaIntegrationTests(unittest.TestCase):
                     base_url,
                     "POST",
                     "/v1/blueprints/decision/apply",
-                    {"state": state0, "expected_revision": 0, "encoded_mutations": "A=E01-017"},
+                    {"state": state0, "encoded_mutations": "A=E01-017"},
                 )
                 self.assertEqual(status, 409, stale)
                 self.assertEqual(stale["error"], "stale_decision_state")
@@ -222,7 +221,6 @@ class DecisionBridgeJavaIntegrationTests(unittest.TestCase):
                     "/v1/blueprints/decision/apply",
                     {
                         "state": state1,
-                        "expected_revision": 1,
                         "encoded_mutations": "Z=M;B=riverbank;F=I",
                     },
                 )
