@@ -173,6 +173,25 @@ public final class EraBiomeCandidateHarness {
         require("COASTAL".equals(selectedLargeCarcassBiome.selection("B")),
             "E01-013 compact candidate must resolve back to the normalized authoritative semantic profile");
 
+        BlueprintRequest boneBreakingRequest = request(UUID.fromString("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"));
+        BlueprintDecisionChain.State boneBreaking = selectArchetype(api, boneBreakingRequest, "E01-014");
+        BlueprintDecisionCandidateSource.CandidateSet boneBreakingSet = biomeSource.candidates(
+            boneBreakingRequest, boneBreaking, biome
+        );
+        require(boneBreakingSet.values().equals(List.of(
+            "TEMPERATE", "BOREAL", "TUNDRA", "SAVANNA", "ARID", "TROPICAL", "COASTAL"
+        )), "E01-014 normalized headings must expose exactly its seven pre-existing environmental categories");
+        BlueprintDecisionCandidates.Dictionary boneBreakingDictionary = api.decisionCandidates(
+            boneBreakingRequest, boneBreaking, "B", biomeSource
+        );
+        require(boneBreakingDictionary.choices().size() == 7,
+            "E01-014 dictionary must expose seven normalized authoritative profiles");
+        BlueprintDecisionChain.State selectedBoneBreakingBiome = api.applyCandidateDecision(
+            boneBreaking, boneBreakingDictionary, "6"
+        );
+        require("COASTAL".equals(selectedBoneBreakingBiome.selection("B")),
+            "E01-014 compact candidate must resolve back to the normalized authoritative semantic profile");
+
         boolean missingArchetypeRejected = false;
         try {
             biomeSource.candidates(request, api.beginDecision(request), biome);
@@ -216,6 +235,13 @@ public final class EraBiomeCandidateHarness {
             && routedLargeCarcassB.choices().get(6).semanticValue().equals("COASTAL")
             && routedLargeCarcassB.choices().size() == 7,
             "production routing must expose E01-013 normalized BIOME authority");
+        BlueprintDecisionCandidates.Dictionary routedBoneBreakingB = api.decisionCandidates(
+            boneBreakingRequest, boneBreaking, "B", routed
+        );
+        require(routedBoneBreakingB.choices().get(0).semanticValue().equals("TEMPERATE")
+            && routedBoneBreakingB.choices().get(6).semanticValue().equals("COASTAL")
+            && routedBoneBreakingB.choices().size() == 7,
+            "production routing must expose E01-014 normalized BIOME authority");
 
         BlueprintDecisionChain.Mutator culture = BlueprintDecisionChain.profile().mutators().stream()
             .filter(candidate -> candidate.code().equals("C"))
