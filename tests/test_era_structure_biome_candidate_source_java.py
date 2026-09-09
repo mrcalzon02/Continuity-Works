@@ -116,6 +116,25 @@ public final class EraBiomeCandidateHarness {
         require("COASTAL_RIVERINE".equals(selectedProcurementBiome.selection("B")),
             "E01-010 compact candidate must resolve back to the normalized authoritative semantic profile");
 
+        BlueprintRequest quarryRequest = request(UUID.fromString("77777777-7777-7777-7777-777777777777"));
+        BlueprintDecisionChain.State quarry = selectArchetype(api, quarryRequest, "E01-011");
+        BlueprintDecisionCandidateSource.CandidateSet quarrySet = biomeSource.candidates(
+            quarryRequest, quarry, biome
+        );
+        require(quarrySet.values().equals(List.of(
+            "TEMPERATE", "BOREAL", "TUNDRA", "SAVANNA", "ARID", "TROPICAL", "COASTAL"
+        )), "E01-011 normalized headings must expose exactly its seven pre-existing environmental categories");
+        BlueprintDecisionCandidates.Dictionary quarryDictionary = api.decisionCandidates(
+            quarryRequest, quarry, "B", biomeSource
+        );
+        require(quarryDictionary.choices().size() == 7,
+            "E01-011 dictionary must expose seven normalized authoritative profiles");
+        BlueprintDecisionChain.State selectedQuarryBiome = api.applyCandidateDecision(
+            quarry, quarryDictionary, "6"
+        );
+        require("COASTAL".equals(selectedQuarryBiome.selection("B")),
+            "E01-011 compact candidate must resolve back to the normalized authoritative semantic profile");
+
         boolean missingArchetypeRejected = false;
         try {
             biomeSource.candidates(request, api.beginDecision(request), biome);
@@ -138,6 +157,13 @@ public final class EraBiomeCandidateHarness {
         require(routedProcurementB.choices().get(0).semanticValue().equals("TEMPERATE_BOREAL")
             && routedProcurementB.choices().size() == 5,
             "production routing must expose E01-010 normalized BIOME authority");
+        BlueprintDecisionCandidates.Dictionary routedQuarryB = api.decisionCandidates(
+            quarryRequest, quarry, "B", routed
+        );
+        require(routedQuarryB.choices().get(0).semanticValue().equals("TEMPERATE")
+            && routedQuarryB.choices().get(6).semanticValue().equals("COASTAL")
+            && routedQuarryB.choices().size() == 7,
+            "production routing must expose E01-011 normalized BIOME authority");
 
         BlueprintDecisionChain.Mutator culture = BlueprintDecisionChain.profile().mutators().stream()
             .filter(candidate -> candidate.code().equals("C"))
