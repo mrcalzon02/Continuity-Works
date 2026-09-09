@@ -163,7 +163,7 @@ public final class BlueprintDecisionChain {
         new Mutator("K", "PALETTE", ValueSource.ARCHETYPE_PROFILE, List.of(), List.of("A", "B"), false,
             "Select one legal material/palette profile exposed after archetype and environment resolution."),
         new Mutator("D", "DETAIL", ValueSource.FIXED, List.of("L", "N", "H"), List.of("A", "Z"), false,
-            "Select low, normal or high detail density; geometry remains deterministic." )
+            "Select low, normal or high detail density; geometry remains deterministic.")
     );
 
     private static final Map<String, Mutator> MUTATORS = indexMutators();
@@ -250,6 +250,7 @@ public final class BlueprintDecisionChain {
             }
 
             String value = normalizeValue(field.substring(equals + 1));
+            if (mutator.valueSource() == ValueSource.FIXED) value = value.toUpperCase(Locale.ROOT);
             validateValue(mutator, value);
             String previous = selections.get(code);
             if (previous != null && !previous.equals(value)) invalidateDependents(code, selections);
@@ -263,6 +264,20 @@ public final class BlueprintDecisionChain {
         Objects.requireNonNull(state, "state");
         List<String> missing = new ArrayList<>();
         List<String> findings = new ArrayList<>();
+        for (Map.Entry<String, String> entry : state.selections().entrySet()) {
+            Mutator mutator = MUTATORS.get(entry.getKey());
+            if (mutator == null) {
+                findings.add("UNKNOWN_MUTATOR:" + entry.getKey());
+                continue;
+            }
+            try {
+                validateValue(mutator, mutator.valueSource() == ValueSource.FIXED
+                    ? entry.getValue().toUpperCase(Locale.ROOT)
+                    : entry.getValue());
+            } catch (IllegalArgumentException error) {
+                findings.add("INVALID_VALUE:" + mutator.code());
+            }
+        }
         for (Mutator mutator : ORDERED_MUTATORS) {
             String value = state.selections().get(mutator.code());
             if (mutator.required() && value == null) missing.add(mutator.code());
@@ -375,7 +390,7 @@ public final class BlueprintDecisionChain {
 
     private static String normalizeValue(String value) {
         Objects.requireNonNull(value, "value");
-        String normalized = value.trim().toUpperCase(Locale.ROOT).replace(' ', '_');
+        String normalized = value.trim();
         if (normalized.isEmpty()) throw new IllegalArgumentException("decision mutation value must not be blank");
         return normalized;
     }
