@@ -2,24 +2,31 @@ Continuity Works Capability API v0.3.2
 Validation date: 2026-09-08
 =====================================
 
-RESULT: WHOLE-SOURCE AND RENDERED BRANDING GATES PASS; COMPACT DECISION CHAIN, JAVA AUTHORITY ADAPTER, AUTHORITATIVE JAVA HTTP TRANSPORT, AND LOCAL PYTHON->JAVA END-TO-END BRIDGE VALIDATED; REMOTE JAVA AUTHORITY DEPLOYMENT NOT ATTACHED OR VERIFIED
+RESULT: WHOLE-SOURCE AND RENDERED BRANDING GATES PASS; COMPACT DECISION CHAIN, JAVA AUTHORITY TRANSPORT, LOCAL PYTHON->JAVA BRIDGE, AND STATE-BOUND DECISION CANDIDATE DICTIONARIES VALIDATED; REMOTE JAVA AUTHORITY DEPLOYMENT NOT ATTACHED OR VERIFIED
 
 Authority and accepted evidence
 -------------------------------
 Authoritative repository: mrcalzon02/Continuity-Works
 Authoritative branch: main
-Last fully accepted executable head before candidate-dictionary work: af7bd8c1b76b7e04747393a65ea6896b010c0bb6
-Last accepted state-record head before candidate-dictionary work: 72d6e46cc9a1b4f042249eac377c02652f71ae2d
-Successful executable-head validation run: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34310925328
-Successful executable-head GitHub Pages build/deployment: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34310924040
+Cycle starting head: 72d6e46cc9a1b4f042249eac377c02652f71ae2d
+Initial candidate implementation commit: 3dcc405abc6f0ebaa9d64e5a9461140a3d9af783 (failed exact-head validation; not accepted on its own)
+Accepted executable / repaired head: 3566b61b856eb44883afd18fb2eaebd11de9b230
+Successful exact-head validation run: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34315272567
+Successful exact-head GitHub Pages build/deployment: https://github.com/mrcalzon02/Continuity-Works/actions/runs/34315271978
 
 Branding cleanup state
 ----------------------
-The active retired pre-Continuity branding cleanup remains closed for authoritative active source, production frontend build artifacts, and the directly observed GitHub Pages deployment path. The repository validation on af7bd8c1b76b7e04747393a65ea6896b010c0bb6 completed the production frontend build successfully, and the exact same head completed GitHub Pages build/deployment successfully. A separate browser-executed visual inspection is still not claimed; rendered/static build and exact-head Pages deployment remain the strongest directly observed deployment artifacts.
+The active retired pre-Continuity branding cleanup remains closed for authoritative active source, production frontend build artifacts, and the directly observed GitHub Pages deployment path. Exact-head validation on 3566b61b856eb44883afd18fb2eaebd11de9b230 passed the whole-active-source branding guard and completed the production frontend build. The same exact head completed GitHub Pages build/deployment successfully.
+
+This cycle also repaired an authority inconsistency discovered by the guard: this validation report itself still contained retired public-brand spellings while claiming the active authority was clean. The report was repaired directly; the guard was not weakened or exempted.
+
+A separate browser-executed visual inspection is still not claimed. Whole-source validation, production frontend build, rendered/static discovery generation, and exact-head Pages deployment remain the strongest directly observed evidence.
 
 Compact decision-chain contract
 -------------------------------
-The in-process Java compact-blueprint API remains version 1.8.0 and protocol cw-decision-1. Its validated tiny-inference contract remains:
+The in-process Java compact-blueprint API remains version 1.8.0 and protocol cw-decision-1. The candidate-dictionary capability is additive through default methods and does not require a compatibility version bump.
+
+The validated tiny-inference contract remains:
 - reference inference profile: Qwen 2.5 Instruct Q4-class
 - hard output ceiling: 64 tokens per inference
 - preferred operating target: 32 tokens
@@ -29,17 +36,69 @@ The in-process Java compact-blueprint API remains version 1.8.0 and protocol cw-
 - raw block placement, NBT/SNBT, commands, operation lists, and primitive geometry are forbidden at this boundary
 - deterministic validation and finalization remain Continuity Works responsibilities
 
+Authoritative decision candidate dictionaries
+---------------------------------------------
+This cycle added:
+- modules/continuityworks-api/src/main/java/io/continuityworks/api/blueprint/BlueprintDecisionCandidateSource.java
+- modules/continuityworks-api/src/main/java/io/continuityworks/api/blueprint/BlueprintDecisionCandidates.java
+- additive decisionCandidates(...) and applyCandidateDecision(...) default methods on ContinuityWorksCompactBlueprintApi
+- tests/test_blueprint_decision_candidates_java.py
+
+The implementation deliberately does not invent canonical biome, culture, condition, palette, or catalog values that authoritative data does not yet publish. Dynamic mutators receive values from a caller-supplied authoritative BlueprintDecisionCandidateSource. Fixed mutators derive choices from the existing mutator metadata.
+
+Candidate integrity and compression behavior:
+- maximum 256 choices per dictionary
+- authoritative source snapshots carry an explicit sourceVersion
+- each dictionary is bound to protocol version, request UUID, exact decision revision, mutator code, source version, and ordered choices
+- deterministic SHA-256 dictionary identity covers all bound fields and choices
+- tampered dictionary identity fails closed
+- compact local choice codes use deterministic uppercase base-36 indexes
+- provider candidates are dry-run through the existing BlueprintDecisionChain.apply parser before dictionary publication, preventing candidate providers from widening semantic wire legality
+- a dictionary cannot bypass mutator dependencies
+- protocol mismatch, request mismatch, stale revision, invalid local code, duplicate source values, invalid semantic values, and fingerprint tampering fail closed
+- local choice codes are resolved back to authoritative semantic values before BlueprintDecisionChain.apply executes
+- finalized BlueprintSpecifications therefore contain semantic identities, never ephemeral local codes
+- state-bound correction dictionaries may revise an already-selected mutator when its dependencies remain valid; downstream invalidation is still performed by the existing authoritative decision chain
+
+The Java 17 behavioral harness verifies provider-fed archetype choices, deterministic local codes, semantic resolution, stale-dictionary rejection, fixed SCALE choices from mutator metadata, source-version-sensitive identities, BIOME candidate binding, required-state finalization, correction dictionaries, dependency rejection, duplicate rejection, invalid-wire rejection, and fingerprint tamper rejection.
+
 Java authority and local transport state
 ----------------------------------------
 ContinuityWorksDecisionAuthorityAdapter remains the transport-facing authority seam around ContinuityWorksCompactBlueprintApi. ContinuityWorksDecisionAuthorityHttpServer provides the real Java 17 HTTP/session transport for health plus profile/begin/next/apply/validate/finalize. The existing Python publication server remains a non-duplicative proxy and advertises those routes only when a separate Java authority is configured.
 
-The accepted two-process regression compiles the Java API module, launches the real Java authority, points the existing Python bridge at it, and verifies profile -> begin -> next -> apply -> stale-state rejection -> required mutations -> validate -> finalize. Exact-head repository validation and Pages deployment passed for af7bd8c1b76b7e04747393a65ea6896b010c0bb6.
+The previously accepted two-process regression continues to compile the Java API module, launch the real Java authority, point the existing Python bridge at it, and verify profile -> begin -> next -> apply -> stale-state rejection -> required mutations -> validate -> finalize. That regression passed again in exact-head validation for 3566b61b856eb44883afd18fb2eaebd11de9b230.
+
+Exact-head validation observed
+------------------------------
+Validate Continuity Works run 34315272567 completed successfully for exact head 3566b61b856eb44883afd18fb2eaebd11de9b230. Observed successful steps:
+- package installation
+- Python source compilation
+- source-tree agent discovery
+- unit/API contract/PUBLIC_SERVICEABILITY tests, including the new candidate-dictionary Java 17 harness and the existing real Java authority + Python delegated bridge integration harness
+- whole-active-source branding guard
+- production Continuity Works frontend build
+- zero-JavaScript Pages discovery stamping
+- local executable API and public-boundary smoke
+- validation-status publication
+
+GitHub Pages build/deployment run 34315271978 also completed successfully for the same exact executable head.
+
+Net implementation change from cycle start
+------------------------------------------
+Compared with cycle starting head 72d6e46cc9a1b4f042249eac377c02652f71ae2d, the intended net implementation/state changes are:
+- modules/continuityworks-api/src/main/java/io/continuityworks/api/blueprint/BlueprintDecisionCandidateSource.java
+- modules/continuityworks-api/src/main/java/io/continuityworks/api/blueprint/BlueprintDecisionCandidates.java
+- modules/continuityworks-api/src/main/java/io/continuityworks/api/blueprint/ContinuityWorksCompactBlueprintApi.java
+- tests/test_blueprint_decision_candidates_java.py
+- VALIDATION_REPORT.txt
+
+BlueprintApiVersion.java was temporarily changed in the failed first candidate commit, then restored to the pre-cycle 1.8.0 source in the accepted repair. It is not an intended net implementation change.
 
 Public API / deployment boundary
 --------------------------------
 PUBLIC REMOTE DECISION AUTHORITY: NOT VERIFIED LIVE.
 
-Local end-to-end transport is proven. No remote Java process, environment binding, external authority-health read-back, or public six-route decision sequence has been directly observed. Repository validation and GitHub Pages success do not establish remote Java decision execution. Remote decision routes must not be claimed operational until a deployed Java authority is attached through CONTINUITY_WORKS_DECISION_AUTHORITY_URL and directly read back through the public boundary.
+Local Java decision authority, delegated Python bridge, and candidate dictionaries are repository/runtime-validated. No remote Java process, environment binding, external authority-health read-back, public six-route decision sequence, or candidate-dictionary HTTP sequence has been directly observed in the deployed environment. Repository validation and GitHub Pages success do not establish remote Java decision execution.
 
 Continuity Works naming contract
 --------------------------------
@@ -61,13 +120,10 @@ Era structure program boundary
 ------------------------------
 E01-001 through E01-017 remain source-developed through hero/build/worldgen stages with production admission still requiring target runtime/materialization/placement evidence. E01-018 remains blocked until its authoritative master-catalog archetype label is recovered; no archetype name is to be invented.
 
-Candidate-dictionary work in progress
--------------------------------------
-Commit 3dcc405abc6f0ebaa9d64e5a9461140a3d9af783 introduced the first authoritative dynamic candidate-dictionary implementation but is NOT accepted: exact-head validation run 34315061473 failed. The observed failures identified an obsolete ConstructionVolume constructor in the new harness, existing tests pinned to the unchanged 1.8.0 API contract, and this report itself still containing retired-brand spellings. Those defects must be repaired and exact-head validation must pass before candidate dictionaries are recorded as accepted.
-
 Next dependency-valid work
 --------------------------
-1. Repair and validate the candidate-dictionary implementation: state-bound legal choice sets, authoritative provider-fed dynamic values, deterministic dictionary identity, compact local codes, semantic resolution before mutation, and stale-dictionary rejection.
-2. Remote Java authority attachment remains the highest external integration blocker and must remain open until directly observed.
-3. After candidate dictionaries are accepted, expose them through the Java HTTP authority and delegated publication bridge without duplicating decision semantics.
-4. Resume hero-structure development at E01-018 only when its authoritative catalog label is recovered.
+1. Expose candidate-dictionary discovery/application through ContinuityWorksDecisionAuthorityHttpServer and the existing delegated Python publication bridge, reusing the authoritative Java candidate implementation rather than reproducing dictionary semantics in transport code.
+2. Add a real two-process candidate flow covering dictionary discovery, compact local choice application, semantic resolution, and stale-dictionary rejection across Java authority -> Python bridge.
+3. As authoritative structure catalog and archetype-profile vocabularies become available, add real candidate-source providers for STRUCTURE_CATALOG and ARCHETYPE_PROFILE rather than guessed values.
+4. Remote Java authority attachment remains the highest external integration blocker and must stay open until directly observed through the deployed public boundary.
+5. Resume hero-structure development at E01-018 only when its authoritative catalog label is recovered.
