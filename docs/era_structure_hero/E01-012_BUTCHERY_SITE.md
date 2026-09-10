@@ -98,11 +98,11 @@ Supported behavioral profiles may include `expedient_field_dressing`, `transport
 
 Use vanilla blocks only as explicit semantic proxies:
 
-- carcass/bone mass: bone block / calcite-role proxies;
-- blood/organic stain: red terracotta or rooted/coarse dirt role proxies, never literal liquid blood;
-- stone tools/hammerstones: flint is not a placeable block, so gravel/andesite/cobblestone role proxies are acceptable when metadata records their semantics;
-- hide/offcut handling: brown/red carpet or wool only as semantic hide/offcut proxies and only in sparse trace quantities;
-- ground/trampling: biome-appropriate coarse dirt, dirt, gravel, sand, podzol, or stone.
+- **carcass/bone mass**: bone block / calcite-role proxies;
+- **blood/organic stain**: red terracotta or rooted/coarse dirt role proxies, never literal liquid blood;
+- **stone tools/hammerstones**: flint is not a placeable block, so gravel/andesite/cobblestone role proxies are acceptable when metadata records their semantics;
+- **hide/offcut handling**: brown/red carpet or wool only as semantic hide/offcut proxies and only in sparse trace quantities;
+- **ground/trampling**: biome-appropriate coarse dirt, dirt, gravel, sand, podzol, or stone.
 
 Metadata must state proxy semantics so vanilla materials are not misrepresented as literal archaeological substances.
 
