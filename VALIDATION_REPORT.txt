@@ -63,7 +63,7 @@ The exact-head pages build and deployment run 34466138883 for 0fea9ad608c27fa5e0
 
 Naming cleanup state
 --------------------
-Repository searches after the Q implementation returned no matches for the retired public names "Structure Forge" or "StructureForge". More importantly than grep alone, the accepted implementation head passed the full repository validation path and its exact-head Pages build/deployment completed successfully. No retired branding was introduced by the Q source, bootstrap, or tests. Independent browser-rendered visual inspection is still not claimed.
+Repository checks after the Q implementation found no active source or generated-page use of either retired Forge-era public product name. The authoritative validation record now also avoids embedding those retired names as literal text, so the whole-repository fail-closed branding guard can evaluate the record itself without creating its own false violation. More importantly than a source search alone, the accepted implementation head passed the full repository validation path and its exact-head Pages build/deployment completed successfully. No retired public branding was introduced by the Q source, bootstrap, or tests. Independent browser-rendered visual inspection is still not claimed.
 
 Public API / deployment boundary
 --------------------------------
@@ -82,5 +82,5 @@ Next dependency-valid work
 1. Reconcile Q CONDITION authority across E01-001 through E01-017: identify each hero specification's explicit condition vocabulary, extend corpus-level production-routing coverage, and fail closed where condition material is narrative-only rather than inventing semantics.
 2. After the Q corpus is reconciled, implement K PALETTE candidate authority using only explicit authoritative palette vocabularies and retain a fail-closed guard for any still-unconfigured profile class.
 3. Keep the active Render-service provisioning defect open until the external Blueprint/service authority is directly inspectable or the configured remote health/exact-SHA serviceability check succeeds.
-4. Continue stale public-brand cleanup whenever any occurrence is found; acceptance requires generated/deployed artifact evidence, not source grep alone.
+4. Continue retired public-brand cleanup whenever any occurrence is found; acceptance requires generated/deployed artifact evidence, not source search alone.
 5. Resume hero-structure development at E01-018 only when its authoritative catalog identity is recovered.
