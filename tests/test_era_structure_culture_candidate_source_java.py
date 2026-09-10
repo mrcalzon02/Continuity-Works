@@ -10,6 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 API_SRC = ROOT / "modules" / "continuityworks-api" / "src" / "main" / "java"
 HERO_DIR = ROOT / "docs" / "era_structure_hero"
+LEDGER = HERO_DIR / "ERA_STRUCTURE_HERO_LEDGER.md"
 
 HARNESS = r"""
 import io.continuityworks.api.blueprint.*;
@@ -55,6 +56,7 @@ public final class EraCultureCandidateHarness {
 
     public static void main(String[] args) throws Exception {
         Path heroDir = Path.of(args[0]);
+        Path ledger = Path.of(args[1]);
         EraStructureCultureCandidateSource source = new EraStructureCultureCandidateSource(heroDir);
         FakeApi api = new FakeApi();
         BlueprintDecisionChain.Mutator culture = BlueprintDecisionChain.profile().mutators().stream()
@@ -84,6 +86,20 @@ public final class EraCultureCandidateHarness {
         require("CONSUMPTION_BIASED".equals(selected.selection("C")),
             "compact culture code must resolve back to the authoritative semantic profile");
 
+        BlueprintDecisionCandidateSource routed = ContinuityWorksDecisionAuthorityBootstrap.productionCandidateSource(ledger);
+        BlueprintDecisionCandidates.Dictionary routedDictionary = api.decisionCandidates(
+            butcheryRequest, butchery, "C", routed
+        );
+        require(routedDictionary.choices().size() == 4
+            && routedDictionary.choices().get(0).semanticValue().equals("EXPEDIENT_FIELD_DRESSING")
+            && routedDictionary.choices().get(3).semanticValue().equals("CONSUMPTION_BIASED"),
+            "production routing must expose E01-012 authoritative CULTURE candidates");
+        BlueprintDecisionChain.State routedSelected = api.applyCandidateDecision(
+            butchery, routedDictionary, "3"
+        );
+        require("CONSUMPTION_BIASED".equals(routedSelected.selection("C")),
+            "production-routed compact culture code must resolve to its authoritative semantic profile");
+
         BlueprintRequest overhangRequest = request(UUID.fromString("55555555-5555-5555-5555-555555555555"));
         BlueprintDecisionChain.State overhang = api.applyDecision(
             api.beginDecision(overhangRequest), "A=E01-001"
@@ -96,6 +112,15 @@ public final class EraCultureCandidateHarness {
         }
         require(narrativeOnlyRejected,
             "narrative-only culture hooks must fail closed rather than becoming inferred vocabulary");
+
+        boolean routedNarrativeOnlyRejected = false;
+        try {
+            routed.candidates(overhangRequest, overhang, culture);
+        } catch (IllegalStateException expected) {
+            routedNarrativeOnlyRejected = expected.getMessage().contains("refusing to infer candidates from prose");
+        }
+        require(routedNarrativeOnlyRejected,
+            "production routing must preserve fail-closed behavior for narrative-only culture hooks");
 
         boolean missingArchetypeRejected = false;
         try {
@@ -116,6 +141,7 @@ class EraStructureCultureCandidateSourceJavaTests(unittest.TestCase):
         self.assertIsNotNone(javac)
         self.assertIsNotNone(java)
         self.assertTrue(HERO_DIR.is_dir())
+        self.assertTrue(LEDGER.is_file())
 
         sources = sorted(API_SRC.rglob("*.java"))
         with tempfile.TemporaryDirectory(prefix="continuityworks-culture-candidate-javac-") as temp:
@@ -137,7 +163,7 @@ class EraStructureCultureCandidateSourceJavaTests(unittest.TestCase):
             self.assertEqual(0, compiled_harness.returncode, compiled_harness.stdout + compiled_harness.stderr)
 
             executed = subprocess.run(
-                [java, "-cp", str(classes), "EraCultureCandidateHarness", str(HERO_DIR)],
+                [java, "-cp", str(classes), "EraCultureCandidateHarness", str(HERO_DIR), str(LEDGER)],
                 cwd=ROOT, capture_output=True, text=True, timeout=30, check=False,
             )
             self.assertEqual(0, executed.returncode, executed.stdout + executed.stderr)
