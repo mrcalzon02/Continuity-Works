@@ -104,6 +104,10 @@ public final class EraPaletteCorpusHarness {
             "CARCASS_HEAVY_BONE_ROLE", "ORGANIC_PROCESSING_STAIN_ROLE", "HIDE_OFFCUT_ROLE",
             "TOOL_HAMMER_ANVIL_ROLE", "REFUSE_ROLE"
         ));
+        expected.put("E01-014", List.of(
+            "HEAVY_BONE_FRACTURED_BONE_ROLE", "ANVIL_HAMMERSTONE_ROLE", "SMALL_FRACTURE_DEBRIS_ROLE",
+            "PROCESSING_STAIN_GROUND_DISTURBANCE_ROLE", "OPTIONAL_HEARTH_TRACE"
+        ));
 
         int ordinal = 0;
         for (Map.Entry<String, List<String>> entry : expected.entrySet()) {
@@ -135,7 +139,7 @@ public final class EraPaletteCorpusHarness {
         }
 
         List<String> narrativeOnly = List.of(
-            "E01-010", "E01-014", "E01-015", "E01-016", "E01-017"
+            "E01-010", "E01-015", "E01-016", "E01-017"
         );
         int narrativeOrdinal = 0;
         for (String archetype : narrativeOnly) {
