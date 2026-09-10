@@ -2,62 +2,62 @@ Continuity Works Capability API v0.3.2
 Validation date: 2026-09-10
 =====================================
 
-RESULT: CULTURE CANDIDATE AUTHORITY IS ROUTED IN PRODUCTION; CORPUS-LEVEL COVERAGE NOW EXTENDS THROUGH E01-015; EXECUTABLE ACCEPTANCE FOR THE NEW CORPUS GUARD IS PENDING DIRECT CI EVIDENCE
+RESULT: CULTURE CANDIDATE AUTHORITY IS ROUTED IN PRODUCTION; EXPLICIT CORPUS COVERAGE NOW EXTENDS THROUGH E01-017; IMPLEMENTATION HEAD PASSED EXACT-HEAD VALIDATION AND PAGES DEPLOYMENT
 
 Authority and observed evidence
 -------------------------------
 Authoritative repository: mrcalzon02/Continuity-Works
 Authoritative branch: main
-Cycle starting head: 9df64bdb296c3e8c2c416621f1f2d7621e64e59a
-Implementation head: cfd927b8a2d2e7f639476c2c38b4dc98dab17e78
+Cycle starting head: 88d37391c17982c5645c2af16ed79fa072376134
+Accepted implementation head: 93caccf57108fe67e7f7271f522023489b60f1f7
 
 Reconciliation and selected work
 --------------------------------
-The live main branch reconciled at 9df64bdb296c3e8c2c416621f1f2d7621e64e59a. Production candidate composition already exposed A catalog, B biome, and C culture authority. The highest-priority dependency-valid unfinished item was the recorded E01-001 through E01-017 culture-vocabulary reconciliation.
+The live main branch reconciled at 88d37391c17982c5645c2af16ed79fa072376134. The previously added E01-012 through E01-015 culture corpus guard subsequently gained direct successful CI evidence. A separate public-service verification remains open because the configured external service endpoint returned HTTP 404; no repository-side suppression or acceptance bypass was introduced.
 
-This cycle began that reconciliation by converting the one-archetype production culture regression into a maintained multi-archetype corpus guard for the explicit culture vocabularies already confirmed directly from authoritative hero specifications.
+The highest-priority dependency-valid repository improvement was therefore to complete the next explicit culture-vocabulary slice for E01-016 and E01-017 while preserving the external serviceability blocker as unresolved.
 
 Implemented improvement
 -----------------------
-Added tests/test_era_structure_culture_candidate_corpus_java.py.
+Updated tests/test_era_structure_culture_candidate_corpus_java.py directly.
 
-The Java 17 harness verifies, through both EraStructureCultureCandidateSource and ContinuityWorksDecisionAuthorityBootstrap.productionCandidateSource, the exact ordered explicit culture vocabularies for:
-- E01-012 Butchery Site: EXPEDIENT_FIELD_DRESSING, TRANSPORT_FOCUSED, MARROW_INTENSIVE, CONSUMPTION_BIASED;
-- E01-013 Large-Carcass Processing Site: COOPERATIVE_DISARTICULATION, MARROW_INTENSIVE, TRANSPORT_PRIORITY, HIDE_RETENTION;
-- E01-014 Bone-Breaking Station: MARROW_INTENSIVE, SINGLE_STATION_REUSE, DISTRIBUTED_PERCUSSION, CLEAN_STAGING_PRIORITY;
-- E01-015 Marrow Processing Ground: IMMEDIATE_CONSUMPTION, DISTRIBUTED_EXTRACTION, INTENSIVE_CLEANING, REPEATED_USE.
+The existing Java 17 corpus harness now additionally verifies, through both EraStructureCultureCandidateSource and ContinuityWorksDecisionAuthorityBootstrap.productionCandidateSource, the exact ordered culture vocabularies already declared by the authoritative hero specifications:
+- E01-016 Watering-Hole Camp: CAUTIOUS_OBSERVATION, SHORT_STAY, REPEATED_RETURN, CARCASS_OPPORTUNISM;
+- E01-017 Riverbank Foraging Camp: BROAD_SPECTRUM_FORAGING, ROOT_SEED_PROCESSING, SHORELINE_GATHERING, REPEATED_RETURN.
 
-For every covered archetype the guard also requires exact hero-spec SHA-256 source binding, production dictionary size/order agreement, and compact-code resolution back to the final authoritative semantic value before mutation.
+The existing corpus invariants continue to require exact hero-spec SHA-256 authority binding, production dictionary size/order agreement, and compact-code resolution back to the authoritative semantic value before mutation. Narrative-only culture material remains fail-closed rather than inferred.
 
-The guard additionally keeps E01-001 narrative-only culture material fail-closed through production routing rather than permitting candidate inference from prose.
-
-No hero specification, parser, routing implementation, transport layer, generation logic, geometry code, workflow, branch, or alternate authority was changed in this cycle.
-
-Observed source evidence
-------------------------
-Direct authoritative reads confirmed E01-013, E01-014, and E01-015 expose the exact culture labels asserted by the new corpus guard in their Culture-variant hooks sections. E01-012 was already the accepted production C authority baseline from the prior cycle.
+No hero specification, culture parser, production router, transport layer, generation logic, geometry code, workflow, branch, or alternate authority was changed. Commit inspection confirms the implementation commit changes one file with six added lines only.
 
 Commit state
 ------------
-cfd927b8a2d2e7f639476c2c38b4dc98dab17e78 - guard explicit culture vocabularies through production routing
+93caccf57108fe67e7f7271f522023489b60f1f7 - extend culture corpus coverage through E01-017
 
-Validation boundary
--------------------
-A local checkout could not be established because the execution container could not resolve github.com. The GitHub connector did accept the direct main-branch commit and authoritative source read-back.
+Verification actually observed
+------------------------------
+Exact-head Validate Continuity Works run 34429459728 completed successfully for 93caccf57108fe67e7f7271f522023489b60f1f7.
 
-At the time of this record update, no commit status or workflow-run evidence had yet appeared for cfd927b8a2d2e7f639476c2c38b4dc98dab17e78. Therefore the new corpus guard is committed but executable acceptance is NOT YET CLAIMED.
+Observed successful stages include:
+- checkout and toolchain setup;
+- Python package installation and compilation;
+- source-tree agent discovery;
+- unit, API contract, and PUBLIC_SERVICEABILITY tests, including the Java culture corpus regression;
+- production Continuity Works frontend build;
+- zero-JavaScript Pages discovery stamping;
+- local executable API and public-boundary smoke;
+- validation-status publication.
 
-The previously accepted production C implementation beneath this commit remains validated at 9df64bdb296c3e8c2c416621f1f2d7621e64e59a / executable predecessor 3ea4aad2512956041c4611cb41ae5b7608b272a4.
+Exact-head Pages build/deployment run 34429458979 also completed successfully for 93caccf57108fe67e7f7271f522023489b60f1f7.
 
 Naming cleanup state
 --------------------
-No retired public-name text was introduced by the new test or this validation record. The previously accepted repository-wide retired-brand guard and exact-head Pages deployment remain the strongest directly observed public-output evidence. Independent browser-rendered visual inspection is still not claimed.
+Post-write repository searches for both retired public-name spellings returned no matches. The accepted implementation head then passed the repository validation path and successfully produced/deployed its exact-head Pages output. Independent browser-rendered visual inspection is still not claimed.
 
 Public API / deployment boundary
 --------------------------------
 PUBLIC REMOTE DECISION AUTHORITY: NOT VERIFIED LIVE.
 
-No deployed Java decision-authority process was directly observed through the external public boundary in this cycle. No remote Java serviceability or production runtime acceptance is claimed.
+The separate public-service verification observed during reconciliation failed because the configured external service endpoint returned HTTP 404. The repository contains no observed evidence in this cycle that this external Java service is currently provisioned and answering the required public contract. That issue remains open. No validation rule was weakened and no workaround layer was introduced.
 
 Era structure program boundary
 ------------------------------
@@ -65,10 +65,9 @@ E01-001 through E01-017 remain source-developed through the recorded hero/build/
 
 Next dependency-valid work
 --------------------------
-1. Continue the culture corpus reconciliation with E01-016 and E01-017, using only explicit machine-safe labels already present in their authoritative hero specifications.
-2. Reconcile E01-001 through E01-011 individually as explicit-vocabulary or narrative-only and add them to the corpus guard without inventing culture categories.
-3. Keep narrative-only culture hooks fail-closed.
+1. Reconcile E01-001 through E01-011 individually as explicit culture-vocabulary or narrative-only authorities and extend the existing corpus guard without inventing culture categories.
+2. Keep all narrative-only culture hooks fail-closed.
+3. Repair the external public Java authority only when the actual deployment/provisioning authority is directly available; do not mask the current HTTP 404 in repository validation.
 4. Add Q condition and K palette candidate authority only where explicit authoritative option vocabularies exist.
 5. Preserve authority fingerprints across persistence/resume so restored decisions cannot reuse dictionaries from older authority snapshots.
-6. Remote Java authority attachment remains the highest external integration blocker until directly observed through the deployed public boundary.
-7. Resume hero-structure development at E01-018 only when its authoritative catalog label is recovered.
+6. Resume hero-structure development at E01-018 only when its authoritative catalog label is recovered.
