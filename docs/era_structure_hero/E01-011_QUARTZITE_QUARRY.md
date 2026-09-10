@@ -123,12 +123,12 @@ Suggested bounded variants:
 Because vanilla Minecraft has no natural quartzite block, the generator must use a declared **quartzite-role proxy** chosen from valid natural-looking vanilla blocks, with `minecraft:diorite` as the default baseline. Metadata must identify it as a semantic proxy rather than claim geological literalism.
 
 Palette roles:
-- host rock;
-- quartzite-role source;
-- coarse spoil/reject;
-- compacted ground;
-- hammerstone-role durable block;
-- optional weathering material for abandoned conditions.
+- **host rock**;
+- **quartzite-role source**;
+- **coarse spoil/reject**;
+- **compacted ground**;
+- **hammerstone-role durable block**;
+- **optional weathering material for abandoned conditions**.
 
 Manufactured quartz blocks, polished decorative masonry, bricks, concrete, metal machinery, or dimensionally cut stone are invalid baseline materials.
 
