@@ -3,6 +3,7 @@ package io.continuityworks.api.blueprint;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.file.Path;
+import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.concurrent.Executor;
 
@@ -19,7 +20,7 @@ public final class ContinuityWorksDecisionAuthorityBootstrap {
 
     /**
      * Construct the normal HTTP authority with STRUCTURE_CATALOG candidates sourced from
-     * the supplied hero ledger and BIOME/CULTURE candidates sourced from the selected sibling hero spec.
+     * the supplied hero ledger and BIOME/CULTURE/CONDITION candidates sourced from the selected sibling hero spec.
      */
     public static ContinuityWorksDecisionAuthorityHttpServer fromEraStructureHeroLedger(
         ContinuityWorksCompactBlueprintApi api,
@@ -65,10 +66,11 @@ public final class ContinuityWorksDecisionAuthorityBootstrap {
         Path absoluteLedger = heroLedger.toAbsolutePath().normalize();
         Path heroDirectory = absoluteLedger.getParent();
         if (heroDirectory == null) throw new IllegalArgumentException("hero ledger must have a parent directory");
-        return RoutingBlueprintDecisionCandidateSource.of(
-            "A", EraStructureCatalogCandidateSource.fromHeroLedger(absoluteLedger),
-            "B", new EraStructureBiomeCandidateSource(heroDirectory),
-            "C", new EraStructureCultureCandidateSource(heroDirectory)
-        );
+        LinkedHashMap<String, BlueprintDecisionCandidateSource> routes = new LinkedHashMap<>();
+        routes.put("A", EraStructureCatalogCandidateSource.fromHeroLedger(absoluteLedger));
+        routes.put("B", new EraStructureBiomeCandidateSource(heroDirectory));
+        routes.put("C", new EraStructureCultureCandidateSource(heroDirectory));
+        routes.put("Q", new EraStructureConditionCandidateSource(heroDirectory));
+        return new RoutingBlueprintDecisionCandidateSource(routes);
     }
 }
