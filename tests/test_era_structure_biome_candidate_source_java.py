@@ -269,12 +269,12 @@ public final class EraBiomeCandidateHarness {
             && routedMarrowB.choices().size() == 7,
             "production routing must expose E01-015 existing BIOME authority");
 
-        BlueprintDecisionChain.Mutator culture = BlueprintDecisionChain.profile().mutators().stream()
-            .filter(candidate -> candidate.code().equals("C"))
+        BlueprintDecisionChain.Mutator condition = BlueprintDecisionChain.profile().mutators().stream()
+            .filter(candidate -> candidate.code().equals("Q"))
             .findFirst().orElseThrow();
         boolean unconfiguredRejected = false;
         try {
-            routed.candidates(request, overhang, culture);
+            routed.candidates(request, overhang, condition);
         } catch (IllegalArgumentException expected) {
             unconfiguredRejected = true;
         }
