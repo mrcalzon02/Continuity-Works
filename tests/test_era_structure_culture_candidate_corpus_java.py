@@ -77,6 +77,12 @@ public final class EraCultureCorpusHarness {
         expected.put("E01-015", List.of(
             "IMMEDIATE_CONSUMPTION", "DISTRIBUTED_EXTRACTION", "INTENSIVE_CLEANING", "REPEATED_USE"
         ));
+        expected.put("E01-016", List.of(
+            "CAUTIOUS_OBSERVATION", "SHORT_STAY", "REPEATED_RETURN", "CARCASS_OPPORTUNISM"
+        ));
+        expected.put("E01-017", List.of(
+            "BROAD_SPECTRUM_FORAGING", "ROOT_SEED_PROCESSING", "SHORELINE_GATHERING", "REPEATED_RETURN"
+        ));
 
         int ordinal = 0;
         for (Map.Entry<String, List<String>> entry : expected.entrySet()) {
