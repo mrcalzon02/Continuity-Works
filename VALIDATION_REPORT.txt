@@ -2,67 +2,62 @@ Continuity Works Capability API v0.3.2
 Validation date: 2026-09-10
 =====================================
 
-RESULT: K PALETTE CORPUS RECONCILED THROUGH E01-004; EXACT REPAIRED IMPLEMENTATION HEAD PASSED FULL REPOSITORY VALIDATION AND EXACT-HEAD PAGES DEPLOYMENT; RETIRED PREDECESSOR BRAND SEARCHES REMAIN EMPTY; PUBLIC REMOTE API REMAINS FAILED CLOSED / NOT VERIFIED LIVE
+RESULT: K PALETTE CORPUS RECONCILED THROUGH E01-008; EXACT IMPLEMENTATION HEAD PASSED FULL REPOSITORY VALIDATION AND EXACT-HEAD PAGES DEPLOYMENT; RETIRED PREDECESSOR BRAND SEARCHES REMAIN EMPTY; PUBLIC REMOTE API REMAINS FAILED CLOSED / NOT VERIFIED LIVE
 
 Authority and observed evidence
 -------------------------------
 Authoritative repository: mrcalzon02/Continuity-Works
 Authoritative branch: main
-Cycle starting head: e9e4d5ec990054df882a2c27785d71dd4c2ea664
-Rejected intermediate implementation head: 39e3e0828ed6ecc85971afab97d545f3063386e6
-Accepted repaired implementation head before continuity records: bcd865354241aa097e6a942f1aaf2b4f6fdf0fb4
+Cycle starting head: 85aa69e3bf0a9da9c46d624368937e1027f7d56f
+Accepted implementation head before continuity records: 68ddb6f5fb6d07238adbcfe492634bced3e13848
 
 Reconciliation and selected work
 --------------------------------
-The live main branch reconciled at e9e4d5ec990054df882a2c27785d71dd4c2ea664. Its continuity authority recorded K PALETTE candidate authority as production-routed and identified corpus reconciliation across E01-001 through E01-017 as the next repository-controlled dependency-valid slice. AI Project Manager v3.0, the Repository Execution Protocol, and the Minecraft Java Project Profile were loaded before mutation. The external Render-service provisioning defect remains unresolved and outside direct repository mutation authority.
+The live main branch reconciled at 85aa69e3bf0a9da9c46d624368937e1027f7d56f. Its continuity authority recorded K PALETTE corpus reconciliation from E01-005 forward as the next repository-controlled dependency-valid slice. AI Project Manager v3.0, the Repository Execution Protocol, and the Minecraft Java Project Profile were loaded before mutation. The external Render-service provisioning defect remained unresolved and outside direct repository mutation authority.
 
 Implemented improvement
 -----------------------
-Added tests/test_era_structure_palette_candidate_corpus_java.py to lock the first authoritative K corpus slice through normal production routing.
+Extended tests/test_era_structure_palette_candidate_corpus_java.py so the authoritative K corpus now covers E01-001 through E01-008 through both direct palette authority and normal production candidate routing.
 
-The regression now covers E01-001 Rock Overhang Camp, E01-002 Cave Mouth Occupation, E01-003 Deep Cave Refuge, and E01-004 Temporary Brush Shelter. It verifies each archetype's explicit Material Palette Logic profile labels in authoritative order, exact-source SHA-256 provenance, production candidate routing, and compact candidate-code resolution. No palette semantics were inferred from descriptive prose.
+This cycle added E01-005 Lean-To Windbreak, E01-006 Hide Windbreak Camp, E01-007 Hearth Circle, and E01-008 Multi-Hearth Gathering Site. The regression verifies each archetype's explicit Material Palette Logic profile labels in authoritative order, exact-source SHA-256 provenance, production candidate routing, and compact candidate-code resolution. No palette semantics were inferred from descriptive prose.
 
-The accepted explicit profile vocabularies are:
-- E01-001: GEOLOGICAL_PALETTE, ORGANIC_PALETTE, HUMAN_MADE_PALETTE_RESTRICTIONS.
-- E01-002: GEOLOGY, CARRIED_STONE, ORGANIC_MATERIALS, FORBIDDEN_BASE_MATERIALS.
-- E01-003: GEOLOGICAL_STRUCTURE, CARRIED_MATERIAL, HUMAN_REARRANGEMENT.
-- E01-004: STRUCTURAL_ORGANICS, COVER, STONE, GROUND.
+The newly locked explicit profile vocabularies are:
+- E01-005: STRUCTURAL_MEMBERS, INFILL, GROUND_TREATMENT, FORBIDDEN_BASE_MATERIALS.
+- E01-006: HIDE_MEMBRANE, SUPPORTS, ANCHORS_AND_WEIGHTS, GROUND_TREATMENT.
+- E01-007: HEARTH_SUBSTRATE, CONTAINMENT_STONES, FUEL, RESIDUE, FORBIDDEN_BASE_MATERIALS.
+- E01-008: HEARTH_MATERIALS, FUEL, ACTIVITY_RESIDUES, TEMPORARY_SHELTER_MATERIALS, FORBIDDEN_MATERIALS.
 
-Rejected intermediate and root-cause repair
--------------------------------------------
-Commit 39e3e0828ed6ecc85971afab97d545f3063386e6 introduced the corpus regression but was not accepted. Validate Continuity Works run 34514235896 failed exactly one new regression assertion: E01-003 was incorrectly expected to expose FORBIDDEN_BASE_MATERIALS.
-
-Direct inspection of E01-003 and EraStructurePaletteCandidateSource established the cause. The K source accepts only explicit level-three headings or explicit bold profile labels inside Material Palette Logic. E01-003 has explicit level-three headings Geological structure, Carried material, and Human rearrangement. Its later sentence "Forbidden base materials include:" is ordinary descriptive prose and must not be promoted into inference vocabulary.
-
-Commit bcd865354241aa097e6a942f1aaf2b4f6fdf0fb4 repaired only that incorrect test expectation, one addition and one deletion in the corpus regression. No production implementation, parser, router, hero specification, or authority rule was weakened or changed.
+E01-006's ordinary prose sentence beginning with forbidden-material guidance remains deliberately excluded from K vocabulary because it is not an explicit palette-profile heading. This preserves the source's fail-closed no-prose-inference rule.
 
 Verification actually observed
 ------------------------------
-Validate Continuity Works run 34514539925 on exact repaired implementation head bcd865354241aa097e6a942f1aaf2b4f6fdf0fb4 completed successfully.
+Validate Continuity Works run 34519468434 on exact implementation head 68ddb6f5fb6d07238adbcfe492634bced3e13848 completed successfully.
 
-Observed successful stages include checkout, Python installation and compilation, source-tree agent discovery, Unit/API contract/PUBLIC_SERVICEABILITY tests, production frontend build, zero-JavaScript Pages discovery stamping, local executable API/public-boundary smoke, validation-status publication, and cleanup. The repaired K palette corpus regression passed inside this exact-head validation.
+Observed successful stages include checkout, Python installation and compilation, source-tree agent discovery, Unit/API contract/PUBLIC_SERVICEABILITY tests, production frontend build, zero-JavaScript Pages discovery stamping, local executable API/public-boundary smoke, validation-status publication, and cleanup. The expanded K palette corpus regression passed inside this exact-head validation.
 
-GitHub Pages run 34514538572 for the same exact repaired implementation head completed successfully, including deployment.
+GitHub Pages run 34519467164 for the same exact implementation head completed successfully, including deployment.
+
+Public-service workflow run 34519625750 independently built, stamped, uploaded, and deployed the exact intended Pages artifact successfully. Its remote-api job failed at the configured API-health preflight, so exact-main remote API verification was skipped as designed. Its pages-to-api job likewise failed at the Pages-advertised API-health preflight and skipped external-agent API verification. The workflow report therefore failed closed rather than converting static/Pages success into remote-runtime acceptance.
 
 Naming cleanup state
 --------------------
-Repository code searches during this cycle reported zero matches for both prohibited retired predecessor-brand spellings. The exact repaired implementation head also passed the whole-repository branding guard inside the full validation path and completed an exact-head Pages deployment. This is the strongest directly observable deployment-artifact evidence available in this cycle. Independent rendered-browser retrieval was not established, so separate browser-render acceptance is not claimed.
+Repository code searches during this cycle reported zero matches for both prohibited retired predecessor-brand spellings. The exact implementation head also passed the complete repository validation path and two directly observed Pages deployment paths. This remains the strongest directly observable deployment-artifact evidence available in this cycle. Independent rendered-browser retrieval was not established, so separate browser-render acceptance is not claimed.
 
 Public API / deployment boundary
 --------------------------------
 PUBLIC REMOTE API: FAILED CLOSED / NOT VERIFIED LIVE.
 
-The pre-existing external Render service/provisioning defect remains open. No new evidence in this bounded cycle demonstrated a healthy remote /v1/health response or exact-main remote API acceptance. No health gate, exact-SHA check, deployment path, or serviceability guard was weakened or bypassed.
+Public-service workflow run 34519625750 directly confirmed that the configured remote API health preflight still fails. Exact-main remote API verification was therefore skipped, and the Pages-advertised API health preflight also failed after the exact Pages artifact deployed successfully. No health gate, exact-SHA check, deployment path, or serviceability guard was weakened or bypassed.
 
 The repository-controlled deployment-trigger repair remains intact. The remaining defect is still the active external Render service/provisioning state, which is outside direct repository mutation authority available in this run.
 
 Era structure program boundary
 ------------------------------
-E01-001 through E01-017 culture and Q CONDITION candidate authority remains reconciled and production-routed. K PALETTE production routing remains intact with explicit-source provenance and fail-closed behavior. Corpus-level K reconciliation is now verified through E01-004. E01-005 through E01-017 remain to be classified and locked. E01-018 remains blocked until its authoritative master-catalog archetype identity is recovered; no identity is to be invented.
+E01-001 through E01-017 culture and Q CONDITION candidate authority remains reconciled and production-routed. K PALETTE production routing remains intact with explicit-source provenance and fail-closed behavior. Corpus-level K reconciliation is now verified through E01-008. E01-009 through E01-017 remain to be classified and locked. E01-018 remains blocked until its authoritative master-catalog archetype identity is recovered; no identity is to be invented.
 
 Next dependency-valid work
 --------------------------
-1. Continue K palette corpus reconciliation from E01-005 forward, classifying explicit profile authority versus narrative-only material guidance without prose inference.
+1. Continue K palette corpus reconciliation from E01-009 forward, classifying explicit profile authority versus narrative-only material guidance without prose inference.
 2. Extend the existing corpus regression incrementally with source provenance, production routing, compact-code resolution, and fail-closed cases where appropriate.
 3. Keep the active Render-service provisioning defect open until the external Blueprint/service authority is directly inspectable or the configured remote health/exact-SHA serviceability check succeeds.
 4. Continue retired predecessor-brand cleanup if any stronger artifact/runtime check finds a remaining occurrence; source search alone is not acceptance.
