@@ -91,7 +91,15 @@ Variants change emphasis, not technological era or fundamental archetype identit
 
 ## Material palette logic
 
-Only valid Minecraft blocks are emitted. Vanilla blocks are semantic visual proxies and must be described honestly in metadata: bone block = carcass/heavy-bone role; terracotta/coarse dirt = organic-processing stain role; carpet = hide/offcut role; stone/andesite/granite = tool/hammer/anvil role; gravel/stone = refuse role. A proxy is never claimed to be the literal archaeological material it represents.
+Only valid Minecraft blocks are emitted. Vanilla blocks are semantic visual proxies and must be described honestly in metadata. The existing semantic proxy mappings are:
+
+- **Carcass / heavy-bone role** — bone block.
+- **Organic-processing stain role** — terracotta/coarse dirt.
+- **Hide / offcut role** — carpet.
+- **Tool / hammer / anvil role** — stone/andesite/granite.
+- **Refuse role** — gravel/stone.
+
+A proxy is never claimed to be the literal archaeological material it represents.
 
 ## Condition variants
 
