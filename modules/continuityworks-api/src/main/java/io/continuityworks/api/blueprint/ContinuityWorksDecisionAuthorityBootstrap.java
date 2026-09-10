@@ -20,7 +20,7 @@ public final class ContinuityWorksDecisionAuthorityBootstrap {
 
     /**
      * Construct the normal HTTP authority with STRUCTURE_CATALOG candidates sourced from
-     * the supplied hero ledger and BIOME/CULTURE/CONDITION candidates sourced from the selected sibling hero spec.
+     * the supplied hero ledger and BIOME/CULTURE/CONDITION/PALETTE candidates sourced from the selected sibling hero spec.
      */
     public static ContinuityWorksDecisionAuthorityHttpServer fromEraStructureHeroLedger(
         ContinuityWorksCompactBlueprintApi api,
@@ -71,6 +71,7 @@ public final class ContinuityWorksDecisionAuthorityBootstrap {
         routes.put("B", new EraStructureBiomeCandidateSource(heroDirectory));
         routes.put("C", new EraStructureCultureCandidateSource(heroDirectory));
         routes.put("Q", new EraStructureConditionCandidateSource(heroDirectory));
+        routes.put("K", new EraStructurePaletteCandidateSource(heroDirectory));
         return new RoutingBlueprintDecisionCandidateSource(routes);
     }
 }
