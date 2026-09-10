@@ -2,68 +2,59 @@ Continuity Works Capability API v0.3.2
 Validation date: 2026-09-10
 =====================================
 
-RESULT: Q CONDITION CORPUS RECONCILED THROUGH E01-017; EXACT IMPLEMENTATION HEAD PASSED FULL REPOSITORY VALIDATION AND EXACT-HEAD PAGES DEPLOYMENT; RETIRED PREDECESSOR BRANDING REMAINS ABSENT FROM REPOSITORY SEARCH; PUBLIC REMOTE API REMAINS FAILED CLOSED / NOT VERIFIED LIVE
+RESULT: K PALETTE CANDIDATE AUTHORITY IMPLEMENTED AND PRODUCTION-ROUTED; EXACT IMPLEMENTATION HEAD PASSED FULL REPOSITORY VALIDATION AND EXACT-HEAD PAGES DEPLOYMENT; PUBLIC REMOTE API REMAINS FAILED CLOSED / NOT VERIFIED LIVE
 
 Authority and observed evidence
 -------------------------------
 Authoritative repository: mrcalzon02/Continuity-Works
 Authoritative branch: main
-Cycle starting head: 9e878bf4723066342dd9b807bc71d5f30319d732
-Accepted implementation head before this continuity record: 613c93314e0a7a0301eec04224ff0d7c905d56cc
+Cycle starting head: 8067ec3849f4e57e6595febb6487ff6d165c72d2
+Accepted implementation head before this continuity record: 3b9dc0a7574d4230ecb45d9e0f1f0a3907f3552f
 
 Reconciliation and selected work
 --------------------------------
-The live main branch reconciled at 9e878bf4723066342dd9b807bc71d5f30319d732, whose latest project-state change recorded Q CONDITION corpus coverage through E01-011. AI Project Manager v3.0, the Repository Execution Protocol, and the Minecraft Java Project Profile were loaded before mutation. The highest-priority repository-controlled dependency-valid slice was completion of Q CONDITION corpus reconciliation for E01-012 through E01-017. The external Render-service provisioning defect remains unresolved and fail-closed.
+The live main branch reconciled at 8067ec3849f4e57e6595febb6487ff6d165c72d2. Its continuity authority recorded Q CONDITION corpus reconciliation through E01-017 and identified K PALETTE candidate authority as the next repository-controlled dependency-valid slice. AI Project Manager v3.0, the Repository Execution Protocol, and the Minecraft Java Project Profile were loaded before mutation. The external Render-service provisioning defect remains unresolved and outside direct repository mutation authority.
 
 Implemented improvement
 -----------------------
-Expanded tests/test_era_structure_condition_candidate_corpus_java.py so the production Q CONDITION corpus guard now covers E01-001 through E01-017.
+Added modules/continuityworks-api/src/main/java/io/continuityworks/api/blueprint/EraStructurePaletteCandidateSource.java and routed K through the existing ContinuityWorksDecisionAuthorityBootstrap production candidate authority.
 
-E01-012 Butchery Site, E01-013 Large-Carcass Processing Site, E01-014 Bone-Breaking Station, and E01-015 Marrow Processing Ground are each locked to their explicit authoritative ordered condition vocabulary:
-ACTIVE, RECENT, REPEATED, ABANDONED, WEATHERED, SCAVENGER_REWORKED, SEDIMENT_REWORKED, REPURPOSED.
+K now requires both selected archetype A and selected biome B, matching the existing BlueprintDecisionChain contract. The source resolves exactly one authoritative sibling hero specification, reads only explicit level-three headings or explicit bold labels inside the Material Palette Logic section, canonicalizes those labels to machine-safe semantic values, and binds candidate provenance to the exact hero-spec bytes with SHA-256. Ordinary bullets and narrative prose are deliberately not promoted into candidate vocabulary; a specification without explicit palette labels fails closed.
 
-E01-016 Watering-Hole Camp is locked to:
-ACTIVE, RECENT, REPEATED, ABANDONED, WEATHERED, FLOOD_REWORKED, SCAVENGER_REWORKED, REPURPOSED.
-
-E01-017 Riverbank Foraging Camp is locked to:
-ACTIVE, RECENT, REPEATED, ABANDONED, WEATHERED, FLOOD_REWORKED, SEDIMENT_REWORKED, REPURPOSED.
-
-All labels already existed explicitly in the authoritative hero specifications. No condition semantics were inferred from prose. The existing harness continues to verify direct EraStructureConditionCandidateSource behavior, normal production routing, exact ordered dictionaries, SHA-256 provenance tied to exact hero-spec bytes, and compact-code resolution. No parser, production router, hero specification, workflow, branch, or alternate implementation was changed.
+Added tests/test_era_structure_palette_candidate_source_java.py. The regression proves E01-004 Temporary Brush Shelter exposes exactly STRUCTURAL_ORGANICS, COVER, STONE, and GROUND from its existing explicit Material Palette Logic headings; production routing preserves their order and compact-code resolution; K refuses discovery when B is absent; and E01-012 Butchery Site remains fail-closed because its material guidance is prose/ordinary bullets rather than explicit palette labels. No hero semantics were invented or rewritten.
 
 Commit state
 ------------
-613c93314e0a7a0301eec04224ff0d7c905d56cc - Reconcile Q condition corpus through E01-017
+3b9dc0a7574d4230ecb45d9e0f1f0a3907f3552f - Add authoritative K palette candidate routing
 
-Direct commit inspection showed exactly one changed file, tests/test_era_structure_condition_candidate_corpus_java.py, with twenty-four added lines and no unrelated modifications.
+Direct commit inspection showed exactly three changed files: one new authoritative K candidate-source adapter, the existing production bootstrap wiring, and one new Java-17-backed regression. No branch, pull request, alternate implementation, duplicate authority, or workflow was created.
 
 Verification actually observed
 ------------------------------
-Validate Continuity Works run 34496045612 on exact implementation head 613c93314e0a7a0301eec04224ff0d7c905d56cc completed successfully.
+Validate Continuity Works run 34507714418 on exact implementation head 3b9dc0a7574d4230ecb45d9e0f1f0a3907f3552f completed successfully.
 
-Observed successful stages include checkout, Python installation and compilation, source-tree agent discovery, Unit/API contract/PUBLIC_SERVICEABILITY tests, production frontend build, zero-JavaScript Pages discovery stamping, local executable/public-boundary smoke, validation-status publication, and cleanup. The completed E01-001 through E01-017 Q corpus regression passed inside this exact-head validation.
+Observed successful stages include checkout, Python installation and compilation, source-tree agent discovery, Unit/API contract/PUBLIC_SERVICEABILITY tests, production frontend build, zero-JavaScript Pages discovery stamping, local executable API/public-boundary smoke, validation-status publication, and cleanup. The new K palette candidate regression passed inside this exact-head validation.
 
-GitHub Pages run 34496043423 for the same exact implementation head completed successfully, including deployment. Public-service run 34496198551 independently completed its build-pages job and uploaded a validated intended Pages artifact; its secondary deploy-pages job was still queued at last observation and is not claimed complete here.
+GitHub Pages run 34507713260 for the same exact implementation head completed successfully, including deployment.
 
 Naming cleanup state
 --------------------
-Repository searches after the implementation commit returned no matches for either prohibited retired predecessor branding spelling. The exact implementation head passed the whole-repository validation path and its ordinary exact-head Pages deployment completed successfully, providing the strongest directly observable deployment-artifact evidence available in this cycle. Independent browser retrieval of the published Pages URL could not be established through the available web retrieval path, so a separate rendered-browser inspection is not claimed.
+The K implementation introduced no predecessor branding. The exact implementation head passed the repository validation path and its exact-head Pages deployment completed successfully, providing the strongest directly observable deployment-artifact evidence available in this cycle. An independent rendered-browser retrieval could not be established through the available web retrieval path, so separate browser-render acceptance is not claimed.
 
 Public API / deployment boundary
 --------------------------------
 PUBLIC REMOTE API: FAILED CLOSED / NOT VERIFIED LIVE.
 
-Public-service run 34496198551 checked out exact implementation head 613c93314e0a7a0301eec04224ff0d7c905d56cc. Its remote-api job failed at the configured API health preflight; exact-main remote verification was skipped as designed. No alternate deployment path, weakened health check, serviceability bypass, or speculative external-provisioning mutation was added.
-
-The repository-controlled Render deployment-trigger repair remains intact. The remaining defect is the active external Render service/provisioning state, which is not directly mutable through the available repository authority.
+No repository evidence in this cycle superseded the existing Render health/serviceability failure. The repository-controlled deployment-trigger repair remains intact, but the active external Render service/provisioning state remains outside direct repository mutation authority. No health gate, exact-SHA check, or serviceability guard was weakened or bypassed.
 
 Era structure program boundary
 ------------------------------
-E01-001 through E01-017 culture candidate authority remains reconciled and production-routed. Q CONDITION production routing remains intact, and corpus-level Q authority is now directly reconciled through E01-017. E01-018 remains blocked until its authoritative master-catalog archetype identity is recovered; no identity is to be invented.
+E01-001 through E01-017 culture and Q CONDITION candidate authority remains reconciled and production-routed. K PALETTE production routing now exists, with explicit-source provenance and fail-closed behavior demonstrated on real hero specifications. Corpus-level K reconciliation across E01-001 through E01-017 is not yet complete. E01-018 remains blocked until its authoritative master-catalog archetype identity is recovered; no identity is to be invented.
 
 Next dependency-valid work
 --------------------------
-1. Implement K PALETTE candidate authority from explicit authoritative palette vocabularies while retaining fail-closed behavior for unsupported profile classes.
-2. Reconcile K palette authority across E01-001 through E01-017 using only explicit authoritative semantics and exact source provenance.
+1. Reconcile K palette authority across E01-001 through E01-017, classifying which hero specifications already expose legitimate explicit palette profiles and which remain narrative-only; normalize authoritative formatting only where existing semantics can be preserved exactly.
+2. Add corpus-level K regression coverage that locks explicit vocabularies, source provenance, A+B dependency, production routing, and fail-closed narrative-only cases.
 3. Keep the active Render-service provisioning defect open until the external Blueprint/service authority is directly inspectable or the configured remote health/exact-SHA serviceability check succeeds.
-4. Continue retired predecessor-brand cleanup if any stronger artifact/runtime check finds a remaining occurrence; do not accept source search alone.
+4. Continue retired predecessor-brand cleanup if any stronger artifact/runtime check finds a remaining occurrence; source search alone is not acceptance.
 5. Resume hero-structure development at E01-018 only when its authoritative catalog identity is recovered.
