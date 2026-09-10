@@ -2,43 +2,36 @@ Continuity Works Capability API v0.3.2
 Validation date: 2026-09-10
 =====================================
 
-RESULT: K PALETTE CORPUS RECONCILED THROUGH E01-011; REPAIRED EXACT IMPLEMENTATION HEAD PASSED FULL REPOSITORY VALIDATION AND EXACT-HEAD PAGES DEPLOYMENT; RETIRED PREDECESSOR-BRAND CHECK REMAINS CLEAN; PUBLIC REMOTE API REMAINS FAILED CLOSED / NOT VERIFIED LIVE
+RESULT: K PALETTE CORPUS CLASSIFICATION RECONCILED THROUGH E01-017; EXACT IMPLEMENTATION HEAD PASSED FULL REPOSITORY VALIDATION AND EXACT-HEAD PAGES DEPLOYMENT; RETIRED PREDECESSOR-BRAND CHECK REMAINS CLEAN; PUBLIC REMOTE API REMAINS FAILED CLOSED / NOT VERIFIED LIVE
 
 Authority and observed evidence
 -------------------------------
 Authoritative repository: mrcalzon02/Continuity-Works
 Authoritative branch: main
-Cycle starting head: 16d58399270e5b205462a6c2de2d716a5426bd47
-Rejected intermediate head: b39667e1f3f39547ddc34f3c83adfb28e3d18fb5
-Accepted implementation head before continuity records: b685610e5677723c00fde77c728c72fb2ab14e9d
+Cycle starting head: 03a3788dce70b0776910d915b7e6179bf73d4a5f
+Accepted implementation head before continuity records: 7b0a73c89ddef2783d024d69022959b1520f99e9
 
 Reconciliation and selected work
 --------------------------------
-The live main branch reconciled at 16d58399270e5b205462a6c2de2d716a5426bd47. Its continuity authority recorded K PALETTE corpus reconciliation from E01-009 forward as the next repository-controlled dependency-valid slice. AI Project Manager v3.0, the Repository Execution Protocol, and the Minecraft Java Project Profile were loaded in full before mutation.
+The live main branch reconciled at 03a3788dce70b0776910d915b7e6179bf73d4a5f. Its continuity authority recorded K PALETTE corpus reconciliation from E01-012 through E01-017 as the next repository-controlled dependency-valid slice. AI Project Manager v3.0, the Repository Execution Protocol, and the Minecraft Java Project Profile remained the governing method.
 
 Implemented improvement
 -----------------------
-Extended tests/test_era_structure_palette_candidate_corpus_java.py so the authoritative K corpus now covers E01-001 through E01-011 where explicit palette authority exists, while preserving fail-closed behavior for narrative-only material guidance.
+Extended tests/test_era_structure_palette_candidate_corpus_java.py so K PALETTE behavior is now classified and regression-locked for every currently eligible E01 hero specification E01-001 through E01-017.
 
-E01-009 Stone Tool Knapping Ground already exposes five explicit Material Palette Logic headings and is now locked through direct authority and production routing as STRUCTURAL_TERRAIN, TOOLSTONE_PALETTE, HAMMERSTONE_PALETTE, ORGANIC_PALETTE, and FORBIDDEN_BASE_MATERIALS.
+E01-001 through E01-009 and E01-011 retain explicit candidate vocabularies with source-bound SHA-256 provenance, production routing, authoritative ordering, and compact-code resolution.
 
-E01-010 Flint Procurement Pit contains only descriptive material guidance in its Material Palette Logic section. The corpus regression now requires both direct K authority and production routing to refuse candidate inference from that prose.
+E01-010 and E01-012 through E01-017 currently provide Material Palette Logic as descriptive prose, plain role lists, or prose-level proxy mappings rather than the explicit level-three headings or bold profile labels consumed by EraStructurePaletteCandidateSource. The corpus now requires both direct K authority and normal production routing to fail closed for each of those archetypes rather than silently promoting descriptive material guidance into inference vocabulary.
 
-E01-011 Quartzite Quarry already defined six bounded palette roles, but they were plain list items rather than parser-consumable explicit labels. The authoritative hero specification was normalized without changing names, order, descriptions, or semantics. The six roles now resolve as HOST_ROCK, QUARTZITE_ROLE_SOURCE, COARSE_SPOIL_REJECT, COMPACTED_GROUND, HAMMERSTONE_ROLE_DURABLE_BLOCK, and OPTIONAL_WEATHERING_MATERIAL_FOR_ABANDONED_CONDITIONS.
-
-Rejected intermediate head and root-cause repair
-------------------------------------------------
-Intermediate head b39667e1f3f39547ddc34f3c83adfb28e3d18fb5 was rejected by Validate Continuity Works run 34520565701. The K corpus regression failed because E01-011's first normalization used punctuation immediately after each closing bold label marker, which did not satisfy the existing explicit-label grammar. The failure was precise: E01-011 produced no explicit palette candidates and correctly refused prose inference. Frontend build and downstream smoke stages were skipped.
-
-The parser was not broadened or weakened. Repair commit b685610e5677723c00fde77c728c72fb2ab14e9d removed only those six list terminators so the already-authoritative palette-role names conform to the existing explicit-label syntax.
+No palette parser was broadened, no prose inference was introduced, and no existing hero specification was semantically rewritten in this cycle.
 
 Verification actually observed
 ------------------------------
-Validate Continuity Works run 34520846271 on exact implementation head b685610e5677723c00fde77c728c72fb2ab14e9d completed successfully.
+Validate Continuity Works run 34525953271 on exact implementation head 7b0a73c89ddef2783d024d69022959b1520f99e9 completed successfully.
 
-Observed successful stages include checkout, Python installation and compilation, source-tree agent discovery, Unit/API contract/PUBLIC_SERVICEABILITY tests, the repaired Java 17 K palette corpus regression, production frontend build, zero-JavaScript Pages discovery stamping, local executable API/public-boundary smoke, validation-status publication, and cleanup.
+Observed successful stages include checkout, Python installation and compilation, source-tree agent discovery, Unit/API contract/PUBLIC_SERVICEABILITY tests, the Java 17 K palette corpus regression, production frontend build, zero-JavaScript Pages discovery stamping, local executable API/public-boundary smoke, validation-status publication, and cleanup.
 
-GitHub Pages run 34520845005 for the same exact implementation head completed successfully, including deployment.
+GitHub Pages run 34525952611 for the same exact implementation head completed successfully, including deployment.
 
 Naming cleanup state
 --------------------
@@ -52,13 +45,15 @@ No observed evidence in this cycle superseded the existing external Render servi
 
 Era structure program boundary
 ------------------------------
-E01-001 through E01-017 culture and Q CONDITION candidate authority remains reconciled and production-routed. K PALETTE production routing remains intact with explicit-source provenance and fail-closed behavior. Corpus-level K reconciliation is now verified through E01-011: E01-009 is explicit and locked, E01-010 is explicitly narrative-only/fail-closed, and E01-011's existing palette roles are normalized and locked. E01-012 through E01-017 remain to be classified and reconciled. E01-018 remains blocked until its authoritative master-catalog archetype identity is recovered; no identity is to be invented.
+E01-001 through E01-017 culture and Q CONDITION candidate authority remains reconciled and production-routed. K PALETTE production routing remains intact with explicit-source provenance and fail-closed behavior. Corpus-level K behavior is now classified through E01-017: explicit-source archetypes are locked to their authoritative candidate vocabularies, while E01-010 and E01-012 through E01-017 are explicitly locked fail-closed under their current non-profile Material Palette Logic formatting.
+
+E01-018 remains blocked until its authoritative master-catalog archetype identity is recovered; no identity is to be invented.
 
 Next dependency-valid work
 --------------------------
-1. Continue K palette corpus reconciliation from E01-012 through E01-017, classifying explicit profile authority versus narrative-only material guidance without prose inference.
-2. Normalize authoritative formatting only where existing palette semantics are explicit and unambiguous; do not broaden the parser to consume descriptive prose.
-3. Extend the existing corpus regression with exact-source provenance, production routing, compact-code resolution, and explicit fail-closed cases.
+1. Begin source-format normalization at E01-012, promoting only already-explicit and unambiguous material-role labels into the existing parser-consumable explicit-label syntax without changing their semantics.
+2. Advance E01-013 through E01-017 sequentially under the same rule; where a specification contains only prose rather than clearly named roles, retain fail-closed behavior rather than inventing vocabulary.
+3. Update the existing K corpus expectation only after each authoritative source normalization is verified through direct authority, production routing, exact-source provenance, and compact-code resolution.
 4. Keep the active external Render-service provisioning defect open until configured remote health/exact-SHA serviceability succeeds or the external provisioning authority becomes directly inspectable.
 5. Continue retired predecessor-brand cleanup if any stronger artifact/runtime check finds a remaining occurrence; source search alone is not acceptance.
 6. Resume hero-structure development at E01-018 only when its authoritative catalog identity is recovered.
