@@ -33,15 +33,19 @@ Observed successful stages include checkout, Python installation and compilation
 
 GitHub Pages run 34525952611 for the same exact implementation head completed successfully, including deployment.
 
+Public-service workflow run 34526078586 independently built, stamped, validated, uploaded, and deployed the intended exact Pages artifact successfully. Its remote-api job failed at the configured API-health preflight, so exact-main remote API verification was skipped. Its pages-to-api job also failed at the Pages-advertised API-health preflight and skipped external-agent API verification. The workflow therefore preserved the fail-closed runtime boundary while still providing stronger directly observed Pages artifact/deployment evidence.
+
 Naming cleanup state
 --------------------
-Repository searches during this cycle reported zero matches for both prohibited retired predecessor-brand spellings. More importantly, the accepted implementation head passed the whole-active-repository naming guard inside the complete validation workflow and then completed an exact-head Pages deployment. This is the strongest directly observed deployment-artifact evidence available in this cycle. Independent browser-render inspection was not established, so separate browser visual acceptance is not claimed.
+Repository searches during this cycle reported zero matches for both prohibited retired predecessor-brand spellings. More importantly, the accepted implementation head passed the whole-active-repository naming guard inside the complete validation workflow and then completed both the ordinary exact-head Pages deployment and the independently built public-service Pages artifact deployment. This is the strongest directly observed deployment-artifact evidence available in this cycle. Independent browser-render inspection was not established, so separate browser visual acceptance is not claimed.
 
 Public API / deployment boundary
 --------------------------------
 PUBLIC REMOTE API: FAILED CLOSED / NOT VERIFIED LIVE.
 
-No observed evidence in this cycle superseded the existing external Render service/provisioning failure state. The repository-controlled deployment-trigger repair remains intact, but public Java decision-authority serviceability is not promoted to runtime acceptance without a successful configured remote health and exact-SHA verification.
+Public-service workflow run 34526078586 directly confirmed that the configured remote API health preflight still fails. Exact-main remote API verification was skipped, and the Pages-advertised API health preflight also failed after successful exact-artifact deployment. No health gate, exact-SHA check, deployment path, or serviceability guard was weakened or bypassed.
+
+The repository-controlled deployment-trigger repair remains intact. The remaining defect is still the active external Render service/provisioning state, outside direct repository mutation authority available in this run.
 
 Era structure program boundary
 ------------------------------
