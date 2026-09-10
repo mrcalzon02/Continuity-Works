@@ -19,7 +19,7 @@ public final class ContinuityWorksDecisionAuthorityBootstrap {
 
     /**
      * Construct the normal HTTP authority with STRUCTURE_CATALOG candidates sourced from
-     * the supplied hero ledger and BIOME candidates sourced from the selected sibling hero spec.
+     * the supplied hero ledger and BIOME/CULTURE candidates sourced from the selected sibling hero spec.
      */
     public static ContinuityWorksDecisionAuthorityHttpServer fromEraStructureHeroLedger(
         ContinuityWorksCompactBlueprintApi api,
@@ -67,7 +67,8 @@ public final class ContinuityWorksDecisionAuthorityBootstrap {
         if (heroDirectory == null) throw new IllegalArgumentException("hero ledger must have a parent directory");
         return RoutingBlueprintDecisionCandidateSource.of(
             "A", EraStructureCatalogCandidateSource.fromHeroLedger(absoluteLedger),
-            "B", new EraStructureBiomeCandidateSource(heroDirectory)
+            "B", new EraStructureBiomeCandidateSource(heroDirectory),
+            "C", new EraStructureCultureCandidateSource(heroDirectory)
         );
     }
 }
