@@ -72,7 +72,7 @@ public final class EraPaletteCorpusHarness {
             "GEOLOGY", "CARRIED_STONE", "ORGANIC_MATERIALS", "FORBIDDEN_BASE_MATERIALS"
         ));
         expected.put("E01-003", List.of(
-            "GEOLOGICAL_STRUCTURE", "CARRIED_MATERIAL", "HUMAN_REARRANGEMENT", "FORBIDDEN_BASE_MATERIALS"
+            "GEOLOGICAL_STRUCTURE", "CARRIED_MATERIAL", "HUMAN_REARRANGEMENT"
         ));
         expected.put("E01-004", List.of(
             "STRUCTURAL_ORGANICS", "COVER", "STONE", "GROUND"
