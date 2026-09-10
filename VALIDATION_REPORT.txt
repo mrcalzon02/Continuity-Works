@@ -2,70 +2,66 @@ Continuity Works Capability API v0.3.2
 Validation date: 2026-09-10
 =====================================
 
-RESULT: Q CONDITION CORPUS COVERAGE EXTENDED THROUGH E01-002; WHOLE-REPOSITORY RETIRED-BRAND DEFECT REPAIRED; EXACT REPAIR HEAD PASSED FULL REPOSITORY VALIDATION; EXACT PAGES ARTIFACT BUILT SUCCESSFULLY WITH DEPLOYMENT STILL IN PROGRESS AT LAST OBSERVATION; PUBLIC REMOTE API REMAINS NOT VERIFIED LIVE
+RESULT: Q CONDITION CORPUS COVERAGE EXTENDED THROUGH E01-005; EXACT IMPLEMENTATION HEAD PASSED FULL REPOSITORY VALIDATION AND EXACT-HEAD PAGES DEPLOYMENT; RETIRED PREDECESSOR BRANDING REMAINS ABSENT FROM REPOSITORY SEARCH; PUBLIC REMOTE API REMAINS NOT VERIFIED LIVE
 
 Authority and observed evidence
 -------------------------------
 Authoritative repository: mrcalzon02/Continuity-Works
 Authoritative branch: main
-Cycle starting head: 8377401250a0ee2bb6bfead2a2058f8abbde3c13
-Current verified repair head before this continuity record: 58a70a09e314a5fcdc433d49c19bcf7b722f3734
+Cycle starting head: df841aca0dfcc8b7ba651cf3a4abd83bded995ff
+Accepted implementation head before this continuity record: 73e8ccb20aedb0db8bc56aaeb0316bc432431cae
 
 Reconciliation and selected work
 --------------------------------
-The live main branch reconciled at 8377401250a0ee2bb6bfead2a2058f8abbde3c13. Existing Q CONDITION production routing was accepted, while corpus-level Q reconciliation across E01-001 through E01-017 remained the next repository-controlled dependency-valid work. The active Render-service provisioning defect remains externally unresolved and the configured public Java service remains fail-closed rather than accepted live.
-
-Initial repository search returned no active matches for either retired Forge-era public product name. That search was not treated as acceptance. During exact-head validation, the stronger whole-repository branding guard later proved that VALIDATION_REPORT.txt itself still embedded both retired names literally, making the authoritative continuity record the source of a real active branding failure.
+The live main branch reconciled at df841aca0dfcc8b7ba651cf3a4abd83bded995ff. AI Project Manager v3.0, the Repository Execution Protocol, and the Minecraft Java Project Profile were loaded in full before mutation. Existing Q CONDITION production routing was accepted and corpus-level reconciliation from E01-003 forward remained the highest-priority repository-controlled dependency-valid work. The external Render-service provisioning defect remains unresolved and fail-closed.
 
 Implemented improvement
 -----------------------
-Added tests/test_era_structure_condition_candidate_corpus_java.py as a corpus-level Java 17 regression for Q CONDITION authority.
+Expanded tests/test_era_structure_condition_candidate_corpus_java.py so the production Q CONDITION corpus guard now covers E01-001 through E01-005.
 
-The regression verifies E01-001 Rock Overhang Camp exposes exactly its explicit Condition Variants headings in authoritative order:
-ACTIVE_RECENTLY_OCCUPIED, TEMPORARILY_VACANT, REPEATEDLY_OCCUPIED, ABANDONED, PARTIALLY_COLLAPSED, BURIED_ARCHAEOLOGICAL, REPURPOSED.
+E01-003 Deep Cave Refuge is locked to the explicit Condition Variants headings already present in its authoritative hero specification, in authoritative order:
+ACTIVE_EMERGENCY_REFUGE, TEMPORARILY_VACANT, REPEATED_REFUGE, ABANDONED, ENTRANCE_BLOCKED_LEGACY_REFUGE, PARTIALLY_COLLAPSED, FLOOD_DAMAGED, ANIMAL_REOCCUPIED, LATER_ERA_REPURPOSED.
 
-It verifies E01-002 Cave Mouth Occupation exposes exactly:
-ACTIVE_RECENTLY_OCCUPIED, TEMPORARILY_VACANT, REPEATEDLY_OCCUPIED, ABANDONED, PARTIALLY_COLLAPSED, HEAVILY_SILTED_BURIED, ANIMAL_REOCCUPIED, LATER_ERA_REPURPOSED.
+E01-004 Temporary Brush Shelter is locked to:
+ACTIVE_INTACT, MAINTAINED_REPEATEDLY_REUSED, TEMPORARILY_VACANT, WEATHER_DAMAGED, PARTIALLY_COLLAPSED, ABANDONED_DECAYED, ARCHAEOLOGICAL_TRACE, LATER_ERA_REPURPOSED.
 
-For both archetypes the test exercises EraStructureConditionCandidateSource directly and through ContinuityWorksDecisionAuthorityBootstrap.productionCandidateSource(), requires exact ordered production dictionaries, requires source identity to remain bound to the exact hero-spec bytes, and verifies compact candidate codes resolve back to the authoritative semantic condition. No condition vocabulary was inferred from narrative prose and no production parser/router logic was duplicated.
+E01-005 Lean-To Windbreak is locked to:
+ACTIVE_NEWLY_BUILT, MAINTAINED_REPEATEDLY_USED, TEMPORARILY_VACANT, WEATHER_DAMAGED, PARTIALLY_COLLAPSED, ABANDONED, ARCHAEOLOGICAL_TRACE, LATER_ERA_REPURPOSED.
 
-The first candidate head 85bcb7b852d48514348a9fa3fa9641aac815114d was pushed directly to main and the new Q corpus regression itself passed. However, the overall Validate Continuity Works run 34470943565 was rejected because the whole-repository branding guard found the authoritative validation record still contained the two retired Forge-era public names as literals. The unit/API stage therefore failed and downstream build/stamp/smoke stages were skipped. That head is not accepted as a complete cycle result.
-
-The root cause was repaired directly in VALIDATION_REPORT.txt at commit 58a70a09e314a5fcdc433d49c19bcf7b722f3734. The record now describes the retired naming family without reproducing the forbidden literals. The branding guard was not weakened, bypassed, excluded, or changed.
+The existing corpus harness continues to exercise EraStructureConditionCandidateSource both directly and through ContinuityWorksDecisionAuthorityBootstrap.productionCandidateSource(), requires exact ordered production dictionaries, requires SHA-256 source identity tied to the exact hero-spec bytes, and verifies compact candidate codes resolve to the authoritative semantic condition. No condition vocabulary was inferred from prose. No parser, production router, hero specification, workflow, branch, or alternate implementation was changed.
 
 Commit state
 ------------
-85bcb7b852d48514348a9fa3fa9641aac815114d - Extend condition authority coverage through E01-002
-58a70a09e314a5fcdc433d49c19bcf7b722f3734 - Purge retired branding from validation authority
+73e8ccb20aedb0db8bc56aaeb0316bc432431cae - Expand condition corpus through E01-005
 
-Direct main readback confirmed 58a70a09e314a5fcdc433d49c19bcf7b722f3734 as main, immediately descending from 85bcb7b852d48514348a9fa3fa9641aac815114d. Comparison against the cycle start is two commits ahead and zero behind. Net changes before this continuity record are exactly one new Q corpus regression file plus the targeted validation-authority branding repair.
+Direct commit readback showed exactly one changed file, tests/test_era_structure_condition_candidate_corpus_java.py, with thirteen added lines and no unrelated modifications.
 
 Verification actually observed
 ------------------------------
-Validate Continuity Works run 34471182856 on exact head 58a70a09e314a5fcdc433d49c19bcf7b722f3734 completed successfully.
+Validate Continuity Works run 34476513574 on exact implementation head 73e8ccb20aedb0db8bc56aaeb0316bc432431cae completed successfully.
 
-Observed successful stages include checkout, Python installation and compilation, source-tree agent discovery, Unit/API contract/PUBLIC_SERVICEABILITY tests, production frontend build, zero-JavaScript Pages discovery stamping, local executable/public-boundary smoke, validation-status publication, and cleanup. The Q corpus regression passed inside this exact-head validation, as did the whole-repository branding guard.
+Observed successful stages include checkout, Python installation and compilation, source-tree agent discovery, Unit/API contract/PUBLIC_SERVICEABILITY tests, production frontend build, zero-JavaScript Pages discovery stamping, local executable/public-boundary smoke, validation-status publication, and cleanup. The expanded Q corpus regression passed inside this exact-head validation.
 
-GitHub Pages run 34471182007 for the same exact head successfully completed the Jekyll build, artifact upload, and build-status reporting. The deploy job was still in progress at the final observation available before writing this continuity record, so exact-head Pages deployment is not yet claimed complete here.
+GitHub Pages run 34476512073 for the same exact implementation head completed successfully, including its build and deployment path. This is the strongest directly observable deployment artifact available in this cycle.
 
 Naming cleanup state
 --------------------
-The stronger exact-head whole-repository branding guard now passes after the authoritative validation record was repaired. This supersedes the earlier misleading clean repository search as the stronger source-side acceptance evidence. The exact-head Pages artifact also built successfully. Independent browser-rendered visual inspection and completion of this exact-head Pages deployment remain unclaimed until directly observed.
+Repository searches at the implementation head returned no matches for either prohibited retired predecessor branding spelling. The exact implementation head also passed the whole-repository validation path and its Pages deployment completed successfully. Independent browser-rendered retrieval could not be established through the available external web retrieval path, so a separate visual-page inspection is not claimed.
 
 Public API / deployment boundary
 --------------------------------
 PUBLIC REMOTE API: FAILED CLOSED / NOT VERIFIED LIVE.
 
-The repository-controlled Render deployment trigger repair from the prior cycle remains intact. This cycle did not gain direct control or inspection of the active Render Blueprint/service provisioning authority, and no external-service acceptance evidence superseded the existing failed health preflight. No alternate deployment path, weakened health check, or serviceability workaround was added.
+The repository-controlled Render deployment-trigger repair from the prior cycle remains intact. At the time this continuity record was prepared, public-service run 34476649288 had been created for exact implementation head 73e8ccb20aedb0db8bc56aaeb0316bc432431cae but had not yet produced new acceptance evidence. The prior remote health failure therefore remains authoritative. No alternate deployment path, weakened health check, serviceability bypass, or speculative external-provisioning mutation was added.
 
 Era structure program boundary
 ------------------------------
-E01-001 through E01-017 culture candidate authority remains reconciled and production-routed. Q CONDITION production routing remains intact. Corpus-level Q authority is now directly covered through E01-002, while E01-012 retains its existing direct production-routing regression. E01-018 remains blocked until its authoritative master-catalog archetype identity is recovered; no identity is to be invented.
+E01-001 through E01-017 culture candidate authority remains reconciled and production-routed. Q CONDITION production routing remains intact. Corpus-level Q authority is now directly covered through E01-005, while E01-012 retains its existing direct production-routing regression. E01-018 remains blocked until its authoritative master-catalog archetype identity is recovered; no identity is to be invented.
 
 Next dependency-valid work
 --------------------------
-1. Continue Q CONDITION corpus reconciliation from E01-003 forward, using only explicit Condition Variants labels and preserving authoritative order and exact-spec provenance.
+1. Continue Q CONDITION corpus reconciliation from E01-006 forward, using only explicit Condition Variants labels while preserving authoritative order and exact-spec provenance.
 2. After E01-001 through E01-017 Q reconciliation is complete, implement K PALETTE candidate authority from explicit authoritative palette vocabularies while retaining fail-closed behavior for unsupported profile classes.
 3. Keep the active Render-service provisioning defect open until the external Blueprint/service authority is directly inspectable or the configured remote health/exact-SHA serviceability check succeeds.
-4. Continue retired public-brand cleanup if any stronger artifact/runtime check finds a remaining occurrence; do not accept a clean source search alone.
+4. Continue retired predecessor-brand cleanup if any stronger artifact/runtime check finds a remaining occurrence; do not accept source search alone.
 5. Resume hero-structure development at E01-018 only when its authoritative catalog identity is recovered.
