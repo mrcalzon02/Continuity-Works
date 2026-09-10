@@ -2,14 +2,14 @@ Continuity Works Capability API v0.3.2
 Validation date: 2026-09-10
 =====================================
 
-RESULT: K PALETTE CANDIDATE AUTHORITY IMPLEMENTED AND PRODUCTION-ROUTED; EXACT IMPLEMENTATION HEAD PASSED FULL REPOSITORY VALIDATION AND EXACT-HEAD PAGES DEPLOYMENT; PUBLIC REMOTE API REMAINS FAILED CLOSED / NOT VERIFIED LIVE
+RESULT: K PALETTE CANDIDATE AUTHORITY IMPLEMENTED AND PRODUCTION-ROUTED; EXACT IMPLEMENTATION HEAD PASSED FULL REPOSITORY VALIDATION AND EXACT-HEAD PAGES DEPLOYMENT; RETIRED PREDECESSOR BRAND SEARCHES REMAIN EMPTY; PUBLIC REMOTE API REMAINS FAILED CLOSED / NOT VERIFIED LIVE
 
 Authority and observed evidence
 -------------------------------
 Authoritative repository: mrcalzon02/Continuity-Works
 Authoritative branch: main
 Cycle starting head: 8067ec3849f4e57e6595febb6487ff6d165c72d2
-Accepted implementation head before this continuity record: 3b9dc0a7574d4230ecb45d9e0f1f0a3907f3552f
+Accepted implementation head before continuity records: 3b9dc0a7574d4230ecb45d9e0f1f0a3907f3552f
 
 Reconciliation and selected work
 --------------------------------
@@ -27,7 +27,7 @@ Commit state
 ------------
 3b9dc0a7574d4230ecb45d9e0f1f0a3907f3552f - Add authoritative K palette candidate routing
 
-Direct commit inspection showed exactly three changed files: one new authoritative K candidate-source adapter, the existing production bootstrap wiring, and one new Java-17-backed regression. No branch, pull request, alternate implementation, duplicate authority, or workflow was created.
+Direct commit inspection showed exactly three changed implementation/test files: one new authoritative K candidate-source adapter, the existing production bootstrap wiring, and one new Java-17-backed regression. No branch, pull request, alternate implementation, duplicate authority, or workflow was created.
 
 Verification actually observed
 ------------------------------
@@ -37,15 +37,19 @@ Observed successful stages include checkout, Python installation and compilation
 
 GitHub Pages run 34507713260 for the same exact implementation head completed successfully, including deployment.
 
+Public-service run 34507862149 independently checked out the same exact implementation head. Its build-pages job successfully built, stamped, validated, and uploaded the intended Continuity Works Pages artifact, and its deploy-pages job successfully deployed that exact validated artifact.
+
 Naming cleanup state
 --------------------
-The K implementation introduced no predecessor branding. The exact implementation head passed the repository validation path and its exact-head Pages deployment completed successfully, providing the strongest directly observable deployment-artifact evidence available in this cycle. An independent rendered-browser retrieval could not be established through the available web retrieval path, so separate browser-render acceptance is not claimed.
+Repository code searches after the implementation reported zero matches for both prohibited retired predecessor-brand spellings, although GitHub marked those search responses incomplete. The exact implementation head also passed the whole-repository validation path, and two exact-head Pages deployment paths completed successfully. This is the strongest directly observable deployment-artifact evidence available in this cycle. Independent rendered-browser retrieval still could not be established through the available web retrieval path, so separate browser-render acceptance is not claimed.
 
 Public API / deployment boundary
 --------------------------------
 PUBLIC REMOTE API: FAILED CLOSED / NOT VERIFIED LIVE.
 
-No repository evidence in this cycle superseded the existing Render health/serviceability failure. The repository-controlled deployment-trigger repair remains intact, but the active external Render service/provisioning state remains outside direct repository mutation authority. No health gate, exact-SHA check, or serviceability guard was weakened or bypassed.
+Public-service run 34507862149 failed its remote-api job at Preflight configured API health route. The exact-main remote verification step was skipped as designed. After the exact validated Pages artifact deployed successfully, pages-to-api likewise failed its Pages-advertised API health preflight and skipped zero-JavaScript external-agent API verification. The final serviceability report therefore failed closed. No health gate, exact-SHA check, deployment path, or serviceability guard was weakened or bypassed.
+
+The repository-controlled deployment-trigger repair remains intact. The remaining defect is still the active external Render service/provisioning state, which is outside direct repository mutation authority available in this run.
 
 Era structure program boundary
 ------------------------------
