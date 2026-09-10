@@ -111,6 +111,30 @@ public final class EraConditionCorpusHarness {
             "ACTIVE", "RECENTLY_VACATED", "REPEATED_USE", "ABANDONED",
             "PARTIALLY_COLLAPSED", "SEDIMENT_REWORKED", "SOURCE_DEPLETED", "REPURPOSED"
         ));
+        expected.put("E01-012", List.of(
+            "ACTIVE", "RECENT", "REPEATED", "ABANDONED",
+            "WEATHERED", "SCAVENGER_REWORKED", "SEDIMENT_REWORKED", "REPURPOSED"
+        ));
+        expected.put("E01-013", List.of(
+            "ACTIVE", "RECENT", "REPEATED", "ABANDONED",
+            "WEATHERED", "SCAVENGER_REWORKED", "SEDIMENT_REWORKED", "REPURPOSED"
+        ));
+        expected.put("E01-014", List.of(
+            "ACTIVE", "RECENT", "REPEATED", "ABANDONED",
+            "WEATHERED", "SCAVENGER_REWORKED", "SEDIMENT_REWORKED", "REPURPOSED"
+        ));
+        expected.put("E01-015", List.of(
+            "ACTIVE", "RECENT", "REPEATED", "ABANDONED",
+            "WEATHERED", "SCAVENGER_REWORKED", "SEDIMENT_REWORKED", "REPURPOSED"
+        ));
+        expected.put("E01-016", List.of(
+            "ACTIVE", "RECENT", "REPEATED", "ABANDONED",
+            "WEATHERED", "FLOOD_REWORKED", "SCAVENGER_REWORKED", "REPURPOSED"
+        ));
+        expected.put("E01-017", List.of(
+            "ACTIVE", "RECENT", "REPEATED", "ABANDONED",
+            "WEATHERED", "FLOOD_REWORKED", "SEDIMENT_REWORKED", "REPURPOSED"
+        ));
 
         int ordinal = 0;
         for (Map.Entry<String, List<String>> entry : expected.entrySet()) {
