@@ -2,63 +2,63 @@ Continuity Works Capability API v0.3.2
 Validation date: 2026-09-10
 =====================================
 
-RESULT: K PALETTE CORPUS RECONCILED THROUGH E01-008; EXACT IMPLEMENTATION HEAD PASSED FULL REPOSITORY VALIDATION AND EXACT-HEAD PAGES DEPLOYMENT; RETIRED PREDECESSOR BRAND SEARCHES REMAIN EMPTY; PUBLIC REMOTE API REMAINS FAILED CLOSED / NOT VERIFIED LIVE
+RESULT: K PALETTE CORPUS RECONCILED THROUGH E01-011; REPAIRED EXACT IMPLEMENTATION HEAD PASSED FULL REPOSITORY VALIDATION AND EXACT-HEAD PAGES DEPLOYMENT; RETIRED PREDECESSOR-BRAND CHECK REMAINS CLEAN; PUBLIC REMOTE API REMAINS FAILED CLOSED / NOT VERIFIED LIVE
 
 Authority and observed evidence
 -------------------------------
 Authoritative repository: mrcalzon02/Continuity-Works
 Authoritative branch: main
-Cycle starting head: 85aa69e3bf0a9da9c46d624368937e1027f7d56f
-Accepted implementation head before continuity records: 68ddb6f5fb6d07238adbcfe492634bced3e13848
+Cycle starting head: 16d58399270e5b205462a6c2de2d716a5426bd47
+Rejected intermediate head: b39667e1f3f39547ddc34f3c83adfb28e3d18fb5
+Accepted implementation head before continuity records: b685610e5677723c00fde77c728c72fb2ab14e9d
 
 Reconciliation and selected work
 --------------------------------
-The live main branch reconciled at 85aa69e3bf0a9da9c46d624368937e1027f7d56f. Its continuity authority recorded K PALETTE corpus reconciliation from E01-005 forward as the next repository-controlled dependency-valid slice. AI Project Manager v3.0, the Repository Execution Protocol, and the Minecraft Java Project Profile were loaded before mutation. The external Render-service provisioning defect remained unresolved and outside direct repository mutation authority.
+The live main branch reconciled at 16d58399270e5b205462a6c2de2d716a5426bd47. Its continuity authority recorded K PALETTE corpus reconciliation from E01-009 forward as the next repository-controlled dependency-valid slice. AI Project Manager v3.0, the Repository Execution Protocol, and the Minecraft Java Project Profile were loaded in full before mutation.
 
 Implemented improvement
 -----------------------
-Extended tests/test_era_structure_palette_candidate_corpus_java.py so the authoritative K corpus now covers E01-001 through E01-008 through both direct palette authority and normal production candidate routing.
+Extended tests/test_era_structure_palette_candidate_corpus_java.py so the authoritative K corpus now covers E01-001 through E01-011 where explicit palette authority exists, while preserving fail-closed behavior for narrative-only material guidance.
 
-This cycle added E01-005 Lean-To Windbreak, E01-006 Hide Windbreak Camp, E01-007 Hearth Circle, and E01-008 Multi-Hearth Gathering Site. The regression verifies each archetype's explicit Material Palette Logic profile labels in authoritative order, exact-source SHA-256 provenance, production candidate routing, and compact candidate-code resolution. No palette semantics were inferred from descriptive prose.
+E01-009 Stone Tool Knapping Ground already exposes five explicit Material Palette Logic headings and is now locked through direct authority and production routing as STRUCTURAL_TERRAIN, TOOLSTONE_PALETTE, HAMMERSTONE_PALETTE, ORGANIC_PALETTE, and FORBIDDEN_BASE_MATERIALS.
 
-The newly locked explicit profile vocabularies are:
-- E01-005: STRUCTURAL_MEMBERS, INFILL, GROUND_TREATMENT, FORBIDDEN_BASE_MATERIALS.
-- E01-006: HIDE_MEMBRANE, SUPPORTS, ANCHORS_AND_WEIGHTS, GROUND_TREATMENT.
-- E01-007: HEARTH_SUBSTRATE, CONTAINMENT_STONES, FUEL, RESIDUE, FORBIDDEN_BASE_MATERIALS.
-- E01-008: HEARTH_MATERIALS, FUEL, ACTIVITY_RESIDUES, TEMPORARY_SHELTER_MATERIALS, FORBIDDEN_MATERIALS.
+E01-010 Flint Procurement Pit contains only descriptive material guidance in its Material Palette Logic section. The corpus regression now requires both direct K authority and production routing to refuse candidate inference from that prose.
 
-E01-006's ordinary prose sentence beginning with forbidden-material guidance remains deliberately excluded from K vocabulary because it is not an explicit palette-profile heading. This preserves the source's fail-closed no-prose-inference rule.
+E01-011 Quartzite Quarry already defined six bounded palette roles, but they were plain list items rather than parser-consumable explicit labels. The authoritative hero specification was normalized without changing names, order, descriptions, or semantics. The six roles now resolve as HOST_ROCK, QUARTZITE_ROLE_SOURCE, COARSE_SPOIL_REJECT, COMPACTED_GROUND, HAMMERSTONE_ROLE_DURABLE_BLOCK, and OPTIONAL_WEATHERING_MATERIAL_FOR_ABANDONED_CONDITIONS.
+
+Rejected intermediate head and root-cause repair
+------------------------------------------------
+Intermediate head b39667e1f3f39547ddc34f3c83adfb28e3d18fb5 was rejected by Validate Continuity Works run 34520565701. The K corpus regression failed because E01-011's first normalization used punctuation immediately after each closing bold label marker, which did not satisfy the existing explicit-label grammar. The failure was precise: E01-011 produced no explicit palette candidates and correctly refused prose inference. Frontend build and downstream smoke stages were skipped.
+
+The parser was not broadened or weakened. Repair commit b685610e5677723c00fde77c728c72fb2ab14e9d removed only those six list terminators so the already-authoritative palette-role names conform to the existing explicit-label syntax.
 
 Verification actually observed
 ------------------------------
-Validate Continuity Works run 34519468434 on exact implementation head 68ddb6f5fb6d07238adbcfe492634bced3e13848 completed successfully.
+Validate Continuity Works run 34520846271 on exact implementation head b685610e5677723c00fde77c728c72fb2ab14e9d completed successfully.
 
-Observed successful stages include checkout, Python installation and compilation, source-tree agent discovery, Unit/API contract/PUBLIC_SERVICEABILITY tests, production frontend build, zero-JavaScript Pages discovery stamping, local executable API/public-boundary smoke, validation-status publication, and cleanup. The expanded K palette corpus regression passed inside this exact-head validation.
+Observed successful stages include checkout, Python installation and compilation, source-tree agent discovery, Unit/API contract/PUBLIC_SERVICEABILITY tests, the repaired Java 17 K palette corpus regression, production frontend build, zero-JavaScript Pages discovery stamping, local executable API/public-boundary smoke, validation-status publication, and cleanup.
 
-GitHub Pages run 34519467164 for the same exact implementation head completed successfully, including deployment.
-
-Public-service workflow run 34519625750 independently built, stamped, uploaded, and deployed the exact intended Pages artifact successfully. Its remote-api job failed at the configured API-health preflight, so exact-main remote API verification was skipped as designed. Its pages-to-api job likewise failed at the Pages-advertised API-health preflight and skipped external-agent API verification. The workflow report therefore failed closed rather than converting static/Pages success into remote-runtime acceptance.
+GitHub Pages run 34520845005 for the same exact implementation head completed successfully, including deployment.
 
 Naming cleanup state
 --------------------
-Repository code searches during this cycle reported zero matches for both prohibited retired predecessor-brand spellings. The exact implementation head also passed the complete repository validation path and two directly observed Pages deployment paths. This remains the strongest directly observable deployment-artifact evidence available in this cycle. Independent rendered-browser retrieval was not established, so separate browser-render acceptance is not claimed.
+Repository searches during this cycle reported zero matches for both prohibited retired predecessor-brand spellings. More importantly, the accepted implementation head passed the whole-active-repository naming guard inside the complete validation workflow and then completed an exact-head Pages deployment. This is the strongest directly observed deployment-artifact evidence available in this cycle. Independent browser-render inspection was not established, so separate browser visual acceptance is not claimed.
 
 Public API / deployment boundary
 --------------------------------
 PUBLIC REMOTE API: FAILED CLOSED / NOT VERIFIED LIVE.
 
-Public-service workflow run 34519625750 directly confirmed that the configured remote API health preflight still fails. Exact-main remote API verification was therefore skipped, and the Pages-advertised API health preflight also failed after the exact Pages artifact deployed successfully. No health gate, exact-SHA check, deployment path, or serviceability guard was weakened or bypassed.
-
-The repository-controlled deployment-trigger repair remains intact. The remaining defect is still the active external Render service/provisioning state, which is outside direct repository mutation authority available in this run.
+No observed evidence in this cycle superseded the existing external Render service/provisioning failure state. The repository-controlled deployment-trigger repair remains intact, but public Java decision-authority serviceability is not promoted to runtime acceptance without a successful configured remote health and exact-SHA verification.
 
 Era structure program boundary
 ------------------------------
-E01-001 through E01-017 culture and Q CONDITION candidate authority remains reconciled and production-routed. K PALETTE production routing remains intact with explicit-source provenance and fail-closed behavior. Corpus-level K reconciliation is now verified through E01-008. E01-009 through E01-017 remain to be classified and locked. E01-018 remains blocked until its authoritative master-catalog archetype identity is recovered; no identity is to be invented.
+E01-001 through E01-017 culture and Q CONDITION candidate authority remains reconciled and production-routed. K PALETTE production routing remains intact with explicit-source provenance and fail-closed behavior. Corpus-level K reconciliation is now verified through E01-011: E01-009 is explicit and locked, E01-010 is explicitly narrative-only/fail-closed, and E01-011's existing palette roles are normalized and locked. E01-012 through E01-017 remain to be classified and reconciled. E01-018 remains blocked until its authoritative master-catalog archetype identity is recovered; no identity is to be invented.
 
 Next dependency-valid work
 --------------------------
-1. Continue K palette corpus reconciliation from E01-009 forward, classifying explicit profile authority versus narrative-only material guidance without prose inference.
-2. Extend the existing corpus regression incrementally with source provenance, production routing, compact-code resolution, and fail-closed cases where appropriate.
-3. Keep the active Render-service provisioning defect open until the external Blueprint/service authority is directly inspectable or the configured remote health/exact-SHA serviceability check succeeds.
-4. Continue retired predecessor-brand cleanup if any stronger artifact/runtime check finds a remaining occurrence; source search alone is not acceptance.
-5. Resume hero-structure development at E01-018 only when its authoritative catalog identity is recovered.
+1. Continue K palette corpus reconciliation from E01-012 through E01-017, classifying explicit profile authority versus narrative-only material guidance without prose inference.
+2. Normalize authoritative formatting only where existing palette semantics are explicit and unambiguous; do not broaden the parser to consume descriptive prose.
+3. Extend the existing corpus regression with exact-source provenance, production routing, compact-code resolution, and explicit fail-closed cases.
+4. Keep the active external Render-service provisioning defect open until configured remote health/exact-SHA serviceability succeeds or the external provisioning authority becomes directly inspectable.
+5. Continue retired predecessor-brand cleanup if any stronger artifact/runtime check finds a remaining occurrence; source search alone is not acceptance.
+6. Resume hero-structure development at E01-018 only when its authoritative catalog identity is recovered.
