@@ -9,7 +9,7 @@ services:
     buildCommand: python -m pip install .
     startCommand: python scripts/run_api.py
     healthCheckPath: /v1/health
-    autoDeployTrigger: checksPass
+    autoDeployTrigger: commit
     envVars:
       - key: CONTINUITY_WORKS_CORS_ORIGIN
         value: https://mrcalzon02.github.io
