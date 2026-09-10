@@ -2,84 +2,56 @@ Continuity Works Capability API v0.3.2
 Validation date: 2026-09-10
 =====================================
 
-RESULT: AUTHORITATIVE C CULTURE CANDIDATES ARE NOW ROUTED THROUGH THE PRODUCTION DECISION AUTHORITY; E01-012 PRODUCTION DICTIONARY AND COMPACT-CODE BEHAVIOR VERIFIED
+RESULT: CULTURE CANDIDATE AUTHORITY IS ROUTED IN PRODUCTION; CORPUS-LEVEL COVERAGE NOW EXTENDS THROUGH E01-015; EXECUTABLE ACCEPTANCE FOR THE NEW CORPUS GUARD IS PENDING DIRECT CI EVIDENCE
 
 Authority and observed evidence
 -------------------------------
 Authoritative repository: mrcalzon02/Continuity-Works
 Authoritative branch: main
-Cycle starting head: 6f1490049e96639c4c06ffee029a760d55a81064
-Accepted executable head: 3ea4aad2512956041c4611cb41ae5b7608b272a4
+Cycle starting head: 9df64bdb296c3e8c2c416621f1f2d7621e64e59a
+Implementation head: cfd927b8a2d2e7f639476c2c38b4dc98dab17e78
 
 Reconciliation and selected work
 --------------------------------
-The live main branch reconciled at 6f1490049e96639c4c06ffee029a760d55a81064. The existing EraStructureCultureCandidateSource was already independently accepted, but production candidate composition still exposed only A catalog and B biome authority. The direct biome regression also still used C itself as the example of an unconfigured future profile source. That stale test expectation prevented promotion of the already-accepted culture authority.
+The live main branch reconciled at 9df64bdb296c3e8c2c416621f1f2d7621e64e59a. Production candidate composition already exposed A catalog, B biome, and C culture authority. The highest-priority dependency-valid unfinished item was the recorded E01-001 through E01-017 culture-vocabulary reconciliation.
 
-Implemented production culture routing
---------------------------------------
-Restored the existing three-source RoutingBlueprintDecisionCandidateSource composition overload and wired ContinuityWorksDecisionAuthorityBootstrap.productionCandidateSource to:
-- A -> EraStructureCatalogCandidateSource;
-- B -> EraStructureBiomeCandidateSource;
-- C -> EraStructureCultureCandidateSource.
+This cycle began that reconciliation by converting the one-archetype production culture regression into a maintained multi-archetype corpus guard for the explicit culture vocabularies already confirmed directly from authoritative hero specifications.
 
-No transport, inference, generation, geometry, validation, persistence, or hero-spec semantics were duplicated or changed.
+Implemented improvement
+-----------------------
+Added tests/test_era_structure_culture_candidate_corpus_java.py.
 
-The direct biome regression now uses Q CONDITION, which is genuinely not yet configured with an authoritative candidate source, to preserve the fail-closed coverage formerly exercised through C.
+The Java 17 harness verifies, through both EraStructureCultureCandidateSource and ContinuityWorksDecisionAuthorityBootstrap.productionCandidateSource, the exact ordered explicit culture vocabularies for:
+- E01-012 Butchery Site: EXPEDIENT_FIELD_DRESSING, TRANSPORT_FOCUSED, MARROW_INTENSIVE, CONSUMPTION_BIASED;
+- E01-013 Large-Carcass Processing Site: COOPERATIVE_DISARTICULATION, MARROW_INTENSIVE, TRANSPORT_PRIORITY, HIDE_RETENTION;
+- E01-014 Bone-Breaking Station: MARROW_INTENSIVE, SINGLE_STATION_REUSE, DISTRIBUTED_PERCUSSION, CLEAN_STAGING_PRIORITY;
+- E01-015 Marrow Processing Ground: IMMEDIATE_CONSUMPTION, DISTRIBUTED_EXTRACTION, INTENSIVE_CLEANING, REPEATED_USE.
 
-Production culture regression
------------------------------
-The existing tests/test_era_structure_culture_candidate_source_java.py now exercises the normal production router in addition to the culture source directly.
+For every covered archetype the guard also requires exact hero-spec SHA-256 source binding, production dictionary size/order agreement, and compact-code resolution back to the final authoritative semantic value before mutation.
 
-For E01-012 Butchery Site it proves that production C routing exposes exactly the four existing authoritative culture values in order: EXPEDIENT_FIELD_DRESSING, TRANSPORT_FOCUSED, MARROW_INTENSIVE, and CONSUMPTION_BIASED. It proves compact candidate code 3 resolves back to CONSUMPTION_BIASED before mutation. It also proves production routing preserves fail-closed behavior for E01-001, whose culture hooks remain narrative-only rather than an explicit candidate vocabulary.
+The guard additionally keeps E01-001 narrative-only culture material fail-closed through production routing rather than permitting candidate inference from prose.
 
-Cycle commits
--------------
-16b887a16f200830cd492fc15fe0fb8975f59d9b - restore three-source candidate routing support
-485d78cf2d85671ff1a20d327617193c3973e299 - route authoritative culture candidates in production
-7cdc52caf06e4dc4a49483e68361c300c3d9692a - keep unsupported-profile fail-closed regression after C promotion
-3ea4aad2512956041c4611cb41ae5b7608b272a4 - verify production culture candidate routing
+No hero specification, parser, routing implementation, transport layer, generation logic, geometry code, workflow, branch, or alternate authority was changed in this cycle.
 
-Observed verification
----------------------
-Exact-head Validate Continuity Works run 34421070807 for 3ea4aad2512956041c4611cb41ae5b7608b272a4 completed successfully.
+Observed source evidence
+------------------------
+Direct authoritative reads confirmed E01-013, E01-014, and E01-015 expose the exact culture labels asserted by the new corpus guard in their Culture-variant hooks sections. E01-012 was already the accepted production C authority baseline from the prior cycle.
 
-Observed successful stages include:
-- exact-head repository checkout;
-- Python package installation and compilation;
-- source-tree agent discovery;
-- complete unit/API/PUBLIC_SERVICEABILITY test phase, including the Java culture and biome authority regressions and active-repository retired-brand guard;
-- production Continuity Works frontend build;
-- zero-JavaScript Pages discovery stamping;
-- local executable API and public-boundary smoke;
-- validation-status publication.
+Commit state
+------------
+cfd927b8a2d2e7f639476c2c38b4dc98dab17e78 - guard explicit culture vocabularies through production routing
 
-Exact-head GitHub Pages run 34421070172 for 3ea4aad2512956041c4611cb41ae5b7608b272a4 completed successfully, including the Pages build and deployment.
-
-Diff reconciliation
+Validation boundary
 -------------------
-Comparison from cycle starting head 6f1490049e96639c4c06ffee029a760d55a81064 to accepted executable head 3ea4aad2512956041c4611cb41ae5b7608b272a4 is four commits ahead and zero behind. Exactly four files changed:
-- modules/continuityworks-api/src/main/java/io/continuityworks/api/blueprint/RoutingBlueprintDecisionCandidateSource.java
-- modules/continuityworks-api/src/main/java/io/continuityworks/api/blueprint/ContinuityWorksDecisionAuthorityBootstrap.java
-- tests/test_era_structure_biome_candidate_source_java.py
-- tests/test_era_structure_culture_candidate_source_java.py
+A local checkout could not be established because the execution container could not resolve github.com. The GitHub connector did accept the direct main-branch commit and authoritative source read-back.
 
-The changes are limited to the third authoritative candidate route, production C composition, reconciliation of the stale unconfigured-C assertion, and direct production culture regression coverage.
+At the time of this record update, no commit status or workflow-run evidence had yet appeared for cfd927b8a2d2e7f639476c2c38b4dc98dab17e78. Therefore the new corpus guard is committed but executable acceptance is NOT YET CLAIMED.
+
+The previously accepted production C implementation beneath this commit remains validated at 9df64bdb296c3e8c2c416621f1f2d7621e64e59a / executable predecessor 3ea4aad2512956041c4611cb41ae5b7608b272a4.
 
 Naming cleanup state
 --------------------
-Active repository searches for both retired public-name forms returned no indexed matches after the executable change. More importantly, the accepted executable head passed the repository-wide retired-brand guard, successfully built the production frontend, stamped the Pages discovery artifact, and completed exact-head Pages deployment. This is the strongest directly observed public-output evidence available in this cycle.
-
-A separate browser-rendered retrieval of the public Pages URL could not be established through the available web retrieval path, so independent visual-page inspection remains unclaimed.
-
-Compact decision-chain contract
--------------------------------
-The established tiny-inference and candidate-integrity contracts remain unchanged:
-- inference selects semantic choices while deterministic state, geometry, validation, and materialization remain outside the model;
-- source identity derives from the exact authority snapshot;
-- dictionaries bind protocol, request UUID, exact revision, mutator, source version, ordered choices, and deterministic identity;
-- local compact codes resolve back to authoritative semantic values before mutation;
-- stale revision/dictionary reuse fails closed;
-- raw world mutation remains forbidden at the inference boundary.
+No retired public-name text was introduced by the new test or this validation record. The previously accepted repository-wide retired-brand guard and exact-head Pages deployment remain the strongest directly observed public-output evidence. Independent browser-rendered visual inspection is still not claimed.
 
 Public API / deployment boundary
 --------------------------------
@@ -89,13 +61,14 @@ No deployed Java decision-authority process was directly observed through the ex
 
 Era structure program boundary
 ------------------------------
-E01-001 through E01-017 remain source-developed through the currently recorded hero/build/worldgen stages, while production admission still requires target Minecraft runtime/materialization/placement evidence. E01-018 remains blocked until its authoritative master-catalog archetype label is recovered; no archetype name is to be invented.
+E01-001 through E01-017 remain source-developed through the recorded hero/build/worldgen stages, while production admission still requires target Minecraft runtime/materialization/placement evidence. E01-018 remains blocked until its authoritative master-catalog archetype label is recovered; no archetype name is to be invented.
 
 Next dependency-valid work
 --------------------------
-1. Reconcile E01-001 through E01-017 for hero specifications that already expose explicit machine-safe C culture vocabularies; add corpus-level production routing coverage and normalize source formatting only where existing semantics can be preserved exactly.
-2. Keep narrative-only culture hooks fail-closed rather than inferring candidate vocabularies from prose.
-3. Add Q condition and K palette candidate sources only where corresponding explicit authoritative option vocabularies exist.
-4. Preserve catalog/profile authority fingerprints across persistence/resume so a restored decision cannot reuse a dictionary derived from an older authority snapshot.
-5. Remote Java authority attachment remains the highest external integration blocker and stays open until directly observed through the deployed public boundary.
-6. Resume hero-structure development at E01-018 only when its authoritative catalog label is recovered.
+1. Continue the culture corpus reconciliation with E01-016 and E01-017, using only explicit machine-safe labels already present in their authoritative hero specifications.
+2. Reconcile E01-001 through E01-011 individually as explicit-vocabulary or narrative-only and add them to the corpus guard without inventing culture categories.
+3. Keep narrative-only culture hooks fail-closed.
+4. Add Q condition and K palette candidate authority only where explicit authoritative option vocabularies exist.
+5. Preserve authority fingerprints across persistence/resume so restored decisions cannot reuse dictionaries from older authority snapshots.
+6. Remote Java authority attachment remains the highest external integration blocker until directly observed through the deployed public boundary.
+7. Resume hero-structure development at E01-018 only when its authoritative catalog label is recovered.
