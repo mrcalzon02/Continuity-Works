@@ -99,6 +99,18 @@ public final class EraConditionCorpusHarness {
             "ACTIVE_AGGREGATION", "CONTRACTING_GATHERING", "RECENTLY_VACATED", "REPEATED_SEASONAL_AGGREGATION",
             "ABANDONED", "WEATHER_DAMAGED", "ARCHAEOLOGICAL_TRACE", "LATER_REPURPOSED"
         ));
+        expected.put("E01-009", List.of(
+            "ACTIVE", "RECENTLY_VACATED", "REPEATED_USE", "ABANDONED",
+            "PARTIALLY_BURIED", "ERODED_DISTURBED", "SOURCE_DEPLETED", "LATER_REPURPOSED"
+        ));
+        expected.put("E01-010", List.of(
+            "ACTIVE", "RECENTLY_VACATED", "REPEATED_USE", "ABANDONED",
+            "PARTIALLY_INFILLED", "ERODED_DISTURBED", "SOURCE_DEPLETED", "LATER_REPURPOSED"
+        ));
+        expected.put("E01-011", List.of(
+            "ACTIVE", "RECENTLY_VACATED", "REPEATED_USE", "ABANDONED",
+            "PARTIALLY_COLLAPSED", "SEDIMENT_REWORKED", "SOURCE_DEPLETED", "REPURPOSED"
+        ));
 
         int ordinal = 0;
         for (Map.Entry<String, List<String>> entry : expected.entrySet()) {
