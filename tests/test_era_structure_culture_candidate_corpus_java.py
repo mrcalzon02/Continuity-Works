@@ -109,17 +109,21 @@ public final class EraCultureCorpusHarness {
                 entry.getKey() + " compact culture code must resolve to the authoritative semantic value");
         }
 
-        BlueprintRequest narrativeRequest = request(new UUID(0L, 999L));
-        BlueprintDecisionChain.State narrative = api.applyDecision(
-            api.beginDecision(narrativeRequest), "A=E01-001"
-        );
-        boolean rejected = false;
-        try {
-            routed.candidates(narrativeRequest, narrative, culture);
-        } catch (IllegalStateException expectedFailure) {
-            rejected = expectedFailure.getMessage().contains("refusing to infer candidates from prose");
+        List<String> narrativeOnly = List.of("E01-001", "E01-002", "E01-003");
+        int narrativeOrdinal = 0;
+        for (String archetype : narrativeOnly) {
+            BlueprintRequest narrativeRequest = request(new UUID(0L, 999L + narrativeOrdinal++));
+            BlueprintDecisionChain.State narrative = api.applyDecision(
+                api.beginDecision(narrativeRequest), "A=" + archetype
+            );
+            boolean rejected = false;
+            try {
+                routed.candidates(narrativeRequest, narrative, culture);
+            } catch (IllegalStateException expectedFailure) {
+                rejected = expectedFailure.getMessage().contains("refusing to infer candidates from prose");
+            }
+            require(rejected, archetype + " narrative-only culture hooks must remain fail-closed in production routing");
         }
-        require(rejected, "narrative-only culture hooks must remain fail-closed in production routing");
     }
 }
 """
