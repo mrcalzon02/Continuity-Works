@@ -2,65 +2,66 @@ Continuity Works Capability API v0.3.2
 Validation date: 2026-09-10
 =====================================
 
-RESULT: E01-001 THROUGH E01-017 CULTURE CANDIDATE AUTHORITY RECONCILED; E01-011 EXPLICIT BOUNDED VARIANTS ARE NOW MACHINE-READABLE; EXACT IMPLEMENTATION HEAD PASSED REPOSITORY VALIDATION AND PAGES DEPLOYMENT; REMOTE JAVA SERVICEABILITY REMAINS FAILED CLOSED
+RESULT: PUBLIC API DEPLOYMENT GATE DEADLOCK REPAIRED IN REPOSITORY AUTHORITY; EXACT IMPLEMENTATION HEAD PASSED FULL REPOSITORY VALIDATION AND PAGES DEPLOYMENT; ACTIVE RENDER SERVICE STILL RETURNS HTTP 404 AT /v1/health AND REMAINS NOT VERIFIED LIVE
 
 Authority and observed evidence
 -------------------------------
 Authoritative repository: mrcalzon02/Continuity-Works
 Authoritative branch: main
-Cycle starting head: c797220c98e4038fd6a1358affbb1e8b5e23b7d6
-Accepted implementation head: fd6b37edcfc76b31bc1a49bb5183232ea4ddca82
+Cycle starting head: 1d99e6d0a4d2280bf485d3255142194b4dd36569
+Accepted repository implementation head: 908563a2016b269bb4755b03f8b8a6ef2854b6ee
 
 Reconciliation and selected work
 --------------------------------
-The live main branch reconciled at c797220c98e4038fd6a1358affbb1e8b5e23b7d6. Existing production culture routing was intact. E01-001 through E01-003 were already guarded as narrative-only, and E01-012 through E01-017 already exposed explicit machine-safe culture vocabularies.
+The live main branch reconciled at 1d99e6d0a4d2280bf485d3255142194b4dd36569. The recorded highest-priority defect was the configured public API candidate returning HTTP 404 at /v1/health.
 
-Direct inspection of E01-004 through E01-010 found culture hooks expressed only as configurable prose or attribute lists. They therefore remain narrative-only and must fail closed rather than having profile semantics inferred.
+Direct inspection proved the current authoritative Python implementation is present at src/structure_capability/server.py and explicitly serves GET /v1/health. pyproject.toml installs the src/structure_capability package, scripts/run_api.py imports structure_capability.server, and render.yaml starts that script with /v1/health as its health-check path. The HTTP 404 therefore is not caused by a missing health route in current repository source.
 
-E01-011 Quartzite Quarry was different: its authoritative Culture-variant hooks already declared four bounded variants — transport-heavy, source-testing, repeated-specialist, and opportunistic — but their plain-list formatting was not accepted by the existing explicit-label parser. The defect was therefore authoritative formatting, not missing semantics.
+The deployment authority instead contained a circular gate: render.yaml used autoDeployTrigger: checksPass, while the repository's public-serviceability workflow can only pass once that same Render host has deployed and serves the exact main commit. This can leave the configured service stale behind a check that depends on the service already being current.
 
 Implemented improvement
 -----------------------
-Updated docs/era_structure_hero/E01-011_QUARTZITE_QUARRY.md directly by bolding the four existing bounded variant labels without changing their names, descriptions, ordering, or semantics.
+Updated authoritative render.yaml directly:
 
-Updated tests/test_era_structure_culture_candidate_corpus_java.py directly so production culture routing now requires E01-011 to expose exactly TRANSPORT_HEAVY, SOURCE_TESTING, REPEATED_SPECIALIST, and OPPORTUNISTIC. The same corpus regression now classifies E01-001 through E01-010 as narrative-only and requires each to preserve the existing refusal-to-infer behavior. Existing E01-012 through E01-017 explicit vocabularies remain unchanged.
+- autoDeployTrigger: checksPass
++ autoDeployTrigger: commit
 
-The parser and production router were not broadened or weakened. Exact hero-spec SHA-256 authority binding, production dictionary size/order agreement, and compact-code semantic resolution remain enforced.
+No API implementation, health route, validation rule, GitHub workflow, alternate deployment path, branch, pull request, or workaround layer was added or weakened.
 
 Commit state
 ------------
-fd6b37edcfc76b31bc1a49bb5183232ea4ddca82 - Complete E01 culture authority reconciliation
+908563a2016b269bb4755b03f8b8a6ef2854b6ee - Break public API deployment verification deadlock
 
-Remote main readback confirmed fd6b37edcfc76b31bc1a49bb5183232ea4ddca82 directly descended from c797220c98e4038fd6a1358affbb1e8b5e23b7d6. Commit comparison reports one commit ahead, zero behind, and exactly two changed files: E01-011 (+4/-4 formatting-only label promotion) and the existing culture corpus regression (+7/-1).
+Remote main readback confirmed 908563a2016b269bb4755b03f8b8a6ef2854b6ee directly above 1d99e6d0a4d2280bf485d3255142194b4dd36569. Commit inspection shows exactly one changed file, render.yaml, with one line changed.
 
 Verification actually observed
 ------------------------------
-Exact-head Validate Continuity Works run 34437008721 completed successfully for fd6b37edcfc76b31bc1a49bb5183232ea4ddca82.
+Exact-head Validate Continuity Works run 34459866133 completed successfully for 908563a2016b269bb4755b03f8b8a6ef2854b6ee.
 
-Observed successful stages include checkout/toolchain setup, Python package installation and compilation, source-tree agent discovery, unit/API/PUBLIC_SERVICEABILITY tests including the Java culture corpus regression, production frontend build, zero-JavaScript Pages discovery stamping, local executable/public-boundary smoke, and validation-status publication.
+Observed successful stages include Python installation and compilation, source-tree agent discovery, unit/API/PUBLIC_SERVICEABILITY tests, production frontend build, zero-JavaScript Pages discovery stamping, local executable/public-boundary smoke, and validation-status publication.
 
-Verify and Deploy Public Continuity Works Service run 34437079726 successfully built the exact intended Pages artifact and successfully deployed that exact validated artifact through the deploy-pages job.
+Verify and Deploy Public Continuity Works Service run 34459991689 successfully built the exact intended Pages artifact and successfully deployed that exact validated artifact through deploy-pages.
 
 Naming cleanup state
 --------------------
-Repository searches for both retired public-name spellings returned no matches after the implementation commit. The exact implementation head also passed the repository validation path, built the intended Continuity Works Pages artifact, and successfully deployed that validated artifact. Independent browser-rendered visual inspection could not be established through the available external retrieval path and is not claimed.
+The accepted implementation head passed the existing repository validation and generated/static Pages artifact validation before the exact artifact was deployed. No retired branding was introduced by the sole render.yaml change. Independent browser-rendered visual inspection is not claimed.
 
 Public API / deployment boundary
 --------------------------------
-PUBLIC REMOTE DECISION AUTHORITY: FAILED CLOSED / NOT VERIFIED LIVE.
+PUBLIC REMOTE API: FAILED CLOSED / NOT VERIFIED LIVE.
 
-The exact-head public-service run reached the configured API candidate at https://continuity-works-mrcalzon02-api.onrender.com but /v1/health returned HTTP 404. The workflow correctly skipped remote exact-SHA verification, and the downstream Pages-to-API serviceability stage also failed closed. No validation rule was weakened and no alternate deployment path or workaround layer was introduced.
+The exact-head remote-api job in run 34459991689 checked out 908563a2016b269bb4755b03f8b8a6ef2854b6ee and directly probed https://continuity-works-mrcalzon02-api.onrender.com/v1/health. The host responded HTTP 404 with body "Not Found". Exact-SHA remote serviceability was therefore skipped and not claimed. The Pages-to-API preflight failed for the same reason, and the workflow correctly published external-service NOT VERIFIED.
 
-This is now the highest-priority user-visible defect for the next bounded cycle because the static Pages artifact is deployed while its configured Java decision-authority service remains unavailable at the declared health contract.
+The repository-controlled deployment deadlock is repaired, but this run did not observe the active Render service consuming the corrected Blueprint configuration. The remaining defect is now at the active Render service/Blueprint synchronization or service-provisioning boundary. Repository tools available in this run do not expose that external service configuration, so no speculative second repository mutation was made.
 
 Era structure program boundary
 ------------------------------
-E01-001 through E01-017 remain source-developed through the recorded hero/build/worldgen stages, while production admission still requires target Minecraft runtime/materialization/placement evidence. E01-018 remains blocked until its authoritative master-catalog archetype label is recovered; no archetype name is to be invented.
+E01-001 through E01-017 culture candidate authority remains reconciled. E01-018 remains blocked until its authoritative master-catalog archetype label is recovered; no archetype name is to be invented.
 
 Next dependency-valid work
 --------------------------
-1. Diagnose and repair the configured remote Java service deployment/provisioning authority that currently returns HTTP 404 at /v1/health. Repair the actual deployment authority directly; do not mask the failure in validation or Pages discovery.
-2. Preserve the completed E01-001 through E01-017 culture corpus invariant: E01-001 through E01-010 fail closed as narrative-only; E01-011 through E01-017 expose only explicit authoritative vocabularies.
-3. After the remote service defect is resolved or genuinely blocked by unavailable external provisioning authority, add Q condition and K palette candidate authority only where explicit authoritative option vocabularies exist.
-4. Preserve authority fingerprints across persistence/resume so restored decisions cannot reuse dictionaries from older authority snapshots.
+1. Reconcile the active Render service against repository render.yaml and determine whether the existing service is Blueprint-managed and synchronized to main. If that external provisioning authority becomes available, apply/verify the current Blueprint and require /v1/health plus exact-SHA PUBLIC_SERVICEABILITY before closing the defect.
+2. If Render provisioning remains externally unavailable, treat that runtime repair as genuinely blocked rather than weakening repository validation, and proceed to the next repository-controlled dependency-valid work: Q condition candidate authority, followed by K palette candidate authority, using only explicit authoritative option vocabularies.
+3. Preserve the completed E01-001 through E01-017 culture corpus invariant and authority fingerprints across persistence/resume.
+4. Continue stale public-brand cleanup whenever a user-facing or generated occurrence is found; acceptance still requires generated/deployed artifact evidence rather than source grep alone.
 5. Resume hero-structure development at E01-018 only when its authoritative catalog label is recovered.
