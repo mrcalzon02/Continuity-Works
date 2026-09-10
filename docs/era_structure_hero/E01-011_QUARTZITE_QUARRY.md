@@ -113,10 +113,10 @@ Terrain adaptation must preserve major natural landform logic. The quarry may ex
 Culture variants may alter preferred face orientation, hammerstone material choice, blank selection size, amount of on-site primary reduction, staging organization, repeated-use intensity, and path reuse. They may not add technology above the era ceiling.
 
 Suggested bounded variants:
-- transport-heavy: minimal reduction, larger selected blanks;
-- source-testing: more rejected blocks and battering evidence;
-- repeated-specialist: clearer face reuse and staging discipline;
-- opportunistic: irregular boulder/outcrop exploitation with weak spatial formalization.
+- **transport-heavy**: minimal reduction, larger selected blanks;
+- **source-testing**: more rejected blocks and battering evidence;
+- **repeated-specialist**: clearer face reuse and staging discipline;
+- **opportunistic**: irregular boulder/outcrop exploitation with weak spatial formalization.
 
 ## Material palette logic
 

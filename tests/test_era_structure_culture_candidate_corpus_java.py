@@ -65,6 +65,9 @@ public final class EraCultureCorpusHarness {
             .findFirst().orElseThrow();
 
         Map<String, List<String>> expected = new LinkedHashMap<>();
+        expected.put("E01-011", List.of(
+            "TRANSPORT_HEAVY", "SOURCE_TESTING", "REPEATED_SPECIALIST", "OPPORTUNISTIC"
+        ));
         expected.put("E01-012", List.of(
             "EXPEDIENT_FIELD_DRESSING", "TRANSPORT_FOCUSED", "MARROW_INTENSIVE", "CONSUMPTION_BIASED"
         ));
@@ -109,7 +112,10 @@ public final class EraCultureCorpusHarness {
                 entry.getKey() + " compact culture code must resolve to the authoritative semantic value");
         }
 
-        List<String> narrativeOnly = List.of("E01-001", "E01-002", "E01-003");
+        List<String> narrativeOnly = List.of(
+            "E01-001", "E01-002", "E01-003", "E01-004", "E01-005",
+            "E01-006", "E01-007", "E01-008", "E01-009", "E01-010"
+        );
         int narrativeOrdinal = 0;
         for (String archetype : narrativeOnly) {
             BlueprintRequest narrativeRequest = request(new UUID(0L, 999L + narrativeOrdinal++));
