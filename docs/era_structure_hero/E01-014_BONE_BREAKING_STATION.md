@@ -95,11 +95,11 @@ Culture profiles change organization and intensity only; they do not add later t
 
 All emitted blocks must be valid Minecraft block IDs. Semantic proxies are explicitly documented:
 
-- `minecraft:bone_block` = heavy-bone / fractured-bone role;
-- stone/andesite/granite/cobblestone = anvil or hammerstone role;
-- gravel = small fracture/debris role;
-- coarse dirt/red terracotta/red sand/rooted dirt = processing stain/ground-disturbance role;
-- coal block/campfire = optional hearth trace only.
+- **Heavy-bone / fractured-bone role** — `minecraft:bone_block`.
+- **Anvil / hammerstone role** — stone/andesite/granite/cobblestone.
+- **Small fracture / debris role** — gravel.
+- **Processing stain / ground-disturbance role** — coarse dirt/red terracotta/red sand/rooted dirt.
+- **Optional hearth trace** — coal block/campfire.
 
 No proxy is claimed to be a literal archaeological material beyond its declared visual/functional role.
 
