@@ -96,7 +96,7 @@ public final class EraPaletteCandidateHarness {
 
         BlueprintRequest proseOnlyRequest = request(UUID.fromString("66666666-6666-6666-6666-666666666666"));
         BlueprintDecisionChain.State proseOnly = api.applyDecision(api.beginDecision(proseOnlyRequest),
-            "A=E01-012;B=TEMPERATE");
+            "A=E01-010;B=TEMPERATE");
         boolean proseOnlyRejected = false;
         try {
             direct.candidates(proseOnlyRequest, proseOnly, palette);
