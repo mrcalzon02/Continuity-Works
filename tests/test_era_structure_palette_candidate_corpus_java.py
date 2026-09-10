@@ -77,6 +77,18 @@ public final class EraPaletteCorpusHarness {
         expected.put("E01-004", List.of(
             "STRUCTURAL_ORGANICS", "COVER", "STONE", "GROUND"
         ));
+        expected.put("E01-005", List.of(
+            "STRUCTURAL_MEMBERS", "INFILL", "GROUND_TREATMENT", "FORBIDDEN_BASE_MATERIALS"
+        ));
+        expected.put("E01-006", List.of(
+            "HIDE_MEMBRANE", "SUPPORTS", "ANCHORS_AND_WEIGHTS", "GROUND_TREATMENT"
+        ));
+        expected.put("E01-007", List.of(
+            "HEARTH_SUBSTRATE", "CONTAINMENT_STONES", "FUEL", "RESIDUE", "FORBIDDEN_BASE_MATERIALS"
+        ));
+        expected.put("E01-008", List.of(
+            "HEARTH_MATERIALS", "FUEL", "ACTIVITY_RESIDUES", "TEMPORARY_SHELTER_MATERIALS", "FORBIDDEN_MATERIALS"
+        ));
 
         int ordinal = 0;
         for (Map.Entry<String, List<String>> entry : expected.entrySet()) {
