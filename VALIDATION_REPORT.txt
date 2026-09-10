@@ -2,66 +2,85 @@ Continuity Works Capability API v0.3.2
 Validation date: 2026-09-10
 =====================================
 
-RESULT: PUBLIC API DEPLOYMENT GATE DEADLOCK REPAIRED IN REPOSITORY AUTHORITY; EXACT IMPLEMENTATION HEAD PASSED FULL REPOSITORY VALIDATION AND PAGES DEPLOYMENT; ACTIVE RENDER SERVICE STILL RETURNS HTTP 404 AT /v1/health AND REMAINS NOT VERIFIED LIVE
+RESULT: AUTHORITATIVE Q CONDITION CANDIDATE ROUTING IMPLEMENTED AND VERIFIED; EXACT IMPLEMENTATION HEAD PASSED FULL REPOSITORY VALIDATION AND PAGES DEPLOYMENT; ACTIVE REMOTE API PREFLIGHT STILL FAILS CLOSED AND REMAINS NOT VERIFIED LIVE
 
 Authority and observed evidence
 -------------------------------
 Authoritative repository: mrcalzon02/Continuity-Works
 Authoritative branch: main
-Cycle starting head: 1d99e6d0a4d2280bf485d3255142194b4dd36569
-Accepted repository implementation head: 908563a2016b269bb4755b03f8b8a6ef2854b6ee
+Cycle starting head: 1e6bb1ee18601f0204f46e037297d568febf2c51
+Accepted repository implementation head: 0fea9ad608c27fa5e08117048a5b1aa4abfb5317
 
 Reconciliation and selected work
 --------------------------------
-The live main branch reconciled at 1d99e6d0a4d2280bf485d3255142194b4dd36569. The recorded highest-priority defect was the configured public API candidate returning HTTP 404 at /v1/health.
+The live main branch reconciled at 1e6bb1ee18601f0204f46e037297d568febf2c51. The previous public Render-service defect remains externally blocked: repository deployment authority is corrected, but the available repository channel still cannot inspect or synchronize the active Render Blueprint/service provisioning state. The configured public health preflight continues to fail closed.
 
-Direct inspection proved the current authoritative Python implementation is present at src/structure_capability/server.py and explicitly serves GET /v1/health. pyproject.toml installs the src/structure_capability package, scripts/run_api.py imports structure_capability.server, and render.yaml starts that script with /v1/health as its health-check path. The HTTP 404 therefore is not caused by a missing health route in current repository source.
+Per the existing dependency ordering, the next repository-controlled eligible work was Q CONDITION candidate authority. Production routing already provided A STRUCTURE_CATALOG, B BIOME, and C CULTURE candidates from authoritative era hero sources while Q remained unconfigured.
 
-The deployment authority instead contained a circular gate: render.yaml used autoDeployTrigger: checksPass, while the repository's public-serviceability workflow can only pass once that same Render host has deployed and serves the exact main commit. This can leave the configured service stale behind a check that depends on the service already being current.
+Direct hero-spec inspection confirmed explicit condition vocabulary exists without inference. E01-012 Butchery Site has a dedicated Condition variants section with eight explicitly named variants: active, recent, repeated, abandoned, weathered, scavenger_reworked, sediment_reworked, and repurposed.
 
 Implemented improvement
 -----------------------
-Updated authoritative render.yaml directly:
+Added modules/continuityworks-api/src/main/java/io/continuityworks/api/blueprint/EraStructureConditionCandidateSource.java.
 
-- autoDeployTrigger: checksPass
-+ autoDeployTrigger: commit
+The source:
+- answers only mutator Q;
+- requires the selected archetype A and matching request state;
+- resolves exactly one authoritative sibling hero specification;
+- reads only the bounded Condition variants section;
+- accepts explicit level-3 headings or explicit bold bullet labels;
+- canonicalizes only those explicit labels and refuses prose inference;
+- rejects duplicate canonical values;
+- binds candidate-source identity to the exact hero-spec bytes with SHA-256.
 
-No API implementation, health route, validation rule, GitHub workflow, alternate deployment path, branch, pull request, or workaround layer was added or weakened.
+Updated ContinuityWorksDecisionAuthorityBootstrap.productionCandidateSource() to compose A, B, C, and Q through the existing RoutingBlueprintDecisionCandidateSource. No parallel router or duplicated decision authority was created.
+
+Added tests/test_era_structure_condition_candidate_source_java.py. Its Java 17 harness verifies that E01-012 exposes exactly, in order:
+ACTIVE, RECENT, REPEATED, ABANDONED, WEATHERED, SCAVENGER_REWORKED, SEDIMENT_REWORKED, REPURPOSED.
+
+The regression also verifies exact-spec source fingerprinting, normal production-router discovery, compact condition code 5 resolving to SCAVENGER_REWORKED, and rejection when archetype A has not been selected.
+
+Initial validation exposed one stale pre-promotion regression in tests/test_era_structure_biome_candidate_source_java.py that still used Q as the example of an unconfigured future profile. The first Q test head 7c148611ac37b1cd7c537a2b5cefe54f9d858508 was therefore rejected; Validate Continuity Works run 34465704072 failed in the unit/API test stage and downstream build/smoke stages were skipped.
+
+The stale regression was repaired directly rather than deleted or weakened: it now uses still-unconfigured K PALETTE to preserve the same fail-closed future-profile invariant. Commit comparison for this corrective change is exactly +4/-4 in that existing test file.
 
 Commit state
 ------------
-908563a2016b269bb4755b03f8b8a6ef2854b6ee - Break public API deployment verification deadlock
+caf33492c868d7133dbe9fea492b8a9156aec480 - Add authoritative era condition candidate source
+75278f23bacce2d41a460966520f8664f39e79c3 - Route authoritative condition candidates in production
+7c148611ac37b1cd7c537a2b5cefe54f9d858508 - Verify production condition candidate routing
+0fea9ad608c27fa5e08117048a5b1aa4abfb5317 - Preserve unconfigured-profile guard after condition promotion
 
-Remote main readback confirmed 908563a2016b269bb4755b03f8b8a6ef2854b6ee directly above 1d99e6d0a4d2280bf485d3255142194b4dd36569. Commit inspection shows exactly one changed file, render.yaml, with one line changed.
+Remote main readback confirmed the implementation sequence is fast-forward only on main. The cycle implementation is four commits ahead and zero behind 1e6bb1ee18601f0204f46e037297d568febf2c51. Net implementation changes are limited to the condition candidate source, production bootstrap wiring, the new condition regression, and the existing biome regression's stale Q-to-K fail-closed example.
 
 Verification actually observed
 ------------------------------
-Exact-head Validate Continuity Works run 34459866133 completed successfully for 908563a2016b269bb4755b03f8b8a6ef2854b6ee.
+Exact-head Validate Continuity Works run 34466139350 completed successfully for 0fea9ad608c27fa5e08117048a5b1aa4abfb5317.
 
-Observed successful stages include Python installation and compilation, source-tree agent discovery, unit/API/PUBLIC_SERVICEABILITY tests, production frontend build, zero-JavaScript Pages discovery stamping, local executable/public-boundary smoke, and validation-status publication.
+Observed successful stages include setup, Python installation/compilation, source-tree agent discovery, Unit/API contract/PUBLIC_SERVICEABILITY tests, production frontend build, zero-JavaScript Pages discovery stamping, local executable/public-boundary smoke, and validation-status publication.
 
-Verify and Deploy Public Continuity Works Service run 34459991689 successfully built the exact intended Pages artifact and successfully deployed that exact validated artifact through deploy-pages.
+The exact-head pages build and deployment run 34466138883 for 0fea9ad608c27fa5e08117048a5b1aa4abfb5317 completed successfully.
 
 Naming cleanup state
 --------------------
-The accepted implementation head passed the existing repository validation and generated/static Pages artifact validation before the exact artifact was deployed. No retired branding was introduced by the sole render.yaml change. Independent browser-rendered visual inspection is not claimed.
+Repository searches after the Q implementation returned no matches for the retired public names "Structure Forge" or "StructureForge". More importantly than grep alone, the accepted implementation head passed the full repository validation path and its exact-head Pages build/deployment completed successfully. No retired branding was introduced by the Q source, bootstrap, or tests. Independent browser-rendered visual inspection is still not claimed.
 
 Public API / deployment boundary
 --------------------------------
 PUBLIC REMOTE API: FAILED CLOSED / NOT VERIFIED LIVE.
 
-The exact-head remote-api job in run 34459991689 checked out 908563a2016b269bb4755b03f8b8a6ef2854b6ee and directly probed https://continuity-works-mrcalzon02-api.onrender.com/v1/health. The host responded HTTP 404 with body "Not Found". Exact-SHA remote serviceability was therefore skipped and not claimed. The Pages-to-API preflight failed for the same reason, and the workflow correctly published external-service NOT VERIFIED.
+Verify and Deploy Public Continuity Works Service run 34466258402 was triggered from accepted implementation head 0fea9ad608c27fa5e08117048a5b1aa4abfb5317. Its remote-api job failed at the configured API health preflight and therefore skipped exact-main remote API verification. This preserves the existing external-service boundary rather than masking it.
 
-The repository-controlled deployment deadlock is repaired, but this run did not observe the active Render service consuming the corrected Blueprint configuration. The remaining defect is now at the active Render service/Blueprint synchronization or service-provisioning boundary. Repository tools available in this run do not expose that external service configuration, so no speculative second repository mutation was made.
+The repository-controlled Render deployment trigger repair from the prior cycle remains intact. This run still did not obtain direct access to the active Render Blueprint/service provisioning authority, so no speculative repository workaround, alternate deployment path, weakened health check, or live-service acceptance claim was made.
 
 Era structure program boundary
 ------------------------------
-E01-001 through E01-017 culture candidate authority remains reconciled. E01-018 remains blocked until its authoritative master-catalog archetype label is recovered; no archetype name is to be invented.
+E01-001 through E01-017 culture candidate authority remains reconciled and production-routed. Q CONDITION now has a production candidate source and direct accepted coverage for the explicit E01-012 vocabulary. E01-018 remains blocked until its authoritative master-catalog archetype identity is recovered; no archetype name is to be invented.
 
 Next dependency-valid work
 --------------------------
-1. Reconcile the active Render service against repository render.yaml and determine whether the existing service is Blueprint-managed and synchronized to main. If that external provisioning authority becomes available, apply/verify the current Blueprint and require /v1/health plus exact-SHA PUBLIC_SERVICEABILITY before closing the defect.
-2. If Render provisioning remains externally unavailable, treat that runtime repair as genuinely blocked rather than weakening repository validation, and proceed to the next repository-controlled dependency-valid work: Q condition candidate authority, followed by K palette candidate authority, using only explicit authoritative option vocabularies.
-3. Preserve the completed E01-001 through E01-017 culture corpus invariant and authority fingerprints across persistence/resume.
-4. Continue stale public-brand cleanup whenever a user-facing or generated occurrence is found; acceptance still requires generated/deployed artifact evidence rather than source grep alone.
-5. Resume hero-structure development at E01-018 only when its authoritative catalog label is recovered.
+1. Reconcile Q CONDITION authority across E01-001 through E01-017: identify each hero specification's explicit condition vocabulary, extend corpus-level production-routing coverage, and fail closed where condition material is narrative-only rather than inventing semantics.
+2. After the Q corpus is reconciled, implement K PALETTE candidate authority using only explicit authoritative palette vocabularies and retain a fail-closed guard for any still-unconfigured profile class.
+3. Keep the active Render-service provisioning defect open until the external Blueprint/service authority is directly inspectable or the configured remote health/exact-SHA serviceability check succeeds.
+4. Continue stale public-brand cleanup whenever any occurrence is found; acceptance requires generated/deployed artifact evidence, not source grep alone.
+5. Resume hero-structure development at E01-018 only when its authoritative catalog identity is recovered.
