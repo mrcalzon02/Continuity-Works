@@ -126,25 +126,33 @@ public final class EraPaletteCorpusHarness {
                 entry.getKey() + " compact palette code must resolve to the authoritative semantic value");
         }
 
-        BlueprintRequest narrativeRequest = request(new UUID(0L, 399L));
-        BlueprintDecisionChain.State narrativeState = api.applyDecision(
-            api.beginDecision(narrativeRequest), "A=E01-010;B=TEMPERATE_BOREAL"
+        List<String> narrativeOnly = List.of(
+            "E01-010", "E01-012", "E01-013", "E01-014", "E01-015", "E01-016", "E01-017"
         );
-        boolean directRefused = false;
-        try {
-            direct.candidates(narrativeRequest, narrativeState, palette);
-        } catch (IllegalStateException expectedFailure) {
-            directRefused = expectedFailure.getMessage().contains("refusing to infer candidates from prose");
-        }
-        require(directRefused, "E01-010 narrative-only palette guidance must fail closed in the direct source");
+        int narrativeOrdinal = 0;
+        for (String archetype : narrativeOnly) {
+            BlueprintRequest narrativeRequest = request(new UUID(0L, 399L + narrativeOrdinal++));
+            BlueprintDecisionChain.State narrativeState = api.applyDecision(
+                api.beginDecision(narrativeRequest), "A=" + archetype + ";B=TEMPERATE_BOREAL"
+            );
+            boolean directRefused = false;
+            try {
+                direct.candidates(narrativeRequest, narrativeState, palette);
+            } catch (IllegalStateException expectedFailure) {
+                directRefused = expectedFailure.getMessage().contains("refusing to infer candidates from prose");
+            }
+            require(directRefused,
+                archetype + " palette guidance without explicit profile labels must fail closed in the direct source");
 
-        boolean routedRefused = false;
-        try {
-            api.decisionCandidates(narrativeRequest, narrativeState, "K", routed);
-        } catch (IllegalStateException expectedFailure) {
-            routedRefused = expectedFailure.getMessage().contains("refusing to infer candidates from prose");
+            boolean routedRefused = false;
+            try {
+                api.decisionCandidates(narrativeRequest, narrativeState, "K", routed);
+            } catch (IllegalStateException expectedFailure) {
+                routedRefused = expectedFailure.getMessage().contains("refusing to infer candidates from prose");
+            }
+            require(routedRefused,
+                archetype + " palette guidance without explicit profile labels must fail closed in production routing");
         }
-        require(routedRefused, "E01-010 narrative-only palette guidance must fail closed in production routing");
     }
 }
 """
