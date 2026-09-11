@@ -75,11 +75,11 @@ Culture profiles modify emphasis and spatial organization without introducing la
 
 Only valid Minecraft block IDs may be emitted, with semantic roles documented explicitly:
 
-- `minecraft:bone_block` = opened/spent heavy-bone proxy;
-- stone/andesite/granite/cobblestone = occasional light percussion/tool proxy;
-- gravel = small spent-fragment/debris proxy;
-- coarse dirt/red terracotta/red sand/rooted dirt = organic/grease ground-disturbance proxy;
-- coal block/campfire = optional subordinate hearth trace only.
+- **Opened / spent heavy-bone role** — `minecraft:bone_block`.
+- **Light percussion / tool role** — stone/andesite/granite/cobblestone.
+- **Spent-fragment / debris role** — gravel.
+- **Organic / grease ground-disturbance role** — coarse dirt/red terracotta/red sand/rooted dirt.
+- **Optional subordinate hearth trace** — coal block/campfire.
 
 No semantic proxy is represented as a literal archaeological material beyond its declared visual/function role.
 
