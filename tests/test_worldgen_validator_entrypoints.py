@@ -80,6 +80,22 @@ class WorldgenValidatorEntrypointTests(unittest.TestCase):
                     validate_structure_protection_profile(profile),
                 )
 
+    def test_direct_profile_validator_rejects_unknown_selector_keys(self):
+        valid = structure_protection_profile(structures=["test:site"])
+        for unknown_key in ("structure", "biomes", "patterns", 1):
+            with self.subTest(unknown_key=unknown_key):
+                profile = {
+                    **valid,
+                    "selectors": {
+                        **valid["selectors"],
+                        unknown_key: ["test:ignored"],
+                    },
+                }
+                self.assertIn(
+                    ("error", "INVALID_PROTECTION_SELECTORS"),
+                    validate_structure_protection_profile(profile),
+                )
+
     def test_constructor_generated_worldgen_remains_clean(self):
         structure = jigsaw_structure(
             biome_selector="#test:biomes",
