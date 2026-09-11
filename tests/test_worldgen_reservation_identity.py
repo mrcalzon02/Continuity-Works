@@ -45,6 +45,47 @@ class ReservationIdentityValidationTests(unittest.TestCase):
         reservation = self.reservation(piece_id=None)
         self.assertIsNone(reservation.piece_id)
 
+    def test_reservation_index_rejects_duplicate_seed_ids(self):
+        first = self.reservation(reservation_id="duplicate-id")
+        second = self.reservation(
+            reservation_id="duplicate-id",
+            assembly_id="assembly-b",
+            box=BlockBox(1000, 0, 0, 1009, 9, 9),
+        )
+        with self.assertRaises(ValueError):
+            ReservationIndex([first, second])
+
+    def test_try_reserve_rejects_duplicate_id_without_replacing_existing(self):
+        existing = self.reservation(reservation_id="duplicate-id")
+        index = ReservationIndex([existing])
+        candidate = self.reservation(
+            reservation_id="duplicate-id",
+            assembly_id="assembly-b",
+            box=BlockBox(1000, 0, 0, 1009, 9, 9),
+        )
+
+        conflict = index.try_reserve(candidate)
+
+        self.assertIsNotNone(conflict)
+        self.assertEqual(conflict.code, "RESERVATION_ID_CONFLICT")
+        self.assertIs(conflict.existing, existing)
+        self.assertEqual(index.snapshot(), (existing,))
+
+    def test_duplicate_id_takes_precedence_over_same_assembly_spacing_exemption(self):
+        existing = self.reservation(reservation_id="duplicate-id", assembly_id="assembly-a")
+        index = ReservationIndex([existing])
+        candidate = self.reservation(
+            reservation_id="duplicate-id",
+            assembly_id="assembly-a",
+            box=BlockBox(10, 0, 0, 19, 9, 9),
+            piece_id="piece-b",
+        )
+
+        conflict = index.conflict_for(candidate)
+
+        self.assertIsNotNone(conflict)
+        self.assertEqual(conflict.code, "RESERVATION_ID_CONFLICT")
+
     def test_reserve_piece_rejects_blank_assembly_before_spacing_check(self):
         index = ReservationIndex([
             self.reservation(
