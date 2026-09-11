@@ -43,7 +43,7 @@ Configured candidate base URL:
 https://continuity-works-mrcalzon02-api.onrender.com
 ```
 
-The runtime uses the existing dependency-free `structure_capability.server` implementation. `scripts/run_api.py` binds to `0.0.0.0` and reads the provider-assigned `PORT` environment variable. A different host can set `CONTINUITY_WORKS_PUBLIC_BASE_URL` and `CONTINUITY_WORKS_FRONTEND_URL` without changing the API implementation.
+The runtime uses the existing dependency-free `structure_capability.server` implementation. `scripts/run_api.py` gives `CONTINUITY_WORKS_HOST` and `CONTINUITY_WORKS_PORT` canonical bind authority, while generic provider-assigned `HOST` and `PORT` remain compatibility fallbacks; the unchanged defaults are `0.0.0.0` and `8787`. A different host can set `CONTINUITY_WORKS_PUBLIC_BASE_URL` and `CONTINUITY_WORKS_FRONTEND_URL` without changing the API implementation.
 
 Continuity Works does not require the project owner to provide free public compute. A consuming client or integrator may run the Python service locally or on infrastructure it controls. Server-side visual rendering is not part of the API contract; clients render returned geometry using their own resources when desired.
 
@@ -150,8 +150,10 @@ After installing the project:
 
 ```bash
 python -m pip install -e .
-HOST=0.0.0.0 PORT=8787 python scripts/run_api.py
+CONTINUITY_WORKS_HOST=0.0.0.0 CONTINUITY_WORKS_PORT=8787 python scripts/run_api.py
 ```
+
+Generic `HOST` and `PORT` remain supported for deployment platforms that provide those conventional variables.
 
 Then run the same reusable smoke harness used by CI:
 
