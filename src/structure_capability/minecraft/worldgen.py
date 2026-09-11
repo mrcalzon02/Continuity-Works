@@ -167,6 +167,8 @@ class ReservationIndex:
                         horizontal_gap=0.0,
                         required_gap=0,
                     )
+                # Same assembly may connect tightly. Family equality alone never grants
+                # this exception: the assembly identity must match.
                 continue
 
             gap = candidate.box.horizontal_gap(existing.box)
