@@ -11,6 +11,28 @@ MINIMUM_STRUCTURE_EXCLUSION_RADIUS = 500
 DEFAULT_STRUCTURE_EXCLUSION_RADIUS = MINIMUM_STRUCTURE_EXCLUSION_RADIUS
 
 
+def _require_non_negative_int(value, *, name: str) -> int:
+    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+        raise ValueError(f"{name} must be a non-negative integer")
+    return value
+
+
+def _require_block_coordinate(value, *, name: str) -> int:
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise ValueError(f"{name} must be an integer block coordinate")
+    return value
+
+
+def _require_exclusion_radius(value, *, name: str) -> int:
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise ValueError(f"{name} must be an integer")
+    if value < MINIMUM_STRUCTURE_EXCLUSION_RADIUS:
+        raise ValueError(
+            f"{name} must be >= {MINIMUM_STRUCTURE_EXCLUSION_RADIUS} blocks"
+        )
+    return value
+
+
 def jigsaw_structure(*, biome_selector, start_pool, step="surface_structures",
                      terrain_adaptation="bury", heightmap=None, absolute_y=0,
                      max_distance=80):
@@ -61,6 +83,8 @@ class BlockBox:
     max_z: int
 
     def __post_init__(self):
+        for name in ("min_x", "min_y", "min_z", "max_x", "max_y", "max_z"):
+            _require_block_coordinate(getattr(self, name), name=name)
         if self.min_x > self.max_x or self.min_y > self.max_y or self.min_z > self.max_z:
             raise ValueError("invalid block box")
 
@@ -70,8 +94,7 @@ class BlockBox:
 
     def overlaps_volume(self, other: "BlockBox", *, padding: int = 0) -> bool:
         """True only for occupied-volume overlap; face adjacency is allowed."""
-        if padding < 0:
-            raise ValueError("padding must be non-negative")
+        _require_non_negative_int(padding, name="padding")
         # Convert inclusive Minecraft boxes to half-open boxes. Padding expands
         # this candidate only; ordinary face adjacency remains legal at padding=0.
         return (
@@ -107,10 +130,7 @@ class StructureReservation:
     provisional: bool = True
 
     def __post_init__(self):
-        if self.exclusion_radius < MINIMUM_STRUCTURE_EXCLUSION_RADIUS:
-            raise ValueError(
-                f"exclusion radius must be >= {MINIMUM_STRUCTURE_EXCLUSION_RADIUS} blocks"
-            )
+        _require_exclusion_radius(self.exclusion_radius, name="exclusion radius")
 
 
 @dataclass(frozen=True)
@@ -155,6 +175,7 @@ class ReservationIndex:
         *,
         self_collision_padding: int,
     ) -> ReservationConflict | None:
+        _require_non_negative_int(self_collision_padding, name="self collision padding")
         for existing in self._reservations.values():
             if existing.reservation_id == candidate.reservation_id:
                 continue
@@ -281,17 +302,13 @@ def structure_protection_profile(
     """Build the sidecar profile consumed by the modular spawn-protection JAR."""
     if not protect_jigsaw_pieces:
         raise ValueError("per-piece jigsaw protection is mandatory")
-    if exclusion_radius < MINIMUM_STRUCTURE_EXCLUSION_RADIUS:
-        raise ValueError(
-            f"exclusion radius must be >= {MINIMUM_STRUCTURE_EXCLUSION_RADIUS} blocks"
-        )
+    _require_exclusion_radius(exclusion_radius, name="exclusion radius")
     if jigsaw_piece_exclusion_radius is None:
         jigsaw_piece_exclusion_radius = exclusion_radius
-    if jigsaw_piece_exclusion_radius < MINIMUM_STRUCTURE_EXCLUSION_RADIUS:
-        raise ValueError(
-            "jigsaw piece exclusion radius must be >= "
-            f"{MINIMUM_STRUCTURE_EXCLUSION_RADIUS} blocks"
-        )
+    _require_exclusion_radius(
+        jigsaw_piece_exclusion_radius,
+        name="jigsaw piece exclusion radius",
+    )
     if not structures and not tags and not namespaces:
         raise ValueError("at least one structure, tag, or namespace selector is required")
 
@@ -321,12 +338,20 @@ def validate_structure_protection_profile(profile: Mapping) -> list[tuple[str, s
     if not any(selectors.get(key) for key in ("structures", "tags", "namespaces")):
         findings.append(("error", "NO_PROTECTION_SELECTOR"))
     radius = profile.get("exclusion_radius")
-    if not isinstance(radius, int) or radius < MINIMUM_STRUCTURE_EXCLUSION_RADIUS:
+    if (
+        isinstance(radius, bool)
+        or not isinstance(radius, int)
+        or radius < MINIMUM_STRUCTURE_EXCLUSION_RADIUS
+    ):
         findings.append(("error", "STRUCTURE_EXCLUSION_RADIUS_BELOW_MINIMUM"))
     if profile.get("protect_jigsaw_pieces") is False:
         findings.append(("error", "JIGSAW_PIECE_PROTECTION_CANNOT_BE_DISABLED"))
     piece_radius = profile.get("jigsaw_piece_exclusion_radius", radius)
-    if not isinstance(piece_radius, int) or piece_radius < MINIMUM_STRUCTURE_EXCLUSION_RADIUS:
+    if (
+        isinstance(piece_radius, bool)
+        or not isinstance(piece_radius, int)
+        or piece_radius < MINIMUM_STRUCTURE_EXCLUSION_RADIUS
+    ):
         findings.append(("error", "JIGSAW_PIECE_EXCLUSION_RADIUS_BELOW_MINIMUM"))
     return findings
 
