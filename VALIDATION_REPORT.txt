@@ -298,3 +298,26 @@ This is static/data-contract acceptance. It closes direct validator shape/type b
 E01-018 remains blocked under the existing catalog-provenance rule. No identity was invented and the exhausted recovery search was not repeated as new evidence.
 
 Next dependency-valid work: continue the authoritative protection-profile/worldgen validation audit at selector semantics. The profile constructor and validator currently require selector members to be non-empty strings but do not yet prove structure IDs, tag IDs, or namespace selectors conform to their Minecraft identifier contracts. Repair that boundary directly before malformed selectors can be persisted into the sidecar profile, while preserving the 500-block exclusion invariant and the static/runtime admission distinction.
+
+2026-09-11 protection-profile selector identifier validation repair
+------------------------------------------------------------------
+Cycle starting head: efa30edd4eb025b7b442f131a7954b52d72d8f23
+Accepted implementation head before continuity record: 47ab27f61d66e5316fa863168e4a477f4b38f851
+Implementation commit: 47ab27f61d66e5316fa863168e4a477f4b38f851
+Changed files: src/structure_capability/minecraft/worldgen.py, tests/test_worldgen_validator_entrypoints.py
+
+Reconciliation selected the exact selector-semantics defect recorded by the preceding accepted cycle. structure_protection_profile and validate_structure_protection_profile required selector members to be non-empty strings but did not enforce Minecraft identifier syntax, allowing malformed structure IDs, tag IDs, and namespace selectors to enter or survive persisted protection profiles.
+
+Commit 47ab27f61d66e5316fa863168e4a477f4b38f851 repairs the authoritative worldgen boundary directly. Structure selectors and tag selectors now use the existing resource-location contract; namespace selectors use a dedicated Minecraft namespace contract that permits only lowercase letters, digits, underscore, hyphen, and period and rejects paths/colons. The persisted profile validator applies the same selector-specific contracts and returns INVALID_PROTECTION_SELECTORS on malformed identifiers. Existing 500-block exclusion radii, jigsaw protection, family/priority behavior, reservation logic, and valid profiles remain unchanged.
+
+Focused regression coverage proves the builder rejects uppercase, whitespace, tag-marker-prefixed, path-bearing, and otherwise malformed selectors; proves valid structure/tag/namespace selectors remain accepted; and proves malformed persisted selectors fail closed through the direct validator.
+
+Validate Continuity Works run 34632767247 on exact implementation head 47ab27f61d66e5316fa863168e4a477f4b38f851 completed successfully. Observed successful stages include package installation, Python compilation, source-tree agent discovery, the complete Unit/API contract/PUBLIC_SERVICEABILITY test stage, production frontend build, zero-JavaScript Pages discovery stamping, local executable API/public-boundary smoke, validation-status publication, and cleanup.
+
+GitHub Pages run 34632766693 for the same exact implementation head completed successfully through deployment. Repository code searches returned zero matches for both prohibited retired predecessor-brand spellings, though GitHub marked those searches incomplete; the exact implementation additionally passed the repository-wide naming guard in full validation. Independent browser-render retrieval was not established, so browser-render acceptance is not claimed. Exact-head full validation plus exact-head successful Pages deployment is the strongest directly observed deployment-artifact evidence.
+
+This is static/data-contract acceptance. It prevents malformed protection selectors from being authored or accepted through these repository boundaries, but it does not establish Minecraft controlled startup, fresh-world natural generation, Lost Cities compatibility placement, or production admission. The external Java/Render API remains FAILED CLOSED / NOT VERIFIED LIVE because no host-level evidence in this cycle supersedes that standing boundary.
+
+E01-018 remains blocked under the existing catalog-provenance rule. No identity was invented and the exhausted recovery search was not repeated as new evidence.
+
+Next dependency-valid work: continue the same persisted-profile schema audit for selector-map key semantics. Unknown selector keys are currently ignored by validate_structure_protection_profile, so a typo or unsupported selector class can survive validation without contributing to protection behavior. Confirm that boundary against current consumer authority, then fail unknown selector keys closed if the established profile schema is intentionally closed.
