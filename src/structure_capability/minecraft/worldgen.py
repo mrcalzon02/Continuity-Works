@@ -32,6 +32,10 @@ def jigsaw_structure(*, biome_selector, start_pool, step="surface_structures",
 
 
 def random_spread_structure_set(structure_id, spacing, separation, salt):
+    if isinstance(spacing, bool) or not isinstance(spacing, int) or spacing <= 0:
+        raise ValueError("spacing must be a positive integer")
+    if isinstance(separation, bool) or not isinstance(separation, int) or separation < 0:
+        raise ValueError("separation must be a non-negative integer")
     if separation >= spacing:
         raise ValueError("separation must be lower than spacing")
     return {
@@ -163,8 +167,6 @@ class ReservationIndex:
                         horizontal_gap=0.0,
                         required_gap=0,
                     )
-                # Same assembly may connect tightly. Family equality alone never grants
-                # this exception: the assembly identity must match.
                 continue
 
             gap = candidate.box.horizontal_gap(existing.box)
@@ -340,7 +342,17 @@ def validate_geospatial_worldgen(
         findings.append(("error", "NO_BIOME_SELECTOR"))
     placement = structure_set.get("placement", {})
     if placement.get("type") == "minecraft:random_spread":
-        if placement.get("separation", 0) >= placement.get("spacing", 0):
+        spacing = placement.get("spacing")
+        separation = placement.get("separation")
+        invalid_spacing = isinstance(spacing, bool) or not isinstance(spacing, int) or spacing <= 0
+        invalid_separation = (
+            isinstance(separation, bool)
+            or not isinstance(separation, int)
+            or separation < 0
+        )
+        if invalid_spacing or invalid_separation or (
+            not invalid_spacing and not invalid_separation and separation >= spacing
+        ):
             findings.append(("error", "INVALID_RANDOM_SPREAD"))
 
     if protection_profile is not None:
