@@ -96,6 +96,16 @@ class WorldgenValidatorEntrypointTests(unittest.TestCase):
                     validate_structure_protection_profile(profile),
                 )
 
+    def test_direct_profile_validator_rejects_unknown_top_level_fields(self):
+        valid = structure_protection_profile(structures=["test:site"])
+        for unknown_key in ("selector", "radius", "enabled", 1):
+            with self.subTest(unknown_key=unknown_key):
+                profile = {**valid, unknown_key: "ignored"}
+                self.assertIn(
+                    ("error", "INVALID_PROTECTION_PROFILE_FIELDS"),
+                    validate_structure_protection_profile(profile),
+                )
+
     def test_constructor_generated_worldgen_remains_clean(self):
         structure = jigsaw_structure(
             biome_selector="#test:biomes",
