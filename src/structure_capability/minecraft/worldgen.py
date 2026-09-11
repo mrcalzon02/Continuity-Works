@@ -262,6 +262,8 @@ class ReservationIndex:
         self._lock = RLock()
         self._reservations: dict[str, StructureReservation] = {}
         for reservation in reservations:
+            if not isinstance(reservation, StructureReservation):
+                raise ValueError("reservations must contain only StructureReservation values")
             if reservation.reservation_id in self._reservations:
                 raise ValueError(f"duplicate reservation id: {reservation.reservation_id}")
             self._reservations[reservation.reservation_id] = reservation
@@ -393,7 +395,11 @@ class ReservationIndex:
     ) -> int:
         """Drop speculative piece reservations not present in the final StructureStart."""
         _require_non_empty_identity(assembly_id, name="assembly id")
-        actual = {box.key for box in actual_boxes}
+        actual = set()
+        for box in actual_boxes:
+            if not isinstance(box, BlockBox):
+                raise ValueError("actual_boxes must contain only BlockBox values")
+            actual.add(box.key)
         removed = 0
         with self._lock:
             for reservation_id, reservation in list(self._reservations.items()):
