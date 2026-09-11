@@ -118,6 +118,59 @@ class RandomSpreadValidationTests(unittest.TestCase):
                     validate_geospatial_worldgen(structure, structure_set),
                 )
 
+    def test_validator_fails_closed_on_malformed_top_level_shapes(self):
+        valid_structure = jigsaw_structure(
+            biome_selector="#minecraft:is_overworld",
+            start_pool="test:start",
+        )
+        valid_set = random_spread_structure_set("test:site", 32, 8, 123)
+
+        for invalid_structure in (None, [], "structure"):
+            with self.subTest(structure=invalid_structure):
+                findings = validate_geospatial_worldgen(invalid_structure, valid_set)
+                self.assertIn(("error", "INVALID_STRUCTURE_SHAPE"), findings)
+
+        for invalid_set in (None, [], "structure_set"):
+            with self.subTest(structure_set=invalid_set):
+                findings = validate_geospatial_worldgen(valid_structure, invalid_set)
+                self.assertIn(("error", "INVALID_STRUCTURE_SET_SHAPE"), findings)
+
+    def test_validator_rejects_malformed_or_unsupported_placement(self):
+        structure = jigsaw_structure(
+            biome_selector="#minecraft:is_overworld",
+            start_pool="test:start",
+        )
+        valid_set = random_spread_structure_set("test:site", 32, 8, 123)
+
+        for placement in (None, [], "minecraft:random_spread"):
+            with self.subTest(placement=placement):
+                structure_set = copy.deepcopy(valid_set)
+                structure_set["placement"] = placement
+                findings = validate_geospatial_worldgen(structure, structure_set)
+                self.assertIn(("error", "INVALID_PLACEMENT_SHAPE"), findings)
+
+        for placement_type in (None, "minecraft:concentric_rings", "continuity_works:custom"):
+            with self.subTest(placement_type=placement_type):
+                structure_set = copy.deepcopy(valid_set)
+                structure_set["placement"]["type"] = placement_type
+                findings = validate_geospatial_worldgen(structure, structure_set)
+                self.assertIn(("error", "UNSUPPORTED_PLACEMENT_TYPE"), findings)
+
+    def test_validator_rejects_malformed_protection_profile_shape(self):
+        structure = jigsaw_structure(
+            biome_selector="#minecraft:is_overworld",
+            start_pool="test:start",
+        )
+        structure_set = random_spread_structure_set("test:site", 32, 8, 123)
+        for profile in ([], "profile", 500):
+            with self.subTest(profile=profile):
+                findings = validate_geospatial_worldgen(
+                    structure,
+                    structure_set,
+                    protection_profile=profile,
+                )
+                self.assertIn(("error", "INVALID_PROTECTION_PROFILE_SHAPE"), findings)
+
     def test_constructor_generated_worldgen_remains_validator_clean(self):
         structure = jigsaw_structure(
             biome_selector="#minecraft:is_overworld",
