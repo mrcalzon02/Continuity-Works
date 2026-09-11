@@ -4,6 +4,7 @@ from structure_capability.minecraft.worldgen import (
     BlockBox,
     ReservationIndex,
     StructureReservation,
+    jigsaw_structure,
     structure_protection_profile,
     validate_structure_protection_profile,
 )
@@ -28,6 +29,39 @@ class WorldgenGeometryValidationTests(unittest.TestCase):
             with self.subTest(padding=padding):
                 with self.assertRaises(ValueError):
                     candidate.overlaps_volume(other, padding=padding)
+
+    def test_jigsaw_structure_rejects_non_integer_absolute_height(self):
+        for absolute_y in (True, 0.5, "0", None):
+            with self.subTest(absolute_y=absolute_y):
+                with self.assertRaises(ValueError):
+                    jigsaw_structure(
+                        biome_selector="#test:biomes",
+                        start_pool="test:start",
+                        absolute_y=absolute_y,
+                    )
+
+    def test_jigsaw_structure_enforces_minecraft_distance_codec_range(self):
+        for max_distance in (True, 0, -1, 129, 80.0, "80", None):
+            with self.subTest(max_distance=max_distance):
+                with self.assertRaises(ValueError):
+                    jigsaw_structure(
+                        biome_selector="#test:biomes",
+                        start_pool="test:start",
+                        max_distance=max_distance,
+                    )
+
+        minimum = jigsaw_structure(
+            biome_selector="#test:biomes",
+            start_pool="test:start",
+            max_distance=1,
+        )
+        maximum = jigsaw_structure(
+            biome_selector="#test:biomes",
+            start_pool="test:start",
+            max_distance=128,
+        )
+        self.assertEqual(1, minimum["max_distance_from_center"])
+        self.assertEqual(128, maximum["max_distance_from_center"])
 
     def test_reservation_rejects_non_integer_or_below_minimum_radius(self):
         box = BlockBox(0, 0, 0, 1, 1, 1)
@@ -84,6 +118,22 @@ class WorldgenGeometryValidationTests(unittest.TestCase):
                         jigsaw_piece_exclusion_radius=radius,
                     )
 
+    def test_profile_constructor_rejects_malformed_selector_and_control_values(self):
+        invalid_calls = (
+            {"structures": "test:site"},
+            {"structures": ("test:site", "")},
+            {"structures": ("test:site", 42)},
+            {"structures": ("test:site",), "protect_jigsaw_pieces": 1},
+            {"structures": ("test:site",), "protect_jigsaw_pieces": False},
+            {"structures": ("test:site",), "priority": True},
+            {"structures": ("test:site",), "priority": 1.5},
+            {"structures": ("test:site",), "family": ""},
+        )
+        for kwargs in invalid_calls:
+            with self.subTest(kwargs=kwargs):
+                with self.assertRaises(ValueError):
+                    structure_protection_profile(**kwargs)
+
     def test_profile_validator_rejects_boolean_and_non_integer_radii(self):
         base = {
             "selectors": {"structures": ["test:site"]},
@@ -117,14 +167,60 @@ class WorldgenGeometryValidationTests(unittest.TestCase):
                     findings,
                 )
 
-    def test_valid_geometry_and_profile_remain_accepted(self):
+    def test_profile_validator_rejects_malformed_selector_and_control_shape(self):
+        valid_base = {
+            "selectors": {"structures": ["test:site"]},
+            "exclusion_radius": 500,
+            "jigsaw_piece_exclusion_radius": 500,
+            "protect_jigsaw_pieces": True,
+            "priority": 0,
+        }
+        invalid_selector_profiles = (
+            {**valid_base, "selectors": "test:site"},
+            {**valid_base, "selectors": {"structures": "test:site"}},
+            {**valid_base, "selectors": {"structures": [""]}},
+            {**valid_base, "selectors": {"structures": [42]}},
+        )
+        for profile in invalid_selector_profiles:
+            with self.subTest(profile=profile):
+                self.assertIn(
+                    ("error", "INVALID_PROTECTION_SELECTORS"),
+                    validate_structure_protection_profile(profile),
+                )
+
+        self.assertIn(
+            ("error", "JIGSAW_PIECE_PROTECTION_CANNOT_BE_DISABLED"),
+            validate_structure_protection_profile(
+                {**valid_base, "protect_jigsaw_pieces": 1}
+            ),
+        )
+        self.assertIn(
+            ("error", "INVALID_PROTECTION_PRIORITY"),
+            validate_structure_protection_profile({**valid_base, "priority": True}),
+        )
+        self.assertIn(
+            ("error", "INVALID_PROTECTION_FAMILY"),
+            validate_structure_protection_profile({**valid_base, "family": ""}),
+        )
+
+    def test_valid_geometry_jigsaw_and_profile_remain_accepted(self):
         box = BlockBox(-10, 0, -10, 10, 20, 10)
+        structure = jigsaw_structure(
+            biome_selector="#test:biomes",
+            start_pool="test:start",
+            absolute_y=-32,
+            max_distance=128,
+        )
         profile = structure_protection_profile(
             structures=("test:site",),
             exclusion_radius=500,
             jigsaw_piece_exclusion_radius=500,
+            family="test_family",
+            priority=1,
         )
         self.assertEqual((-10, 0, -10, 10, 20, 10), box.key)
+        self.assertEqual(-32, structure["start_height"]["absolute"])
+        self.assertEqual(128, structure["max_distance_from_center"])
         self.assertEqual([], validate_structure_protection_profile(profile))
 
 
