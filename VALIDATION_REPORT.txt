@@ -184,3 +184,26 @@ This repair is static/data-contract acceptance only. It strengthens the geometry
 E01-018 remains blocked under the existing catalog-provenance rule. No identity was invented and the exhausted catalog search was not repeated as new evidence.
 
 Next dependency-valid work: continue auditing the same authoritative worldgen boundary for constrained jigsaw structure parameters that remain unchecked at construction time, especially absolute height, max-distance, and protection-profile selector/value shape where malformed data can propagate into generated Minecraft structure JSON. Preserve the existing exclusion invariant and keep runtime/fresh-world claims separate from static validation.
+
+2026-09-11 jigsaw worldgen input validation repair
+---------------------------------------------------
+Cycle starting head: 45784c1400eedfdb047656b262313541a04d5049
+Accepted implementation head before continuity record: 688e238c35dd5e885c656599845abfa771cbdf95
+Implementation commits: 5a5468af27fe67767a7d053f89f4593d666a01b2, 688e238c35dd5e885c656599845abfa771cbdf95
+Changed files: src/structure_capability/minecraft/worldgen.py, tests/test_worldgen_geometry_validation.py
+
+Reconciliation confirmed the prior record-only head ultimately passed repository validation while the external public-serviceability status remained failed closed. E01-018 remained blocked under the catalog-provenance rule, making the recorded worldgen boundary defect the highest-priority dependency-valid repository work.
+
+The authoritative jigsaw constructor emitted codec-bound values without validating them. Commit 5a5468af27fe67767a7d053f89f4593d666a01b2 now requires absolute_y to be an integer block coordinate with booleans rejected, and requires max_distance_from_center to be an integer from 1 through 128 before emitting Minecraft jigsaw JSON. The same source repair closes protection-profile shape defects: selector groups must be non-string sequences of non-empty strings, per-piece jigsaw protection must be exactly true, optional family identifiers must be non-empty strings, and priority must be an integer with booleans rejected. The profile validator now rejects malformed selector containers/members and malformed control values instead of accepting truthy/coercible inputs.
+
+Commit 688e238c35dd5e885c656599845abfa771cbdf95 extends the existing focused worldgen geometry regression to cover invalid jigsaw height and distance values, both legal distance boundaries, malformed profile selector/control values, validator findings for malformed persisted profiles, and a valid jigsaw/profile case. Relative to the captured starting head, the accepted implementation is two commits ahead and zero behind and changes only the authoritative worldgen source and the existing focused test file.
+
+Validate Continuity Works run 34603704718 on exact implementation head 688e238c35dd5e885c656599845abfa771cbdf95 completed successfully. Observed successful stages include package installation, Python compilation, source-tree discovery, the complete Unit/API contract/PUBLIC_SERVICEABILITY test stage, frontend production build, zero-JavaScript Pages discovery stamping, local executable API/public-boundary smoke, validation-status publication, and cleanup.
+
+GitHub Pages run 34603703663 for the same exact implementation head completed successfully through deployment. Direct repository searches returned zero matches for both prohibited retired predecessor-brand spellings after implementation, and the exact implementation passed the repository-wide naming guard in the full validation path. Browser-render acceptance was not independently established, so it is not claimed; exact-head full validation plus exact-head Pages deployment is the strongest directly observed deployment-artifact evidence for this cycle.
+
+This is static/data-contract acceptance. It prevents malformed jigsaw/protection-profile data from being authored through these repository constructors and validators, but it does not establish Minecraft controlled startup, fresh-world natural generation, Lost Cities compatibility placement, or production admission. The external Java/Render API remains FAILED CLOSED / NOT VERIFIED LIVE because no host-level evidence in this cycle supersedes that standing boundary.
+
+E01-018 remains blocked under the existing catalog-provenance rule. No identity was invented and the exhausted recovery search was not repeated as new evidence.
+
+Next dependency-valid work: continue auditing the authoritative worldgen constructors for remaining unchecked codec-bound resource/enum values, particularly jigsaw biome/start-pool/step/terrain-adaptation/heightmap shape and random-spread structure-id/salt shape. Preserve the 500-block exclusion invariant, keep compatibility additive, and keep static validation distinct from Minecraft runtime/fresh-world admission.
