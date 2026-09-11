@@ -85,7 +85,7 @@ class WorldgenGeometryValidationTests(unittest.TestCase):
             {"terrain_adaptation": ""},
             {"terrain_adaptation": "bury_it"},
             {"heightmap": ""},
-            {"heightmap": "WORLD_SURFACE_WG"},
+            {"heightmap": "world_surface_wg"},
         )
         for kwargs in invalid_calls:
             with self.subTest(kwargs=kwargs):
@@ -102,11 +102,11 @@ class WorldgenGeometryValidationTests(unittest.TestCase):
             start_pool="test:start",
             step="surface_structures",
             terrain_adaptation="bury",
-            heightmap="world_surface_wg",
+            heightmap="WORLD_SURFACE_WG",
         )
         self.assertEqual("surface_structures", structure["step"])
         self.assertEqual("bury", structure["terrain_adaptation"])
-        self.assertEqual("world_surface_wg", structure["project_start_to_heightmap"])
+        self.assertEqual("WORLD_SURFACE_WG", structure["project_start_to_heightmap"])
 
     def test_random_spread_rejects_invalid_structure_id_and_salt(self):
         for structure_id in ("", "Test:site", "test:bad path", 42, None):
