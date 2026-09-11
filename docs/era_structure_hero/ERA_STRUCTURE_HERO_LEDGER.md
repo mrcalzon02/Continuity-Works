@@ -1,8 +1,16 @@
 # Era Structure Development Ledger
 
-Authoritative sequence: Continuity Works era structure master catalog
+Authoritative sequence: materialized catalog identities recorded in this ledger; the canonical source catalog is not currently present in the repository
 Branch policy: `main` only
 Development mode: complete each archetype through three ordered stages before advancing.
+
+## Catalog authority provenance
+
+The current repository and its accessible Git history do not contain a standalone era structure master-catalog artifact that can be read back as present-day authority. Do not cite an unavailable catalog file as though it were retrievable repository evidence, and do not infer a missing label from neighboring archetypes.
+
+Known recovered labels are authoritative only where they have been materialized into tracked project state with reproducible Git provenance. Commit `bcbb6ad2c10395a3b4f8ca17d794d0247a95990d` corrected the previously stale sequence and materialized E01-014 as **Bone-Breaking Station**, E01-015 as **Marrow Processing Ground**, and E01-016 as **Watering-Hole Camp**. That recovery explicitly replaced an incorrect successor label and therefore cannot be extrapolated to later catalog IDs. E01-017 is independently materialized by its committed hero specification, generator, tests, worldgen contract, and ledger transition culminating in commit `6b8556b2103b39c9811afbd45e76667199b01143`.
+
+E01-018 remains unresolved. It may advance only when one of these reproducible authority forms supplies its exact canonical label: a recovered catalog artifact with provenance, an existing commit/file/blob that explicitly names E01-018, or a user-supplied authoritative catalog source. Repository searches, neighboring sequence patterns, obsolete labels, and conversational guesses are insufficient. Until one of those authorities exists, E01-018 stays blocked rather than being invented.
 
 ## Three-stage contract
 
@@ -105,4 +113,4 @@ Observed GitHub evidence proves the Stage 1 hero specification, Stage 2 generato
 
 ## Next run
 
-Proceed with **E01-018** only after its archetype label is recovered from the authoritative era structure master catalog and materialized into project authority. Do not invent the label. If a higher-priority defect, user-visible repair, branding regression, or validation failure appears first, repair that before expanding structure scope.
+Attempt E01-018 recovery only from the explicit authority forms defined above. Do not repeatedly treat the same repository search as new evidence and do not infer the label from sequence adjacency. If no qualifying catalog authority is available, keep E01-018 blocked and select the next dependency-valid repository-owned repair or validation gap rather than fabricating a catalog identity.
