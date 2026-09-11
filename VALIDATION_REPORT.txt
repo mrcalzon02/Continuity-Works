@@ -161,3 +161,26 @@ The retired predecessor-brand cleanup remains protected by the full repository v
 The external Java/Render API remains FAILED CLOSED / NOT VERIFIED LIVE; local entrypoint validation does not establish host provisioning or remote health. E01-018 remains blocked under the catalog provenance rule and no identity was invented.
 
 Next dependency-valid work: continue inspecting repository-owned runtime/worldgen data boundaries for values that are type-annotated or contractually constrained but still accepted unchecked, prioritizing defects that can corrupt reservation, generation, or deployment behavior. Preserve the 500-block exclusion invariant, keep external serviceability failed closed until directly verified, and leave E01-018 blocked until qualifying catalog authority exists.
+
+2026-09-11 worldgen geometry and reservation validation repair
+---------------------------------------------------------------
+Cycle starting head: fc213370ea081b80da3ba5a35823e10a4cac9d52
+Accepted implementation head before continuity record: 386c5fd1bb48c81d2259faf4bb0827c8d9de608d
+Implementation commits: fe593e1b19b9e1a845db2c825174fb2382fe0941, 386c5fd1bb48c81d2259faf4bb0827c8d9de608d
+Changed files: src/structure_capability/minecraft/worldgen.py, tests/test_worldgen_geometry_validation.py
+
+Reconciliation selected the next repository-owned worldgen boundary defect while E01-018 remained blocked. The 500-block exclusion policy itself was already authoritative, but its geometry inputs were not uniformly fail-closed. BlockBox accepted Python booleans and floating-point coordinates because dataclass type annotations are not runtime validators; mixed types could raise comparison errors during box construction. Collision padding accepted non-integral values, and exclusion-radius validation accepted booleans because bool is a subclass of int. The structure-protection profile validator had the same boolean-radius hole.
+
+Commit fe593e1b19b9e1a845db2c825174fb2382fe0941 repairs the authoritative worldgen source directly. Block coordinates must now be integer block coordinates with booleans rejected before bounds comparison. Collision/self-collision padding must be a non-negative integer. Structure reservation and protection-profile exclusion radii must be integer values at or above the established 500-block minimum, with booleans and non-integral numeric values rejected. validate_structure_protection_profile now applies the same fail-closed type rule instead of accepting boolean radii. No alternate reservation system, post-processor, compatibility bypass, branch, pull request, or workflow was added.
+
+Commit 386c5fd1bb48c81d2259faf4bb0827c8d9de608d adds focused regressions for invalid block coordinates, inverted boxes, invalid collision padding, invalid reservation radii, invalid protection-profile radii, reservation-index padding, and valid geometry/profile behavior. Relative to the captured starting head, the implementation is two commits ahead and zero behind and changes only the authoritative worldgen source plus that focused test file.
+
+Validate Continuity Works run 34598298467 on exact implementation head 386c5fd1bb48c81d2259faf4bb0827c8d9de608d completed successfully. Observed successful stages include package installation, Python compilation, source-tree discovery, the complete Unit/API contract/PUBLIC_SERVICEABILITY test stage, frontend production build, zero-JavaScript Pages discovery stamping, local executable API/public-boundary smoke, validation-status publication, and cleanup.
+
+GitHub Pages run 34598297769 for the same exact implementation head completed successfully through deployment. Direct repository code searches returned zero matches for both prohibited retired predecessor-brand spellings after implementation, though GitHub marked those search responses incomplete; the exact implementation also passed the repository-wide branding guard in full validation, which remains the stronger repository evidence. A direct rendered-browser retrieval was not established, so browser-render acceptance is not claimed.
+
+This repair is static/data-contract acceptance only. It strengthens the geometry boundary that feeds reservation and exclusion decisions but does not establish Minecraft fresh-world generation, Lost Cities compatibility placement, or production admission. The external Java/Render API remains FAILED CLOSED / NOT VERIFIED LIVE because no host-level evidence in this cycle supersedes that standing boundary.
+
+E01-018 remains blocked under the existing catalog-provenance rule. No identity was invented and the exhausted catalog search was not repeated as new evidence.
+
+Next dependency-valid work: continue auditing the same authoritative worldgen boundary for constrained jigsaw structure parameters that remain unchecked at construction time, especially absolute height, max-distance, and protection-profile selector/value shape where malformed data can propagate into generated Minecraft structure JSON. Preserve the existing exclusion invariant and keep runtime/fresh-world claims separate from static validation.
