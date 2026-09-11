@@ -423,6 +423,9 @@ def structure_protection_profile(
 
 
 def validate_structure_protection_profile(profile: Mapping) -> list[tuple[str, str]]:
+    if not isinstance(profile, Mapping):
+        return [("error", "INVALID_PROTECTION_PROFILE_SHAPE")]
+
     findings: list[tuple[str, str]] = []
     selectors = profile.get("selectors")
     selector_shape_valid = isinstance(selectors, Mapping)
@@ -478,7 +481,8 @@ def validate_geospatial_worldgen(
     require_spawn_protection: bool = False,
 ):
     findings = []
-    if not isinstance(structure, Mapping):
+    structure_shape_valid = isinstance(structure, Mapping)
+    if not structure_shape_valid:
         findings.append(("error", "INVALID_STRUCTURE_SHAPE"))
         structure = {}
     if not isinstance(structure_set, Mapping):
@@ -494,7 +498,11 @@ def validate_geospatial_worldgen(
         except ValueError:
             findings.append(("error", "INVALID_BIOME_SELECTOR"))
 
-    if structure.get("type") == "minecraft:jigsaw":
+    structure_type = structure.get("type")
+    if structure_shape_valid and structure_type != "minecraft:jigsaw":
+        findings.append(("error", "UNSUPPORTED_STRUCTURE_TYPE"))
+
+    if structure_type == "minecraft:jigsaw":
         try:
             _require_resource_location(structure.get("start_pool"), name="start pool")
         except ValueError:
@@ -591,10 +599,7 @@ def validate_geospatial_worldgen(
                 findings.append(("error", "INVALID_RANDOM_SPREAD"))
 
     if protection_profile is not None:
-        if isinstance(protection_profile, Mapping):
-            findings.extend(validate_structure_protection_profile(protection_profile))
-        else:
-            findings.append(("error", "INVALID_PROTECTION_PROFILE_SHAPE"))
+        findings.extend(validate_structure_protection_profile(protection_profile))
     elif require_spawn_protection:
         findings.append(("error", "MISSING_STRUCTURE_SPAWN_PROTECTION"))
     return findings
