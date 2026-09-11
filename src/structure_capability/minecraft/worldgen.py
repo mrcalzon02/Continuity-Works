@@ -481,17 +481,96 @@ def validate_geospatial_worldgen(
     biomes = structure.get("biomes")
     if not biomes:
         findings.append(("error", "NO_BIOME_SELECTOR"))
+    else:
+        try:
+            _require_resource_location(biomes, name="biome selector", allow_tag=True)
+        except ValueError:
+            findings.append(("error", "INVALID_BIOME_SELECTOR"))
+
+    if structure.get("type") == "minecraft:jigsaw":
+        try:
+            _require_resource_location(structure.get("start_pool"), name="start pool")
+        except ValueError:
+            findings.append(("error", "INVALID_JIGSAW_START_POOL"))
+
+        try:
+            _require_enum(structure.get("step"), GENERATION_STEPS, name="generation step")
+        except ValueError:
+            findings.append(("error", "INVALID_GENERATION_STEP"))
+
+        try:
+            _require_enum(
+                structure.get("terrain_adaptation"),
+                TERRAIN_ADAPTATIONS,
+                name="terrain adaptation",
+            )
+        except ValueError:
+            findings.append(("error", "INVALID_TERRAIN_ADAPTATION"))
+
+        start_height = structure.get("start_height")
+        if not isinstance(start_height, Mapping) or "absolute" not in start_height:
+            findings.append(("error", "INVALID_START_HEIGHT"))
+        else:
+            try:
+                _require_block_coordinate(start_height.get("absolute"), name="absolute y")
+            except ValueError:
+                findings.append(("error", "INVALID_START_HEIGHT"))
+
+        try:
+            _require_jigsaw_distance(structure.get("max_distance_from_center"))
+        except ValueError:
+            findings.append(("error", "INVALID_JIGSAW_DISTANCE"))
+
+        if "project_start_to_heightmap" in structure:
+            try:
+                _require_enum(
+                    structure.get("project_start_to_heightmap"),
+                    HEIGHTMAP_TYPES,
+                    name="heightmap",
+                )
+            except ValueError:
+                findings.append(("error", "INVALID_HEIGHTMAP"))
+
+    entries = structure_set.get("structures")
+    invalid_entries = (
+        isinstance(entries, (str, bytes))
+        or not isinstance(entries, Sequence)
+        or not entries
+    )
+    if not invalid_entries:
+        for entry in entries:
+            if not isinstance(entry, Mapping):
+                invalid_entries = True
+                break
+            try:
+                _require_resource_location(entry.get("structure"), name="structure id")
+            except ValueError:
+                invalid_entries = True
+                break
+            weight = entry.get("weight")
+            if isinstance(weight, bool) or not isinstance(weight, int) or weight <= 0:
+                invalid_entries = True
+                break
+    if invalid_entries:
+        findings.append(("error", "INVALID_STRUCTURE_SET_ENTRIES"))
+
     placement = structure_set.get("placement", {})
     if placement.get("type") == "minecraft:random_spread":
         spacing = placement.get("spacing")
         separation = placement.get("separation")
+        salt = placement.get("salt")
         invalid_spacing = isinstance(spacing, bool) or not isinstance(spacing, int) or spacing <= 0
         invalid_separation = (
             isinstance(separation, bool)
             or not isinstance(separation, int)
             or separation < 0
         )
-        if invalid_spacing or invalid_separation or (
+        invalid_salt = (
+            isinstance(salt, bool)
+            or not isinstance(salt, int)
+            or not JAVA_INT_MIN <= salt <= JAVA_INT_MAX
+        )
+        if invalid_spacing or invalid_separation or invalid_salt or (
             not invalid_spacing and not invalid_separation and separation >= spacing
         ):
             findings.append(("error", "INVALID_RANDOM_SPREAD"))
