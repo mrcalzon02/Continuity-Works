@@ -2,7 +2,7 @@ Continuity Works Capability API v0.3.2
 Validation date: 2026-09-11
 =====================================
 
-RESULT: RANDOM-SPREAD WORLDGEN INPUT VALIDATION NOW FAILS CLOSED; EXACT IMPLEMENTATION HEAD PASSED FULL REPOSITORY VALIDATION AND EXACT-HEAD PAGES DEPLOYMENT; RETIRED PREDECESSOR-BRAND GUARDS REMAIN CLEAN; E01-018 REMAINS CORRECTLY BLOCKED; PUBLIC REMOTE API REMAINS FAILED CLOSED / NOT VERIFIED LIVE
+RESULT: API BIND PORT CONFIGURATION NOW FAILS CLOSED; EXACT IMPLEMENTATION HEAD PASSED FULL REPOSITORY VALIDATION AND EXACT-HEAD PAGES DEPLOYMENT; RETIRED PREDECESSOR-BRAND GUARDS REMAIN CLEAN; E01-018 REMAINS CORRECTLY BLOCKED; PUBLIC REMOTE API REMAINS FAILED CLOSED / NOT VERIFIED LIVE
 
 Authority and observed evidence
 -------------------------------
@@ -139,3 +139,25 @@ This repair improves static/data-contract safety but does not itself establish M
 E01-018 remains blocked under the catalog provenance rule. No identity was invented and the same exhausted recovery search was not repeated as new evidence.
 
 Next dependency-valid work: continue from current main by inspecting the highest-priority repository-owned worldgen/data-contract defect or validation gap among the already materialized E01-001 through E01-017 and the public-service boundary. Preserve the distinction between static source/CI acceptance and actual Minecraft runtime admission, and keep E01-018 blocked until qualifying catalog authority exists.
+
+2026-09-11 API bind port validation repair
+-------------------------------------------
+Cycle starting head: 489b73a4eeda1c2f60fd104dbf2a60ade31041f9
+Accepted implementation head before continuity record: e3e3e9072cc1492bfcd01ff9952b67fde0a15d8a
+Changed files: scripts/run_api.py, tests/test_run_api_env.py
+
+Reconciliation found a remaining runtime configuration defect after the canonical bind-variable migration: scripts/run_api.py converted the selected port with int(...) but did not validate the legal TCP port range. Zero, negative, and values above 65535 therefore crossed the repository runtime boundary and were left for the underlying server stack to reject later. Nonnumeric values also surfaced the raw int conversion error rather than the repository enforcing one explicit runtime contract.
+
+Commit e3e3e9072cc1492bfcd01ff9952b67fde0a15d8a repairs that boundary directly. The existing canonical-first precedence is unchanged. The selected CONTINUITY_WORKS_PORT, or compatibility PORT fallback, is parsed once and must be an integer in the inclusive range 1 through 65535 before serve(...) is invoked. Invalid values fail closed with one explicit ValueError contract. Existing project-root, host, compatibility, and default behavior is preserved.
+
+Focused regression coverage extends the existing real-entrypoint environment tests. It proves canonical and compatibility port sources both reject nonnumeric/empty, negative/zero, and oversized values while the existing valid precedence and default tests remain intact.
+
+Validate Continuity Works run 34593444081 on exact implementation head e3e3e9072cc1492bfcd01ff9952b67fde0a15d8a completed successfully. Observed successful stages include setup, package installation, Python compilation, source-tree discovery, the complete Unit/API contract/PUBLIC_SERVICEABILITY test stage, frontend production build, zero-JavaScript Pages discovery stamping, local executable API/public-boundary smoke, validation-status publication, and cleanup.
+
+GitHub Pages run 34593443238 for the same exact implementation head completed successfully through deployment. The exact implementation diff contains only the intended runtime parser and focused regression additions.
+
+The retired predecessor-brand cleanup remains protected by the full repository validation path; that exact implementation head passed the naming gate. Independent browser-render acceptance was not established in this cycle, so it is not claimed. Exact-head validation plus exact-head Pages deployment is the strongest directly observed artifact evidence.
+
+The external Java/Render API remains FAILED CLOSED / NOT VERIFIED LIVE; local entrypoint validation does not establish host provisioning or remote health. E01-018 remains blocked under the catalog provenance rule and no identity was invented.
+
+Next dependency-valid work: continue inspecting repository-owned runtime/worldgen data boundaries for values that are type-annotated or contractually constrained but still accepted unchecked, prioritizing defects that can corrupt reservation, generation, or deployment behavior. Preserve the 500-block exclusion invariant, keep external serviceability failed closed until directly verified, and leave E01-018 blocked until qualifying catalog authority exists.
