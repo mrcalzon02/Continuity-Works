@@ -132,7 +132,20 @@ Culture configuration may alter preferred source quality, willingness to transpo
 
 ## Material Palette Logic
 
-Terrain remains overwhelmingly local soil, gravel, stone, sand, and vegetation. Toolstone proxies must contrast enough to read as the selected source while remaining geologically coherent. Spoil uses displaced local substrate and rejected source stone. Organic digging-tool traces may be represented indirectly but must remain minor. Forbidden base materials include masonry, planks as formal structures, rails, metal fixtures, mine supports, chests/barrels as default storage, powered blocks, lamps, cranes, or machines.
+### Terrain
+Terrain remains overwhelmingly local soil, gravel, stone, sand, and vegetation.
+
+### Toolstone proxies
+Toolstone proxies must contrast enough to read as the selected source while remaining geologically coherent.
+
+### Spoil
+Spoil uses displaced local substrate and rejected source stone.
+
+### Organic digging-tool traces
+Organic digging-tool traces may be represented indirectly but must remain minor.
+
+### Forbidden base materials
+Forbidden base materials include masonry, planks as formal structures, rails, metal fixtures, mine supports, chests/barrels as default storage, powered blocks, lamps, cranes, or machines.
 
 ## Condition Variants
 
