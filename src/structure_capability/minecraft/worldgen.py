@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, replace
 from math import hypot
+import re
 from threading import RLock
 from typing import Iterable, Mapping, Sequence
 from uuid import uuid4
@@ -10,11 +11,61 @@ from uuid import uuid4
 MINIMUM_STRUCTURE_EXCLUSION_RADIUS = 500
 DEFAULT_STRUCTURE_EXCLUSION_RADIUS = MINIMUM_STRUCTURE_EXCLUSION_RADIUS
 MAXIMUM_JIGSAW_DISTANCE_FROM_CENTER = 128
+JAVA_INT_MIN = -(2**31)
+JAVA_INT_MAX = 2**31 - 1
+RESOURCE_LOCATION_PATTERN = re.compile(r"^(?:[a-z0-9_.-]+:)?[a-z0-9/._-]+$")
+GENERATION_STEPS = frozenset({
+    "raw_generation",
+    "lakes",
+    "local_modifications",
+    "underground_structures",
+    "surface_structures",
+    "strongholds",
+    "underground_ores",
+    "underground_decoration",
+    "fluid_springs",
+    "vegetal_decoration",
+    "top_layer_modification",
+})
+TERRAIN_ADAPTATIONS = frozenset({"none", "bury", "beard_thin", "beard_box", "encapsulate"})
+HEIGHTMAP_TYPES = frozenset({
+    "world_surface_wg",
+    "world_surface",
+    "ocean_floor_wg",
+    "ocean_floor",
+    "motion_blocking",
+    "motion_blocking_no_leaves",
+})
 
 
 def _require_non_negative_int(value, *, name: str) -> int:
     if isinstance(value, bool) or not isinstance(value, int) or value < 0:
         raise ValueError(f"{name} must be a non-negative integer")
+    return value
+
+
+def _require_java_int(value, *, name: str) -> int:
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise ValueError(f"{name} must be an integer")
+    if not JAVA_INT_MIN <= value <= JAVA_INT_MAX:
+        raise ValueError(f"{name} must fit a signed 32-bit Java integer")
+    return value
+
+
+def _require_resource_location(value, *, name: str, allow_tag: bool = False) -> str:
+    if not isinstance(value, str) or not value:
+        raise ValueError(f"{name} must be a Minecraft resource location")
+    candidate = value
+    if allow_tag and candidate.startswith("#"):
+        candidate = candidate[1:]
+    if not candidate or RESOURCE_LOCATION_PATTERN.fullmatch(candidate) is None:
+        raise ValueError(f"{name} must be a valid Minecraft resource location")
+    return value
+
+
+def _require_enum(value, allowed: frozenset[str], *, name: str) -> str:
+    if not isinstance(value, str) or value not in allowed:
+        raise ValueError(f"{name} must be one of: {', '.join(sorted(allowed))}")
     return value
 
 
@@ -58,6 +109,12 @@ def _normalize_selector_values(values, *, name: str) -> list[str]:
 def jigsaw_structure(*, biome_selector, start_pool, step="surface_structures",
                      terrain_adaptation="bury", heightmap=None, absolute_y=0,
                      max_distance=80):
+    _require_resource_location(biome_selector, name="biome selector", allow_tag=True)
+    _require_resource_location(start_pool, name="start pool")
+    _require_enum(step, GENERATION_STEPS, name="generation step")
+    _require_enum(terrain_adaptation, TERRAIN_ADAPTATIONS, name="terrain adaptation")
+    if heightmap is not None:
+        _require_enum(heightmap, HEIGHTMAP_TYPES, name="heightmap")
     _require_block_coordinate(absolute_y, name="absolute y")
     _require_jigsaw_distance(max_distance)
     out = {
@@ -72,18 +129,20 @@ def jigsaw_structure(*, biome_selector, start_pool, step="surface_structures",
         "max_distance_from_center": max_distance,
         "use_expansion_hack": False,
     }
-    if heightmap:
+    if heightmap is not None:
         out["project_start_to_heightmap"] = heightmap
     return out
 
 
 def random_spread_structure_set(structure_id, spacing, separation, salt):
+    _require_resource_location(structure_id, name="structure id")
     if isinstance(spacing, bool) or not isinstance(spacing, int) or spacing <= 0:
         raise ValueError("spacing must be a positive integer")
     if isinstance(separation, bool) or not isinstance(separation, int) or separation < 0:
         raise ValueError("separation must be a non-negative integer")
     if separation >= spacing:
         raise ValueError("separation must be lower than spacing")
+    _require_java_int(salt, name="salt")
     return {
         "structures": [{"structure": structure_id, "weight": 1}],
         "placement": {
