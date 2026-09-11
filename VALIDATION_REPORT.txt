@@ -2,73 +2,70 @@ Continuity Works Capability API v0.3.2
 Validation date: 2026-09-11
 =====================================
 
-RESULT: E01-016 K PALETTE AUTHORITY NORMALIZED AND PRODUCTION-ROUTED; EXACT IMPLEMENTATION HEAD PASSED FULL REPOSITORY VALIDATION AND EXACT-HEAD PAGES DEPLOYMENT; PROHIBITED PREDECESSOR-BRAND CHECK REMAINS CLEAN; PUBLIC REMOTE API REMAINS FAILED CLOSED / NOT VERIFIED LIVE
+RESULT: E01-017 K PALETTE AUTHORITY NORMALIZED AND PRODUCTION-ROUTED; EXACT IMPLEMENTATION HEAD PASSED FULL REPOSITORY VALIDATION AND EXACT-HEAD PAGES DEPLOYMENT; PROHIBITED PREDECESSOR-BRAND SEARCHES REMAIN EMPTY; PUBLIC REMOTE API REMAINS FAILED CLOSED / NOT VERIFIED LIVE
 
 Authority and observed evidence
 -------------------------------
 Authoritative repository: mrcalzon02/Continuity-Works
 Authoritative branch: main
-Cycle starting head: fa329012e8a7abbc902b5bfbe1a7bca5ff9d4eb3
-Accepted implementation head before continuity records: 7b0970980fc5359fcb7fe5821882e9f864bf600a
+Cycle starting head: 269d112cf100ebaa93a74cb12df10431b589936f
+Accepted implementation head before continuity records: 78f63f60e632cb8d28198c2d9df27343fd896014
 
 Reconciliation and selected work
 --------------------------------
-The live main branch reconciled at fa329012e8a7abbc902b5bfbe1a7bca5ff9d4eb3. Existing continuity authority identified E01-016 Watering-Hole Camp palette source-format inspection and normalization as the next repository-controlled dependency-valid slice. AI Project Manager v3.0, the Repository Execution Protocol, and the Minecraft Java Project Profile were loaded in full before mutation.
+The live main branch reconciled at 269d112cf100ebaa93a74cb12df10431b589936f. Existing continuity authority identified E01-017 Riverbank Foraging Camp Material Palette Logic inspection and normalization as the next repository-controlled dependency-valid slice. AI Project Manager v3.0, the Repository Execution Protocol, and the Minecraft Java Project Profile were loaded in full before mutation.
 
 Implemented improvement
 -----------------------
-Normalized only five already-explicit and unambiguous E01-016 semantic material relationships into the existing parser-consumable explicit bold-label syntax. The mixed logs/leaves/fences restriction-and-allowance sentence was deliberately left as descriptive prose and is not promoted into K vocabulary. The palette parser and production router were not broadened.
+Normalized only six already-explicit and unambiguous E01-017 semantic material relationships into the existing parser-consumable explicit bold-label syntax. The gathered-food sentence explaining that melon/pumpkin seeds are not placed literally was deliberately left as descriptive restriction prose and is not promoted into K vocabulary. The palette parser and production router were not broadened.
 
 The resulting K vocabulary is:
-- FRESHWATER_MARGIN_PROXY
-- BANK_TRAMPLE_AND_CAMP_GROUND_ROLES
-- SIMPLE_TOOL_HEARTH_RING_ROLES
-- SUBORDINATE_HEARTH_TRACE
-- OPTIONAL_OPPORTUNISTIC_CARCASS_REFUSE_PROXY
+- RIVER_MARGIN_PROXY
+- BANK_AND_ACTIVITY_GROUND_ROLES
+- GATHERED_RIPARIAN_VEGETATION_ROLE
+- EXPEDIENT_TOOL_POUNDING_ROLE
+- MIXED_FOOD_PROCESSING_REFUSE_ROLE
+- SUBORDINATE_HEARTH_ROLE
 
-Updated tests/test_era_structure_palette_candidate_corpus_java.py so E01-016 now verifies direct palette authority, exact-source SHA-256 provenance, production routing, authoritative ordering, and compact candidate-code resolution. E01-016 was removed from the narrative-only refusal set. E01-010 and E01-017 remain fail closed under their current formatting.
+Updated tests/test_era_structure_palette_candidate_corpus_java.py so E01-017 now verifies direct palette authority, exact-source SHA-256 provenance, production routing, authoritative ordering, and compact candidate-code resolution. E01-017 was removed from the narrative-only refusal set. E01-010 remains fail closed under its current prose-only formatting.
 
 Implementation commits
 ----------------------
-- 5411073fa4ef037b065e8750e7c157af31f20f6a — normalized E01-016 Material Palette Logic labels at the authoritative hero specification.
-- 7b0970980fc5359fcb7fe5821882e9f864bf600a — extended the existing K palette corpus regression and production-routing acceptance for E01-016.
+- 4c4aa173ee1bc8c07c6523adad8ee89bab32c886 — normalized E01-017 Material Palette Logic labels at the authoritative hero specification.
+- 78f63f60e632cb8d28198c2d9df27343fd896014 — extended the existing K palette corpus regression and production-routing acceptance for E01-017.
 
-The diff from the cycle starting head through the accepted implementation is two commits ahead and zero behind. It changes only docs/era_structure_hero/E01-016_WATERING_HOLE_CAMP.md and tests/test_era_structure_palette_candidate_corpus_java.py. The hero-spec edit is five additions/five deletions limited to explicit semantic labels; the corpus edit is five additions/one deletion.
+The diff from the cycle starting head through the accepted implementation is two commits ahead and zero behind. It changes only docs/era_structure_hero/E01-017_RIVERBANK_FORAGING_CAMP.md and tests/test_era_structure_palette_candidate_corpus_java.py. The hero-spec edit is six additions/six deletions limited to semantic label formatting; the corpus edit is five additions/one deletion.
 
 Verification actually observed
 ------------------------------
-Validate Continuity Works run 34550463251 on exact implementation head 7b0970980fc5359fcb7fe5821882e9f864bf600a completed successfully.
+Validate Continuity Works run 34554388413 on exact implementation head 78f63f60e632cb8d28198c2d9df27343fd896014 completed successfully.
 
 Observed successful stages include checkout, Python installation and compilation, source-tree agent discovery, Unit/API contract/PUBLIC_SERVICEABILITY tests, Java 17 palette corpus regression, production frontend build, zero-JavaScript Pages discovery stamping, local executable API/public-boundary smoke, validation-status publication, and cleanup.
 
-GitHub Pages run 34550461727 for the same exact implementation head completed successfully, including deployment.
-
-Public-service workflow run 34550569807 independently built the intended Pages artifact, stamped and validated the static artifact, uploaded it, and deployed the exact validated artifact successfully. Its configured remote-api health preflight failed, so exact-main remote API verification was skipped. Its Pages-advertised API health preflight also failed, so zero-JavaScript external-agent API verification was skipped. The final report correctly failed closed rather than converting static deployment success into remote-runtime acceptance.
+GitHub Pages run 34554387533 for the same exact implementation head completed successfully, including deployment.
 
 Naming cleanup state
 --------------------
-Repository searches during this cycle reported zero matches for both prohibited retired predecessor-brand spellings before mutation. The accepted implementation head passed the whole-active-repository naming guard inside the complete validation workflow and completed exact-head Pages deployment through both the ordinary Pages path and the independent public-service artifact path.
+Repository searches during this cycle reported zero matches for both prohibited retired predecessor-brand spellings. The accepted implementation head also passed the whole-active-repository naming guard inside the complete validation workflow and completed an exact-head Pages deployment. This is the strongest directly observed deployment-artifact evidence available in this cycle.
 
-An independent rendered-browser retrieval attempt could not establish the live page through the available browser path, so separate browser-render acceptance is not claimed. The successful exact-head deployment artifacts remain the strongest directly observed branding evidence for this cycle.
+A separate rendered/live-page retrieval attempt could not establish the site through the available browser path. Browser-render acceptance is therefore not claimed.
 
 Public API / deployment boundary
 --------------------------------
 PUBLIC REMOTE API: FAILED CLOSED / NOT VERIFIED LIVE.
 
-Public-service workflow run 34550569807 directly confirmed that the configured remote API health route still fails. The repository-controlled deployment path remains intact, but public Java decision-authority serviceability is not promoted to runtime acceptance without successful configured remote health and exact-SHA verification.
+No observed evidence in this cycle superseded the existing external Render service/provisioning failure state. The repository-controlled deployment path remains intact, but public Java decision-authority serviceability is not promoted to runtime acceptance without successful configured remote health and exact-SHA verification.
 
 Era structure program boundary
 ------------------------------
-E01-001 through E01-017 culture and Q CONDITION candidate authority remains reconciled and production-routed. K PALETTE routing remains explicit-source-only with source-bound provenance and fail-closed behavior. E01-012 through E01-016 are now explicit and production-routed. E01-010 and E01-017 remain fail closed under their current non-profile formatting until each is individually inspected and, where semantics are already explicit and unambiguous, normalized at its authoritative source.
+E01-001 through E01-017 culture and Q CONDITION candidate authority remains reconciled and production-routed. K PALETTE routing remains explicit-source-only with source-bound provenance and fail-closed behavior. E01-012 through E01-017 are now explicit and production-routed. E01-010 remains the sole currently classified narrative-only/fail-closed K target in the developed E01-001 through E01-017 set.
 
 E01-018 remains blocked until its authoritative master-catalog archetype identity is recovered; no identity is to be invented.
 
 Next dependency-valid work
 --------------------------
-1. Inspect E01-017 Riverbank Foraging Camp Material Palette Logic as the next sequential K authority target.
-2. Determine which current material-role relationships are explicit and unambiguous enough to normalize without semantic invention; leave the gathered-food restriction sentence as prose unless a clean existing role is independently established.
-3. If eligible, normalize only existing role labels into the current parser-consumable syntax and replace E01-017's fail-closed corpus expectation with direct/provenance/production-routing/compact-code verification.
-4. Keep E01-010 fail closed unless its current prose-only palette guidance is deliberately converted into explicit project authority in a future bounded cycle.
-5. Keep the active external Render-service provisioning defect open until configured remote health/exact-SHA serviceability succeeds or the external provisioning authority becomes directly inspectable.
-6. Continue predecessor-brand cleanup if any stronger artifact/runtime check finds a remaining occurrence; source search alone is not acceptance.
-7. Resume hero-structure development at E01-018 only when its authoritative catalog identity is recovered.
+1. Reconcile the authoritative master catalog and hero ledger to recover E01-018's canonical archetype identity without invention.
+2. If E01-018 identity remains unavailable, inspect the remaining E01-010 K palette prose and determine whether its material relationships are explicit enough for deliberate source normalization; do not infer candidates from narrative text automatically.
+3. Keep the active external Render-service provisioning defect open until configured remote health/exact-SHA serviceability succeeds or the external provisioning authority becomes directly inspectable.
+4. Continue predecessor-brand cleanup if any stronger artifact/runtime check finds a remaining occurrence; source search alone is not acceptance.
+5. Once E01-018 identity is authoritatively recovered, resume sequential hero-structure development at E01-018 under the 500-block unrelated-structure exclusion and additive/non-destructive compatibility rules.
