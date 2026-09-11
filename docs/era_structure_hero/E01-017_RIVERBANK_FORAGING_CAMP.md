@@ -76,13 +76,13 @@ Profiles change emphasis, not technological era or archetype identity.
 
 Only valid Minecraft blocks are emitted, with semantic proxy roles documented honestly:
 
-- water = river-margin proxy;
-- dirt/coarse dirt/podzol/sand/gravel/stone = bank and activity-ground roles;
-- short grass/fern/dead bush or biome-appropriate leaves = gathered/riparian vegetation role;
+- **River-margin proxy**: water;
+- **Bank and activity-ground roles**: dirt/coarse dirt/podzol/sand/gravel/stone;
+- **Gathered/riparian vegetation role**: short grass/fern/dead bush or biome-appropriate leaves;
 - melon/pumpkin seeds are not placed as blocks; gathered-food evidence uses valid ground/vegetation proxies rather than invented literal crops;
-- stone/andesite/granite/cobblestone = expedient tool/pounding role;
-- bone block/gravel = mixed food-processing/refuse role where appropriate;
-- campfire/coal block = subordinate hearth role.
+- **Expedient tool/pounding role**: stone/andesite/granite/cobblestone;
+- **Mixed food-processing/refuse role**: bone block/gravel where appropriate;
+- **Subordinate hearth role**: campfire/coal block.
 
 No proxy is claimed to be a literal archaeological material beyond its declared visual/functional role.
 
