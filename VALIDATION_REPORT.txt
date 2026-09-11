@@ -344,3 +344,26 @@ This remains static/data-contract acceptance. It closes silent selector-key acce
 E01-018 remains blocked under the existing catalog-provenance rule. No identity was invented and the exhausted recovery search was not repeated as new evidence.
 
 Next dependency-valid work: continue the persisted protection-profile schema audit at top-level key semantics. validate_structure_protection_profile currently ignores unknown top-level profile fields even though structure_protection_profile emits a closed set of selectors, exclusion_radius, jigsaw_piece_exclusion_radius, protect_jigsaw_pieces, priority, and optional family. Confirm the consumer schema is closed, then fail unsupported top-level keys closed if they likewise have no defined protection behavior.
+
+2026-09-11 protection-profile top-level field validation repair
+----------------------------------------------------------------
+Cycle starting head: 9c498282d57b84d6e66bb331736e39d05d788a1f
+Accepted implementation head before continuity record: 41d92d457fa136838532ec0b8bba48565007b011
+Implementation commits: fceecf798d6376057bdf39cb6df2b5dab807b4e6, 41d92d457fa136838532ec0b8bba48565007b011
+Changed files: src/structure_capability/minecraft/worldgen.py, tests/test_worldgen_validator_entrypoints.py
+
+Reconciliation confirmed the exact next defect recorded by the preceding accepted cycle. structure_protection_profile emits a closed top-level schema: selectors, exclusion_radius, jigsaw_piece_exclusion_radius, protect_jigsaw_pieces, priority, and optional family. validate_structure_protection_profile validated the known fields but ignored unsupported top-level keys, allowing misspelled or inert configuration to survive validation without contributing to protection behavior.
+
+Commit fceecf798d6376057bdf39cb6df2b5dab807b4e6 repairs the authoritative validator directly. Direct profile validation now admits only the constructor-defined top-level keys. Any unsupported string or non-string top-level key emits INVALID_PROTECTION_PROFILE_FIELDS. Existing selector schema and identifier validation, radii, jigsaw protection, family/priority behavior, reservation logic, and the 500-block exclusion invariant are unchanged.
+
+Commit 41d92d457fa136838532ec0b8bba48565007b011 adds focused regression coverage for misspelled selector/radius/enabled fields and a non-string top-level key. The existing constructor-generated canonical profile path remains clean. Comparison from the captured starting head shows the accepted implementation is two commits ahead and zero behind and changes only the authoritative worldgen source and existing focused validator test: worldgen.py +11/-0; test_worldgen_validator_entrypoints.py +10/-0.
+
+Validate Continuity Works run 34643528921 on exact implementation head 41d92d457fa136838532ec0b8bba48565007b011 completed successfully. Observed successful stages include package installation, Python compilation, source-tree agent discovery, the complete Unit/API contract/PUBLIC_SERVICEABILITY test stage, production frontend build, zero-JavaScript Pages discovery stamping, local executable API/public-boundary smoke, validation-status publication, and cleanup.
+
+Public-service run 34643668343 for the same exact implementation head successfully built the intended Pages artifact, stamped configured API discovery and validated the static artifact, uploaded it, and deployed the exact validated artifact. The configured remote API health preflight failed and exact-main remote API verification was skipped; the Pages-advertised API health preflight also failed and zero-JavaScript external-agent API verification was skipped. The workflow therefore remained failed closed for external serviceability while the exact validated Pages artifact itself deployed successfully.
+
+Repository searches returned zero matches for both prohibited retired predecessor-brand spellings after implementation, and the exact implementation passed the repository-wide validation/naming path. Independent browser-render retrieval was not established, so browser-render acceptance is not claimed; exact-head validation plus the exact validated Pages artifact deployment is the strongest directly observed deployment evidence.
+
+This is static/data-contract acceptance. It closes silent top-level profile-field acceptance but does not establish Minecraft controlled startup, fresh-world natural generation, Lost Cities compatibility placement, or production admission. The external Java/Render API remains FAILED CLOSED / NOT VERIFIED LIVE because the exact-head public-service preflights still fail. E01-018 remains blocked under the catalog-provenance rule; no identity was invented and the exhausted recovery search was not repeated as new evidence.
+
+Next dependency-valid work: validate StructureReservation and reserve_piece identity fields that participate in exclusion behavior. In particular, structure IDs should satisfy the Minecraft resource-location contract; assembly and family IDs should be non-empty strings; optional piece IDs should be non-empty when present; and the reservation index should not allow malformed identity data to create unintended same-assembly exemptions from the external 500-block exclusion rule. Preserve existing same-assembly jigsaw behavior while closing that input boundary.
