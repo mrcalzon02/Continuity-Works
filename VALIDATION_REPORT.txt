@@ -69,3 +69,25 @@ Next dependency-valid work
 3. While E01-018 remains blocked, select the highest-priority repository-owned repair or validation gap among already materialized E01-001 through E01-017 or the public service boundary, without converting static success into Minecraft runtime admission.
 4. Keep the external Java/Render service defect open until configured remote health and exact-SHA serviceability succeeds or the external provisioning authority becomes directly inspectable.
 5. Continue retired predecessor-brand cleanup immediately if any stronger rendered/runtime/deployment check discovers another occurrence.
+
+2026-09-11 canonical runtime environment repair
+------------------------------------------------
+Cycle starting head: 60ae07abf46405d0bf66fe56f716237eae40a643
+Accepted implementation head: e6e4a29ccf8b63bcda5a70c0523f4c121fd1dfb1
+Changed authoritative file: scripts/run_api.py
+
+Reconciliation found a repository-owned runtime naming inconsistency while E01-018 remained blocked. README.md declares CONTINUITY_WORKS_* as the canonical environment prefix and legacy environment variables as migration fallbacks only, but scripts/run_api.py still used the legacy project-root variable as its sole environment control. That made the compatibility name authoritative at runtime instead of a fallback.
+
+Commit e6e4a29ccf8b63bcda5a70c0523f4c121fd1dfb1 repaired the entrypoint directly. Project-root resolution now checks CONTINUITY_WORKS_PROJECT_ROOT first, then the existing legacy project-root variable, then the existing dot-directory default. This preserves migration compatibility while restoring the documented Continuity Works authority order. Host and port behavior are unchanged. No workflow, branch, pull request, alternate runtime, compatibility shim, or parallel implementation was added.
+
+Independent repository readback confirmed the committed scripts/run_api.py contains that canonical-first resolution.
+
+Validate Continuity Works run 34574140670 on exact implementation head e6e4a29ccf8b63bcda5a70c0523f4c121fd1dfb1 completed successfully. Observed successful stages were package installation, Python compilation, source-tree agent discovery, the complete Unit/API contract/PUBLIC_SERVICEABILITY test step, frontend production build, zero-JavaScript Pages discovery candidate stamping, local executable API/public-boundary smoke, validation-status publication, and cleanup.
+
+Public-service run 34574249573 independently built and validated the exact Pages artifact, uploaded it, and deployed it successfully. The configured remote API health preflight failed, and the Pages-advertised API health preflight failed, so exact-main remote API verification and zero-JavaScript external-agent API verification were skipped rather than bypassed. The workflow therefore failed closed as designed while the exact validated Pages artifact itself deployed successfully.
+
+The external API remains NOT VERIFIED LIVE. This source repair corrects the repository-owned runtime environment contract but does not establish that the external host is provisioned, healthy, or serving the accepted commit.
+
+The prohibited predecessor-brand cleanup remains governed by the repository-wide naming guard and static-artifact verification in the accepted validation/deployment paths. No new occurrence was observed in this cycle. Browser-render acceptance remains distinct from exact-artifact deployment evidence.
+
+E01-018 remains blocked under the catalog provenance rule. Next work should continue with the highest-priority repository-owned defect or validation gap that can be repaired from current authority, with the external serviceability boundary remaining open unless host-level evidence becomes available.
