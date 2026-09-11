@@ -215,8 +215,10 @@ Install and run locally:
 python -m pip install -e .
 continuity-works capabilities
 continuity-works tools
-HOST=0.0.0.0 PORT=8787 python scripts/run_api.py
+CONTINUITY_WORKS_HOST=0.0.0.0 CONTINUITY_WORKS_PORT=8787 python scripts/run_api.py
 ```
+
+Generic `HOST` and `PORT` remain supported as deployment-platform compatibility fallbacks.
 
 The legacy `structure-capability` executable remains an alias during migration.
 
