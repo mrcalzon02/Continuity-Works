@@ -321,3 +321,26 @@ This is static/data-contract acceptance. It prevents malformed protection select
 E01-018 remains blocked under the existing catalog-provenance rule. No identity was invented and the exhausted recovery search was not repeated as new evidence.
 
 Next dependency-valid work: continue the same persisted-profile schema audit for selector-map key semantics. Unknown selector keys are currently ignored by validate_structure_protection_profile, so a typo or unsupported selector class can survive validation without contributing to protection behavior. Confirm that boundary against current consumer authority, then fail unknown selector keys closed if the established profile schema is intentionally closed.
+
+2026-09-11 protection-profile selector key validation repair
+-------------------------------------------------------------
+Cycle starting head: 9372c43c1395cba37fb63ed85fba8fb75b886f60
+Accepted implementation head before continuity record: 74a8cedcfc7aaaa2a9aa059428f55e45c757f43a
+Implementation commits: 68c1802795cbec6c3873bea1d9e8b8daee22b810, 74a8cedcfc7aaaa2a9aa059428f55e45c757f43a
+Changed files: src/structure_capability/minecraft/worldgen.py, tests/test_worldgen_validator_entrypoints.py
+
+Reconciliation confirmed the recorded selector-map defect against the current consumer contract. structure_protection_profile emits only three selector classes—structures, tags, and namespaces—and validate_structure_protection_profile consumes only those same three classes. Unknown keys therefore had no defined behavior: they could survive validation but were silently ignored by protection semantics.
+
+Commit 68c1802795cbec6c3873bea1d9e8b8daee22b810 repairs that authoritative validator boundary directly. A mapping-shaped selectors object is now valid only when every key belongs to the established structures/tags/namespaces schema. Any typo, unsupported selector class, or noncanonical key fails the existing selector contract as INVALID_PROTECTION_SELECTORS. Existing valid selector identifier checks, radii, jigsaw protection, family/priority behavior, reservation logic, and the 500-block exclusion invariant remain unchanged.
+
+Commit 74a8cedcfc7aaaa2a9aa059428f55e45c757f43a adds focused regression coverage proving unknown string keys and a non-string key fail closed while constructor-generated canonical profiles remain valid. Comparison from the captured starting head shows the accepted implementation is exactly two commits ahead and zero behind and changes only the authoritative worldgen source and the existing focused validator test file.
+
+Validate Continuity Works run 34638796238 on exact implementation head 74a8cedcfc7aaaa2a9aa059428f55e45c757f43a completed successfully. Observed successful stages include package installation, Python compilation, source-tree agent discovery, the complete Unit/API contract/PUBLIC_SERVICEABILITY test stage, production frontend build, zero-JavaScript Pages discovery stamping, local executable API/public-boundary smoke, validation-status publication, and cleanup.
+
+GitHub Pages run 34638796257 for the same exact implementation head completed successfully through deployment. Repository searches returned zero matches for both prohibited retired predecessor-brand spellings, and the exact implementation also passed the repository-wide naming guard through full validation. Direct rendered-browser retrieval was not established through the available web path, so browser-render acceptance is not claimed; exact-head validation plus exact-head successful Pages deployment is the strongest directly observed deployment-artifact evidence.
+
+This remains static/data-contract acceptance. It closes silent selector-key acceptance but does not establish Minecraft controlled startup, fresh-world natural generation, Lost Cities compatibility placement, or production admission. The external Java/Render API remains FAILED CLOSED / NOT VERIFIED LIVE because no host-level evidence in this cycle supersedes that standing boundary.
+
+E01-018 remains blocked under the existing catalog-provenance rule. No identity was invented and the exhausted recovery search was not repeated as new evidence.
+
+Next dependency-valid work: continue the persisted protection-profile schema audit at top-level key semantics. validate_structure_protection_profile currently ignores unknown top-level profile fields even though structure_protection_profile emits a closed set of selectors, exclusion_radius, jigsaw_piece_exclusion_radius, protect_jigsaw_pieces, priority, and optional family. Confirm the consumer schema is closed, then fail unsupported top-level keys closed if they likewise have no defined protection behavior.
