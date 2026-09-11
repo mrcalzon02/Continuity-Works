@@ -14,6 +14,7 @@ MAXIMUM_JIGSAW_DISTANCE_FROM_CENTER = 128
 JAVA_INT_MIN = -(2**31)
 JAVA_INT_MAX = 2**31 - 1
 RESOURCE_LOCATION_PATTERN = re.compile(r"^(?:[a-z0-9_.-]+:)?[a-z0-9/._-]+$")
+NAMESPACE_PATTERN = re.compile(r"^[a-z0-9_.-]+$")
 GENERATION_STEPS = frozenset({
     "raw_generation",
     "lakes",
@@ -63,6 +64,12 @@ def _require_resource_location(value, *, name: str, allow_tag: bool = False) -> 
     return value
 
 
+def _require_namespace(value, *, name: str) -> str:
+    if not isinstance(value, str) or NAMESPACE_PATTERN.fullmatch(value) is None:
+        raise ValueError(f"{name} must be a valid Minecraft namespace")
+    return value
+
+
 def _require_enum(value, allowed: frozenset[str], *, name: str) -> str:
     if not isinstance(value, str) or value not in allowed:
         raise ValueError(f"{name} must be one of: {', '.join(sorted(allowed))}")
@@ -95,13 +102,15 @@ def _require_jigsaw_distance(value, *, name: str = "max distance from center") -
     return value
 
 
-def _normalize_selector_values(values, *, name: str) -> list[str]:
+def _normalize_selector_values(values, *, name: str, validator=None) -> list[str]:
     if isinstance(values, (str, bytes)) or not isinstance(values, Sequence):
         raise ValueError(f"{name} must be a sequence of non-empty strings")
     normalized = []
     for value in values:
         if not isinstance(value, str) or not value.strip():
             raise ValueError(f"{name} must contain only non-empty strings")
+        if validator is not None:
+            validator(value, name=f"{name} selector")
         normalized.append(value)
     return normalized
 
@@ -392,9 +401,21 @@ def structure_protection_profile(
         jigsaw_piece_exclusion_radius,
         name="jigsaw piece exclusion radius",
     )
-    structure_selectors = _normalize_selector_values(structures, name="structures")
-    tag_selectors = _normalize_selector_values(tags, name="tags")
-    namespace_selectors = _normalize_selector_values(namespaces, name="namespaces")
+    structure_selectors = _normalize_selector_values(
+        structures,
+        name="structures",
+        validator=_require_resource_location,
+    )
+    tag_selectors = _normalize_selector_values(
+        tags,
+        name="tags",
+        validator=_require_resource_location,
+    )
+    namespace_selectors = _normalize_selector_values(
+        namespaces,
+        name="namespaces",
+        validator=_require_namespace,
+    )
     if not structure_selectors and not tag_selectors and not namespace_selectors:
         raise ValueError("at least one structure, tag, or namespace selector is required")
     if family is not None and (not isinstance(family, str) or not family.strip()):
@@ -431,17 +452,25 @@ def validate_structure_protection_profile(profile: Mapping) -> list[tuple[str, s
     selector_shape_valid = isinstance(selectors, Mapping)
     has_selector = False
     if selector_shape_valid:
-        for key in ("structures", "tags", "namespaces"):
+        selector_validators = {
+            "structures": _require_resource_location,
+            "tags": _require_resource_location,
+            "namespaces": _require_namespace,
+        }
+        for key, validator in selector_validators.items():
             values = selectors.get(key)
             if values is None:
                 continue
-            if isinstance(values, (str, bytes)) or not isinstance(values, Sequence):
+            try:
+                normalized = _normalize_selector_values(
+                    values,
+                    name=key,
+                    validator=validator,
+                )
+            except ValueError:
                 selector_shape_valid = False
                 break
-            if any(not isinstance(value, str) or not value.strip() for value in values):
-                selector_shape_valid = False
-                break
-            if values:
+            if normalized:
                 has_selector = True
     if not selector_shape_valid:
         findings.append(("error", "INVALID_PROTECTION_SELECTORS"))
