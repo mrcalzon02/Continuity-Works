@@ -51,6 +51,20 @@ class RunApiEnvironmentTests(unittest.TestCase):
         self.assertEqual(kwargs["host"], "0.0.0.0")
         self.assertEqual(kwargs["port"], 8787)
 
+    def test_canonical_port_must_be_a_valid_tcp_port(self):
+        for invalid_port in ("0", "65536", "not-a-port"):
+            with self.subTest(invalid_port=invalid_port), self.assertRaisesRegex(
+                ValueError, "API port must be an integer from 1 through 65535"
+            ):
+                self._run_entrypoint({"CONTINUITY_WORKS_PORT": invalid_port})
+
+    def test_compatibility_port_must_be_a_valid_tcp_port(self):
+        for invalid_port in ("-1", "70000", ""):
+            with self.subTest(invalid_port=invalid_port), self.assertRaisesRegex(
+                ValueError, "API port must be an integer from 1 through 65535"
+            ):
+                self._run_entrypoint({"PORT": invalid_port})
+
 
 if __name__ == "__main__":
     unittest.main()
