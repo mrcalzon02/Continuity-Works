@@ -76,12 +76,12 @@ Culture profiles modify emphasis only and do not introduce later technologies.
 
 Only valid Minecraft block IDs may be emitted, with semantic roles documented explicitly:
 
-- `minecraft:water` = bounded natural freshwater-margin proxy;
-- dirt/coarse dirt/podzol/sand/gravel = bank, trample, and camp-ground roles;
-- stone/andesite/granite/cobblestone = simple tool/hearth-ring roles;
-- campfire/coal block = subordinate hearth trace;
+- **Freshwater margin proxy** — `minecraft:water` = bounded natural freshwater-margin proxy;
+- **Bank, trample, and camp-ground roles** — dirt/coarse dirt/podzol/sand/gravel;
+- **Simple tool/hearth-ring roles** — stone/andesite/granite/cobblestone;
+- **Subordinate hearth trace** — campfire/coal block;
 - logs/leaves/fences are not used as permanent construction; sparse log/leaf blocks may represent temporary windbreak debris only;
-- bone block/gravel = optional opportunistic carcass/refuse proxy.
+- **Optional opportunistic carcass/refuse proxy** — bone block/gravel.
 
 No proxy is claimed to be literal archaeological material beyond its declared functional role.
 
