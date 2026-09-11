@@ -2,13 +2,15 @@ Continuity Works Capability API v0.3.2
 Validation date: 2026-09-11
 =====================================
 
-RESULT: AUTHORITATIVE MAIN BRANDING REGRESSION REPAIRED AT SOURCE; E01-001 THROUGH E01-017 RETAIN EXPLICIT SOURCE-BOUND K VOCABULARIES; EXACT REPAIR HEAD REQUIRES VALIDATION READBACK BEFORE ACCEPTANCE; PUBLIC REMOTE API REMAINS FAILED CLOSED / NOT VERIFIED LIVE
+RESULT: AUTHORITATIVE MAIN BRANDING REGRESSION REPAIRED AND EXACT-HEAD VALIDATED; EXACT-HEAD PAGES DEPLOYMENT SUCCEEDED; E01-001 THROUGH E01-017 RETAIN EXPLICIT SOURCE-BOUND K VOCABULARIES; PUBLIC REMOTE API REMAINS FAILED CLOSED / NOT VERIFIED LIVE
 
 Authority and observed evidence
 -------------------------------
 Authoritative repository: mrcalzon02/Continuity-Works
 Authoritative branch: main
 Cycle starting head: 8ab7fddc193b3b392c3ba15a53a24b33f73921e3
+Rejected starting head: 8ab7fddc193b3b392c3ba15a53a24b33f73921e3
+Accepted repair head before final continuity record: 5057871ae89ee79b4061045032dd33562b02bb9f
 Previous accepted implementation head: 2ae34e749079c24cea0031cb204752af8da510a5
 
 Reconciliation and selected work
@@ -21,7 +23,19 @@ Root cause and repair
 ---------------------
 The failure was caused by this validation record itself. The prior cycle documented successful retired-brand searches by embedding the two prohibited predecessor-brand spellings literally in VALIDATION_REPORT.txt. Because VALIDATION_REPORT.txt is active authoritative source, the repository-wide branding guard correctly rejected main even though application/runtime sources were clean.
 
-This cycle repairs the authoritative record directly. The literal retired spellings have been removed from active documentation and replaced with generic wording that records the evidence without reintroducing prohibited branding. The guard was not weakened, bypassed, excluded, or modified.
+Repair commit 5057871ae89ee79b4061045032dd33562b02bb9f changed the authoritative record directly. The literal retired spellings were removed from active documentation and replaced with generic wording that preserves the evidence without reintroducing prohibited branding. The guard was not weakened, bypassed, excluded, or modified.
+
+Verification actually observed
+------------------------------
+Validate Continuity Works run 34561717497 on exact repair head 5057871ae89ee79b4061045032dd33562b02bb9f completed successfully.
+
+Observed successful stages include checkout, Python installation and compilation, source-tree agent discovery, the complete Unit/API contract/PUBLIC_SERVICEABILITY suite, the whole-active-repository naming guard, production frontend build, zero-JavaScript Pages discovery stamping, local executable API/public-boundary smoke, validation-status publication, and cleanup.
+
+GitHub Pages run 34561716561 for the same exact repair head completed successfully, including deployment.
+
+Repository searches after the repair returned zero matches for both prohibited retired predecessor-brand spellings. Search emptiness is treated only as supporting evidence; exact-head full validation and exact-head Pages deployment are the acceptance evidence for this repair.
+
+A direct browser retrieval attempt could not establish the deployed page through the available browser path. Browser-render acceptance is therefore not claimed.
 
 Previous E01-010 implementation retained
 ----------------------------------------
@@ -32,15 +46,15 @@ The preceding accepted implementation remains intact:
 
 Validate Continuity Works run 34558154396 on exact implementation head 2ae34e749079c24cea0031cb204752af8da510a5 completed successfully. GitHub Pages run 34558153573 for that same implementation head completed successfully, including deployment. Independent public-service workflow run 34558240873 also rebuilt, stamped, validated, uploaded, and deployed the intended Pages artifact; its configured remote Java API health checks remained failed closed.
 
-Rejected continuity-record head evidence
-----------------------------------------
-Validate Continuity Works run 34558321545 on 8ab7fddc193b3b392c3ba15a53a24b33f73921e3 failed specifically in test_whole_active_repository_source_is_structure_forge_clean. The observed exception identified VALIDATION_REPORT.txt as containing both prohibited retired predecessor-brand spellings. All earlier branding subtests had passed; the whole-repository guard exposed the continuity-record regression exactly as intended.
+Rejected starting-head evidence
+-------------------------------
+Validate Continuity Works run 34558321545 on 8ab7fddc193b3b392c3ba15a53a24b33f73921e3 failed in the whole-active-repository naming guard. The observed exception identified VALIDATION_REPORT.txt as containing both prohibited retired predecessor-brand spellings. All earlier focused branding subtests had passed; the whole-repository guard exposed the continuity-record regression exactly as intended.
 
-Because the validation failure prevented downstream frontend build and local public-boundary smoke for that head, 8ab7fddc193b3b392c3ba15a53a24b33f73921e3 is rejected as an accepted final state despite descending from a previously validated implementation.
+Because that failure prevented downstream frontend build and local public-boundary smoke for the rejected head, it is not an accepted final state despite descending from a previously validated implementation.
 
 Naming cleanup state
 --------------------
-The repair removes the two prohibited literal predecessor-brand spellings from this active authoritative record. Acceptance requires exact-head repository validation plus the strongest directly observable deployment evidence available; a source search alone is not sufficient.
+The active authoritative validation record no longer embeds either prohibited predecessor-brand spelling. Exact repair head 5057871ae89ee79b4061045032dd33562b02bb9f passed the complete repository validation path and an exact-head Pages deployment.
 
 Public API / deployment boundary
 --------------------------------
@@ -54,8 +68,8 @@ E01-001 through E01-017 culture, Q CONDITION, and K PALETTE candidate authority 
 
 Next dependency-valid work
 --------------------------
-1. Verify this branding-record repair on its exact main head through the complete repository validation path and strongest available deployment artifact.
-2. If validation passes, continue recovery of E01-018's canonical archetype identity from authoritative catalog/project history without invention.
-3. If the canonical master catalog is absent, repair that authority gap from recoverable authoritative evidence rather than fabricating the missing row.
+1. Continue recovery of E01-018's canonical archetype identity from authoritative catalog/project history without invention.
+2. If the canonical master catalog is absent, repair that authority gap from recoverable authoritative evidence rather than fabricating the missing row.
+3. Once E01-018 identity is authoritatively recovered, take E01-018 through the next required sequential hero-structure stage under the minimum 500-block unrelated-structure exclusion and additive/non-destructive compatibility rules.
 4. Keep the external Render/service provisioning defect open until configured remote health and exact-SHA serviceability succeeds or the external provisioning authority becomes directly inspectable.
 5. Continue retired predecessor-brand cleanup immediately if any stronger rendered/runtime/deployment check discovers another occurrence.
