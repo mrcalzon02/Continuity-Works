@@ -457,21 +457,24 @@ def validate_structure_protection_profile(profile: Mapping) -> list[tuple[str, s
             "tags": _require_resource_location,
             "namespaces": _require_namespace,
         }
-        for key, validator in selector_validators.items():
-            values = selectors.get(key)
-            if values is None:
-                continue
-            try:
-                normalized = _normalize_selector_values(
-                    values,
-                    name=key,
-                    validator=validator,
-                )
-            except ValueError:
-                selector_shape_valid = False
-                break
-            if normalized:
-                has_selector = True
+        if any(key not in selector_validators for key in selectors):
+            selector_shape_valid = False
+        else:
+            for key, validator in selector_validators.items():
+                values = selectors.get(key)
+                if values is None:
+                    continue
+                try:
+                    normalized = _normalize_selector_values(
+                        values,
+                        name=key,
+                        validator=validator,
+                    )
+                except ValueError:
+                    selector_shape_valid = False
+                    break
+                if normalized:
+                    has_selector = True
     if not selector_shape_valid:
         findings.append(("error", "INVALID_PROTECTION_SELECTORS"))
     elif not has_selector:
