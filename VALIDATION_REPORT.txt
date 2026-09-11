@@ -91,3 +91,27 @@ The external API remains NOT VERIFIED LIVE. This source repair corrects the repo
 The prohibited predecessor-brand cleanup remains governed by the repository-wide naming guard and static-artifact verification in the accepted validation/deployment paths. No new occurrence was observed in this cycle. Browser-render acceptance remains distinct from exact-artifact deployment evidence.
 
 E01-018 remains blocked under the catalog provenance rule. Next work should continue with the highest-priority repository-owned defect or validation gap that can be repaired from current authority, with the external serviceability boundary remaining open unless host-level evidence becomes available.
+
+2026-09-11 canonical bind environment repair
+---------------------------------------------
+Cycle starting head: ab72416f742f6588cc4845a293dfe8495fce5b41
+Accepted implementation head before continuity record: 9eaea69cc61bfaff3ac8d744d40ca2f37994bce6
+Changed authoritative/runtime files: scripts/run_api.py, README.md, docs/DEPLOYMENT.md, tests/test_run_api_env.py
+
+Reconciliation found that the canonical CONTINUITY_WORKS_* environment namespace had been restored for project-root resolution in the preceding cycle, while the API entrypoint still gave generic HOST and PORT sole authority over bind settings. README.md and docs/DEPLOYMENT.md also described those generic variables as the primary local runtime controls. That left the runtime contract only partially migrated to the current public identity.
+
+Commits 5ae0d31fa94819af64ec795384e4772db628216a, af8dc925d8e7ae91ec6186ed7ba1c3a16fa545d6, 32b84ff29d5f2883252097648c4a1d061b174b4b, and 9eaea69cc61bfaff3ac8d744d40ca2f37994bce6 repaired the same bounded authority defect. scripts/run_api.py now gives CONTINUITY_WORKS_HOST and CONTINUITY_WORKS_PORT precedence, retaining generic HOST and PORT only as compatibility fallbacks and preserving the existing 0.0.0.0 / 8787 defaults. README.md and docs/DEPLOYMENT.md now document the same canonical-first contract. The optional render.yaml remains compatible because its start command delegates bind resolution to scripts/run_api.py and conventional provider variables remain supported.
+
+A focused tests/test_run_api_env.py regression now executes the real entrypoint while mocking the server call and proves three conditions: canonical project-root/host/port variables override their legacy or generic counterparts; the compatibility variables remain supported; and all existing defaults remain unchanged.
+
+Validate Continuity Works run 34584090493 on exact implementation head 9eaea69cc61bfaff3ac8d744d40ca2f37994bce6 completed successfully. Observed successful stages include checkout, Python setup and package installation, compilation, source-tree discovery, the complete Unit/API contract/PUBLIC_SERVICEABILITY test step, frontend production build, zero-JavaScript Pages discovery stamping, local executable API/public-boundary smoke, validation-status publication, and cleanup.
+
+GitHub Pages run 34584088870 for the same exact implementation head completed successfully through build, artifact upload, and deployment. This exact-head deployment is the strongest directly observed live/static artifact evidence for this cycle. Independent browser-render retrieval was not established, so browser-render acceptance is not claimed.
+
+The accepted implementation is four commits ahead and zero behind the captured starting head. No alternate branch, pull request, replacement runtime, bypass, or new workflow was created.
+
+The external API remains FAILED CLOSED / NOT VERIFIED LIVE. No host-level evidence in this cycle supersedes the previously observed remote health failure, and the runtime naming repair does not imply public service activation.
+
+The retired predecessor-brand cleanup remains protected by the repository validation and generated-artifact branding gates; no user-facing reintroduction is accepted. E01-018 remains blocked under the catalog provenance rule and no identity was invented.
+
+Next dependency-valid work: reconcile the remaining deployment/runtime documentation and configuration surfaces for canonical environment authority and public-serviceability consistency, beginning with any source that still presents compatibility variables as primary rather than fallback. If that audit is clean, select the next repository-owned defect or validation gap among the already materialized E01-001 through E01-017 while leaving E01-018 blocked until qualifying catalog authority exists.
