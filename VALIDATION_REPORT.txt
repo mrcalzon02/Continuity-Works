@@ -252,3 +252,26 @@ This is static/data-contract acceptance. It closes the constructor/validator byp
 E01-018 remains blocked under the existing catalog-provenance rule. No identity was invented and the exhausted catalog search was not repeated as new evidence.
 
 Next dependency-valid work: continue the authoritative worldgen audit at the remaining persisted-data shape boundary, especially malformed top-level structure/structure-set/placement mappings and unsupported or malformed placement types that can still bypass field validation or raise before returning findings. Preserve the existing 500-block exclusion invariant, keep compatibility additive, and keep static validation distinct from Minecraft runtime/fresh-world admission.
+
+2026-09-11 persisted worldgen shape validation repair
+------------------------------------------------------
+Cycle starting head: 82baf8e81a48c9be0947349aad8d96df9bf55cef
+Accepted implementation head before continuity record: fda303565238830ee014ea8c91076261d62fbecb
+Implementation commits: e75cae5b7acd1470b01093ad91c957d5fbab5c53, fda303565238830ee014ea8c91076261d62fbecb
+Changed files: src/structure_capability/minecraft/worldgen.py, tests/test_random_spread_validation.py
+
+Reconciliation selected the exact next persisted-data boundary recorded by the preceding accepted cycle. validate_geospatial_worldgen assumed that structure, structure_set, placement, and an optional protection profile were mapping-shaped. Non-mapping persisted or externally supplied values could therefore raise AttributeError before a deterministic finding was returned. A mapping-shaped placement with any type other than minecraft:random_spread also bypassed placement validation silently.
+
+Commit e75cae5b7acd1470b01093ad91c957d5fbab5c53 repairs the authoritative validator directly. Non-mapping structure and structure-set values now return INVALID_STRUCTURE_SHAPE and INVALID_STRUCTURE_SET_SHAPE findings while validation continues against safe local empty mappings. Non-mapping placement values return INVALID_PLACEMENT_SHAPE. Mapping-shaped placement values with unsupported or missing types return UNSUPPORTED_PLACEMENT_TYPE instead of silently passing. Non-mapping protection profiles supplied through the geospatial validator return INVALID_PROTECTION_PROFILE_SHAPE. Existing constructor behavior, valid random-spread semantics, jigsaw field validation, reservation logic, and the 500-block exclusion invariant are unchanged.
+
+Commit fda303565238830ee014ea8c91076261d62fbecb extends the existing focused regression suite for malformed top-level structure/structure-set values, malformed placement shapes, unsupported placement types, malformed protection-profile shapes, and the existing clean constructor-generated path. Relative to the captured starting head, the implementation is two commits ahead and zero behind. The exact diff is limited to the intended files: worldgen.py has 39 additions and 21 deletions, and test_random_spread_validation.py has 53 additions.
+
+Validate Continuity Works run 34621660013 on exact implementation head fda303565238830ee014ea8c91076261d62fbecb completed successfully. Observed successful stages include setup and checkout, Python and Node setup, package installation, Python compilation, source-tree agent discovery, the complete Unit/API contract/PUBLIC_SERVICEABILITY test stage, production frontend build, zero-JavaScript Pages discovery stamping, local executable API/public-boundary smoke, validation-status publication, and cleanup.
+
+GitHub Pages run 34621658992 for the same exact implementation head completed successfully through deployment. Repository searches after implementation returned zero matches for both prohibited retired predecessor-brand spellings, and the exact implementation passed the repository-wide naming guard in the full validation path. Independent browser-render retrieval was not established, so browser-render acceptance is not claimed; exact-head full validation plus exact-head successful Pages deployment is the strongest directly observed deployment-artifact evidence.
+
+This is static/data-contract acceptance. It closes malformed persisted-container and unsupported-placement bypasses, but it does not establish Minecraft controlled startup, fresh-world natural generation, Lost Cities compatibility placement, or production admission. The external Java/Render API remains FAILED CLOSED / NOT VERIFIED LIVE; no host-level evidence in this cycle supersedes that standing boundary.
+
+E01-018 remains blocked under the existing catalog-provenance rule. No identity was invented and the exhausted recovery search was not repeated as new evidence.
+
+Next dependency-valid work: continue the authoritative worldgen validation audit for remaining entrypoint asymmetries, beginning with direct validate_structure_protection_profile calls and structure-type validation so malformed inputs cannot bypass fail-closed behavior outside validate_geospatial_worldgen. Preserve the 500-block exclusion invariant, keep compatibility additive, and keep static validation distinct from Minecraft runtime/fresh-world admission.
