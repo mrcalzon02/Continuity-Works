@@ -2,74 +2,70 @@ Continuity Works Capability API v0.3.2
 Validation date: 2026-09-11
 =====================================
 
-RESULT: AUTHORITATIVE MAIN BRANDING REGRESSION REPAIRED AND EXACT-HEAD VALIDATED; EXACT-HEAD PAGES DEPLOYMENT SUCCEEDED; E01-001 THROUGH E01-017 RETAIN EXPLICIT SOURCE-BOUND K VOCABULARIES; PUBLIC REMOTE API REMAINS FAILED CLOSED / NOT VERIFIED LIVE
+RESULT: ERA CATALOG RECOVERY PROVENANCE REPAIRED; EXACT IMPLEMENTATION HEAD PASSED FULL REPOSITORY VALIDATION AND EXACT-HEAD PAGES DEPLOYMENT; RETIRED PREDECESSOR-BRAND GUARDS REMAIN CLEAN; E01-018 REMAINS CORRECTLY BLOCKED; PUBLIC REMOTE API REMAINS FAILED CLOSED / NOT VERIFIED LIVE
 
 Authority and observed evidence
 -------------------------------
 Authoritative repository: mrcalzon02/Continuity-Works
 Authoritative branch: main
-Cycle starting head: 8ab7fddc193b3b392c3ba15a53a24b33f73921e3
-Rejected starting head: 8ab7fddc193b3b392c3ba15a53a24b33f73921e3
-Accepted repair head before final continuity record: 5057871ae89ee79b4061045032dd33562b02bb9f
-Previous accepted implementation head: 2ae34e749079c24cea0031cb204752af8da510a5
+Cycle starting head: fa114993e0a91fd85c73c5af3d26ba496e8f4cb3
+Accepted implementation head before continuity record: 606afd2ce5ee51de6d004caaf6538fdf5e8d0aa1
 
 Reconciliation and selected work
 --------------------------------
-Live main reconciled at 8ab7fddc193b3b392c3ba15a53a24b33f73921e3. AI Project Manager v3.0, the Repository Execution Protocol, and the Minecraft Java Project Profile were loaded in full before mutation.
+Live main reconciled at fa114993e0a91fd85c73c5af3d26ba496e8f4cb3. AI Project Manager v3.0, the Repository Execution Protocol, and the Minecraft Java Project Profile were loaded in full before mutation.
 
-The next catalog target, E01-018, remains blocked because its canonical catalog label is still absent from indexed repository authority and the hero ledger explicitly forbids inventing it. During preflight, however, a higher-priority existing defect was found: Validate Continuity Works run 34558321545 failed on the current main head during the whole-active-repository naming guard.
+E01-018 remained blocked in the hero ledger because its canonical label had not been materialized. Repository code search, issue search, commit search, the accessible historical tree, and a persistent-file-library search produced no authoritative E01-018 label. Historical commit bcbb6ad2c10395a3b4f8ca17d794d0247a95990d did provide important recovery provenance: it corrected a previously stale Lower Paleolithic sequence, materializing E01-014 as Bone-Breaking Station, E01-015 as Marrow Processing Ground, and E01-016 as Watering-Hole Camp while explicitly replacing an incorrect successor label. Commit 6b8556b2103b39c9811afbd45e76667199b01143 later materialized E01-017 Riverbank Foraging Camp and deliberately blocked E01-018 pending catalog recovery.
+
+This exposed the highest-priority repository-owned continuity defect: ERA_STRUCTURE_HERO_LEDGER.md still described a Continuity Works era structure master catalog as current authoritative sequence even though no standalone catalog artifact exists in the current repository or accessible Git history. That wording caused repeated dead-end recovery attempts and could encourage stale labels or adjacency guesses to masquerade as authority.
 
 Root cause and repair
 ---------------------
-The failure was caused by this validation record itself. The prior cycle documented successful retired-brand searches by embedding the two prohibited predecessor-brand spellings literally in VALIDATION_REPORT.txt. Because VALIDATION_REPORT.txt is active authoritative source, the repository-wide branding guard correctly rejected main even though application/runtime sources were clean.
+Commit 606afd2ce5ee51de6d004caaf6538fdf5e8d0aa1 repaired the existing hero ledger directly. No replacement catalog, duplicate tracker, alternate authority, branch, pull request, workflow, or parser was created.
 
-Repair commit 5057871ae89ee79b4061045032dd33562b02bb9f changed the authoritative record directly. The literal retired spellings were removed from active documentation and replaced with generic wording that preserves the evidence without reintroducing prohibited branding. The guard was not weakened, bypassed, excluded, or modified.
+The ledger now records that:
+- current sequence authority consists of catalog identities already materialized in tracked project state;
+- the standalone canonical source catalog is not currently present in the repository;
+- recovered E01-014 through E01-016 identities are bound to historical correction commit bcbb6ad2c10395a3b4f8ca17d794d0247a95990d;
+- E01-017 is independently bound to committed hero/build/worldgen state and ledger commit 6b8556b2103b39c9811afbd45e76667199b01143;
+- those recovered identities cannot be extrapolated to E01-018;
+- E01-018 may advance only from reproducible authority: a recovered catalog artifact with provenance, an existing commit/file/blob explicitly naming E01-018, or a user-supplied authoritative catalog source;
+- repeated repository searches, sequence adjacency, obsolete labels, and conversational guesses are not sufficient evidence.
+
+The next-run rule now prevents future sessions from repeatedly treating the same failed repository search as new evidence. If qualifying catalog authority is unavailable, E01-018 stays blocked and work proceeds to another dependency-valid repository-owned repair or validation gap.
 
 Verification actually observed
 ------------------------------
-Validate Continuity Works run 34561717497 on exact repair head 5057871ae89ee79b4061045032dd33562b02bb9f completed successfully.
+Validate Continuity Works run 34565903351 on exact implementation head 606afd2ce5ee51de6d004caaf6538fdf5e8d0aa1 completed successfully.
 
 Observed successful stages include checkout, Python installation and compilation, source-tree agent discovery, the complete Unit/API contract/PUBLIC_SERVICEABILITY suite, the whole-active-repository naming guard, production frontend build, zero-JavaScript Pages discovery stamping, local executable API/public-boundary smoke, validation-status publication, and cleanup.
 
-GitHub Pages run 34561716561 for the same exact repair head completed successfully, including deployment.
+GitHub Pages run 34565902789 for the same exact implementation head completed successfully, including deployment.
 
-Repository searches after the repair returned zero matches for both prohibited retired predecessor-brand spellings. Search emptiness is treated only as supporting evidence; exact-head full validation and exact-head Pages deployment are the acceptance evidence for this repair.
+The implementation diff from the captured starting head is one commit, one authoritative file, ten additions, two deletions: docs/era_structure_hero/ERA_STRUCTURE_HERO_LEDGER.md only.
 
-A direct browser retrieval attempt could not establish the deployed page through the available browser path. Browser-render acceptance is therefore not claimed.
+Branding and rendered-page boundary
+-----------------------------------
+Repository searches immediately before mutation returned zero matches for both prohibited retired predecessor-brand spellings. The exact implementation head then passed the whole-repository naming guard during full validation.
 
-Previous E01-010 implementation retained
-----------------------------------------
-The preceding accepted implementation remains intact:
-- c80e6b666cbb0ad80516ddab698a57c965516ff3 — normalized E01-010 Material Palette Logic.
-- 8048033476d5f0e4e8b6456ac2be6d3d601c5162 — decoupled generic prose-refusal coverage from a live archetype.
-- 2ae34e749079c24cea0031cb204752af8da510a5 — added E01-010 explicit K authority to corpus/production-routing regression.
-
-Validate Continuity Works run 34558154396 on exact implementation head 2ae34e749079c24cea0031cb204752af8da510a5 completed successfully. GitHub Pages run 34558153573 for that same implementation head completed successfully, including deployment. Independent public-service workflow run 34558240873 also rebuilt, stamped, validated, uploaded, and deployed the intended Pages artifact; its configured remote Java API health checks remained failed closed.
-
-Rejected starting-head evidence
--------------------------------
-Validate Continuity Works run 34558321545 on 8ab7fddc193b3b392c3ba15a53a24b33f73921e3 failed in the whole-active-repository naming guard. The observed exception identified VALIDATION_REPORT.txt as containing both prohibited retired predecessor-brand spellings. All earlier focused branding subtests had passed; the whole-repository guard exposed the continuity-record regression exactly as intended.
-
-Because that failure prevented downstream frontend build and local public-boundary smoke for the rejected head, it is not an accepted final state despite descending from a previously validated implementation.
-
-Naming cleanup state
---------------------
-The active authoritative validation record no longer embeds either prohibited predecessor-brand spelling. Exact repair head 5057871ae89ee79b4061045032dd33562b02bb9f passed the complete repository validation path and an exact-head Pages deployment.
+A direct live-page retrieval attempt through the available browser path could not establish the rendered Continuity Works page, and public web search did not surface a retrievable indexed result. Browser-render acceptance is therefore not claimed. Exact-head full validation plus exact-head Pages deployment is the strongest directly observed deployment-artifact evidence in this cycle.
 
 Public API / deployment boundary
 --------------------------------
 PUBLIC REMOTE API: FAILED CLOSED / NOT VERIFIED LIVE.
 
-No evidence in this cycle supersedes the existing external Render/service provisioning boundary. Configured remote health and exact-main Java authority remain unverified live.
+The current main baseline already reports continuity-works/validate success and public-serviceability failure for the known external Java/Render service boundary. No evidence in this cycle supersedes that external provisioning state, and no health gate or serviceability check was weakened.
 
 Era structure program boundary
 ------------------------------
-E01-001 through E01-017 culture, Q CONDITION, and K PALETTE candidate authority remains reconciled and production-routed. E01-018 remains blocked pending recovery of its canonical archetype identity from authoritative catalog/project history. No identity is to be invented.
+E01-001 through E01-017 remain materialized through hero specification, deterministic build source, and worldgen contract with production admission still distinct from source completion. Their culture, condition, and K palette candidate authority remains reconciled and production-routed from prior accepted work.
+
+E01-018 remains blocked, but the blocker is now accurately and reproducibly defined instead of pointing at an unavailable repository artifact. No E01-018 identity was invented.
 
 Next dependency-valid work
 --------------------------
-1. Continue recovery of E01-018's canonical archetype identity from authoritative catalog/project history without invention.
-2. If the canonical master catalog is absent, repair that authority gap from recoverable authoritative evidence rather than fabricating the missing row.
-3. Once E01-018 identity is authoritatively recovered, take E01-018 through the next required sequential hero-structure stage under the minimum 500-block unrelated-structure exclusion and additive/non-destructive compatibility rules.
-4. Keep the external Render/service provisioning defect open until configured remote health and exact-SHA serviceability succeeds or the external provisioning authority becomes directly inspectable.
+1. Accept an E01-018 identity only from the explicit reproducible authority forms now recorded in the hero ledger.
+2. Do not repeat the same current-repository history search as though it were new recovery evidence.
+3. While E01-018 remains blocked, select the highest-priority repository-owned repair or validation gap among already materialized E01-001 through E01-017 or the public service boundary, without converting static success into Minecraft runtime admission.
+4. Keep the external Java/Render service defect open until configured remote health and exact-SHA serviceability succeeds or the external provisioning authority becomes directly inspectable.
 5. Continue retired predecessor-brand cleanup immediately if any stronger rendered/runtime/deployment check discovers another occurrence.
