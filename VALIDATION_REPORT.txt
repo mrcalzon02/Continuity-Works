@@ -2,7 +2,7 @@ Continuity Works Capability API v0.3.2
 Validation date: 2026-09-11
 =====================================
 
-RESULT: ERA CATALOG RECOVERY PROVENANCE REPAIRED; EXACT IMPLEMENTATION HEAD PASSED FULL REPOSITORY VALIDATION AND EXACT-HEAD PAGES DEPLOYMENT; RETIRED PREDECESSOR-BRAND GUARDS REMAIN CLEAN; E01-018 REMAINS CORRECTLY BLOCKED; PUBLIC REMOTE API REMAINS FAILED CLOSED / NOT VERIFIED LIVE
+RESULT: RANDOM-SPREAD WORLDGEN INPUT VALIDATION NOW FAILS CLOSED; EXACT IMPLEMENTATION HEAD PASSED FULL REPOSITORY VALIDATION AND EXACT-HEAD PAGES DEPLOYMENT; RETIRED PREDECESSOR-BRAND GUARDS REMAIN CLEAN; E01-018 REMAINS CORRECTLY BLOCKED; PUBLIC REMOTE API REMAINS FAILED CLOSED / NOT VERIFIED LIVE
 
 Authority and observed evidence
 -------------------------------
@@ -115,3 +115,27 @@ The external API remains FAILED CLOSED / NOT VERIFIED LIVE. No host-level eviden
 The retired predecessor-brand cleanup remains protected by the repository validation and generated-artifact branding gates; no user-facing reintroduction is accepted. E01-018 remains blocked under the catalog provenance rule and no identity was invented.
 
 Next dependency-valid work: reconcile the remaining deployment/runtime documentation and configuration surfaces for canonical environment authority and public-serviceability consistency, beginning with any source that still presents compatibility variables as primary rather than fallback. If that audit is clean, select the next repository-owned defect or validation gap among the already materialized E01-001 through E01-017 while leaving E01-018 blocked until qualifying catalog authority exists.
+
+2026-09-11 random-spread worldgen validation repair
+----------------------------------------------------
+Cycle starting head: cefe09ac3e5dc9c1b46738c25b5e18a38df3e502
+Accepted implementation head before continuity record: e0f5d971bc183f19820ba9263285b37df0c4fc80
+Changed files: src/structure_capability/minecraft/worldgen.py, tests/test_random_spread_validation.py
+
+Reconciliation confirmed that the default 500-block external structure exclusion policy is already enforced by the core reservation and protection authorities. The highest-priority dependency-valid repository defect found next was narrower: random-spread placement construction and validation did not fail closed on malformed numeric values. Non-positive spacing and negative separation could pass in some combinations, Python booleans were accepted as integers, and malformed or missing values could make validate_geospatial_worldgen raise a comparison TypeError instead of returning an INVALID_RANDOM_SPREAD finding.
+
+Commits 8bc76ec80dcd2eec1f2e36839baca69c0ea1535a and 44ec4ed67a6768dbfa29baaae04b337494191f22 repaired that source defect and added focused regression coverage. random_spread_structure_set now requires spacing to be a positive integer and separation to be a non-negative integer before enforcing separation < spacing. validate_geospatial_worldgen now checks the same constraints without unsafe mixed-type comparisons and returns INVALID_RANDOM_SPREAD for malformed placement input rather than throwing.
+
+Close-out diff inspection caught that the full-file source update had accidentally dropped an existing explanatory comment in ReservationIndex. Commit e0f5d971bc183f19820ba9263285b37df0c4fc80 restored that unrelated comment before acceptance. Relative to the captured cycle starting head, the accepted implementation is three commits ahead and zero behind and changes only two files: worldgen.py has 15 additions and one deletion, and the new focused regression has 65 lines.
+
+The regression covers zero, negative, boolean, floating-point, string, missing, and separation-not-less-than-spacing cases. It also proves a valid spacing=32, separation=8 placement remains clean.
+
+Validate Continuity Works run 34589449195 on exact implementation head e0f5d971bc183f19820ba9263285b37df0c4fc80 completed successfully. Observed successful stages include checkout, Python setup and package installation, compilation, source-tree discovery, the complete Unit/API contract/PUBLIC_SERVICEABILITY test step, production frontend build, zero-JavaScript Pages discovery stamping, local executable API/public-boundary smoke, validation-status publication, and cleanup.
+
+GitHub Pages run 34589448058 for the same exact implementation head completed successfully through deployment. Repository searches for both retired predecessor-brand spellings returned zero matches before acceptance, and the exact implementation passed the repository-wide naming guard through the full validation path. Browser-render acceptance was not independently established, so it is not claimed; exact-head full validation plus exact-head Pages deployment is the strongest directly observed deployment-artifact evidence for this cycle.
+
+This repair improves static/data-contract safety but does not itself establish Minecraft runtime worldgen production admission. The Java/Render public API likewise remains FAILED CLOSED / NOT VERIFIED LIVE; no host-level evidence in this cycle supersedes that boundary.
+
+E01-018 remains blocked under the catalog provenance rule. No identity was invented and the same exhausted recovery search was not repeated as new evidence.
+
+Next dependency-valid work: continue from current main by inspecting the highest-priority repository-owned worldgen/data-contract defect or validation gap among the already materialized E01-001 through E01-017 and the public-service boundary. Preserve the distinction between static source/CI acceptance and actual Minecraft runtime admission, and keep E01-018 blocked until qualifying catalog authority exists.
