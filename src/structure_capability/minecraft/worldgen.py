@@ -478,6 +478,13 @@ def validate_geospatial_worldgen(
     require_spawn_protection: bool = False,
 ):
     findings = []
+    if not isinstance(structure, Mapping):
+        findings.append(("error", "INVALID_STRUCTURE_SHAPE"))
+        structure = {}
+    if not isinstance(structure_set, Mapping):
+        findings.append(("error", "INVALID_STRUCTURE_SET_SHAPE"))
+        structure_set = {}
+
     biomes = structure.get("biomes")
     if not biomes:
         findings.append(("error", "NO_BIOME_SELECTOR"))
@@ -554,29 +561,40 @@ def validate_geospatial_worldgen(
     if invalid_entries:
         findings.append(("error", "INVALID_STRUCTURE_SET_ENTRIES"))
 
-    placement = structure_set.get("placement", {})
-    if placement.get("type") == "minecraft:random_spread":
-        spacing = placement.get("spacing")
-        separation = placement.get("separation")
-        salt = placement.get("salt")
-        invalid_spacing = isinstance(spacing, bool) or not isinstance(spacing, int) or spacing <= 0
-        invalid_separation = (
-            isinstance(separation, bool)
-            or not isinstance(separation, int)
-            or separation < 0
-        )
-        invalid_salt = (
-            isinstance(salt, bool)
-            or not isinstance(salt, int)
-            or not JAVA_INT_MIN <= salt <= JAVA_INT_MAX
-        )
-        if invalid_spacing or invalid_separation or invalid_salt or (
-            not invalid_spacing and not invalid_separation and separation >= spacing
-        ):
-            findings.append(("error", "INVALID_RANDOM_SPREAD"))
+    placement = structure_set.get("placement")
+    if not isinstance(placement, Mapping):
+        findings.append(("error", "INVALID_PLACEMENT_SHAPE"))
+    else:
+        placement_type = placement.get("type")
+        if placement_type != "minecraft:random_spread":
+            findings.append(("error", "UNSUPPORTED_PLACEMENT_TYPE"))
+        else:
+            spacing = placement.get("spacing")
+            separation = placement.get("separation")
+            salt = placement.get("salt")
+            invalid_spacing = (
+                isinstance(spacing, bool) or not isinstance(spacing, int) or spacing <= 0
+            )
+            invalid_separation = (
+                isinstance(separation, bool)
+                or not isinstance(separation, int)
+                or separation < 0
+            )
+            invalid_salt = (
+                isinstance(salt, bool)
+                or not isinstance(salt, int)
+                or not JAVA_INT_MIN <= salt <= JAVA_INT_MAX
+            )
+            if invalid_spacing or invalid_separation or invalid_salt or (
+                not invalid_spacing and not invalid_separation and separation >= spacing
+            ):
+                findings.append(("error", "INVALID_RANDOM_SPREAD"))
 
     if protection_profile is not None:
-        findings.extend(validate_structure_protection_profile(protection_profile))
+        if isinstance(protection_profile, Mapping):
+            findings.extend(validate_structure_protection_profile(protection_profile))
+        else:
+            findings.append(("error", "INVALID_PROTECTION_PROFILE_SHAPE"))
     elif require_spawn_protection:
         findings.append(("error", "MISSING_STRUCTURE_SPAWN_PROTECTION"))
     return findings
