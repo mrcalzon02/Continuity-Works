@@ -193,6 +193,8 @@ class BlockBox:
     def overlaps_volume(self, other: "BlockBox", *, padding: int = 0) -> bool:
         """True only for occupied-volume overlap; face adjacency is allowed."""
         _require_non_negative_int(padding, name="padding")
+        # Convert inclusive Minecraft boxes to half-open boxes. Padding expands
+        # this candidate only; ordinary face adjacency remains legal at padding=0.
         return (
             self.min_x - padding < other.max_x + 1
             and self.max_x + 1 + padding > other.min_x
@@ -302,6 +304,8 @@ class ReservationIndex:
                         horizontal_gap=0.0,
                         required_gap=0,
                     )
+                # Same assembly may connect tightly. Family equality alone never grants
+                # this exception: the assembly identity must match.
                 continue
 
             gap = candidate.box.horizontal_gap(existing.box)
