@@ -29,12 +29,12 @@ GENERATION_STEPS = frozenset({
 })
 TERRAIN_ADAPTATIONS = frozenset({"none", "bury", "beard_thin", "beard_box", "encapsulate"})
 HEIGHTMAP_TYPES = frozenset({
-    "world_surface_wg",
-    "world_surface",
-    "ocean_floor_wg",
-    "ocean_floor",
-    "motion_blocking",
-    "motion_blocking_no_leaves",
+    "WORLD_SURFACE_WG",
+    "WORLD_SURFACE",
+    "OCEAN_FLOOR_WG",
+    "OCEAN_FLOOR",
+    "MOTION_BLOCKING",
+    "MOTION_BLOCKING_NO_LEAVES",
 })
 
 
