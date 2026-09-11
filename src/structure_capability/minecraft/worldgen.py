@@ -448,6 +448,17 @@ def validate_structure_protection_profile(profile: Mapping) -> list[tuple[str, s
         return [("error", "INVALID_PROTECTION_PROFILE_SHAPE")]
 
     findings: list[tuple[str, str]] = []
+    allowed_profile_keys = {
+        "selectors",
+        "exclusion_radius",
+        "jigsaw_piece_exclusion_radius",
+        "protect_jigsaw_pieces",
+        "priority",
+        "family",
+    }
+    if any(key not in allowed_profile_keys for key in profile):
+        findings.append(("error", "INVALID_PROTECTION_PROFILE_FIELDS"))
+
     selectors = profile.get("selectors")
     selector_shape_valid = isinstance(selectors, Mapping)
     has_selector = False
