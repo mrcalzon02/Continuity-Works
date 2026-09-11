@@ -9,6 +9,7 @@ from uuid import uuid4
 
 MINIMUM_STRUCTURE_EXCLUSION_RADIUS = 500
 DEFAULT_STRUCTURE_EXCLUSION_RADIUS = MINIMUM_STRUCTURE_EXCLUSION_RADIUS
+MAXIMUM_JIGSAW_DISTANCE_FROM_CENTER = 128
 
 
 def _require_non_negative_int(value, *, name: str) -> int:
@@ -33,9 +34,32 @@ def _require_exclusion_radius(value, *, name: str) -> int:
     return value
 
 
+def _require_jigsaw_distance(value, *, name: str = "max distance from center") -> int:
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise ValueError(f"{name} must be an integer")
+    if not 1 <= value <= MAXIMUM_JIGSAW_DISTANCE_FROM_CENTER:
+        raise ValueError(
+            f"{name} must be between 1 and {MAXIMUM_JIGSAW_DISTANCE_FROM_CENTER} blocks"
+        )
+    return value
+
+
+def _normalize_selector_values(values, *, name: str) -> list[str]:
+    if isinstance(values, (str, bytes)) or not isinstance(values, Sequence):
+        raise ValueError(f"{name} must be a sequence of non-empty strings")
+    normalized = []
+    for value in values:
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError(f"{name} must contain only non-empty strings")
+        normalized.append(value)
+    return normalized
+
+
 def jigsaw_structure(*, biome_selector, start_pool, step="surface_structures",
                      terrain_adaptation="bury", heightmap=None, absolute_y=0,
                      max_distance=80):
+    _require_block_coordinate(absolute_y, name="absolute y")
+    _require_jigsaw_distance(max_distance)
     out = {
         "type": "minecraft:jigsaw",
         "biomes": biome_selector,
@@ -300,8 +324,8 @@ def structure_protection_profile(
     priority: int = 0,
 ) -> dict:
     """Build the sidecar profile consumed by the modular spawn-protection JAR."""
-    if not protect_jigsaw_pieces:
-        raise ValueError("per-piece jigsaw protection is mandatory")
+    if protect_jigsaw_pieces is not True:
+        raise ValueError("per-piece jigsaw protection must be true")
     _require_exclusion_radius(exclusion_radius, name="exclusion radius")
     if jigsaw_piece_exclusion_radius is None:
         jigsaw_piece_exclusion_radius = exclusion_radius
@@ -309,34 +333,59 @@ def structure_protection_profile(
         jigsaw_piece_exclusion_radius,
         name="jigsaw piece exclusion radius",
     )
-    if not structures and not tags and not namespaces:
+    structure_selectors = _normalize_selector_values(structures, name="structures")
+    tag_selectors = _normalize_selector_values(tags, name="tags")
+    namespace_selectors = _normalize_selector_values(namespaces, name="namespaces")
+    if not structure_selectors and not tag_selectors and not namespace_selectors:
         raise ValueError("at least one structure, tag, or namespace selector is required")
+    if family is not None and (not isinstance(family, str) or not family.strip()):
+        raise ValueError("family must be a non-empty string when provided")
+    if isinstance(priority, bool) or not isinstance(priority, int):
+        raise ValueError("priority must be an integer")
 
     selectors: dict[str, list[str]] = {}
-    if structures:
-        selectors["structures"] = list(structures)
-    if tags:
-        selectors["tags"] = list(tags)
-    if namespaces:
-        selectors["namespaces"] = list(namespaces)
+    if structure_selectors:
+        selectors["structures"] = structure_selectors
+    if tag_selectors:
+        selectors["tags"] = tag_selectors
+    if namespace_selectors:
+        selectors["namespaces"] = namespace_selectors
 
     out = {
         "selectors": selectors,
         "exclusion_radius": exclusion_radius,
         "jigsaw_piece_exclusion_radius": jigsaw_piece_exclusion_radius,
-        "protect_jigsaw_pieces": bool(protect_jigsaw_pieces),
-        "priority": int(priority),
+        "protect_jigsaw_pieces": True,
+        "priority": priority,
     }
-    if family:
+    if family is not None:
         out["family"] = family
     return out
 
 
 def validate_structure_protection_profile(profile: Mapping) -> list[tuple[str, str]]:
     findings: list[tuple[str, str]] = []
-    selectors = profile.get("selectors") or {}
-    if not any(selectors.get(key) for key in ("structures", "tags", "namespaces")):
+    selectors = profile.get("selectors")
+    selector_shape_valid = isinstance(selectors, Mapping)
+    has_selector = False
+    if selector_shape_valid:
+        for key in ("structures", "tags", "namespaces"):
+            values = selectors.get(key)
+            if values is None:
+                continue
+            if isinstance(values, (str, bytes)) or not isinstance(values, Sequence):
+                selector_shape_valid = False
+                break
+            if any(not isinstance(value, str) or not value.strip() for value in values):
+                selector_shape_valid = False
+                break
+            if values:
+                has_selector = True
+    if not selector_shape_valid:
+        findings.append(("error", "INVALID_PROTECTION_SELECTORS"))
+    elif not has_selector:
         findings.append(("error", "NO_PROTECTION_SELECTOR"))
+
     radius = profile.get("exclusion_radius")
     if (
         isinstance(radius, bool)
@@ -344,7 +393,7 @@ def validate_structure_protection_profile(profile: Mapping) -> list[tuple[str, s
         or radius < MINIMUM_STRUCTURE_EXCLUSION_RADIUS
     ):
         findings.append(("error", "STRUCTURE_EXCLUSION_RADIUS_BELOW_MINIMUM"))
-    if profile.get("protect_jigsaw_pieces") is False:
+    if profile.get("protect_jigsaw_pieces") is not True:
         findings.append(("error", "JIGSAW_PIECE_PROTECTION_CANNOT_BE_DISABLED"))
     piece_radius = profile.get("jigsaw_piece_exclusion_radius", radius)
     if (
@@ -353,6 +402,12 @@ def validate_structure_protection_profile(profile: Mapping) -> list[tuple[str, s
         or piece_radius < MINIMUM_STRUCTURE_EXCLUSION_RADIUS
     ):
         findings.append(("error", "JIGSAW_PIECE_EXCLUSION_RADIUS_BELOW_MINIMUM"))
+    family = profile.get("family")
+    if family is not None and (not isinstance(family, str) or not family.strip()):
+        findings.append(("error", "INVALID_PROTECTION_FAMILY"))
+    priority = profile.get("priority", 0)
+    if isinstance(priority, bool) or not isinstance(priority, int):
+        findings.append(("error", "INVALID_PROTECTION_PRIORITY"))
     return findings
 
 
