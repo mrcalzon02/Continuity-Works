@@ -94,17 +94,26 @@ public final class EraPaletteCandidateHarness {
         }
         require(missingBiomeRejected, "PALETTE candidate discovery must require biome B as well as archetype A");
 
+        Path proseOnlyDir = Files.createTempDirectory("cw-palette-prose-only-");
+        Files.writeString(
+            proseOnlyDir.resolve("E01-010_PROSE_ONLY.md"),
+            "# Synthetic prose-only fixture\n\n## Material Palette Logic\n"
+                + "Terrain and selected stone remain locally coherent without explicit palette labels.\n\n"
+                + "## Condition Variants\n",
+            java.nio.charset.StandardCharsets.UTF_8
+        );
+        EraStructurePaletteCandidateSource proseOnlyDirect = new EraStructurePaletteCandidateSource(proseOnlyDir);
         BlueprintRequest proseOnlyRequest = request(UUID.fromString("66666666-6666-6666-6666-666666666666"));
         BlueprintDecisionChain.State proseOnly = api.applyDecision(api.beginDecision(proseOnlyRequest),
             "A=E01-010;B=TEMPERATE");
         boolean proseOnlyRejected = false;
         try {
-            direct.candidates(proseOnlyRequest, proseOnly, palette);
+            proseOnlyDirect.candidates(proseOnlyRequest, proseOnly, palette);
         } catch (IllegalStateException expected) {
-            proseOnlyRejected = true;
+            proseOnlyRejected = expected.getMessage().contains("refusing to infer candidates from prose");
         }
         require(proseOnlyRejected,
-            "ordinary material prose/bullets must fail closed rather than becoming guessed palette candidates");
+            "ordinary material prose must fail closed rather than becoming guessed palette candidates");
     }
 }
 """
