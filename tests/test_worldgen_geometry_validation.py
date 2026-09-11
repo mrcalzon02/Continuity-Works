@@ -5,6 +5,7 @@ from structure_capability.minecraft.worldgen import (
     ReservationIndex,
     StructureReservation,
     jigsaw_structure,
+    random_spread_structure_set,
     structure_protection_profile,
     validate_structure_protection_profile,
 )
@@ -62,6 +63,67 @@ class WorldgenGeometryValidationTests(unittest.TestCase):
         )
         self.assertEqual(1, minimum["max_distance_from_center"])
         self.assertEqual(128, maximum["max_distance_from_center"])
+
+    def test_jigsaw_structure_rejects_invalid_resource_locations(self):
+        invalid_calls = (
+            {"biome_selector": "", "start_pool": "test:start"},
+            {"biome_selector": "#", "start_pool": "test:start"},
+            {"biome_selector": "#Test:biomes", "start_pool": "test:start"},
+            {"biome_selector": "#test:biomes", "start_pool": ""},
+            {"biome_selector": "#test:biomes", "start_pool": "Test:start"},
+            {"biome_selector": 42, "start_pool": "test:start"},
+        )
+        for kwargs in invalid_calls:
+            with self.subTest(kwargs=kwargs):
+                with self.assertRaises(ValueError):
+                    jigsaw_structure(**kwargs)
+
+    def test_jigsaw_structure_rejects_invalid_codec_enums(self):
+        invalid_calls = (
+            {"step": ""},
+            {"step": "surface-structures"},
+            {"terrain_adaptation": ""},
+            {"terrain_adaptation": "bury_it"},
+            {"heightmap": ""},
+            {"heightmap": "WORLD_SURFACE_WG"},
+        )
+        for kwargs in invalid_calls:
+            with self.subTest(kwargs=kwargs):
+                with self.assertRaises(ValueError):
+                    jigsaw_structure(
+                        biome_selector="#test:biomes",
+                        start_pool="test:start",
+                        **kwargs,
+                    )
+
+    def test_jigsaw_structure_accepts_known_codec_values(self):
+        structure = jigsaw_structure(
+            biome_selector="#test:biomes",
+            start_pool="test:start",
+            step="surface_structures",
+            terrain_adaptation="bury",
+            heightmap="world_surface_wg",
+        )
+        self.assertEqual("surface_structures", structure["step"])
+        self.assertEqual("bury", structure["terrain_adaptation"])
+        self.assertEqual("world_surface_wg", structure["project_start_to_heightmap"])
+
+    def test_random_spread_rejects_invalid_structure_id_and_salt(self):
+        for structure_id in ("", "Test:site", "test:bad path", 42, None):
+            with self.subTest(structure_id=structure_id):
+                with self.assertRaises(ValueError):
+                    random_spread_structure_set(structure_id, 32, 8, 123)
+
+        invalid_salts = (True, 1.5, "123", None, -(2**31) - 1, 2**31)
+        for salt in invalid_salts:
+            with self.subTest(salt=salt):
+                with self.assertRaises(ValueError):
+                    random_spread_structure_set("test:site", 32, 8, salt)
+
+        minimum = random_spread_structure_set("test:site", 32, 8, -(2**31))
+        maximum = random_spread_structure_set("test:site", 32, 8, 2**31 - 1)
+        self.assertEqual(-(2**31), minimum["placement"]["salt"])
+        self.assertEqual(2**31 - 1, maximum["placement"]["salt"])
 
     def test_reservation_rejects_non_integer_or_below_minimum_radius(self):
         box = BlockBox(0, 0, 0, 1, 1, 1)
