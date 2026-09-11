@@ -275,3 +275,26 @@ This is static/data-contract acceptance. It closes malformed persisted-container
 E01-018 remains blocked under the existing catalog-provenance rule. No identity was invented and the exhausted recovery search was not repeated as new evidence.
 
 Next dependency-valid work: continue the authoritative worldgen validation audit for remaining entrypoint asymmetries, beginning with direct validate_structure_protection_profile calls and structure-type validation so malformed inputs cannot bypass fail-closed behavior outside validate_geospatial_worldgen. Preserve the 500-block exclusion invariant, keep compatibility additive, and keep static validation distinct from Minecraft runtime/fresh-world admission.
+
+2026-09-11 worldgen validator entrypoint validation repair
+----------------------------------------------------------
+Cycle starting head: 878f3ba7863af24ea29be5b101dc04bb9c25e4a5
+Accepted implementation head before continuity record: 2ac749d1518b048d1cc910766bc175637c4d9ccb
+Implementation commits: 535ad09367f297c979b99afc90c963e9aaa15f8c, 2ac749d1518b048d1cc910766bc175637c4d9ccb
+Changed files: src/structure_capability/minecraft/worldgen.py, tests/test_worldgen_validator_entrypoints.py
+
+Reconciliation selected the exact next entrypoint asymmetry recorded by the preceding accepted cycle. validate_structure_protection_profile directly dereferenced profile.get(...) and therefore raised on non-mapping callers even though the geospatial wrapper had already adopted a fail-closed shape finding. validate_geospatial_worldgen also only applied jigsaw-specific checks when type was minecraft:jigsaw, allowing mapping-shaped structures with a missing or unsupported type to bypass structure-type admission without an explicit finding.
+
+Commit 535ad09367f297c979b99afc90c963e9aaa15f8c repairs both sides of that same authoritative validation boundary. Direct non-mapping protection-profile calls now return INVALID_PROTECTION_PROFILE_SHAPE. The geospatial validator delegates protection-profile shape handling to that direct authority instead of duplicating it. Mapping-shaped structures now return UNSUPPORTED_STRUCTURE_TYPE unless the currently supported structure type is minecraft:jigsaw; non-mapping structures retain the existing INVALID_STRUCTURE_SHAPE behavior without an extra synthetic type finding. Existing jigsaw codec validation, random-spread behavior, reservation logic, and the 500-block exclusion invariant are unchanged.
+
+Commit 2ac749d1518b048d1cc910766bc175637c4d9ccb adds focused regression coverage for direct malformed protection-profile calls, missing and unsupported structure types, geospatial delegation of malformed profile shapes, and a clean constructor-generated jigsaw/random-spread path. Comparison from the captured starting head shows the accepted implementation is two commits ahead and zero behind and changes only those two intended files: worldgen.py has 11 additions and 6 deletions, and the focused test file has 56 additions.
+
+Validate Continuity Works run 34627201609 on exact implementation head 2ac749d1518b048d1cc910766bc175637c4d9ccb completed successfully. Observed successful stages include checkout, Python and Node setup, package installation, Python compilation, source-tree agent discovery, the complete Unit/API contract/PUBLIC_SERVICEABILITY test stage, production frontend build, zero-JavaScript Pages discovery stamping, local executable API/public-boundary smoke, validation-status publication, and cleanup.
+
+GitHub Pages run 34627199694 for the same exact implementation head completed successfully through deployment. Repository searches after implementation returned zero matches for both prohibited retired predecessor-brand spellings. Direct browser retrieval could not independently establish the rendered page, so browser-render acceptance is not claimed; exact-head full validation plus exact-head successful Pages deployment is the strongest directly observed deployment-artifact evidence.
+
+This is static/data-contract acceptance. It closes direct validator shape/type bypasses, but it does not establish Minecraft controlled startup, fresh-world natural generation, Lost Cities compatibility placement, or production admission. The external Java/Render API remains FAILED CLOSED / NOT VERIFIED LIVE; no host-level evidence in this cycle supersedes that standing boundary.
+
+E01-018 remains blocked under the existing catalog-provenance rule. No identity was invented and the exhausted recovery search was not repeated as new evidence.
+
+Next dependency-valid work: continue the authoritative protection-profile/worldgen validation audit at selector semantics. The profile constructor and validator currently require selector members to be non-empty strings but do not yet prove structure IDs, tag IDs, or namespace selectors conform to their Minecraft identifier contracts. Repair that boundary directly before malformed selectors can be persisted into the sidecar profile, while preserving the 500-block exclusion invariant and the static/runtime admission distinction.
