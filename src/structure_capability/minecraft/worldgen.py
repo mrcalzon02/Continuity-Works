@@ -193,8 +193,6 @@ class BlockBox:
     def overlaps_volume(self, other: "BlockBox", *, padding: int = 0) -> bool:
         """True only for occupied-volume overlap; face adjacency is allowed."""
         _require_non_negative_int(padding, name="padding")
-        # Convert inclusive Minecraft boxes to half-open boxes. Padding expands
-        # this candidate only; ordinary face adjacency remains legal at padding=0.
         return (
             self.min_x - padding < other.max_x + 1
             and self.max_x + 1 + padding > other.min_x
@@ -260,9 +258,11 @@ class ReservationIndex:
 
     def __init__(self, reservations: Iterable[StructureReservation] = ()):  # noqa: B006
         self._lock = RLock()
-        self._reservations: dict[str, StructureReservation] = {
-            reservation.reservation_id: reservation for reservation in reservations
-        }
+        self._reservations: dict[str, StructureReservation] = {}
+        for reservation in reservations:
+            if reservation.reservation_id in self._reservations:
+                raise ValueError(f"duplicate reservation id: {reservation.reservation_id}")
+            self._reservations[reservation.reservation_id] = reservation
 
     def snapshot(self) -> tuple[StructureReservation, ...]:
         with self._lock:
@@ -286,7 +286,13 @@ class ReservationIndex:
         _require_non_negative_int(self_collision_padding, name="self collision padding")
         for existing in self._reservations.values():
             if existing.reservation_id == candidate.reservation_id:
-                continue
+                return ReservationConflict(
+                    code="RESERVATION_ID_CONFLICT",
+                    candidate=candidate,
+                    existing=existing,
+                    horizontal_gap=0.0,
+                    required_gap=0,
+                )
             if existing.assembly_id == candidate.assembly_id:
                 if candidate.box.overlaps_volume(existing.box, padding=self_collision_padding):
                     return ReservationConflict(
@@ -296,8 +302,6 @@ class ReservationIndex:
                         horizontal_gap=0.0,
                         required_gap=0,
                     )
-                # Same assembly may connect tightly. Family equality alone never grants
-                # this exception: the assembly identity must match.
                 continue
 
             gap = candidate.box.horizontal_gap(existing.box)
