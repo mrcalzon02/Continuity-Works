@@ -70,6 +70,12 @@ def _require_namespace(value, *, name: str) -> str:
     return value
 
 
+def _require_non_empty_identity(value, *, name: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"{name} must be a non-empty string")
+    return value
+
+
 def _require_enum(value, allowed: frozenset[str], *, name: str) -> str:
     if not isinstance(value, str) or value not in allowed:
         raise ValueError(f"{name} must be one of: {', '.join(sorted(allowed))}")
@@ -222,6 +228,16 @@ class StructureReservation:
     provisional: bool = True
 
     def __post_init__(self):
+        _require_non_empty_identity(self.reservation_id, name="reservation id")
+        _require_resource_location(self.structure_id, name="structure id")
+        _require_non_empty_identity(self.assembly_id, name="assembly id")
+        _require_non_empty_identity(self.family_id, name="family id")
+        if not isinstance(self.box, BlockBox):
+            raise ValueError("box must be a BlockBox")
+        if self.piece_id is not None:
+            _require_non_empty_identity(self.piece_id, name="piece id")
+        if not isinstance(self.provisional, bool):
+            raise ValueError("provisional must be a boolean")
         _require_exclusion_radius(self.exclusion_radius, name="exclusion radius")
 
 
@@ -341,6 +357,7 @@ class ReservationIndex:
         return reservation, None
 
     def commit_assembly(self, assembly_id: str) -> int:
+        _require_non_empty_identity(assembly_id, name="assembly id")
         changed = 0
         with self._lock:
             for reservation_id, reservation in list(self._reservations.items()):
@@ -350,6 +367,7 @@ class ReservationIndex:
         return changed
 
     def release_assembly(self, assembly_id: str) -> int:
+        _require_non_empty_identity(assembly_id, name="assembly id")
         with self._lock:
             remove = [
                 reservation_id
@@ -366,6 +384,7 @@ class ReservationIndex:
         actual_boxes: Iterable[BlockBox],
     ) -> int:
         """Drop speculative piece reservations not present in the final StructureStart."""
+        _require_non_empty_identity(assembly_id, name="assembly id")
         actual = {box.key for box in actual_boxes}
         removed = 0
         with self._lock:
