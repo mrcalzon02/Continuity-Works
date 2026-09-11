@@ -229,3 +229,26 @@ Relative to the captured starting head, the accepted implementation is four comm
 E01-018 remains blocked under the existing catalog-provenance rule. No identity was invented and the exhausted recovery search was not repeated as new evidence.
 
 Next dependency-valid work: bring validate_geospatial_worldgen into parity with the constructor boundary for persisted or externally supplied worldgen JSON so malformed resource IDs, salt values, jigsaw enum/control values, and related codec-bound fields fail closed even when data bypasses the repository constructors. Preserve the existing 500-block exclusion invariant and keep static validation distinct from actual Minecraft runtime admission.
+
+2026-09-11 persisted worldgen validator parity repair
+-----------------------------------------------------
+Cycle starting head: 16cae6b50de80a75e0823808ba246e12caf12ce0
+Accepted implementation head before continuity record: f27ebbff46515f518e35b50006816ac2b9baff66
+Implementation commits: 606fcecded72ed6506e7d04546921cea9d598f6b, f27ebbff46515f518e35b50006816ac2b9baff66
+Changed files: src/structure_capability/minecraft/worldgen.py, tests/test_random_spread_validation.py
+
+Reconciliation confirmed the exact next defect recorded by the preceding accepted cycle. Constructor-side codec validation was already fail-closed, but validate_geospatial_worldgen still accepted persisted or externally supplied worldgen payloads that bypassed those constructors. A non-empty malformed biome selector was treated as valid, jigsaw start-pool/step/terrain-adaptation/start-height/max-distance/heightmap fields were not checked, structure-set resource identifiers and weights were not checked, and random-spread salt was not checked against the signed 32-bit Java integer contract.
+
+Commit 606fcecded72ed6506e7d04546921cea9d598f6b repairs the existing authoritative validator directly. It now applies the same resource-location, enum, integer-coordinate, jigsaw-distance, heightmap, structure-set entry, positive-weight, and Java-int rules already enforced by the constructors. Existing NO_BIOME_SELECTOR and INVALID_RANDOM_SPREAD behavior is preserved, with malformed random-spread salt folded into the established INVALID_RANDOM_SPREAD finding. The 500-block exclusion/reservation implementation is untouched.
+
+Commit f27ebbff46515f518e35b50006816ac2b9baff66 adds focused regression coverage proving malformed persisted jigsaw codec fields, start heights, structure IDs, weights, and salt fail closed while constructor-generated worldgen remains validator-clean. The captured implementation diff is two commits ahead and zero behind the starting head and changes only the intended source and focused regression file: worldgen.py has 80 additions and one deletion; test_random_spread_validation.py has 79 additions.
+
+Validate Continuity Works run 34615835597 on exact implementation head f27ebbff46515f518e35b50006816ac2b9baff66 completed successfully. Observed successful stages include package installation, Python compilation, source-tree agent discovery, the complete Unit/API contract/PUBLIC_SERVICEABILITY test stage, frontend production build, zero-JavaScript Pages discovery stamping, local executable API/public-boundary smoke, validation-status publication, and cleanup.
+
+GitHub Pages run 34615834030 for the same exact implementation head completed successfully through deployment. Repository searches after implementation returned zero matches for both prohibited retired predecessor-brand spellings, and the exact implementation passed the repository-wide naming guard in the full validation path. Direct browser retrieval of the Pages URL was not established through the available web path, so browser-render acceptance is not claimed; exact-head successful validation plus exact-head successful Pages deployment is the strongest directly observed deployment-artifact evidence.
+
+This is static/data-contract acceptance. It closes the constructor/validator bypass for persisted worldgen JSON but does not establish Minecraft controlled startup, fresh-world natural generation, Lost Cities compatibility placement, or production admission. The external Java/Render API remains FAILED CLOSED / NOT VERIFIED LIVE; no host-level evidence in this cycle supersedes that boundary.
+
+E01-018 remains blocked under the existing catalog-provenance rule. No identity was invented and the exhausted catalog search was not repeated as new evidence.
+
+Next dependency-valid work: continue the authoritative worldgen audit at the remaining persisted-data shape boundary, especially malformed top-level structure/structure-set/placement mappings and unsupported or malformed placement types that can still bypass field validation or raise before returning findings. Preserve the existing 500-block exclusion invariant, keep compatibility additive, and keep static validation distinct from Minecraft runtime/fresh-world admission.
