@@ -75,6 +75,13 @@ class AgentDiscoveryContractTests(unittest.TestCase):
             self.assertEqual(api_doc["tool_schema_version"], tool_schema_version)
             self.assertEqual(agent_doc["tool_schema_version"], tool_schema_version)
             self.assertEqual(pages_doc["tool_schema_version"], tool_schema_version)
+            for doc in (api_doc, agent_doc, pages_doc):
+                self.assertEqual(doc["api_deployment_state"], "candidate_unverified")
+                self.assertIs(doc["health_verification_required"], True)
+
+            llms = (out.parent / "llms.txt").read_text(encoding="utf-8")
+            self.assertIn("health verification required", llms.lower())
+            self.assertIn("Stop if this verification fails.", llms)
 
             combined = "\n".join(path.read_text(encoding="utf-8") for path in expected_files)
             self.assertIn(API, combined)
