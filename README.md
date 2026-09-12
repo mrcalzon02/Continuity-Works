@@ -172,6 +172,7 @@ POST /v1/plan
 POST /v1/generate
 POST /v1/dungeon/layout
 POST /v1/infrastructure/layout
+POST /v1/aerospace/support-campus
 POST /v1/minecraft/version
 POST /v1/minecraft/registry/probe
 POST /v1/minecraft/book
