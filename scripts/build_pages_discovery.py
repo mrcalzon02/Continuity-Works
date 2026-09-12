@@ -16,6 +16,7 @@ from structure_capability.tooling import tool_catalog
 
 DEFAULT_API = "https://continuity-works-mrcalzon02-api.onrender.com"
 DEFAULT_FRONTEND = "https://mrcalzon02.github.io/Continuity-Works/"
+API_DEPLOYMENT_STATE = "candidate_unverified"
 
 
 def _base_urls(api: str, frontend: str) -> tuple[str, str]:
@@ -33,9 +34,11 @@ def document(api: str, frontend: str, commit: str, deployment: str) -> dict:
         "tool_schema_version": _tool_schema_version(),
         "name": "Continuity Works",
         "slug": "continuity-works",
-        "description": "Zero-JavaScript discovery for the executable Continuity Works API. GitHub Pages is the static frontend only.",
+        "description": "Zero-JavaScript discovery for the configured Continuity Works API candidate. GitHub Pages is the static frontend only; clients must verify API health before use.",
         "frontend": front,
         "api": base,
+        "api_deployment_state": API_DEPLOYMENT_STATE,
+        "health_verification_required": True,
         "health": f"{base}/v1/health",
         "capabilities": f"{base}/v1/capabilities",
         "tools": f"{base}/v1/tools",
@@ -60,6 +63,8 @@ def agent_document(api: str, frontend: str) -> dict:
         "frontend": front,
         "frontend_is_executable": False,
         "canonical_api": base,
+        "api_deployment_state": API_DEPLOYMENT_STATE,
+        "health_verification_required": True,
         "instructions": f"{front}llms.txt",
         "endpoints": {
             "health": f"{base}/v1/health",
@@ -92,6 +97,8 @@ def pages_discovery_document(api: str, frontend: str) -> dict:
         "executable": False,
         "frontend": front,
         "api": base,
+        "api_deployment_state": API_DEPLOYMENT_STATE,
+        "health_verification_required": True,
         "instructions": f"{front}llms.txt",
         "agent": f"{front}ai.json",
         "static_api": f"{front}api.json",
@@ -118,11 +125,11 @@ def llms_text(api: str, frontend: str) -> str:
 
 ## AI and LLM client instructions
 
-Continuity Works provides an executable HTTP API for AI agents, LLMs, automation systems, and human clients.
+Continuity Works provides an executable HTTP API implementation for AI agents, LLMs, automation systems, and human clients. The configured public API hostname is a deployment candidate and must not be treated as available until its health endpoint succeeds.
 
 The GitHub Pages site at {front} is a STATIC FRONTEND. Do not send Continuity Works API actions to the GitHub Pages origin.
 
-Canonical executable API:
+Configured executable API candidate (health verification required):
 {base}
 
 Health:
@@ -137,7 +144,7 @@ AI tool catalog:
 OpenAPI 3.1 specification:
 {base}/openapi.json
 
-Canonical API machine discovery:
+Canonical API machine discovery (available only when the API candidate is healthy):
 {base}/.well-known/continuity-works.json
 
 Pages-local machine discovery:
@@ -151,14 +158,14 @@ Static API pointer:
 
 ## Core invocation sequence
 
-1. GET the health endpoint and confirm the service identifies itself as Continuity Works.
+1. GET the health endpoint and confirm the candidate service identifies itself as Continuity Works. Stop if this verification fails.
 2. GET the capabilities endpoint.
 3. GET the AI tool catalog.
 4. Select the required tool and read its published HTTP method, canonical endpoint, and schema.
 5. Invoke the exact advertised executable API endpoint with the required schema.
 6. Use the OpenAPI document when route or schema details are needed.
 
-Always preserve the full canonical API hostname exactly as published. Do not shorten, infer, or reconstruct the hostname from the hosting provider domain.
+Always preserve the full configured API hostname exactly as published. Do not shorten, infer, or reconstruct the hostname from the hosting provider domain.
 """
 
 
