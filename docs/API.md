@@ -8,7 +8,7 @@ The public product/service name is **Continuity Works**. The internal Python pac
 Returns the Continuity Works service identity, stable API version, supported lifecycle operations, rebuild grades, procedural-generation features, Minecraft version/content policy, progressive-disclosure endpoints, and review policy.
 
 ### `.tools()`
-Returns the portable JSON-Schema AI function/tool catalog used by `GET /v1/tools`. Public tool entries use `x-continuity-works` semantic-icon/publication metadata and declare the deterministic public validation-gate reasoning contract. Catalog schema version 1.4 exposes 18 deliberate tools.
+Returns the portable JSON-Schema AI function/tool catalog used by `GET /v1/tools`. Public tool entries use `x-continuity-works-tool` semantic-icon/publication metadata and declare the deterministic public validation-gate reasoning contract. Catalog schema version 1.4 exposes 18 deliberate tools.
 
 ### `.inventory_project()`
 Returns discovered local mods, namespaces, explicit registry inventory, discoverable Minecraft resource IDs/candidates, and the inventory hash.
