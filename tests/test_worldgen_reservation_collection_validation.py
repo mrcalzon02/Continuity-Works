@@ -21,6 +21,15 @@ class ReservationCollectionValidationTests(unittest.TestCase):
         values.update(overrides)
         return StructureReservation(**values)
 
+    def test_reservation_index_rejects_malformed_collection_container(self):
+        for reservations in (None, 7, "reservation-a", {"reservation-a": self.reservation()}):
+            with self.subTest(reservations=reservations):
+                with self.assertRaisesRegex(
+                    ValueError,
+                    "reservations must be an iterable collection",
+                ):
+                    ReservationIndex(reservations)
+
     def test_reservation_index_rejects_non_reservation_seed_member(self):
         valid = self.reservation()
         with self.assertRaisesRegex(
@@ -28,6 +37,18 @@ class ReservationCollectionValidationTests(unittest.TestCase):
             "reservations must contain only StructureReservation values",
         ):
             ReservationIndex([valid, object()])
+
+    def test_reconcile_assembly_rejects_malformed_collection_without_mutating_index(self):
+        reservation = self.reservation()
+        for actual_boxes in (None, 7, "box", {"box": reservation.box}):
+            with self.subTest(actual_boxes=actual_boxes):
+                index = ReservationIndex([reservation])
+                with self.assertRaisesRegex(
+                    ValueError,
+                    "actual_boxes must be an iterable collection",
+                ):
+                    index.reconcile_assembly("assembly-a", actual_boxes)
+                self.assertEqual(index.snapshot(), (reservation,))
 
     def test_reconcile_assembly_rejects_non_block_box_member_without_mutating_index(self):
         reservation = self.reservation()
