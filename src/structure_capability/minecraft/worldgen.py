@@ -666,7 +666,12 @@ def validate_geospatial_worldgen(
                 invalid_entries = True
                 break
             weight = entry.get("weight")
-            if isinstance(weight, bool) or not isinstance(weight, int) or weight <= 0:
+            if (
+                isinstance(weight, bool)
+                or not isinstance(weight, int)
+                or weight <= 0
+                or weight > JAVA_INT_MAX
+            ):
                 invalid_entries = True
                 break
     if invalid_entries:
