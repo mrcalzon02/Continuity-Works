@@ -119,7 +119,7 @@ def _context_properties() -> dict:
 
 
 def _tool(name, description, parameters, semantic, item):
-    return {"name": name, "description": description, "parameters": parameters, "x-structuresmith": {"icon": {"semantic": semantic, "item": item}, "reasoning": "public_validation_gates"}}
+    return {"name": name, "description": description, "parameters": parameters, "x-continuity-works-tool": {"icon": {"semantic": semantic, "item": item}, "reasoning": "public_validation_gates"}}
 
 
 def tool_catalog() -> dict:
