@@ -51,6 +51,12 @@ MOB_CATEGORIES = frozenset({
 })
 SPAWN_OVERRIDE_BOUNDING_BOX_TYPES = frozenset({"piece", "full"})
 RANDOM_SPREAD_TYPES = frozenset({"linear", "triangular"})
+FREQUENCY_REDUCTION_METHODS = frozenset({
+    "default",
+    "legacy_type_1",
+    "legacy_type_2",
+    "legacy_type_3",
+})
 
 
 def _require_non_negative_int(value, *, name: str) -> int:
@@ -753,6 +759,11 @@ def validate_geospatial_worldgen(
             separation = placement.get("separation")
             salt = placement.get("salt")
             spread_type = placement.get("spread_type", "linear")
+            frequency = placement.get("frequency", 1.0)
+            frequency_reduction_method = placement.get(
+                "frequency_reduction_method", "default"
+            )
+            exclusion_zone = placement.get("exclusion_zone")
             invalid_spacing = (
                 isinstance(spacing, bool)
                 or not isinstance(spacing, int)
@@ -774,11 +785,42 @@ def validate_geospatial_worldgen(
                 not isinstance(spread_type, str)
                 or spread_type not in RANDOM_SPREAD_TYPES
             )
+            invalid_frequency = (
+                isinstance(frequency, bool)
+                or not isinstance(frequency, (int, float))
+                or not 0.0 <= frequency <= 1.0
+            )
+            invalid_frequency_reduction_method = (
+                not isinstance(frequency_reduction_method, str)
+                or frequency_reduction_method not in FREQUENCY_REDUCTION_METHODS
+            )
+            invalid_exclusion_zone = False
+            if exclusion_zone is not None:
+                if not isinstance(exclusion_zone, Mapping):
+                    invalid_exclusion_zone = True
+                else:
+                    try:
+                        _require_resource_location(
+                            exclusion_zone.get("other_set"),
+                            name="exclusion zone structure set",
+                        )
+                    except ValueError:
+                        invalid_exclusion_zone = True
+                    chunk_count = exclusion_zone.get("chunk_count")
+                    if (
+                        isinstance(chunk_count, bool)
+                        or not isinstance(chunk_count, int)
+                        or not 1 <= chunk_count <= 16
+                    ):
+                        invalid_exclusion_zone = True
             if (
                 invalid_spacing
                 or invalid_separation
                 or invalid_salt
                 or invalid_spread_type
+                or invalid_frequency
+                or invalid_frequency_reduction_method
+                or invalid_exclusion_zone
                 or (
                     not invalid_spacing
                     and not invalid_separation
