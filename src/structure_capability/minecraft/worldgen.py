@@ -39,6 +39,17 @@ HEIGHTMAP_TYPES = frozenset({
     "MOTION_BLOCKING",
     "MOTION_BLOCKING_NO_LEAVES",
 })
+MOB_CATEGORIES = frozenset({
+    "monster",
+    "creature",
+    "ambient",
+    "axolotls",
+    "underground_water_creature",
+    "water_creature",
+    "water_ambient",
+    "misc",
+})
+SPAWN_OVERRIDE_BOUNDING_BOX_TYPES = frozenset({"piece", "full"})
 
 
 def _require_non_negative_int(value, *, name: str) -> int:
@@ -126,6 +137,38 @@ def _require_jigsaw_size(value, *, name: str = "jigsaw size") -> int:
     if not 0 <= value <= MAXIMUM_JIGSAW_SIZE:
         raise ValueError(f"{name} must be between 0 and {MAXIMUM_JIGSAW_SIZE}")
     return value
+
+
+def _spawn_overrides_are_valid(value) -> bool:
+    if not isinstance(value, Mapping):
+        return False
+    for category, override in value.items():
+        if category not in MOB_CATEGORIES or not isinstance(override, Mapping):
+            return False
+        if override.get("bounding_box") not in SPAWN_OVERRIDE_BOUNDING_BOX_TYPES:
+            return False
+        spawns = override.get("spawns")
+        if isinstance(spawns, (str, bytes)) or not isinstance(spawns, Sequence):
+            return False
+        for spawn in spawns:
+            if not isinstance(spawn, Mapping):
+                return False
+            try:
+                _require_resource_location(spawn.get("type"), name="spawn entity type")
+            except ValueError:
+                return False
+            for field in ("weight", "minCount", "maxCount"):
+                field_value = spawn.get(field)
+                if (
+                    isinstance(field_value, bool)
+                    or not isinstance(field_value, int)
+                    or field_value <= 0
+                    or field_value > JAVA_INT_MAX
+                ):
+                    return False
+            if spawn["maxCount"] < spawn["minCount"]:
+                return False
+    return True
 
 
 def _normalize_selector_values(values, *, name: str, validator=None) -> list[str]:
@@ -628,7 +671,7 @@ def validate_geospatial_worldgen(
         if not isinstance(structure.get("use_expansion_hack"), bool):
             findings.append(("error", "INVALID_JIGSAW_EXPANSION_HACK"))
 
-        if not isinstance(structure.get("spawn_overrides"), Mapping):
+        if not _spawn_overrides_are_valid(structure.get("spawn_overrides")):
             findings.append(("error", "INVALID_SPAWN_OVERRIDES"))
 
         try:
