@@ -6,6 +6,8 @@
   "frontend": "https://mrcalzon02.github.io/Continuity-Works/",
   "frontend_is_executable": false,
   "canonical_api": "https://continuity-works-mrcalzon02-api.onrender.com",
+  "api_deployment_state": "candidate_unverified",
+  "health_verification_required": true,
   "instructions": "https://mrcalzon02.github.io/Continuity-Works/llms.txt",
   "endpoints": {
     "health": "https://continuity-works-mrcalzon02-api.onrender.com/v1/health",
