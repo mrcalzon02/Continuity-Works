@@ -1,5 +1,6 @@
 {
   "schema_version": "1.3",
+  "tool_schema_version": "1.4",
   "name": "Continuity Works",
   "slug": "continuity-works",
   "description": "Zero-JavaScript discovery for the executable Continuity Works API. GitHub Pages is the static frontend only.",
