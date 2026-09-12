@@ -198,6 +198,8 @@ class BlockBox:
 
     def overlaps_volume(self, other: "BlockBox", *, padding: int = 0) -> bool:
         """True only for occupied-volume overlap; face adjacency is allowed."""
+        if not isinstance(other, BlockBox):
+            raise ValueError("other must be a BlockBox")
         _require_non_negative_int(padding, name="padding")
         # Convert inclusive Minecraft boxes to half-open boxes. Padding expands
         # this candidate only; ordinary face adjacency remains legal at padding=0.
@@ -212,6 +214,8 @@ class BlockBox:
 
     def horizontal_gap(self, other: "BlockBox") -> float:
         """Euclidean edge-to-edge X/Z gap in blocks between half-open footprints."""
+        if not isinstance(other, BlockBox):
+            raise ValueError("other must be a BlockBox")
         self_x1, self_x2 = self.min_x, self.max_x + 1
         other_x1, other_x2 = other.min_x, other.max_x + 1
         self_z1, self_z2 = self.min_z, self.max_z + 1
