@@ -7,6 +7,8 @@
   "executable": false,
   "frontend": "https://mrcalzon02.github.io/Continuity-Works/",
   "api": "https://continuity-works-mrcalzon02-api.onrender.com",
+  "api_deployment_state": "candidate_unverified",
+  "health_verification_required": true,
   "instructions": "https://mrcalzon02.github.io/Continuity-Works/llms.txt",
   "agent": "https://mrcalzon02.github.io/Continuity-Works/ai.json",
   "static_api": "https://mrcalzon02.github.io/Continuity-Works/api.json",
