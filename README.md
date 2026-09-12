@@ -150,7 +150,7 @@ minecraft_content_package_generate
 minecraft_icon_assign
 ```
 
-Published tool metadata appears under `x-continuity-works`. Each tool's canonical HTTP route, deployment state, and manual UI classification are attached there by the publication boundary.
+Published per-tool metadata appears under `x-continuity-works-tool`. Each tool's canonical HTTP route, deployment state, and manual UI classification are attached there by the publication boundary.
 
 ## HTTP JSON API
 
@@ -207,7 +207,7 @@ layout = cap.infrastructure_layout({
 })
 ```
 
-The public tool catalog returned by `StructureCapability.tools()` uses `x-continuity-works`, while the internal module/class names remain stable for existing Python integrations.
+The public tool catalog returned by `StructureCapability.tools()` uses `x-continuity-works-tool` for each tool's metadata, while the internal module/class names remain stable for existing Python integrations.
 
 ## CLI and local runtime
 
