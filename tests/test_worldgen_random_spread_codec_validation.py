@@ -105,6 +105,33 @@ class WorldgenRandomSpreadCodecValidationTests(unittest.TestCase):
         # Explicit null is equivalent to the optional field being absent.
         self._assert_random_spread_valid({"exclusion_zone": None})
 
+    def test_locate_offset_codec_shape_and_bounds_are_enforced(self):
+        valid_offsets = (
+            [-16, -16, -16],
+            [0, 0, 0],
+            [16, 16, 16],
+            [9, 0, 9],
+        )
+        for locate_offset in valid_offsets:
+            with self.subTest(locate_offset=locate_offset):
+                self._assert_random_spread_valid({"locate_offset": locate_offset})
+
+        invalid_offsets = (
+            None,
+            "0,0,0",
+            [],
+            [0, 0],
+            [0, 0, 0, 0],
+            [17, 0, 0],
+            [-17, 0, 0],
+            [0, True, 0],
+            [0, 0.0, 0],
+            {},
+        )
+        for locate_offset in invalid_offsets:
+            with self.subTest(locate_offset=locate_offset):
+                self._assert_random_spread_invalid({"locate_offset": locate_offset})
+
 
 if __name__ == "__main__":
     unittest.main()
