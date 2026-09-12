@@ -287,6 +287,8 @@ class ReservationIndex:
         *,
         self_collision_padding: int,
     ) -> ReservationConflict | None:
+        if not isinstance(candidate, StructureReservation):
+            raise ValueError("candidate must be a StructureReservation")
         _require_non_negative_int(self_collision_padding, name="self collision padding")
         for existing in self._reservations.values():
             if existing.reservation_id == candidate.reservation_id:
