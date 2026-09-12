@@ -3,6 +3,16 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+import sys
+
+
+ROOT = Path(__file__).resolve().parents[1]
+SRC = ROOT / "src"
+if str(SRC) not in sys.path:
+    sys.path.insert(0, str(SRC))
+
+from structure_capability.tooling import tool_catalog
+
 
 DEFAULT_API = "https://continuity-works-mrcalzon02-api.onrender.com"
 DEFAULT_FRONTEND = "https://mrcalzon02.github.io/Continuity-Works/"
@@ -12,10 +22,15 @@ def _base_urls(api: str, frontend: str) -> tuple[str, str]:
     return api.rstrip("/"), frontend.rstrip("/") + "/"
 
 
+def _tool_schema_version() -> str:
+    return str(tool_catalog().get("schema_version", "unknown"))
+
+
 def document(api: str, frontend: str, commit: str, deployment: str) -> dict:
     base, front = _base_urls(api, frontend)
     return {
         "schema_version": "1.3",
+        "tool_schema_version": _tool_schema_version(),
         "name": "Continuity Works",
         "slug": "continuity-works",
         "description": "Zero-JavaScript discovery for the executable Continuity Works API. GitHub Pages is the static frontend only.",
