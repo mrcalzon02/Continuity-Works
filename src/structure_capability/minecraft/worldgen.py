@@ -76,6 +76,12 @@ def _require_non_empty_identity(value, *, name: str) -> str:
     return value
 
 
+def _require_iterable_collection(value, *, name: str):
+    if isinstance(value, (str, bytes, Mapping)) or not isinstance(value, Iterable):
+        raise ValueError(f"{name} must be an iterable collection")
+    return value
+
+
 def _require_enum(value, allowed: frozenset[str], *, name: str) -> str:
     if not isinstance(value, str) or value not in allowed:
         raise ValueError(f"{name} must be one of: {', '.join(sorted(allowed))}")
@@ -261,6 +267,7 @@ class ReservationIndex:
     def __init__(self, reservations: Iterable[StructureReservation] = ()):  # noqa: B006
         self._lock = RLock()
         self._reservations: dict[str, StructureReservation] = {}
+        _require_iterable_collection(reservations, name="reservations")
         for reservation in reservations:
             if not isinstance(reservation, StructureReservation):
                 raise ValueError("reservations must contain only StructureReservation values")
@@ -397,6 +404,7 @@ class ReservationIndex:
     ) -> int:
         """Drop speculative piece reservations not present in the final StructureStart."""
         _require_non_empty_identity(assembly_id, name="assembly id")
+        _require_iterable_collection(actual_boxes, name="actual_boxes")
         actual = set()
         for box in actual_boxes:
             if not isinstance(box, BlockBox):
