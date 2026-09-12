@@ -13,6 +13,7 @@ DEFAULT_STRUCTURE_EXCLUSION_RADIUS = MINIMUM_STRUCTURE_EXCLUSION_RADIUS
 MAXIMUM_JIGSAW_DISTANCE_FROM_CENTER = 128
 MAXIMUM_JIGSAW_SIZE = 20
 MAXIMUM_RANDOM_SPREAD_DISTANCE = 4096
+MAXIMUM_LOCATE_OFFSET = 16
 JAVA_INT_MIN = -(2**31)
 JAVA_INT_MAX = 2**31 - 1
 RESOURCE_LOCATION_PATTERN = re.compile(r"^(?:[a-z0-9_.-]+:)?[a-z0-9/._-]+$")
@@ -764,6 +765,7 @@ def validate_geospatial_worldgen(
                 "frequency_reduction_method", "default"
             )
             exclusion_zone = placement.get("exclusion_zone")
+            locate_offset = placement.get("locate_offset", (0, 0, 0))
             invalid_spacing = (
                 isinstance(spacing, bool)
                 or not isinstance(spacing, int)
@@ -813,6 +815,17 @@ def validate_geospatial_worldgen(
                         or not 1 <= chunk_count <= 16
                     ):
                         invalid_exclusion_zone = True
+            invalid_locate_offset = (
+                isinstance(locate_offset, (str, bytes))
+                or not isinstance(locate_offset, Sequence)
+                or len(locate_offset) != 3
+                or any(
+                    isinstance(coordinate, bool)
+                    or not isinstance(coordinate, int)
+                    or not -MAXIMUM_LOCATE_OFFSET <= coordinate <= MAXIMUM_LOCATE_OFFSET
+                    for coordinate in locate_offset
+                )
+            )
             if (
                 invalid_spacing
                 or invalid_separation
@@ -821,6 +834,7 @@ def validate_geospatial_worldgen(
                 or invalid_frequency
                 or invalid_frequency_reduction_method
                 or invalid_exclusion_zone
+                or invalid_locate_offset
                 or (
                     not invalid_spacing
                     and not invalid_separation
