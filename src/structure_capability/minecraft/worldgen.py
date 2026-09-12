@@ -50,6 +50,7 @@ MOB_CATEGORIES = frozenset({
     "misc",
 })
 SPAWN_OVERRIDE_BOUNDING_BOX_TYPES = frozenset({"piece", "full"})
+RANDOM_SPREAD_TYPES = frozenset({"linear", "triangular"})
 
 
 def _require_non_negative_int(value, *, name: str) -> int:
@@ -751,6 +752,7 @@ def validate_geospatial_worldgen(
             spacing = placement.get("spacing")
             separation = placement.get("separation")
             salt = placement.get("salt")
+            spread_type = placement.get("spread_type", "linear")
             invalid_spacing = (
                 isinstance(spacing, bool)
                 or not isinstance(spacing, int)
@@ -768,8 +770,20 @@ def validate_geospatial_worldgen(
                 or not isinstance(salt, int)
                 or not JAVA_INT_MIN <= salt <= JAVA_INT_MAX
             )
-            if invalid_spacing or invalid_separation or invalid_salt or (
-                not invalid_spacing and not invalid_separation and separation >= spacing
+            invalid_spread_type = (
+                not isinstance(spread_type, str)
+                or spread_type not in RANDOM_SPREAD_TYPES
+            )
+            if (
+                invalid_spacing
+                or invalid_separation
+                or invalid_salt
+                or invalid_spread_type
+                or (
+                    not invalid_spacing
+                    and not invalid_separation
+                    and separation >= spacing
+                )
             ):
                 findings.append(("error", "INVALID_RANDOM_SPREAD"))
 
