@@ -47,6 +47,26 @@ class BrandingGuardTests(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 verify_static_branding(root)
 
+    def test_unbounded_structuresmith_source_brand_fails(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "service.py").write_text("SERVICE_NAME = 'StructureSmith'", encoding="utf-8")
+            findings = find_retired_source_branding(root)
+            self.assertEqual(findings, [(Path("service.py"), "StructureSmith")])
+            with self.assertRaises(RuntimeError):
+                verify_source_branding(root)
+
+    def test_explicit_structuresmith_migration_contracts_pass(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "compat.py").write_text(
+                "LEGACY_DISCOVERY_PATH = '/.well-known/structuresmith.json'\n"
+                "LEGACY_ENV = 'STRUCTURESMITH_HOST'\n"
+                "NOTE = 'StructureSmith is retired; retained only for migration compatibility.'\n",
+                encoding="utf-8",
+            )
+            verify_source_branding(root)
+
     def test_binary_or_unrelated_files_do_not_false_positive(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -81,8 +101,8 @@ class BrandingGuardTests(unittest.TestCase):
     def test_active_frontend_source_is_structure_forge_clean(self):
         verify_source_branding(PROJECT_ROOT / "frontend")
 
-    def test_whole_active_repository_source_is_structure_forge_clean(self):
-        """Fail closed if retired Forge branding returns anywhere in active authority."""
+    def test_whole_active_repository_source_is_retired_brand_clean(self):
+        """Fail closed unless StructureSmith is an explicit migration compatibility token."""
         verify_source_branding(PROJECT_ROOT)
 
 
