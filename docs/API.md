@@ -32,6 +32,9 @@ Runs the version-neutral native modular layout generator directly. The response 
 ### `.infrastructure_layout(request)`
 Runs the deterministic infrastructure generator directly for inner-city roads, highways, civic facilities, and industrial facilities. The public contract includes strict 6-block city roads with 5-block terrain padding per side, highway dimensions, jigsaw connectors, Lost Cities placement modes, purpose depth, and world-seed-derived candidate anchors. Runtime/fresh-world placement remains a separate validation gate.
 
+### `.aerospace_support_campus_generate(request)`
+Generates the deterministic aerospace support campus through the authoritative published capability. Its canonical HTTP publication is `POST /v1/aerospace/support-campus`; callers should use the tool catalog/OpenAPI publication metadata rather than inventing alternate routes or parallel generators.
+
 ### `.minecraft_version(version)`
 Resolves known target-version metadata and compatibility features. The resolver refuses to invent exact DataVersion values for unknown patch versions. Exact bundled metadata includes Minecraft Java 1.20.5 (`DataVersion 3837`, resource-pack format `32`, data-pack format `41`).
 
@@ -125,6 +128,7 @@ POST /v1/plan
 POST /v1/generate
 POST /v1/dungeon/layout
 POST /v1/infrastructure/layout
+POST /v1/aerospace/support-campus
 POST /v1/minecraft/version
 POST /v1/minecraft/registry/probe
 POST /v1/minecraft/book
