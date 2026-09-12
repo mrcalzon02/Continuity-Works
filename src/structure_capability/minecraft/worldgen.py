@@ -11,6 +11,7 @@ from uuid import uuid4
 MINIMUM_STRUCTURE_EXCLUSION_RADIUS = 500
 DEFAULT_STRUCTURE_EXCLUSION_RADIUS = MINIMUM_STRUCTURE_EXCLUSION_RADIUS
 MAXIMUM_JIGSAW_DISTANCE_FROM_CENTER = 128
+MAXIMUM_JIGSAW_SIZE = 20
 MAXIMUM_RANDOM_SPREAD_DISTANCE = 4096
 JAVA_INT_MIN = -(2**31)
 JAVA_INT_MAX = 2**31 - 1
@@ -116,6 +117,14 @@ def _require_jigsaw_distance(value, *, name: str = "max distance from center") -
         raise ValueError(
             f"{name} must be between 1 and {MAXIMUM_JIGSAW_DISTANCE_FROM_CENTER} blocks"
         )
+    return value
+
+
+def _require_jigsaw_size(value, *, name: str = "jigsaw size") -> int:
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise ValueError(f"{name} must be an integer")
+    if not 0 <= value <= MAXIMUM_JIGSAW_SIZE:
+        raise ValueError(f"{name} must be between 0 and {MAXIMUM_JIGSAW_SIZE}")
     return value
 
 
@@ -610,6 +619,17 @@ def validate_geospatial_worldgen(
             _require_resource_location(structure.get("start_pool"), name="start pool")
         except ValueError:
             findings.append(("error", "INVALID_JIGSAW_START_POOL"))
+
+        try:
+            _require_jigsaw_size(structure.get("size"))
+        except ValueError:
+            findings.append(("error", "INVALID_JIGSAW_SIZE"))
+
+        if not isinstance(structure.get("use_expansion_hack"), bool):
+            findings.append(("error", "INVALID_JIGSAW_EXPANSION_HACK"))
+
+        if not isinstance(structure.get("spawn_overrides"), Mapping):
+            findings.append(("error", "INVALID_SPAWN_OVERRIDES"))
 
         try:
             _require_enum(structure.get("step"), GENERATION_STEPS, name="generation step")
