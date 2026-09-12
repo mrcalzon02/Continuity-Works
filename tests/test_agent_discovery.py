@@ -7,6 +7,8 @@ import sys
 import tempfile
 import unittest
 
+from structure_capability.tooling import tool_catalog
+
 
 ROOT = Path(__file__).resolve().parents[1]
 API = "https://continuity-works-mrcalzon02-api.onrender.com"
@@ -63,6 +65,10 @@ class AgentDiscoveryContractTests(unittest.TestCase):
             self.assertEqual(api_doc["frontend"], FRONTEND)
             self.assertEqual(api_doc["capabilities"], f"{API}/v1/capabilities")
             self.assertEqual(api_doc["frontend_commit"], "test-commit")
+            self.assertEqual(
+                api_doc["tool_schema_version"],
+                str(tool_catalog()["schema_version"]),
+            )
 
             combined = "\n".join(path.read_text(encoding="utf-8") for path in expected_files)
             self.assertIn(API, combined)
