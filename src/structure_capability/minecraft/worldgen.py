@@ -11,6 +11,7 @@ from uuid import uuid4
 MINIMUM_STRUCTURE_EXCLUSION_RADIUS = 500
 DEFAULT_STRUCTURE_EXCLUSION_RADIUS = MINIMUM_STRUCTURE_EXCLUSION_RADIUS
 MAXIMUM_JIGSAW_DISTANCE_FROM_CENTER = 128
+MAXIMUM_RANDOM_SPREAD_DISTANCE = 4096
 JAVA_INT_MIN = -(2**31)
 JAVA_INT_MAX = 2**31 - 1
 RESOURCE_LOCATION_PATTERN = re.compile(r"^(?:[a-z0-9_.-]+:)?[a-z0-9/._-]+$")
@@ -101,6 +102,8 @@ def _require_exclusion_radius(value, *, name: str) -> int:
         raise ValueError(
             f"{name} must be >= {MINIMUM_STRUCTURE_EXCLUSION_RADIUS} blocks"
         )
+    if value > JAVA_INT_MAX:
+        raise ValueError(f"{name} must fit a signed 32-bit Java integer")
     return value
 
 
@@ -159,8 +162,12 @@ def random_spread_structure_set(structure_id, spacing, separation, salt):
     _require_resource_location(structure_id, name="structure id")
     if isinstance(spacing, bool) or not isinstance(spacing, int) or spacing <= 0:
         raise ValueError("spacing must be a positive integer")
+    if spacing > MAXIMUM_RANDOM_SPREAD_DISTANCE:
+        raise ValueError(f"spacing must be <= {MAXIMUM_RANDOM_SPREAD_DISTANCE}")
     if isinstance(separation, bool) or not isinstance(separation, int) or separation < 0:
         raise ValueError("separation must be a non-negative integer")
+    if separation > MAXIMUM_RANDOM_SPREAD_DISTANCE:
+        raise ValueError(f"separation must be <= {MAXIMUM_RANDOM_SPREAD_DISTANCE}")
     if separation >= spacing:
         raise ValueError("separation must be lower than spacing")
     _require_java_int(salt, name="salt")
@@ -545,6 +552,8 @@ def validate_structure_protection_profile(profile: Mapping) -> list[tuple[str, s
         or radius < MINIMUM_STRUCTURE_EXCLUSION_RADIUS
     ):
         findings.append(("error", "STRUCTURE_EXCLUSION_RADIUS_BELOW_MINIMUM"))
+    elif radius > JAVA_INT_MAX:
+        findings.append(("error", "STRUCTURE_EXCLUSION_RADIUS_ABOVE_MAXIMUM"))
     if profile.get("protect_jigsaw_pieces") is not True:
         findings.append(("error", "JIGSAW_PIECE_PROTECTION_CANNOT_BE_DISABLED"))
     piece_radius = profile.get("jigsaw_piece_exclusion_radius", radius)
@@ -554,6 +563,8 @@ def validate_structure_protection_profile(profile: Mapping) -> list[tuple[str, s
         or piece_radius < MINIMUM_STRUCTURE_EXCLUSION_RADIUS
     ):
         findings.append(("error", "JIGSAW_PIECE_EXCLUSION_RADIUS_BELOW_MINIMUM"))
+    elif piece_radius > JAVA_INT_MAX:
+        findings.append(("error", "JIGSAW_PIECE_EXCLUSION_RADIUS_ABOVE_MAXIMUM"))
     family = profile.get("family")
     if family is not None and (not isinstance(family, str) or not family.strip()):
         findings.append(("error", "INVALID_PROTECTION_FAMILY"))
@@ -671,12 +682,16 @@ def validate_geospatial_worldgen(
             separation = placement.get("separation")
             salt = placement.get("salt")
             invalid_spacing = (
-                isinstance(spacing, bool) or not isinstance(spacing, int) or spacing <= 0
+                isinstance(spacing, bool)
+                or not isinstance(spacing, int)
+                or spacing <= 0
+                or spacing > MAXIMUM_RANDOM_SPREAD_DISTANCE
             )
             invalid_separation = (
                 isinstance(separation, bool)
                 or not isinstance(separation, int)
                 or separation < 0
+                or separation > MAXIMUM_RANDOM_SPREAD_DISTANCE
             )
             invalid_salt = (
                 isinstance(salt, bool)
