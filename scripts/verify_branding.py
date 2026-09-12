@@ -5,11 +5,13 @@ from pathlib import Path
 import sys
 
 # Deliberately retained only inside this non-user-facing validation guard.
-# The rendered artifact rejects every retired public identity. The source-tree
-# guard is scoped to the explicit Structure Forge cleanup requirement; legacy
-# StructureSmith compatibility tokens remain separately bounded by contract tests.
+# Rendered/static artifacts reject every retired public identity. Active source
+# also rejects them, except for narrowly identifiable migration contracts for
+# the retired StructureSmith name (legacy endpoint/env aliases and prose that
+# explicitly labels the name retired/legacy/migration-only).
 RETIRED_PUBLIC_BRANDS = ("StructureForge", "Structure Forge", "StructureSmith")
 RETIRED_SOURCE_BRANDS = ("StructureForge", "Structure Forge")
+RETIRED_COMPATIBILITY_BRAND = "StructureSmith"
 STATIC_TEXT_SUFFIXES = {
     ".css",
     ".html",
@@ -78,6 +80,33 @@ def _find_branding_in_text(
     return findings
 
 
+def _structuresmith_line_is_bounded_compatibility(line: str) -> bool:
+    """Return True only for explicit legacy/migration StructureSmith contracts."""
+    folded = line.casefold()
+    if RETIRED_COMPATIBILITY_BRAND.casefold() not in folded:
+        return False
+    migration_markers = ("retired", "legacy", "migration", "compatibility", "fallback")
+    if any(marker in folded for marker in migration_markers):
+        return True
+    # These machine tokens are retained solely so older callers can migrate.
+    if "structuresmith_" in folded or "/.well-known/structuresmith.json" in folded:
+        return True
+    return False
+
+
+def _find_unbounded_structuresmith(path: Path, relative_path: Path) -> list[tuple[Path, str]]:
+    try:
+        text = path.read_text(encoding="utf-8")
+    except UnicodeDecodeError:
+        return []
+    for line in text.splitlines():
+        if RETIRED_COMPATIBILITY_BRAND.casefold() not in line.casefold():
+            continue
+        if not _structuresmith_line_is_bounded_compatibility(line):
+            return [(relative_path, RETIRED_COMPATIBILITY_BRAND)]
+    return []
+
+
 def find_retired_branding(root: Path) -> list[tuple[Path, str]]:
     """Find retired branding in a rendered/static artifact."""
     findings: list[tuple[Path, str]] = []
@@ -91,7 +120,7 @@ def find_retired_branding(root: Path) -> list[tuple[Path, str]]:
 
 
 def find_retired_source_branding(root: Path) -> list[tuple[Path, str]]:
-    """Find retired Structure Forge branding across active authoritative source."""
+    """Find retired branding across active authoritative source."""
     findings: list[tuple[Path, str]] = []
     for path in sorted(root.rglob("*")):
         if not path.is_file() or path.suffix.lower() not in SOURCE_TEXT_SUFFIXES:
@@ -102,6 +131,7 @@ def find_retired_source_branding(root: Path) -> list[tuple[Path, str]]:
         if relative in SOURCE_LITERAL_ALLOWLIST:
             continue
         findings.extend(_find_branding_in_text(path, relative, RETIRED_SOURCE_BRANDS))
+        findings.extend(_find_unbounded_structuresmith(path, relative))
     return findings
 
 
