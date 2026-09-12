@@ -92,6 +92,8 @@ def _require_enum(value, allowed: frozenset[str], *, name: str) -> str:
 def _require_block_coordinate(value, *, name: str) -> int:
     if isinstance(value, bool) or not isinstance(value, int):
         raise ValueError(f"{name} must be an integer block coordinate")
+    if not JAVA_INT_MIN <= value <= JAVA_INT_MAX:
+        raise ValueError(f"{name} must fit a signed 32-bit Java integer")
     return value
 
 

@@ -3,6 +3,7 @@ import unittest
 from structure_capability.minecraft.worldgen import (
     BlockBox,
     JAVA_INT_MAX,
+    JAVA_INT_MIN,
     MAXIMUM_RANDOM_SPREAD_DISTANCE,
     StructureReservation,
     jigsaw_structure,
@@ -93,6 +94,46 @@ class WorldgenIntegerBoundsTests(unittest.TestCase):
         self.assertIn(
             ("error", "JIGSAW_PIECE_EXCLUSION_RADIUS_ABOVE_MAXIMUM"),
             findings,
+        )
+
+    def test_block_box_accepts_java_int_coordinate_boundaries(self):
+        box = BlockBox(
+            JAVA_INT_MIN,
+            JAVA_INT_MIN,
+            JAVA_INT_MIN,
+            JAVA_INT_MAX,
+            JAVA_INT_MAX,
+            JAVA_INT_MAX,
+        )
+        self.assertEqual(box.min_x, JAVA_INT_MIN)
+        self.assertEqual(box.max_x, JAVA_INT_MAX)
+
+    def test_block_box_rejects_coordinate_outside_java_int_range(self):
+        with self.assertRaisesRegex(ValueError, "signed 32-bit Java integer"):
+            BlockBox(JAVA_INT_MIN - 1, 0, 0, 0, 0, 0)
+        with self.assertRaisesRegex(ValueError, "signed 32-bit Java integer"):
+            BlockBox(0, 0, 0, JAVA_INT_MAX + 1, 0, 0)
+
+    def test_jigsaw_structure_rejects_absolute_height_outside_java_int_range(self):
+        for absolute_y in (JAVA_INT_MIN - 1, JAVA_INT_MAX + 1):
+            with self.subTest(absolute_y=absolute_y):
+                with self.assertRaisesRegex(ValueError, "signed 32-bit Java integer"):
+                    jigsaw_structure(
+                        biome_selector="#minecraft:is_overworld",
+                        start_pool="continuity_works:test/start",
+                        absolute_y=absolute_y,
+                    )
+
+    def test_validator_rejects_absolute_height_outside_java_int_range(self):
+        structure = jigsaw_structure(
+            biome_selector="#minecraft:is_overworld",
+            start_pool="continuity_works:test/start",
+        )
+        structure["start_height"]["absolute"] = JAVA_INT_MAX + 1
+        structure_set = random_spread_structure_set("continuity_works:test", 32, 8, 1)
+        self.assertIn(
+            ("error", "INVALID_START_HEIGHT"),
+            validate_geospatial_worldgen(structure, structure_set),
         )
 
     def test_default_500_block_exclusion_remains_valid(self):
