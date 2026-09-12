@@ -233,7 +233,8 @@ def openapi_document(base_url: str | None = None) -> dict:
 def discovery_document(capability: StructureCapability, base_url: str | None = None) -> dict:
     base = (base_url or CANONICAL_API_URL).rstrip("/")
     catalog = published_tool_catalog(tool_catalog(), capability, base)
-    identity = deployment_identity(base, str(catalog.get("schema_version", "unknown")))
+    schema_version = str(catalog.get("schema_version", "unknown"))
+    identity = deployment_identity(base, schema_version)
     endpoints = {"health": f"{base}/v1/health", "serviceability": f"{base}/v1/serviceability", "tools": f"{base}/v1/tools", "compact_tools": f"{base}/v1/tools/index", "presets": f"{base}/v1/presets", "resolver": f"{base}/v1/resolve", "openapi": f"{base}/openapi.json", "discovery": f"{base}{CANONICAL_DISCOVERY_PATH}"}
     if _decision_authority_url() is not None:
         endpoints["blueprint_decision_profile"] = f"{base}{DECISION_BRIDGE_PREFIX}/profile"
@@ -244,7 +245,7 @@ def discovery_document(capability: StructureCapability, base_url: str | None = N
         endpoints["blueprint_decision_apply_candidate"] = f"{base}{DECISION_BRIDGE_PREFIX}/apply-candidate"
         endpoints["blueprint_decision_validate"] = f"{base}{DECISION_BRIDGE_PREFIX}/validate"
         endpoints["blueprint_decision_finalize"] = f"{base}{DECISION_BRIDGE_PREFIX}/finalize"
-    return {"schema_version": "1.3", "name": "Continuity Works", "slug": "continuity-works", "description": "Machine discovery for the executable Continuity Works API. The GitHub Pages origin is a static frontend only.", "frontend": canonical_frontend_url(), "api": base, "build": identity, "endpoints": endpoints, "decision_bridge": decision_bridge_document(), "capabilities": [{"name": tool["name"], **tool.get("x-continuity-works", {}).get("publication", {})} for tool in catalog.get("tools", [])]}
+    return {"schema_version": schema_version, "name": "Continuity Works", "slug": "continuity-works", "description": "Machine discovery for the executable Continuity Works API. The GitHub Pages origin is a static frontend only.", "frontend": canonical_frontend_url(), "api": base, "build": identity, "endpoints": endpoints, "decision_bridge": decision_bridge_document(), "capabilities": [{"name": tool["name"], **tool.get("x-continuity-works", {}).get("publication", {})} for tool in catalog.get("tools", [])]}
 
 
 def health_document(base_url: str | None = None) -> dict:

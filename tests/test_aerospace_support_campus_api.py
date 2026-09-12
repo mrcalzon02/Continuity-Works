@@ -4,7 +4,7 @@ import unittest
 from structure_capability import StructureCapability
 from structure_capability.publication import CANONICAL_API_URL, PUBLIC_CAPABILITIES
 from structure_capability.request_resolution import CapabilityResolver
-from structure_capability.server import openapi_document
+from structure_capability.server import discovery_document, openapi_document
 from structure_capability.tooling import tool_catalog
 
 
@@ -52,6 +52,20 @@ class AerospaceSupportCampusApiTests(unittest.TestCase):
         self.assertEqual(operation["x-continuity-works-tool"], self.TOOL)
         request_schema = operation["requestBody"]["content"]["application/json"]["schema"]
         self.assertEqual(set(request_schema["required"]), {"scale", "seed"})
+
+    def test_discovery_tracks_catalog_schema_and_publishes_campus(self):
+        with tempfile.TemporaryDirectory() as td:
+            capability = StructureCapability(td)
+            discovery = discovery_document(capability, CANONICAL_API_URL)
+        self.assertEqual(discovery["schema_version"], str(tool_catalog()["schema_version"]))
+        self.assertEqual(discovery["build"]["tool_schema_version"], discovery["schema_version"])
+        published = {item["name"]: item for item in discovery["capabilities"]}
+        self.assertIn(self.TOOL, published)
+        self.assertEqual(
+            published[self.TOOL]["canonical_endpoint"],
+            f"{CANONICAL_API_URL}/v1/aerospace/support-campus",
+        )
+        self.assertEqual(published[self.TOOL]["http_method"], "POST")
 
     def test_structure_capability_invokes_authoritative_seeded_generator(self):
         with tempfile.TemporaryDirectory() as td:
