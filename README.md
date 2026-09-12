@@ -127,7 +127,7 @@ GET /v1/presets/{preset_id}
 POST /v1/resolve
 ```
 
-The schema-version 1.3 catalog exposes these 17 deliberate capability tools:
+The schema-version 1.4 catalog exposes these 18 deliberate capability tools:
 
 ```text
 structure_capabilities
@@ -137,6 +137,7 @@ structure_plan
 structure_generate
 dungeon_layout
 infrastructure_layout
+aerospace_support_campus_generate
 minecraft_version
 minecraft_registry_probe
 minecraft_book_generate
