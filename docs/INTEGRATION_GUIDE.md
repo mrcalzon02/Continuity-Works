@@ -10,7 +10,7 @@ Run the bundled HTTP server beside a generator, agent, Codex workflow, CI job, o
 
 ## As an AI tool provider
 
-Use `GET /v1/tools` or `structure-capability tools` to retrieve the portable function catalog. Keep the tool names stable and route all mutations through the same Python API rather than building a second AI-only generation implementation.
+Use `GET /v1/tools` or `continuity-works tools` to retrieve the portable function catalog. Keep the tool names stable and route all mutations through the same Python API rather than building a second AI-only generation implementation.
 
 ## As a GitHub-referenced capability
 
