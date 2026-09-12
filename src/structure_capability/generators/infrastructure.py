@@ -52,7 +52,7 @@ class InfrastructureLayoutRequest:
     deck_thickness: int = 2
     min_clearance: int = 6
     jigsaw_enabled: bool = True
-    jigsaw_pool: str = "structuresmith:infrastructure"
+    jigsaw_pool: str = "continuity_works:infrastructure"
     connector_width: int = 3
     lost_cities_enabled: bool = False
     spawn_modes: tuple[str, ...] = VALID_SPAWN_MODES
@@ -91,7 +91,7 @@ class InfrastructureLayoutRequest:
             deck_thickness=int(highway.get("deck_thickness", d.get("deck_thickness", 2))),
             min_clearance=int(highway.get("min_clearance", d.get("min_clearance", 6))),
             jigsaw_enabled=_as_bool(jigsaw.get("enabled", d.get("jigsaw_enabled")), True),
-            jigsaw_pool=str(jigsaw.get("pool", d.get("jigsaw_pool", "structuresmith:infrastructure"))),
+            jigsaw_pool=str(jigsaw.get("pool", d.get("jigsaw_pool", "continuity_works:infrastructure"))),
             connector_width=int(jigsaw.get("connector_width", d.get("connector_width", 3))),
             lost_cities_enabled=_as_bool(lost.get("enabled", d.get("lost_cities_enabled")), False),
             spawn_modes=tuple(lost.get("spawn_modes", d.get("spawn_modes", VALID_SPAWN_MODES))),
