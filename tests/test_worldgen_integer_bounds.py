@@ -39,7 +39,7 @@ class WorldgenIntegerBoundsTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "separation must be <= 4096"):
             random_spread_structure_set(
                 "continuity_works:test",
-                MAXIMUM_RANDOM_SPREAD_DISTANCE + 2,
+                MAXIMUM_RANDOM_SPREAD_DISTANCE,
                 MAXIMUM_RANDOM_SPREAD_DISTANCE + 1,
                 1,
             )
