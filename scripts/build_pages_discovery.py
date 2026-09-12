@@ -54,6 +54,7 @@ def agent_document(api: str, frontend: str) -> dict:
     base, front = _base_urls(api, frontend)
     return {
         "schema_version": "1.0",
+        "tool_schema_version": _tool_schema_version(),
         "name": "Continuity Works",
         "kind": "agent-discovery",
         "frontend": front,
@@ -84,6 +85,7 @@ def pages_discovery_document(api: str, frontend: str) -> dict:
     base, front = _base_urls(api, frontend)
     return {
         "schema_version": "1.0",
+        "tool_schema_version": _tool_schema_version(),
         "name": "Continuity Works",
         "kind": "pages-agent-discovery",
         "surface": "static",

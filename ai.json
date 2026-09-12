@@ -1,5 +1,6 @@
 {
   "schema_version": "1.0",
+  "tool_schema_version": "1.4",
   "name": "Continuity Works",
   "kind": "agent-discovery",
   "frontend": "https://mrcalzon02.github.io/Continuity-Works/",
