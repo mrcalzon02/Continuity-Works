@@ -86,6 +86,24 @@ class ReservationIdentityValidationTests(unittest.TestCase):
         self.assertIsNotNone(conflict)
         self.assertEqual(conflict.code, "RESERVATION_ID_CONFLICT")
 
+    def test_conflict_for_rejects_non_reservation_candidate_explicitly(self):
+        existing = self.reservation(reservation_id="existing")
+        index = ReservationIndex([existing])
+
+        with self.assertRaisesRegex(ValueError, "candidate must be a StructureReservation"):
+            index.conflict_for({"reservation_id": "fake"})
+
+        self.assertEqual(index.snapshot(), (existing,))
+
+    def test_try_reserve_rejects_non_reservation_candidate_without_mutation(self):
+        existing = self.reservation(reservation_id="existing")
+        index = ReservationIndex([existing])
+
+        with self.assertRaisesRegex(ValueError, "candidate must be a StructureReservation"):
+            index.try_reserve(object())
+
+        self.assertEqual(index.snapshot(), (existing,))
+
     def test_reserve_piece_rejects_blank_assembly_before_spacing_check(self):
         index = ReservationIndex([
             self.reservation(
