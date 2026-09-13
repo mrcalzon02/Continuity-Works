@@ -38,6 +38,40 @@ class ReservationCollectionValidationTests(unittest.TestCase):
         ):
             ReservationIndex([valid, object()])
 
+    def test_reservation_index_rejects_seeded_external_exclusion_conflict(self):
+        first = self.reservation()
+        second = self.reservation(
+            reservation_id="reservation-b",
+            assembly_id="assembly-b",
+            piece_id="piece-b",
+            box=BlockBox(509, 0, 0, 518, 9, 9),
+        )
+
+        with self.assertRaisesRegex(ValueError, "STRUCTURE_EXCLUSION_CONFLICT"):
+            ReservationIndex([first, second])
+
+    def test_reservation_index_rejects_seeded_same_assembly_overlap(self):
+        first = self.reservation()
+        second = self.reservation(
+            reservation_id="reservation-b",
+            piece_id="piece-b",
+            box=BlockBox(9, 0, 0, 18, 9, 9),
+        )
+
+        with self.assertRaisesRegex(ValueError, "SELF_JIGSAW_COLLISION"):
+            ReservationIndex([first, second])
+
+    def test_reservation_index_accepts_seeded_exact_minimum_clearance(self):
+        first = self.reservation()
+        second = self.reservation(
+            reservation_id="reservation-b",
+            assembly_id="assembly-b",
+            piece_id="piece-b",
+            box=BlockBox(510, 0, 0, 519, 9, 9),
+        )
+
+        self.assertEqual(ReservationIndex([first, second]).snapshot(), (first, second))
+
     def test_reconcile_assembly_rejects_malformed_collection_without_mutating_index(self):
         reservation = self.reservation()
         for actual_boxes in (None, 7, "box", {"box": reservation.box}):
