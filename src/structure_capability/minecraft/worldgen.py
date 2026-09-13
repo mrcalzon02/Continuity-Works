@@ -270,8 +270,6 @@ class BlockBox:
         if not isinstance(other, BlockBox):
             raise ValueError("other must be a BlockBox")
         _require_non_negative_int(padding, name="padding")
-        # Convert inclusive Minecraft boxes to half-open boxes. Padding expands
-        # this candidate only; ordinary face adjacency remains legal at padding=0.
         return (
             self.min_x - padding < other.max_x + 1
             and self.max_x + 1 + padding > other.min_x
@@ -395,8 +393,6 @@ class ReservationIndex:
                         horizontal_gap=0.0,
                         required_gap=0,
                     )
-                # Same assembly may connect tightly. Family equality alone never grants
-                # this exception: the assembly identity must match.
                 continue
 
             gap = candidate.box.horizontal_gap(existing.box)
@@ -417,7 +413,7 @@ class ReservationIndex:
         *,
         self_collision_padding: int = 0,
     ) -> ReservationConflict | None:
-        """Atomically check and provisionally reserve a structure or jigsaw piece."""
+        """Atomically check conflicts and insert the reservation without changing its lifecycle state."""
         with self._lock:
             conflict = self._conflict_for_unlocked(
                 reservation, self_collision_padding=self_collision_padding
