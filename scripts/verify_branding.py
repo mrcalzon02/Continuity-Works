@@ -5,11 +5,9 @@ from pathlib import Path
 import sys
 
 # Deliberately retained only inside this non-user-facing validation guard.
-# The rendered artifact rejects every retired public identity. The source-tree
-# guard is scoped to the explicit Structure Forge cleanup requirement; legacy
-# StructureSmith compatibility tokens remain separately bounded by contract tests.
+# Source and rendered/static guards reject every retired public identity.
 RETIRED_PUBLIC_BRANDS = ("StructureForge", "Structure Forge", "StructureSmith")
-RETIRED_SOURCE_BRANDS = ("StructureForge", "Structure Forge")
+RETIRED_SOURCE_BRANDS = RETIRED_PUBLIC_BRANDS
 STATIC_TEXT_SUFFIXES = {
     ".css",
     ".html",
@@ -91,7 +89,7 @@ def find_retired_branding(root: Path) -> list[tuple[Path, str]]:
 
 
 def find_retired_source_branding(root: Path) -> list[tuple[Path, str]]:
-    """Find retired Structure Forge branding across active authoritative source."""
+    """Find retired pre-Continuity Works branding across active authoritative source."""
     findings: list[tuple[Path, str]] = []
     for path in sorted(root.rglob("*")):
         if not path.is_file() or path.suffix.lower() not in SOURCE_TEXT_SUFFIXES:
