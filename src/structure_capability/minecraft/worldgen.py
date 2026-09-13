@@ -419,10 +419,6 @@ class ReservationIndex:
     ) -> ReservationConflict | None:
         """Atomically check and provisionally reserve a structure or jigsaw piece."""
         with self._lock:
-            if not isinstance(reservation, StructureReservation):
-                raise ValueError("candidate must be a StructureReservation")
-            if not reservation.provisional:
-                raise ValueError("try_reserve requires a provisional reservation")
             conflict = self._conflict_for_unlocked(
                 reservation, self_collision_padding=self_collision_padding
             )
