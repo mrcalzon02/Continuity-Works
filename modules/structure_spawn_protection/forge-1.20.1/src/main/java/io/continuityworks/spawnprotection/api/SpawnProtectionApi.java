@@ -24,9 +24,7 @@ public final class SpawnProtectionApi {
         int exclusionRadius,
         String pieceId
     ) {
-        if (exclusionRadius < SpawnProtectionConfig.HARD_MINIMUM_RADIUS) {
-            throw new IllegalArgumentException("External structure exclusion radius must be >= 500");
-        }
+        validateExclusionRadius(exclusionRadius);
         SpawnProtectionService.LevelState state = SpawnProtectionService.attachLevel(level);
         BlockBox box = BlockBox.from(footprint);
         String id = "external:" + assemblyId + "|" + box.compactKey();
@@ -41,6 +39,17 @@ public final class SpawnProtectionApi {
         return conflict == null
             ? new ExternalReservationResult(true, null, 0.0, 0)
             : new ExternalReservationResult(false, conflict.code(), conflict.horizontalGap(), conflict.requiredGap());
+    }
+
+    static void validateExclusionRadius(int exclusionRadius) {
+        if (exclusionRadius < SpawnProtectionConfig.HARD_MINIMUM_RADIUS
+            || exclusionRadius > SpawnProtectionConfig.HARD_MAXIMUM_RADIUS) {
+            throw new IllegalArgumentException(
+                "External structure exclusion radius must be between "
+                    + SpawnProtectionConfig.HARD_MINIMUM_RADIUS + " and "
+                    + SpawnProtectionConfig.HARD_MAXIMUM_RADIUS
+            );
+        }
     }
 
     public static void commit(ServerLevel level, String assemblyId) {
