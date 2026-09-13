@@ -417,7 +417,7 @@ class ReservationIndex:
         *,
         self_collision_padding: int = 0,
     ) -> ReservationConflict | None:
-        """Atomically check and provisionally reserve a structure or jigsaw piece."""
+        """Atomically check conflicts and insert the reservation without changing its lifecycle state."""
         with self._lock:
             conflict = self._conflict_for_unlocked(
                 reservation, self_collision_padding=self_collision_padding
