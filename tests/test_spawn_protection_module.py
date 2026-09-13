@@ -29,9 +29,11 @@ class SpawnProtectionModuleLayoutTests(unittest.TestCase):
         self.assertIn('defineInRange("defaultExclusionRadius", HARD_MINIMUM_RADIUS', config_java)
         self.assertIn('defineInRange("defaultJigsawPieceRadius", HARD_MINIMUM_RADIUS', config_java)
 
-    def test_public_adapter_api_enforces_same_minimum(self):
+    def test_public_adapter_api_enforces_supported_radius_range(self):
         api = (MODULE / "src/main/java/io/continuityworks/spawnprotection/api/SpawnProtectionApi.java").read_text()
-        self.assertIn("External structure exclusion radius must be >= 500", api)
+        self.assertIn("SpawnProtectionConfig.HARD_MINIMUM_RADIUS", api)
+        self.assertIn("SpawnProtectionConfig.HARD_MAXIMUM_RADIUS", api)
+        self.assertIn("External structure exclusion radius must be between ", api)
         self.assertIn("tryReserve", api)
         self.assertIn("commit", api)
         self.assertIn("rollback", api)
