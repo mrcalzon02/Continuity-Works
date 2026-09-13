@@ -4,6 +4,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 
 public final class SpawnProtectionConfig {
     public static final int HARD_MINIMUM_RADIUS = 500;
+    public static final int HARD_MAXIMUM_RADIUS = 32768;
 
     public static final ForgeConfigSpec SPEC;
     public static final ForgeConfigSpec.IntValue DEFAULT_EXCLUSION_RADIUS;
@@ -21,11 +22,11 @@ public final class SpawnProtectionConfig {
 
         DEFAULT_EXCLUSION_RADIUS = builder
             .comment("Default horizontal exclusion radius for enrolled structures.")
-            .defineInRange("defaultExclusionRadius", HARD_MINIMUM_RADIUS, HARD_MINIMUM_RADIUS, 32768);
+            .defineInRange("defaultExclusionRadius", HARD_MINIMUM_RADIUS, HARD_MINIMUM_RADIUS, HARD_MAXIMUM_RADIUS);
 
         DEFAULT_JIGSAW_PIECE_RADIUS = builder
             .comment("Default horizontal exclusion radius emitted by every accepted jigsaw piece.")
-            .defineInRange("defaultJigsawPieceRadius", HARD_MINIMUM_RADIUS, HARD_MINIMUM_RADIUS, 32768);
+            .defineInRange("defaultJigsawPieceRadius", HARD_MINIMUM_RADIUS, HARD_MINIMUM_RADIUS, HARD_MAXIMUM_RADIUS);
 
         AUTO_INCLUDE_REGISTERED_STRUCTURES = builder
             .comment(

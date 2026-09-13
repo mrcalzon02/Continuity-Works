@@ -12,7 +12,7 @@ The module is intentionally separable from the Biome Expander so it can later be
 
 ## Spatial contract
 
-Every enrolled structure reserves its actual horizontal footprint plus a **minimum 500-block exclusion radius**. Larger requested radii are preserved. When two reservations have different radii, the required edge-to-edge clearance is the larger radius. Vertical separation does not bypass the external structure rule.
+Every enrolled structure reserves its actual horizontal footprint plus a **minimum 500-block exclusion radius**. Larger requested radii are preserved up to the hard runtime maximum of **32,768 blocks**. When two reservations have different radii, the required edge-to-edge clearance is the larger radius. Vertical separation does not bypass the external structure rule.
 
 This is footprint based, not center based. A very large facility therefore cannot place its center 500 blocks away while its walls overlap another protected region.
 
@@ -61,13 +61,13 @@ No NBT structure template, datapack structure JSON, structure set, pool, biome s
 
 The common config exposes:
 
-- `defaultExclusionRadius` — default 500, minimum 500;
-- `defaultJigsawPieceRadius` — default 500, minimum 500;
+- `defaultExclusionRadius` — default 500, range 500–32,768;
+- `defaultJigsawPieceRadius` — default 500, range 500–32,768;
 - `autoIncludeRegisteredStructures` — default `true`;
 - `indexExistingChunkStarts` — default `true`;
 - `selfCollisionPadding` — default `0`; optional stricter same-assembly physical separation.
 
-There is intentionally no setting that lowers the core exclusion radius below 500 or turns off per-piece protection for a jigsaw that is enrolled.
+There is intentionally no setting that lowers the core exclusion radius below 500 or raises a configured/persisted exclusion radius above 32,768, and no setting turns off per-piece protection for a jigsaw that is enrolled.
 
 ## Biome Expander integration
 
@@ -87,4 +87,4 @@ Infinite Domain-specific adapters are intentionally not implemented here yet; Co
 
 ## Failure policy
 
-The module fails closed where silent failure would misrepresent protection. Profile values and persisted reservation radii below 500 are rejected. Attempts that collide are invalidated. Persisted reservations must be stored as a list of compound entries, and every entry must contain each required identity, radius, and bounding-box field with the expected NBT type; malformed collection types, malformed entry types, and missing or type-invalid fields abort restoration instead of being interpreted as an empty protection set, defaulted to zero, silently clamped, or silently dropped. The jigsaw Mixin requires its expected vanilla fit call to exist. If Minecraft/Forge changes that internal contract in a future port, the correct response is to port the hook explicitly rather than silently continue without piece-level protection.
+The module fails closed where silent failure would misrepresent protection. Profile values and persisted reservation radii outside the supported 500–32,768 range are rejected. Attempts that collide are invalidated. Persisted reservations must be stored as a list of compound entries, and every entry must contain each required identity, radius, and bounding-box field with the expected NBT type; malformed collection types, malformed entry types, missing or type-invalid fields, and out-of-range radii abort restoration instead of being interpreted as an empty protection set, defaulted to zero, silently clamped, or silently dropped. The jigsaw Mixin requires its expected vanilla fit call to exist. If Minecraft/Forge changes that internal contract in a future port, the correct response is to port the hook explicitly rather than silently continue without piece-level protection.

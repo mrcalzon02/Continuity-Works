@@ -56,8 +56,14 @@ public final class SpawnProtectionSavedData extends SavedData {
                     throw new IllegalArgumentException("Invalid saved reservation field type: piece");
                 }
                 int radius = tag.getInt("radius");
-                if (radius < SpawnProtectionConfig.HARD_MINIMUM_RADIUS) {
-                    throw new IllegalArgumentException("Saved reservation radius must be >= 500");
+                if (radius < SpawnProtectionConfig.HARD_MINIMUM_RADIUS
+                    || radius > SpawnProtectionConfig.HARD_MAXIMUM_RADIUS) {
+                    throw new IllegalArgumentException(
+                        "Saved reservation radius must be between "
+                            + SpawnProtectionConfig.HARD_MINIMUM_RADIUS
+                            + " and "
+                            + SpawnProtectionConfig.HARD_MAXIMUM_RADIUS
+                    );
                 }
                 BlockBox box = new BlockBox(
                     tag.getInt("minX"), tag.getInt("minY"), tag.getInt("minZ"),
