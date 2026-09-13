@@ -27,7 +27,16 @@ public final class SpawnProtectionSavedData extends SavedData {
 
     public static SpawnProtectionSavedData load(CompoundTag root) {
         SpawnProtectionSavedData data = new SpawnProtectionSavedData();
-        ListTag list = root.getList("reservations", Tag.TAG_COMPOUND);
+        Tag reservationsTag = root.get("reservations");
+        if (reservationsTag == null) {
+            return data;
+        }
+        if (!(reservationsTag instanceof ListTag list)) {
+            throw new IllegalStateException("Corrupt saved spawn-protection reservations collection: expected list");
+        }
+        if (!list.isEmpty() && list.getElementType() != Tag.TAG_COMPOUND) {
+            throw new IllegalStateException("Corrupt saved spawn-protection reservations collection: expected compound entries");
+        }
         for (int i = 0; i < list.size(); i++) {
             CompoundTag tag = list.getCompound(i);
             try {

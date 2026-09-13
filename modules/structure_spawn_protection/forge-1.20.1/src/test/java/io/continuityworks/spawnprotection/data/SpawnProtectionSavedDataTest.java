@@ -2,8 +2,10 @@ package io.continuityworks.spawnprotection.data;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 final class SpawnProtectionSavedDataTest {
@@ -47,5 +49,28 @@ final class SpawnProtectionSavedDataTest {
         root.put("reservations", reservations);
 
         assertThrows(IllegalStateException.class, () -> SpawnProtectionSavedData.load(root));
+    }
+
+    @Test
+    void nonListReservationsCollectionFailsClosed() {
+        CompoundTag root = new CompoundTag();
+        root.putString("reservations", "not-a-list");
+
+        assertThrows(IllegalStateException.class, () -> SpawnProtectionSavedData.load(root));
+    }
+
+    @Test
+    void nonCompoundReservationsListFailsClosed() {
+        CompoundTag root = new CompoundTag();
+        ListTag reservations = new ListTag();
+        reservations.add(StringTag.valueOf("not-a-compound"));
+        root.put("reservations", reservations);
+
+        assertThrows(IllegalStateException.class, () -> SpawnProtectionSavedData.load(root));
+    }
+
+    @Test
+    void missingReservationsCollectionRemainsValidForFreshSavedData() {
+        assertDoesNotThrow(() -> SpawnProtectionSavedData.load(new CompoundTag()));
     }
 }
