@@ -54,7 +54,10 @@ public final class ReservationIndex {
     /** Atomic check + insert. Null means the reservation was accepted. */
     public synchronized ReservationConflict tryReserve(Reservation reservation, int selfCollisionPadding) {
         Reservation current = reservations.get(reservation.reservationId());
-        if (current != null) return null;
+        if (current != null) {
+            if (current.committed().equals(reservation.committed())) return null;
+            return new ReservationConflict("RESERVATION_ID_CONFLICT", current, 0.0, 0);
+        }
         ReservationConflict conflict = conflictFor(
             reservation.box(), reservation.exclusionRadius(), reservation.assemblyId(), selfCollisionPadding
         );
