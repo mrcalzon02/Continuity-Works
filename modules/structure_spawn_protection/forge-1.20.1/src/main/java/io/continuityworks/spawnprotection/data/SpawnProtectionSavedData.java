@@ -1,5 +1,6 @@
 package io.continuityworks.spawnprotection.data;
 
+import io.continuityworks.spawnprotection.config.SpawnProtectionConfig;
 import io.continuityworks.spawnprotection.model.BlockBox;
 import io.continuityworks.spawnprotection.model.Reservation;
 import net.minecraft.nbt.CompoundTag;
@@ -54,6 +55,10 @@ public final class SpawnProtectionSavedData extends SavedData {
                 if (tag.contains("piece") && !tag.contains("piece", Tag.TAG_STRING)) {
                     throw new IllegalArgumentException("Invalid saved reservation field type: piece");
                 }
+                int radius = tag.getInt("radius");
+                if (radius < SpawnProtectionConfig.HARD_MINIMUM_RADIUS) {
+                    throw new IllegalArgumentException("Saved reservation radius must be >= 500");
+                }
                 BlockBox box = new BlockBox(
                     tag.getInt("minX"), tag.getInt("minY"), tag.getInt("minZ"),
                     tag.getInt("maxX"), tag.getInt("maxY"), tag.getInt("maxZ")
@@ -64,7 +69,7 @@ public final class SpawnProtectionSavedData extends SavedData {
                     tag.getString("assembly"),
                     new ResourceLocation(tag.getString("family")),
                     box,
-                    Math.max(500, tag.getInt("radius")),
+                    radius,
                     tag.contains("piece") ? tag.getString("piece") : null,
                     false
                 ));
