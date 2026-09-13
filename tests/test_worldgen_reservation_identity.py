@@ -109,7 +109,7 @@ class ReservationIdentityValidationTests(unittest.TestCase):
 
         self.assertEqual(index.snapshot(), (existing,))
 
-    def test_try_reserve_rejects_committed_candidate_without_mutation(self):
+    def test_try_reserve_preserves_committed_candidate_state(self):
         existing = self.reservation(reservation_id="existing")
         index = ReservationIndex([existing])
         committed = self.reservation(
@@ -119,13 +119,10 @@ class ReservationIdentityValidationTests(unittest.TestCase):
             provisional=False,
         )
 
-        with self.assertRaisesRegex(
-            ValueError,
-            "try_reserve requires a provisional reservation",
-        ):
-            index.try_reserve(committed)
-
-        self.assertEqual(index.snapshot(), (existing,))
+        self.assertIsNone(index.try_reserve(committed))
+        self.assertEqual(index.snapshot(), (existing, committed))
+        self.assertEqual(index.release_assembly("assembly-b"), 0)
+        self.assertEqual(index.snapshot(), (existing, committed))
 
     def test_reserve_piece_rejects_blank_assembly_before_spacing_check(self):
         index = ReservationIndex([
