@@ -17,13 +17,37 @@ public record BlockBox(int minX, int minY, int minZ, int maxX, int maxY, int max
 
     public static BlockBox from(AABB box) {
         return new BlockBox(
-            (int) Math.floor(box.minX),
-            (int) Math.floor(box.minY),
-            (int) Math.floor(box.minZ),
-            (int) Math.ceil(box.maxX) - 1,
-            (int) Math.ceil(box.maxY) - 1,
-            (int) Math.ceil(box.maxZ) - 1
+            floorCoordinate(box.minX, "minX"),
+            floorCoordinate(box.minY, "minY"),
+            floorCoordinate(box.minZ, "minZ"),
+            exclusiveMaxCoordinate(box.maxX, "maxX"),
+            exclusiveMaxCoordinate(box.maxY, "maxY"),
+            exclusiveMaxCoordinate(box.maxZ, "maxZ")
         );
+    }
+
+    private static int floorCoordinate(double value, String name) {
+        requireFinite(value, name);
+        double floored = Math.floor(value);
+        if (floored < Integer.MIN_VALUE || floored > Integer.MAX_VALUE) {
+            throw new IllegalArgumentException(name + " is outside supported block coordinates: " + value);
+        }
+        return (int) floored;
+    }
+
+    private static int exclusiveMaxCoordinate(double value, String name) {
+        requireFinite(value, name);
+        double inclusive = Math.ceil(value) - 1.0D;
+        if (inclusive < Integer.MIN_VALUE || inclusive > Integer.MAX_VALUE) {
+            throw new IllegalArgumentException(name + " is outside supported block coordinates: " + value);
+        }
+        return (int) inclusive;
+    }
+
+    private static void requireFinite(double value, String name) {
+        if (!Double.isFinite(value)) {
+            throw new IllegalArgumentException(name + " must be finite: " + value);
+        }
     }
 
     /** True for occupied-volume overlap. Ordinary face adjacency is allowed. */
