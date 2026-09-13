@@ -1,5 +1,6 @@
 package io.continuityworks.spawnprotection.model;
 
+import io.continuityworks.spawnprotection.config.SpawnProtectionConfig;
 import net.minecraft.resources.ResourceLocation;
 
 public record Reservation(
@@ -18,8 +19,15 @@ public record Reservation(
         if (assemblyId == null || assemblyId.isBlank()) throw new IllegalArgumentException("assemblyId");
         if (familyId == null) throw new IllegalArgumentException("familyId");
         if (box == null) throw new IllegalArgumentException("box");
-        if (exclusionRadius != 0 && exclusionRadius < 500) {
-            throw new IllegalArgumentException("persistent exclusionRadius must be 0 (transient probe) or >= 500");
+        if (exclusionRadius != 0 && (
+            exclusionRadius < SpawnProtectionConfig.HARD_MINIMUM_RADIUS
+                || exclusionRadius > SpawnProtectionConfig.HARD_MAXIMUM_RADIUS
+        )) {
+            throw new IllegalArgumentException(
+                "persistent exclusionRadius must be 0 (transient probe) or between "
+                    + SpawnProtectionConfig.HARD_MINIMUM_RADIUS + " and "
+                    + SpawnProtectionConfig.HARD_MAXIMUM_RADIUS
+            );
         }
     }
 
