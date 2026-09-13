@@ -45,8 +45,11 @@ public final class SpawnProtectionSavedData extends SavedData {
                     tag.contains("piece") ? tag.getString("piece") : null,
                     false
                 ));
-            } catch (RuntimeException ignored) {
-                // Corrupt entries are skipped instead of weakening valid reservations.
+            } catch (RuntimeException cause) {
+                throw new IllegalStateException(
+                    "Corrupt saved spawn-protection reservation at index " + i,
+                    cause
+                );
             }
         }
         return data;
