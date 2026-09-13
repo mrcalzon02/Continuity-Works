@@ -346,6 +346,13 @@ class ReservationIndex:
                 raise ValueError("reservations must contain only StructureReservation values")
             if reservation.reservation_id in self._reservations:
                 raise ValueError(f"duplicate reservation id: {reservation.reservation_id}")
+            conflict = self._conflict_for_unlocked(
+                reservation, self_collision_padding=0
+            )
+            if conflict is not None:
+                raise ValueError(
+                    f"conflicting seeded reservation {reservation.reservation_id}: {conflict.code}"
+                )
             self._reservations[reservation.reservation_id] = reservation
 
     def snapshot(self) -> tuple[StructureReservation, ...]:
