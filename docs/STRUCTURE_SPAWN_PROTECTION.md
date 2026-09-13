@@ -87,4 +87,4 @@ Infinite Domain-specific adapters are intentionally not implemented here yet; Co
 
 ## Failure policy
 
-The module fails closed where silent failure would misrepresent protection. Profile values below 500 are rejected. Attempts that collide are invalidated. The jigsaw Mixin requires its expected vanilla fit call to exist. If Minecraft/Forge changes that internal contract in a future port, the correct response is to port the hook explicitly rather than silently continue without piece-level protection.
+The module fails closed where silent failure would misrepresent protection. Profile values below 500 are rejected. Attempts that collide are invalidated. Persisted reservations must contain every required identity, radius, and bounding-box field with the expected NBT type; missing or type-invalid fields abort restoration instead of being defaulted to zero or silently dropped. The jigsaw Mixin requires its expected vanilla fit call to exist. If Minecraft/Forge changes that internal contract in a future port, the correct response is to port the hook explicitly rather than silently continue without piece-level protection.
