@@ -107,10 +107,11 @@ public final class SpawnProtectionService {
                 for (StructurePiece piece : start.getPieces()) {
                     BlockBox box = BlockBox.from(piece.getBoundingBox());
                     String id = assemblyId + "|piece:" + pieceIndex + "|" + box.compactKey();
-                    if (state.index().containsCommittedEquivalent(structureId, box)) { pieceIndex++; continue; }
+                    int requiredRadius = protection.jigsawPieceExclusionRadius();
+                    if (state.index().containsCommittedEquivalent(structureId, box, requiredRadius)) { pieceIndex++; continue; }
                     Reservation reservation = new Reservation(
                         id, structureId, assemblyId, protection.familyId(), box,
-                        protection.jigsawPieceExclusionRadius(), "piece:" + pieceIndex, false
+                        requiredRadius, "piece:" + pieceIndex, false
                     );
                     if (state.index().importCommitted(reservation)) imported++;
                     pieceIndex++;
@@ -118,10 +119,11 @@ public final class SpawnProtectionService {
             } else {
                 BlockBox box = BlockBox.from(start.getBoundingBox());
                 String id = assemblyId + "|start:" + box.compactKey();
-                if (state.index().containsCommittedEquivalent(structureId, box)) continue;
+                int requiredRadius = protection.exclusionRadius();
+                if (state.index().containsCommittedEquivalent(structureId, box, requiredRadius)) continue;
                 Reservation reservation = new Reservation(
                     id, structureId, assemblyId, protection.familyId(), box,
-                    protection.exclusionRadius(), null, false
+                    requiredRadius, null, false
                 );
                 if (state.index().importCommitted(reservation)) imported++;
             }

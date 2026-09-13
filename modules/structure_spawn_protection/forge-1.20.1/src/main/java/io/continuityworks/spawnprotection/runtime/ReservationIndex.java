@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /** Thread-safe spatial reservation index used by parallel worldgen workers. */
@@ -66,12 +67,22 @@ public final class ReservationIndex {
         return null;
     }
 
-    /** Idempotently import a committed reservation from saved/existing world state. */
+    /**
+     * Idempotently import committed saved/existing world state. Equivalent imports may strengthen
+     * their exclusion radius, but never weaken an already stronger persisted reservation.
+     */
     public synchronized boolean importCommitted(Reservation reservation) {
         Reservation committed = reservation.committed();
         Reservation current = reservations.get(committed.reservationId());
         if (current != null) {
-            if (current.committed().equals(committed)) return false;
+            Reservation currentCommitted = current.committed();
+            if (currentCommitted.equals(committed)) return false;
+            if (sameCommittedIdentity(currentCommitted, committed)) {
+                if (currentCommitted.exclusionRadius() >= committed.exclusionRadius()) return false;
+                removeUnchecked(currentCommitted.reservationId());
+                putUnchecked(committed);
+                return true;
+            }
             throw new IllegalArgumentException(
                 "Reservation id already identifies a different committed reservation: " + committed.reservationId()
             );
@@ -118,9 +129,16 @@ public final class ReservationIndex {
         return reservations.size();
     }
 
-    public synchronized boolean containsCommittedEquivalent(net.minecraft.resources.ResourceLocation structureId, BlockBox box) {
+    public synchronized boolean containsCommittedEquivalent(
+        net.minecraft.resources.ResourceLocation structureId,
+        BlockBox box,
+        int requiredExclusionRadius
+    ) {
         return reservations.values().stream().anyMatch(r ->
-            !r.provisional() && r.structureId().equals(structureId) && r.box().equals(box)
+            !r.provisional()
+                && r.structureId().equals(structureId)
+                && r.box().equals(box)
+                && r.exclusionRadius() >= requiredExclusionRadius
         );
     }
 
@@ -176,6 +194,15 @@ public final class ReservationIndex {
                 if (bucket.isEmpty()) cells.remove(key);
             }
         }
+    }
+
+    private static boolean sameCommittedIdentity(Reservation left, Reservation right) {
+        return left.reservationId().equals(right.reservationId())
+            && left.structureId().equals(right.structureId())
+            && left.assemblyId().equals(right.assemblyId())
+            && Objects.equals(left.familyId(), right.familyId())
+            && left.box().equals(right.box())
+            && Objects.equals(left.pieceId(), right.pieceId());
     }
 
     private static long cellKey(int x, int z) {

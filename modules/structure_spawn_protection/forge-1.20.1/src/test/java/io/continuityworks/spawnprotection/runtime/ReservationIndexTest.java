@@ -49,6 +49,43 @@ final class ReservationIndexTest {
     }
 
     @Test
+    void importCommittedEquivalentReservationStrengthensRadiusAndSpatialIndex() {
+        Reservation existing = reservation("radius-upgrade-id", "same", "assembly-a", new BlockBox(0, 64, 0, 15, 79, 15), false, 500);
+        Reservation strengthened = reservation("radius-upgrade-id", "same", "assembly-a", new BlockBox(0, 64, 0, 15, 79, 15), false, 1500);
+        ReservationIndex index = new ReservationIndex(List.of(existing));
+
+        assertEquals(true, index.importCommitted(strengthened));
+        assertEquals(List.of(strengthened), index.committedSnapshot());
+
+        ReservationConflict conflict = index.conflictFor(
+            new BlockBox(1200, 64, 0, 1215, 79, 15), 0, "other-assembly", 0
+        );
+        assertEquals("STRUCTURE_EXCLUSION_CONFLICT", conflict.code());
+        assertEquals(1500, conflict.requiredGap());
+    }
+
+    @Test
+    void importCommittedEquivalentReservationNeverWeakensRadius() {
+        Reservation existing = reservation("radius-preserve-id", "same", "assembly-a", new BlockBox(0, 64, 0, 15, 79, 15), false, 900);
+        Reservation weaker = reservation("radius-preserve-id", "same", "assembly-a", new BlockBox(0, 64, 0, 15, 79, 15), false, 500);
+        ReservationIndex index = new ReservationIndex(List.of(existing));
+
+        assertFalse(index.importCommitted(weaker));
+        assertEquals(List.of(existing), index.committedSnapshot());
+    }
+
+    @Test
+    void committedEquivalentRequiresCurrentRadiusOrStronger() {
+        BlockBox box = new BlockBox(0, 64, 0, 15, 79, 15);
+        Reservation existing = reservation("equivalent-radius-id", "same", "assembly-a", box, false, 500);
+        ReservationIndex index = new ReservationIndex(List.of(existing));
+        ResourceLocation structureId = new ResourceLocation("continuity_works", "same");
+
+        assertEquals(true, index.containsCommittedEquivalent(structureId, box, 500));
+        assertFalse(index.containsCommittedEquivalent(structureId, box, 800));
+    }
+
+    @Test
     void importCommittedDuplicateIdWithDifferentReservationFailsClosed() {
         Reservation existing = reservation("import-shared-id", "first", "assembly-a", new BlockBox(0, 64, 0, 15, 79, 15), false);
         Reservation replacement = reservation("import-shared-id", "second", "assembly-b", new BlockBox(1000, 64, 1000, 1015, 79, 1015), false);
@@ -65,13 +102,24 @@ final class ReservationIndexTest {
         BlockBox box,
         boolean provisional
     ) {
+        return reservation(id, structurePath, assemblyId, box, provisional, 500);
+    }
+
+    private static Reservation reservation(
+        String id,
+        String structurePath,
+        String assemblyId,
+        BlockBox box,
+        boolean provisional,
+        int exclusionRadius
+    ) {
         return new Reservation(
             id,
             new ResourceLocation("continuity_works", structurePath),
             assemblyId,
             new ResourceLocation("continuity_works", "test_family"),
             box,
-            500,
+            exclusionRadius,
             "piece",
             provisional
         );
