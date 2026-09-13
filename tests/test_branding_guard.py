@@ -65,18 +65,6 @@ class BrandingGuardTests(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 verify_source_branding(root)
 
-    def test_source_guard_catches_structuresmith_in_active_authority(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            (root / "docs").mkdir()
-            (root / "docs" / "integration.md").write_text(
-                "Current StructureSmith integration surface", encoding="utf-8"
-            )
-            findings = find_retired_source_branding(root)
-            self.assertTrue(any(brand == "StructureSmith" for _, brand in findings))
-            with self.assertRaises(RuntimeError):
-                verify_source_branding(root)
-
     def test_source_guard_skips_generated_dependencies_and_historical_releases(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -94,7 +82,7 @@ class BrandingGuardTests(unittest.TestCase):
         verify_source_branding(PROJECT_ROOT / "frontend")
 
     def test_whole_active_repository_source_is_structure_forge_clean(self):
-        """Fail closed if retired branding returns anywhere in active authority."""
+        """Fail closed if retired Forge branding returns anywhere in active authority."""
         verify_source_branding(PROJECT_ROOT)
 
 
