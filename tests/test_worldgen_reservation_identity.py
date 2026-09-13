@@ -55,6 +55,11 @@ class ReservationIdentityValidationTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             ReservationIndex([first, second])
 
+    def test_reservation_index_accepts_committed_seed_state(self):
+        committed = self.reservation(provisional=False)
+
+        self.assertEqual(ReservationIndex([committed]).snapshot(), (committed,))
+
     def test_try_reserve_rejects_duplicate_id_without_replacing_existing(self):
         existing = self.reservation(reservation_id="duplicate-id")
         index = ReservationIndex([existing])
@@ -101,6 +106,24 @@ class ReservationIdentityValidationTests(unittest.TestCase):
 
         with self.assertRaisesRegex(ValueError, "candidate must be a StructureReservation"):
             index.try_reserve(object())
+
+        self.assertEqual(index.snapshot(), (existing,))
+
+    def test_try_reserve_rejects_committed_candidate_without_mutation(self):
+        existing = self.reservation(reservation_id="existing")
+        index = ReservationIndex([existing])
+        committed = self.reservation(
+            reservation_id="committed-candidate",
+            assembly_id="assembly-b",
+            box=BlockBox(1000, 0, 0, 1009, 9, 9),
+            provisional=False,
+        )
+
+        with self.assertRaisesRegex(
+            ValueError,
+            "try_reserve requires a provisional reservation",
+        ):
+            index.try_reserve(committed)
 
         self.assertEqual(index.snapshot(), (existing,))
 
