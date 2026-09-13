@@ -21,7 +21,12 @@ public final class ReservationIndex {
     private final Map<Long, Set<String>> cells = new HashMap<>();
 
     public ReservationIndex(Collection<Reservation> initial) {
-        for (Reservation reservation : initial) putUnchecked(reservation);
+        for (Reservation reservation : initial) {
+            if (reservations.containsKey(reservation.reservationId())) {
+                throw new IllegalArgumentException("Duplicate restored reservation id: " + reservation.reservationId());
+            }
+            putUnchecked(reservation);
+        }
     }
 
     public synchronized ReservationConflict conflictFor(
