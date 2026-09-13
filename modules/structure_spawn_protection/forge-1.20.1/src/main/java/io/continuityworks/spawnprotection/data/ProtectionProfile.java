@@ -35,11 +35,13 @@ public record ProtectionProfile(
         if (structures.isEmpty() && tags.isEmpty() && namespaces.isEmpty()) {
             throw new IllegalArgumentException("Protection profile requires at least one selector");
         }
-        if (exclusionRadius < SpawnProtectionConfig.HARD_MINIMUM_RADIUS) {
-            throw new IllegalArgumentException("exclusionRadius must be >= 500");
+        if (exclusionRadius < SpawnProtectionConfig.HARD_MINIMUM_RADIUS
+            || exclusionRadius > SpawnProtectionConfig.HARD_MAXIMUM_RADIUS) {
+            throw new IllegalArgumentException("exclusionRadius must be between 500 and 32768");
         }
-        if (jigsawPieceExclusionRadius < SpawnProtectionConfig.HARD_MINIMUM_RADIUS) {
-            throw new IllegalArgumentException("jigsawPieceExclusionRadius must be >= 500");
+        if (jigsawPieceExclusionRadius < SpawnProtectionConfig.HARD_MINIMUM_RADIUS
+            || jigsawPieceExclusionRadius > SpawnProtectionConfig.HARD_MAXIMUM_RADIUS) {
+            throw new IllegalArgumentException("jigsawPieceExclusionRadius must be between 500 and 32768");
         }
     }
 
@@ -58,8 +60,13 @@ public record ProtectionProfile(
         int pieceRadius = json.has("jigsaw_piece_exclusion_radius")
             ? json.get("jigsaw_piece_exclusion_radius").getAsInt()
             : radius;
-        if (radius < SpawnProtectionConfig.HARD_MINIMUM_RADIUS || pieceRadius < SpawnProtectionConfig.HARD_MINIMUM_RADIUS) {
-            throw new JsonParseException("Profile " + sourceId + " attempts to lower the hard 500-block minimum");
+        if (radius < SpawnProtectionConfig.HARD_MINIMUM_RADIUS
+            || radius > SpawnProtectionConfig.HARD_MAXIMUM_RADIUS
+            || pieceRadius < SpawnProtectionConfig.HARD_MINIMUM_RADIUS
+            || pieceRadius > SpawnProtectionConfig.HARD_MAXIMUM_RADIUS) {
+            throw new JsonParseException(
+                "Profile " + sourceId + " radius must remain within the supported 500-32768 block range"
+            );
         }
 
         ResourceLocation family = json.has("family") ? new ResourceLocation(json.get("family").getAsString()) : null;
