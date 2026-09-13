@@ -118,7 +118,7 @@ final class ReservationIndexTest {
 
         assertNotNull(conflict);
         assertEquals("STRUCTURE_EXCLUSION_CONFLICT", conflict.code());
-        assertEquals(369.0, conflict.actualGap());
+        assertEquals(369.0, conflict.horizontalGap());
     }
 
     @Test
