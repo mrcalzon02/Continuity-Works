@@ -68,8 +68,15 @@ public final class ReservationIndex {
 
     /** Idempotently import a committed reservation from saved/existing world state. */
     public synchronized boolean importCommitted(Reservation reservation) {
-        if (reservations.containsKey(reservation.reservationId())) return false;
-        putUnchecked(reservation.committed());
+        Reservation committed = reservation.committed();
+        Reservation current = reservations.get(committed.reservationId());
+        if (current != null) {
+            if (current.committed().equals(committed)) return false;
+            throw new IllegalArgumentException(
+                "Reservation id already identifies a different committed reservation: " + committed.reservationId()
+            );
+        }
+        putUnchecked(committed);
         return true;
     }
 

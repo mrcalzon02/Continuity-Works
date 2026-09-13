@@ -9,8 +9,10 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 final class ReservationIndexTest {
     @Test
@@ -34,6 +36,26 @@ final class ReservationIndexTest {
 
         assertNull(index.tryReserve(provisional, 0));
         assertEquals(1, index.size());
+    }
+
+    @Test
+    void importCommittedEquivalentRetryIsIdempotentAcrossLifecycleState() {
+        Reservation provisional = reservation("import-retry-id", "same", "assembly-a", new BlockBox(0, 64, 0, 15, 79, 15), true);
+        Reservation committed = provisional.committed();
+        ReservationIndex index = new ReservationIndex(List.of(committed));
+
+        assertFalse(index.importCommitted(provisional));
+        assertEquals(List.of(committed), index.committedSnapshot());
+    }
+
+    @Test
+    void importCommittedDuplicateIdWithDifferentReservationFailsClosed() {
+        Reservation existing = reservation("import-shared-id", "first", "assembly-a", new BlockBox(0, 64, 0, 15, 79, 15), false);
+        Reservation replacement = reservation("import-shared-id", "second", "assembly-b", new BlockBox(1000, 64, 1000, 1015, 79, 1015), false);
+        ReservationIndex index = new ReservationIndex(List.of(existing));
+
+        assertThrows(IllegalArgumentException.class, () -> index.importCommitted(replacement));
+        assertEquals(List.of(existing), index.committedSnapshot());
     }
 
     private static Reservation reservation(
