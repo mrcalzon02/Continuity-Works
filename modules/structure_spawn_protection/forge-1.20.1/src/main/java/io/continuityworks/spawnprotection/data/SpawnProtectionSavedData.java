@@ -31,6 +31,20 @@ public final class SpawnProtectionSavedData extends SavedData {
         for (int i = 0; i < list.size(); i++) {
             CompoundTag tag = list.getCompound(i);
             try {
+                requireTag(tag, "id", Tag.TAG_STRING);
+                requireTag(tag, "structure", Tag.TAG_STRING);
+                requireTag(tag, "assembly", Tag.TAG_STRING);
+                requireTag(tag, "family", Tag.TAG_STRING);
+                requireTag(tag, "radius", Tag.TAG_INT);
+                requireTag(tag, "minX", Tag.TAG_INT);
+                requireTag(tag, "minY", Tag.TAG_INT);
+                requireTag(tag, "minZ", Tag.TAG_INT);
+                requireTag(tag, "maxX", Tag.TAG_INT);
+                requireTag(tag, "maxY", Tag.TAG_INT);
+                requireTag(tag, "maxZ", Tag.TAG_INT);
+                if (tag.contains("piece") && !tag.contains("piece", Tag.TAG_STRING)) {
+                    throw new IllegalArgumentException("Invalid saved reservation field type: piece");
+                }
                 BlockBox box = new BlockBox(
                     tag.getInt("minX"), tag.getInt("minY"), tag.getInt("minZ"),
                     tag.getInt("maxX"), tag.getInt("maxY"), tag.getInt("maxZ")
@@ -53,6 +67,12 @@ public final class SpawnProtectionSavedData extends SavedData {
             }
         }
         return data;
+    }
+
+    private static void requireTag(CompoundTag tag, String key, int expectedType) {
+        if (!tag.contains(key, expectedType)) {
+            throw new IllegalArgumentException("Missing or invalid saved reservation field: " + key);
+        }
     }
 
     public List<Reservation> reservations() {
