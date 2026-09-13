@@ -145,10 +145,10 @@ public final class ReservationIndex {
     private Set<Reservation> candidates(BlockBox box, int candidateRadius) {
         Set<String> ids = new HashSet<>();
         int radius = Math.max(0, candidateRadius);
-        int minCellX = Math.floorDiv(box.minX() - radius, CELL_SIZE);
-        int maxCellX = Math.floorDiv(box.maxX() + radius, CELL_SIZE);
-        int minCellZ = Math.floorDiv(box.minZ() - radius, CELL_SIZE);
-        int maxCellZ = Math.floorDiv(box.maxZ() + radius, CELL_SIZE);
+        int minCellX = lowerCell(box.minX(), radius);
+        int maxCellX = upperCell(box.maxX(), radius);
+        int minCellZ = lowerCell(box.minZ(), radius);
+        int maxCellZ = upperCell(box.maxZ(), radius);
         for (int x = minCellX; x <= maxCellX; x++) {
             for (int z = minCellZ; z <= maxCellZ; z++) {
                 Set<String> bucket = cells.get(cellKey(x, z));
@@ -166,10 +166,10 @@ public final class ReservationIndex {
     private void putUnchecked(Reservation reservation) {
         reservations.put(reservation.reservationId(), reservation);
         int radius = reservation.exclusionRadius();
-        int minCellX = Math.floorDiv(reservation.box().minX() - radius, CELL_SIZE);
-        int maxCellX = Math.floorDiv(reservation.box().maxX() + radius, CELL_SIZE);
-        int minCellZ = Math.floorDiv(reservation.box().minZ() - radius, CELL_SIZE);
-        int maxCellZ = Math.floorDiv(reservation.box().maxZ() + radius, CELL_SIZE);
+        int minCellX = lowerCell(reservation.box().minX(), radius);
+        int maxCellX = upperCell(reservation.box().maxX(), radius);
+        int minCellZ = lowerCell(reservation.box().minZ(), radius);
+        int maxCellZ = upperCell(reservation.box().maxZ(), radius);
         for (int x = minCellX; x <= maxCellX; x++) {
             for (int z = minCellZ; z <= maxCellZ; z++) {
                 cells.computeIfAbsent(cellKey(x, z), ignored -> new HashSet<>()).add(reservation.reservationId());
@@ -181,10 +181,10 @@ public final class ReservationIndex {
         Reservation reservation = reservations.remove(reservationId);
         if (reservation == null) return;
         int radius = reservation.exclusionRadius();
-        int minCellX = Math.floorDiv(reservation.box().minX() - radius, CELL_SIZE);
-        int maxCellX = Math.floorDiv(reservation.box().maxX() + radius, CELL_SIZE);
-        int minCellZ = Math.floorDiv(reservation.box().minZ() - radius, CELL_SIZE);
-        int maxCellZ = Math.floorDiv(reservation.box().maxZ() + radius, CELL_SIZE);
+        int minCellX = lowerCell(reservation.box().minX(), radius);
+        int maxCellX = upperCell(reservation.box().maxX(), radius);
+        int minCellZ = lowerCell(reservation.box().minZ(), radius);
+        int maxCellZ = upperCell(reservation.box().maxZ(), radius);
         for (int x = minCellX; x <= maxCellX; x++) {
             for (int z = minCellZ; z <= maxCellZ; z++) {
                 long key = cellKey(x, z);
@@ -203,6 +203,14 @@ public final class ReservationIndex {
             && Objects.equals(left.familyId(), right.familyId())
             && left.box().equals(right.box())
             && Objects.equals(left.pieceId(), right.pieceId());
+    }
+
+    private static int lowerCell(int coordinate, int radius) {
+        return (int) Math.floorDiv((long) coordinate - radius, (long) CELL_SIZE);
+    }
+
+    private static int upperCell(int coordinate, int radius) {
+        return (int) Math.floorDiv((long) coordinate + radius, (long) CELL_SIZE);
     }
 
     private static long cellKey(int x, int z) {

@@ -31,19 +31,25 @@ public record BlockBox(int minX, int minY, int minZ, int maxX, int maxY, int max
         if (padding < 0) {
             throw new IllegalArgumentException("padding must be non-negative");
         }
-        return minX - padding < other.maxX + 1
-            && maxX + 1 + padding > other.minX
-            && minY - padding < other.maxY + 1
-            && maxY + 1 + padding > other.minY
-            && minZ - padding < other.maxZ + 1
-            && maxZ + 1 + padding > other.minZ;
+        return (long) minX - padding < (long) other.maxX + 1L
+            && (long) maxX + 1L + padding > other.minX
+            && (long) minY - padding < (long) other.maxY + 1L
+            && (long) maxY + 1L + padding > other.minY
+            && (long) minZ - padding < (long) other.maxZ + 1L
+            && (long) maxZ + 1L + padding > other.minZ;
     }
 
     /** Euclidean edge-to-edge X/Z distance between half-open horizontal footprints. */
     public double horizontalGap(BlockBox other) {
-        int dx = Math.max(0, Math.max(other.minX - (maxX + 1), minX - (other.maxX + 1)));
-        int dz = Math.max(0, Math.max(other.minZ - (maxZ + 1), minZ - (other.maxZ + 1)));
-        return Math.hypot(dx, dz);
+        long dx = Math.max(0L, Math.max(
+            (long) other.minX - ((long) maxX + 1L),
+            (long) minX - ((long) other.maxX + 1L)
+        ));
+        long dz = Math.max(0L, Math.max(
+            (long) other.minZ - ((long) maxZ + 1L),
+            (long) minZ - ((long) other.maxZ + 1L)
+        ));
+        return Math.hypot((double) dx, (double) dz);
     }
 
     public String compactKey() {

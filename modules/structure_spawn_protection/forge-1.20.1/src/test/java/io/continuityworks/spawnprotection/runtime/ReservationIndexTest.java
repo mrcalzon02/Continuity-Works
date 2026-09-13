@@ -10,9 +10,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 final class ReservationIndexTest {
     @Test
@@ -93,6 +95,41 @@ final class ReservationIndexTest {
 
         assertThrows(IllegalArgumentException.class, () -> index.importCommitted(replacement));
         assertEquals(List.of(existing), index.committedSnapshot());
+    }
+
+    @Test
+    void extremePositiveCoordinatesRemainIndexedWithoutOverflow() {
+        Reservation existing = reservation(
+            "edge-id",
+            "edge",
+            "assembly-a",
+            new BlockBox(Integer.MAX_VALUE - 15, 64, 0, Integer.MAX_VALUE, 79, 15),
+            false,
+            500
+        );
+        ReservationIndex index = new ReservationIndex(List.of(existing));
+
+        ReservationConflict conflict = index.conflictFor(
+            new BlockBox(Integer.MAX_VALUE - 400, 64, 0, Integer.MAX_VALUE - 385, 79, 15),
+            500,
+            "assembly-b",
+            0
+        );
+
+        assertNotNull(conflict);
+        assertEquals("STRUCTURE_EXCLUSION_CONFLICT", conflict.code());
+        assertEquals(369.0, conflict.actualGap());
+    }
+
+    @Test
+    void extremeCoordinateGeometryUsesWideIntermediates() {
+        BlockBox positiveEdge = new BlockBox(Integer.MAX_VALUE - 1, 64, 0, Integer.MAX_VALUE, 79, 15);
+        assertTrue(positiveEdge.overlapsVolume(positiveEdge, 0));
+
+        BlockBox negativeEdge = new BlockBox(Integer.MIN_VALUE, 64, 0, Integer.MIN_VALUE, 79, 15);
+        assertEquals(4294967294.0, negativeEdge.horizontalGap(new BlockBox(
+            Integer.MAX_VALUE, 64, 0, Integer.MAX_VALUE, 79, 15
+        )));
     }
 
     private static Reservation reservation(
