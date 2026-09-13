@@ -12,6 +12,8 @@ These are separate surfaces and must never be conflated:
 
 GitHub Pages is static. It must not imply that `/v1/*` executes on the Pages origin.
 
+Because the configured executable API candidate is the Render-provided `onrender.com` hostname, `render.yaml` explicitly sets `renderSubdomainPolicy: enabled`. The canonical API must never advertise that hostname while allowing the deployment platform to retain a disabled subdomain policy that answers public requests with 404.
+
 ## Canonical naming contract
 
 The public product/service name is **Continuity Works** and the machine slug is `continuity-works`.
