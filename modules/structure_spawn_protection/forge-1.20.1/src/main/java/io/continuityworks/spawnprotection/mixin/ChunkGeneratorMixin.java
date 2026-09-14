@@ -37,11 +37,12 @@ public abstract class ChunkGeneratorMixin {
         CallbackInfoReturnable<Boolean> cir
     ) {
         ServerLevel level = LevelResolver.serverLevel(chunk.getWorldForge());
-        if (level == null) return;
-        Structure structure = entry.structure().value();
-        GenerationAttemptContext.begin(
-            SpawnProtectionService.beginAttempt(level, registryAccess, structure, chunkPos)
-        );
+        GenerationAttempt attempt = null;
+        if (level != null) {
+            Structure structure = entry.structure().value();
+            attempt = SpawnProtectionService.beginAttempt(level, registryAccess, structure, chunkPos);
+        }
+        GenerationAttemptContext.begin(attempt);
     }
 
     @Inject(method = "tryGenerateStructure", at = @At("RETURN"), cancellable = true)
@@ -58,8 +59,8 @@ public abstract class ChunkGeneratorMixin {
         CallbackInfoReturnable<Boolean> cir
     ) {
         GenerationAttempt attempt = GenerationAttemptContext.current();
-        if (attempt == null) return;
         try {
+            if (attempt == null) return;
             if (!Boolean.TRUE.equals(cir.getReturnValue())) {
                 SpawnProtectionService.rollbackAttempt(attempt);
                 return;

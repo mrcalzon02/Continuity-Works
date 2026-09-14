@@ -47,6 +47,16 @@ class SpawnProtectionModuleLayoutTests(unittest.TestCase):
         self.assertIn("SpawnProtectionConfig.HARD_MAXIMUM_RADIUS", reservation)
         self.assertIn("persistent exclusionRadius must be 0 (transient probe) or between ", reservation)
 
+    def test_generation_attempt_context_is_invocation_scoped_and_lifo(self):
+        context = (MODULE / "src/main/java/io/continuityworks/spawnprotection/runtime/GenerationAttemptContext.java").read_text()
+        mixin = (MODULE / "src/main/java/io/continuityworks/spawnprotection/mixin/ChunkGeneratorMixin.java").read_text()
+        self.assertIn("new Frame(attempt)", context)
+        self.assertIn("Generation attempt frames must end in LIFO order", context)
+        self.assertIn("GenerationAttempt attempt = null;", mixin)
+        self.assertNotIn("if (level == null) return;", mixin)
+        self.assertIn("GenerationAttemptContext.begin(attempt);", mixin)
+        self.assertIn("GenerationAttemptContext.end(attempt);", mixin)
+
     def test_inclusion_tags_are_additive(self):
         tag_root = MODULE / "src/main/resources/data/continuityworks_spawn_protection/tags/worldgen/structure"
         for name in ("protected", "jigsaw_piece_protected", "ignored"):
