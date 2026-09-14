@@ -57,6 +57,16 @@ class SpawnProtectionModuleLayoutTests(unittest.TestCase):
         self.assertIn("GenerationAttemptContext.begin(attempt);", mixin)
         self.assertIn("GenerationAttemptContext.end(attempt);", mixin)
 
+    def test_generation_attempt_finish_owns_failed_transaction_cleanup(self):
+        attempt = (MODULE / "src/main/java/io/continuityworks/spawnprotection/runtime/GenerationAttempt.java").read_text()
+        mixin = (MODULE / "src/main/java/io/continuityworks/spawnprotection/mixin/ChunkGeneratorMixin.java").read_text()
+        self.assertIn("boolean finished = false;", attempt)
+        self.assertIn("finally {", attempt)
+        self.assertIn("if (!finished) rollback();", attempt)
+        self.assertIn("finished = true;", attempt)
+        failed_finish = "if (!SpawnProtectionService.finishAttempt(attempt, start)) {\n                SpawnProtectionService.rollbackAttempt(attempt);"
+        self.assertNotIn(failed_finish, mixin)
+
     def test_inclusion_tags_are_additive(self):
         tag_root = MODULE / "src/main/resources/data/continuityworks_spawn_protection/tags/worldgen/structure"
         for name in ("protected", "jigsaw_piece_protected", "ignored"):

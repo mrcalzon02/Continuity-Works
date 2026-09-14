@@ -68,7 +68,6 @@ public abstract class ChunkGeneratorMixin {
             Structure structure = entry.structure().value();
             StructureStart start = chunk.getStartForStructure(structure);
             if (!SpawnProtectionService.finishAttempt(attempt, start)) {
-                SpawnProtectionService.rollbackAttempt(attempt);
                 chunk.setStartForStructure(structure, StructureStartAccessor.continuityworks$getInvalidStart());
                 cir.setReturnValue(false);
             }

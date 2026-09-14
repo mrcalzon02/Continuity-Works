@@ -92,45 +92,51 @@ public final class GenerationAttempt {
 
     /** Reconcile speculative piece probes with vanilla's final StructureStart and atomically commit/release. */
     boolean finish(StructureStart start) {
-        if (invalidStart || start == null || !start.isValid()) return false;
+        boolean finished = false;
+        try {
+            if (invalidStart || start == null || !start.isValid()) return false;
 
-        List<StructurePiece> pieces = start.getPieces();
-        if (jigsaw && !pieces.isEmpty()) {
-            List<BlockBox> actual = pieces.stream().map(piece -> BlockBox.from(piece.getBoundingBox())).toList();
-            if (hasSelfOverlap(actual)) {
-                ContinuityWorksSpawnProtection.LOGGER.warn(
-                    "Rejected {} assembly {} because final jigsaw pieces overlap each other",
-                    structureId, assemblyId
-                );
-                return false;
-            }
-            Set<String> actualKeys = new HashSet<>();
-            for (int i = 0; i < actual.size(); i++) {
-                BlockBox box = actual.get(i);
-                actualKeys.add(box.compactKey());
-                ReservationConflict conflict = reserveProbe(box, "piece:" + i + ":" + box.compactKey());
+            List<StructurePiece> pieces = start.getPieces();
+            if (jigsaw && !pieces.isEmpty()) {
+                List<BlockBox> actual = pieces.stream().map(piece -> BlockBox.from(piece.getBoundingBox())).toList();
+                if (hasSelfOverlap(actual)) {
+                    ContinuityWorksSpawnProtection.LOGGER.warn(
+                        "Rejected {} assembly {} because final jigsaw pieces overlap each other",
+                        structureId, assemblyId
+                    );
+                    return false;
+                }
+                Set<String> actualKeys = new HashSet<>();
+                for (int i = 0; i < actual.size(); i++) {
+                    BlockBox box = actual.get(i);
+                    actualKeys.add(box.compactKey());
+                    ReservationConflict conflict = reserveProbe(box, "piece:" + i + ":" + box.compactKey());
+                    if (conflict != null) {
+                        logConflict(conflict, box, "final-jigsaw-piece");
+                        return false;
+                    }
+                }
+                state.index().reconcileProvisionalAssembly(assemblyId, actualKeys);
+            } else {
+                BlockBox box = BlockBox.from(start.getBoundingBox());
+                ReservationConflict conflict = reserveProbe(box, "start:" + box.compactKey());
                 if (conflict != null) {
-                    logConflict(conflict, box, "final-jigsaw-piece");
+                    logConflict(conflict, box, "final-structure");
                     return false;
                 }
             }
-            state.index().reconcileProvisionalAssembly(assemblyId, actualKeys);
-        } else {
-            BlockBox box = BlockBox.from(start.getBoundingBox());
-            ReservationConflict conflict = reserveProbe(box, "start:" + box.compactKey());
-            if (conflict != null) {
-                logConflict(conflict, box, "final-structure");
-                return false;
-            }
-        }
 
-        if (protection.emitsReservations()) {
-            int changed = state.index().commitAssembly(assemblyId);
-            if (changed > 0) state.markDirty();
-        } else {
-            state.index().releaseProvisionalAssembly(assemblyId);
+            if (protection.emitsReservations()) {
+                int changed = state.index().commitAssembly(assemblyId);
+                if (changed > 0) state.markDirty();
+            } else {
+                state.index().releaseProvisionalAssembly(assemblyId);
+            }
+            finished = true;
+            return true;
+        } finally {
+            if (!finished) rollback();
         }
-        return true;
     }
 
     void rollback() {
