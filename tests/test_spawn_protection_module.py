@@ -22,6 +22,12 @@ class SpawnProtectionModuleLayoutTests(unittest.TestCase):
         self.assertIn("ChunkGeneratorMixin", config["mixins"])
         self.assertIn("JigsawPlacementPlacerMixin", config["mixins"])
 
+    def test_mixinextras_is_bundled_for_exception_safe_generation_wrapping(self):
+        build = (MODULE / "build.gradle").read_text(encoding="utf-8")
+        self.assertIn("jarJar.enable()", build)
+        self.assertIn("mixinextras-common:0.5.5", build)
+        self.assertIn("mixinextras-forge:0.5.5", build)
+
     def test_automatic_registry_scan_defaults_on_and_hard_minimum_is_500(self):
         config_java = (MODULE / "src/main/java/io/continuityworks/spawnprotection/config/SpawnProtectionConfig.java").read_text()
         self.assertIn("HARD_MINIMUM_RADIUS = 500", config_java)
@@ -56,6 +62,16 @@ class SpawnProtectionModuleLayoutTests(unittest.TestCase):
         self.assertNotIn("if (level == null) return;", mixin)
         self.assertIn("GenerationAttemptContext.begin(attempt);", mixin)
         self.assertIn("GenerationAttemptContext.end(attempt);", mixin)
+
+    def test_generation_invocation_unwinds_on_thrown_exceptions(self):
+        mixin = (MODULE / "src/main/java/io/continuityworks/spawnprotection/mixin/ChunkGeneratorMixin.java").read_text()
+        self.assertIn('@WrapMethod(method = "tryGenerateStructure")', mixin)
+        self.assertIn("Operation<Boolean> original", mixin)
+        self.assertIn("boolean generated = original.call(", mixin)
+        self.assertIn("finally {", mixin)
+        self.assertIn("SpawnProtectionService.rollbackAttempt(attempt);", mixin)
+        self.assertIn("GenerationAttemptContext.end(attempt);", mixin)
+        self.assertNotIn('@Inject(method = "tryGenerateStructure"', mixin)
 
     def test_generation_attempt_finish_owns_failed_transaction_cleanup(self):
         attempt = (MODULE / "src/main/java/io/continuityworks/spawnprotection/runtime/GenerationAttempt.java").read_text()

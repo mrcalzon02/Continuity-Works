@@ -16,6 +16,8 @@ plugins {
 
 apply plugin: 'org.spongepowered.mixin'
 
+jarJar.enable()
+
 group = mod_group
 version = mod_version
 base {
@@ -54,6 +56,10 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    compileOnly(annotationProcessor('io.github.llamalad7:mixinextras-common:0.5.5'))
+    implementation(jarJar('io.github.llamalad7:mixinextras-forge:0.5.5')) {
+        jarJar.ranged(it, '[0.5.5,)')
+    }
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
 }
 
