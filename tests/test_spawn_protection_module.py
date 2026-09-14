@@ -40,6 +40,8 @@ class SpawnProtectionModuleLayoutTests(unittest.TestCase):
 
     def test_reservation_model_enforces_supported_persistent_radius_range(self):
         reservation = (MODULE / "src/main/java/io/continuityworks/spawnprotection/model/Reservation.java").read_text()
+        self.assertIn("exclusionRadius == 0 && !provisional", reservation)
+        self.assertIn("exclusionRadius 0 is reserved for provisional transient probes", reservation)
         self.assertIn("exclusionRadius != 0", reservation)
         self.assertIn("SpawnProtectionConfig.HARD_MINIMUM_RADIUS", reservation)
         self.assertIn("SpawnProtectionConfig.HARD_MAXIMUM_RADIUS", reservation)

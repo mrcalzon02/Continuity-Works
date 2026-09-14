@@ -13,33 +13,38 @@ class ReservationTest {
 
     @Test
     void acceptsTransientProbeAndSupportedPersistentBoundaries() {
-        assertDoesNotThrow(() -> reservation(0));
-        assertDoesNotThrow(() -> reservation(SpawnProtectionConfig.HARD_MINIMUM_RADIUS));
-        assertDoesNotThrow(() -> reservation(SpawnProtectionConfig.HARD_MAXIMUM_RADIUS));
+        assertDoesNotThrow(() -> reservation(0, true));
+        assertDoesNotThrow(() -> reservation(SpawnProtectionConfig.HARD_MINIMUM_RADIUS, false));
+        assertDoesNotThrow(() -> reservation(SpawnProtectionConfig.HARD_MAXIMUM_RADIUS, false));
+    }
+
+    @Test
+    void rejectsCommittedTransientProbeRadius() {
+        assertThrows(IllegalArgumentException.class, () -> reservation(0, false));
     }
 
     @Test
     void rejectsPersistentRadiusOutsideSupportedRange() {
         assertThrows(
             IllegalArgumentException.class,
-            () -> reservation(SpawnProtectionConfig.HARD_MINIMUM_RADIUS - 1)
+            () -> reservation(SpawnProtectionConfig.HARD_MINIMUM_RADIUS - 1, true)
         );
         assertThrows(
             IllegalArgumentException.class,
-            () -> reservation(SpawnProtectionConfig.HARD_MAXIMUM_RADIUS + 1)
+            () -> reservation(SpawnProtectionConfig.HARD_MAXIMUM_RADIUS + 1, true)
         );
     }
 
-    private static Reservation reservation(int radius) {
+    private static Reservation reservation(int radius, boolean provisional) {
         return new Reservation(
-            "reservation-test-" + radius,
+            "reservation-test-" + radius + "-" + provisional,
             STRUCTURE_ID,
             "assembly-test",
             STRUCTURE_ID,
             BOX,
             radius,
             "piece-test",
-            true
+            provisional
         );
     }
 }

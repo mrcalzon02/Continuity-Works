@@ -19,6 +19,9 @@ public record Reservation(
         if (assemblyId == null || assemblyId.isBlank()) throw new IllegalArgumentException("assemblyId");
         if (familyId == null) throw new IllegalArgumentException("familyId");
         if (box == null) throw new IllegalArgumentException("box");
+        if (exclusionRadius == 0 && !provisional) {
+            throw new IllegalArgumentException("exclusionRadius 0 is reserved for provisional transient probes");
+        }
         if (exclusionRadius != 0 && (
             exclusionRadius < SpawnProtectionConfig.HARD_MINIMUM_RADIUS
                 || exclusionRadius > SpawnProtectionConfig.HARD_MAXIMUM_RADIUS
