@@ -112,6 +112,12 @@ Content authoring capabilities include:
 
 The tooling adapts across known Minecraft format boundaries, including the 1.20.5 item-component transition and 1.21 datapack directory changes. Unknown mod IDs are never invented.
 
+## Reusable Agent Skill
+
+Continuity Works includes a standards-format, token-efficient **`continuity-works` Agent Skill** at [`.agents/skills/continuity-works/SKILL.md`](.agents/skills/continuity-works/SKILL.md). Skills-compatible clients can discover it in this repository; other projects may copy the skill directory into their supported skills path. This wrapper selects and orchestrates the **existing** tools and staged mutators; it does not run the API on GitHub Pages, create a parallel generator, or establish a verified remote deployment.
+
+See [Agent Skill installation, execution surfaces, and verification](docs/AGENT_SKILL.md).
+
 ## AI tool calling
 
 Machine discovery is progressive and token-efficient:
