@@ -81,11 +81,11 @@ class SpawnProtectionModuleLayoutTests(unittest.TestCase):
         attempt = (MODULE / "src/main/java/io/continuityworks/spawnprotection/runtime/GenerationAttempt.java").read_text(encoding="utf-8")
         mixin = (MODULE / "src/main/java/io/continuityworks/spawnprotection/mixin/ChunkGeneratorMixin.java").read_text(encoding="utf-8")
         self.assertIn(
-            "beginAttempt(\\n        ServerLevel level,\\n        RegistryAccess registryAccess,\\n        Structure structure,\\n        ChunkPos chunkPos",
+            "beginAttempt(\n        ServerLevel level,\n        RegistryAccess registryAccess,\n        Structure structure,\n        ChunkPos chunkPos",
             service,
         )
         self.assertIn(
-            "SpawnProtectionService.beginAttempt(\\n                level,\\n                registryAccess,\\n                selectionEntry.structure().value(),\\n                chunkPos\\n            );",
+            "SpawnProtectionService.beginAttempt(\n                level,\n                registryAccess,\n                selectionEntry.structure().value(),\n                chunkPos\n            );",
             mixin,
         )
         self.assertNotIn("attempt.permitted()", mixin)
