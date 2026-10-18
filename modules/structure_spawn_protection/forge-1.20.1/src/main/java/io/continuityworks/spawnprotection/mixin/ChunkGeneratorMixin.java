@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import io.continuityworks.spawnprotection.runtime.GenerationAttempt;
 import io.continuityworks.spawnprotection.runtime.GenerationAttemptContext;
+import io.continuityworks.spawnprotection.runtime.LevelResolver;
 import io.continuityworks.spawnprotection.runtime.SpawnProtectionService;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.SectionPos;
@@ -13,7 +14,7 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraft.world.level.levelgen.structure.StructureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
@@ -34,10 +35,13 @@ public abstract class ChunkGeneratorMixin {
         SectionPos sectionPos,
         Operation<Boolean> original
     ) {
-        ServerLevel level = null;
-        if (structureManager.level() instanceof ServerLevel serverLevel) {
-            level = serverLevel;
-        }
+        // StructureManager has no public level() getter in Forge 1.20.1.
+        // The backing LevelAccessor can be a WorldGenRegion; resolve it to
+        // its actual ServerLevel so reservations remain dimension-local.
+        ServerLevel level = LevelResolver.serverLevel(
+            ((StructureManagerLevelAccessor) (Object) structureManager)
+                .continuityworks$getLevel()
+        );
 
         GenerationAttempt attempt = null;
         if (level != null) {
