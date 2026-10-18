@@ -73,6 +73,27 @@ class SpawnProtectionModuleLayoutTests(unittest.TestCase):
         self.assertIn("GenerationAttemptContext.end(attempt);", mixin)
         self.assertNotIn('@Inject(method = "tryGenerateStructure"', mixin)
 
+    def test_chunk_generator_mixin_calls_the_real_java_service_contract(self):
+        # Static source-contract gate: the Forge module is not compiled by
+        # the main Python frontend CI, so an obsolete Java method call can
+        # otherwise survive every public-service validation.
+        service = (MODULE / "src/main/java/io/continuityworks/spawnprotection/runtime/SpawnProtectionService.java").read_text(encoding="utf-8")
+        attempt = (MODULE / "src/main/java/io/continuityworks/spawnprotection/runtime/GenerationAttempt.java").read_text(encoding="utf-8")
+        mixin = (MODULE / "src/main/java/io/continuityworks/spawnprotection/mixin/ChunkGeneratorMixin.java").read_text(encoding="utf-8")
+        self.assertIn(
+            "beginAttempt(\\n        ServerLevel level,\\n        RegistryAccess registryAccess,\\n        Structure structure,\\n        ChunkPos chunkPos",
+            service,
+        )
+        self.assertIn(
+            "SpawnProtectionService.beginAttempt(\\n                level,\\n                registryAccess,\\n                selectionEntry.structure().value(),\\n                chunkPos\\n            );",
+            mixin,
+        )
+        self.assertNotIn("attempt.permitted()", mixin)
+        self.assertNotIn("chunkPos.getMiddleBlockX()", mixin)
+        self.assertNotIn("Registries.STRUCTURE", mixin)
+        self.assertIn("boolean finish(StructureStart start)", attempt)
+        self.assertIn("SpawnProtectionService.finishAttempt(attempt, start)", mixin)
+
     def test_generation_attempt_finish_owns_failed_transaction_cleanup(self):
         attempt = (MODULE / "src/main/java/io/continuityworks/spawnprotection/runtime/GenerationAttempt.java").read_text()
         mixin = (MODULE / "src/main/java/io/continuityworks/spawnprotection/mixin/ChunkGeneratorMixin.java").read_text()
