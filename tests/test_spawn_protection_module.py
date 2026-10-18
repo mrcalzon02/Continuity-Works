@@ -63,6 +63,34 @@ class SpawnProtectionModuleLayoutTests(unittest.TestCase):
         self.assertIn("GenerationAttemptContext.begin(attempt);", mixin)
         self.assertIn("GenerationAttemptContext.end(attempt);", mixin)
 
+    def test_forge_1201_structure_manager_level_is_resolved_from_real_accessor(self):
+        config = json.loads(
+            (MODULE / "src/main/resources/continuityworks_spawn_protection.mixins.json").read_text(encoding="utf-8")
+        )
+        accessor = (
+            MODULE / "src/main/java/io/continuityworks/spawnprotection/mixin/StructureManagerLevelAccessor.java"
+        ).read_text(encoding="utf-8")
+        mixin = (
+            MODULE / "src/main/java/io/continuityworks/spawnprotection/mixin/ChunkGeneratorMixin.java"
+        ).read_text(encoding="utf-8")
+        resolver = (
+            MODULE / "src/main/java/io/continuityworks/spawnprotection/runtime/LevelResolver.java"
+        ).read_text(encoding="utf-8")
+
+        # Forge 1.20.1 StructureManager has a private level field; no
+        # level() method, and its true backing level may be WorldGenRegion.
+        self.assertIn("StructureManagerLevelAccessor", config["mixins"])
+        self.assertIn("import net.minecraft.world.level.StructureManager;", accessor)
+        self.assertIn("@Mixin(StructureManager.class)", accessor)
+        self.assertIn('@Accessor("level")', accessor)
+        self.assertIn("LevelAccessor continuityworks$getLevel()", accessor)
+        self.assertIn("import net.minecraft.world.level.StructureManager;", mixin)
+        self.assertNotIn("net.minecraft.world.level.levelgen.structure.StructureManager", mixin)
+        self.assertNotIn("structureManager.level()", mixin)
+        self.assertIn("LevelResolver.serverLevel(", mixin)
+        self.assertIn(".continuityworks$getLevel()", mixin)
+        self.assertIn("region.getLevel()", resolver)
+
     def test_generation_invocation_unwinds_on_thrown_exceptions(self):
         mixin = (MODULE / "src/main/java/io/continuityworks/spawnprotection/mixin/ChunkGeneratorMixin.java").read_text()
         self.assertIn('@WrapMethod(method = "tryGenerateStructure")', mixin)
