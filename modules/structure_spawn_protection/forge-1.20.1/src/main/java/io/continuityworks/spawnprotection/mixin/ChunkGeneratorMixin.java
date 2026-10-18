@@ -7,7 +7,6 @@ import io.continuityworks.spawnprotection.runtime.GenerationAttemptContext;
 import io.continuityworks.spawnprotection.runtime.SpawnProtectionService;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.SectionPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -42,23 +41,20 @@ public abstract class ChunkGeneratorMixin {
 
         GenerationAttempt attempt = null;
         if (level != null) {
-            String structureId = registryAccess.registryOrThrow(Registries.STRUCTURE)
-                .getKey(selectionEntry.structure().value()).toString();
+            // The service resolves the actual registered structure ID and
+            // computes a unique generation transaction from this same chunk.
+            // Do not duplicate outdated service parameters in the mixin.
             attempt = SpawnProtectionService.beginAttempt(
                 level,
-                structureId,
-                chunkPos.getMiddleBlockX(),
-                chunkPos.getMiddleBlockZ()
+                registryAccess,
+                selectionEntry.structure().value(),
+                chunkPos
             );
         }
 
         GenerationAttemptContext.begin(attempt);
         boolean terminalHandled = attempt == null;
         try {
-            if (attempt != null && !attempt.permitted()) {
-                return false;
-            }
-
             boolean generated = original.call(
                 selectionEntry,
                 structureManager,
